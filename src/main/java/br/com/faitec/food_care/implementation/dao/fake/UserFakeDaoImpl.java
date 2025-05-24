@@ -1,6 +1,7 @@
 package br.com.faitec.food_care.implementation.dao.fake;
 
 import br.com.faitec.food_care.domain.UserModel;
+import br.com.faitec.food_care.port.dao.user.UserDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ public class UserFakeDaoImpl implements UserDao {
 
         UserModel entity2 = new UserModel(getNextID(), "usuario1@foodcare.com", "456", "Rogerio Ceni", UserModel.UserRole.User);
 
-        UserModel entity3 = new UserModel((getNextID(), "adm2@foodcare.com", "789", "Eugenio biroba", UserModel.UserRole.Administrador );
+        UserModel entity3 = new UserModel(getNextID(), "adm2@foodcare.com", "789", "Eugenio biroba", UserModel.UserRole.Administrador );
 
         UserModel entity4 = new UserModel(getNextID(),"adm3@foodcare.com", "10101", "Richard mastergay", UserModel.UserRole.Administrador);
 
@@ -25,6 +26,15 @@ public class UserFakeDaoImpl implements UserDao {
         ID += 1;
         return ID;
     }
+
+    @Override
+    public int create(UserModel entity) {
+        final int id = getNextID();
+        entity.setId(id);
+        entities.add(entity);
+        return id;
+    }
+
 
     @Override
     public void delete(int id) {

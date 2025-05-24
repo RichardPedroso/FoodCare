@@ -1,7 +1,10 @@
 package br.com.faitec.food_care.implementation.service.user;
 
 import br.com.faitec.food_care.domain.UserModel;
+import br.com.faitec.food_care.port.dao.user.UserDao;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
