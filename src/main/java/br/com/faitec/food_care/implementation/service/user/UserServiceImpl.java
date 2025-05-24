@@ -2,6 +2,7 @@ package br.com.faitec.food_care.implementation.service.user;
 
 import br.com.faitec.food_care.domain.UserModel;
 import br.com.faitec.food_care.port.dao.user.UserDao;
+import br.com.faitec.food_care.port.service.user.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
