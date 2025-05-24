@@ -1,6 +1,9 @@
 package br.com.faitec.food_care.controller;
 
 
+import br.com.faitec.food_care.domain.UserModel;
+import br.com.faitec.food_care.domain.dto.UpdatePasswordDto;
+import br.com.faitec.food_care.domain.dto.UpdateUserDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
