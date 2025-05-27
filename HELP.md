@@ -1,7 +1,7 @@
 # Read Me First
 The following was discovered as part of building this project:
 
-* The original package name 'br.com.faitec.food-care' is invalid and this project uses 'br.com.faitec.food_care' instead.
+* The original package name 'br.com.faitec.food-care' is invalid and this project uses 'br.com.faitec.foodcare' instead.
 
 # Getting Started
 
