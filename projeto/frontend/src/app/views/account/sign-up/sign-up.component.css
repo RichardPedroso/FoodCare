@@ -1,0 +1,20 @@
+.base-form {
+    height: 100%;
+    background: linear-gradient(180deg, rgba(2, 0, 36, 1) 0%, #4050b5, rgb(202, 246, 255) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* text-align: center; */
+}
+
+.form {
+    width: 30rem;
+    margin: auto;
+    background-color: rgb(255, 255, 255);
+    padding: 4rem 1rem;
+    border-radius: 1rem;
+}
+
+mat-form-field {
+    display: block;
+}

@@ -1,0 +1,83 @@
+<div class="base-form">
+    <form class="form mat-elevation-z4" [formGroup]="form">
+        <h2 class="text-center">Crie sua conta!</h2>
+        <mat-form-field>
+            <mat-label>Nome completo</mat-label>
+            <input matInput placeholder="Nome completo" formControlName="fullname">
+
+            <mat-error ngIf="form.controls.fullname.hasError('required')">
+                Campo obrigastorio
+            </mat-error>
+
+            @if (form.controls['fullname'].hasError('minlength')) {
+                <p id="text-danger">Nome deve ter no mínimo {{fullnameMinlength}} caracteres. </p>
+            }
+            @else if (form.controls['fullname'].hasError('maxlength')) {
+                <p id="text-danger">Nome deve ter no máximo {{fullnameMaxlength}} caracteres. </p>
+            }
+
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Email" required="" formControlName="email">
+
+            <mat-error ngIf="form.controls.email.hasError('required)">
+                Campo obrigatório
+            </mat-error>
+
+            @if (form.controls['email'].hasError('email')) {
+                <p class="text-danger">Email invalido.</p>
+            }
+
+
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Senha</mat-label>
+            <input matInput type="password" placeholder="Senha" maxlength="10" formControlName="password">
+            <mat-error ngIf="form.controls.password.hasError('required')">
+                Campo obrigatório
+            </mat-error>
+            @if (form.controls['password'].hasError('minlength')) {
+                <p class="text-danger">Senha deve ter no mínimo {{passwordMinlength}} caracteres.</p>
+            }
+            @else if (form.controls['password'].hasError('maxlength')) {
+                <p class="text-danger">Senha deve ter no mínimo {{passwordMaxlength}} caracteres.</p>
+            }
+        
+        </mat-form-field>
+
+        
+        <mat-form-field>
+            <mat-label>Repita a senha</mat-label>
+            <input matInput type="repeatPassword" placeholder="Senha" formControlName="repeatPassword">
+
+            <mat-error ngIf="form.controls.repeatPassword.hasError('required')">
+                Campo obrigatorio
+            </mat-error>
+            @if (form.controls['repeatPassword'].hasError('minlength')) {
+                <p class="text-danger">Senha deve ter no minimo {{passwordMinlength}} caracteres</p>
+    
+            }
+            @else if(form.controls['repeatPassword'].hasError('maxlength')) {
+                <p class="text-danger">Senha deve ter no minimo {{passwordMaxlength}} caracteres</p>
+            }
+    
+            @else if (!arePasswordValid()) {
+                <p class="text-danger" > As senhas não são iguais</p>
+            }
+        </mat-form-field>
+        
+
+        
+        <div class="text-center">
+            <button color="primary" [disabled]="!validateFields()">Criar</button>
+        </div>
+
+        <hr>
+        <div class="mt-4">
+            <p>Já possui uma conta? <a href="account/sign-in">Clique aqui</a> para entrar agora mesmo!</p>
+        </div>
+    </form>
+</div>
