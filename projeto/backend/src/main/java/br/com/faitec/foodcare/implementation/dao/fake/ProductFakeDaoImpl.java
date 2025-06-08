@@ -1,6 +1,7 @@
 package br.com.faitec.foodcare.implementation.dao.fake;
 
 import br.com.faitec.foodcare.domain.Product;
+import br.com.faitec.foodcare.port.dao.product.ProductDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,5 +143,5 @@ public class ProductFakeDaoImpl implements ProductDao {
         }
 
         return false;
-
+}
 }
