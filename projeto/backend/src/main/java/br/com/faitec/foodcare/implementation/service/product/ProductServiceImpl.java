@@ -1,6 +1,8 @@
 package br.com.faitec.foodcare.implementation.service.product;
 
 import br.com.faitec.foodcare.domain.Product;
+import br.com.faitec.foodcare.port.dao.product.ProductDao;
+import br.com.faitec.foodcare.port.service.product.ProductService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

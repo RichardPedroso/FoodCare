@@ -1,6 +1,8 @@
 package br.com.faitec.foodcare.controller;
 
 import br.com.faitec.foodcare.domain.Product;
+import br.com.faitec.foodcare.domain.dto.UpdateProductDto;
+import br.com.faitec.foodcare.port.service.product.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -24,7 +26,7 @@ public class ProductRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getEntityById(@PathVariable final int id){
-        Product entity = productService.findById(id);
+        Product entity = productService.findByid(id);
 
         if(entity == null){
             return ResponseEntity.notFound().build();
