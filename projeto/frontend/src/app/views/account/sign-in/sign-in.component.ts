@@ -34,43 +34,28 @@ import { UserCredentialDto } from '../../../domain/dto/user-credential';
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.css'
 })
-export class SignInComponent {
+export class MeuPerfilComponent {
+  email: string = 'usuario@exemplo.com';
 
-  email = new FormControl(null);
-  password = new FormControl(null, [
-    Validators.minLength(2), Validators.maxLength(4),
-  ]);
+  fullname = new FormControl('');
+  password = new FormControl('');
+  repeatNewPassword = new FormControl('');
 
-  isLoginIncorrect : boolean = false;
+  passwordUpdateError: boolean = false;
 
-  constructor(private router : Router, private authenticationSevice: AuthenticationService){
-    console.log('sign-in constructor');
+  updateProfile() {
+    console.log('Nome completo:', this.fullname.value);
+    // Lógica de atualização de nome aqui
   }
 
+  updatePassword() {
+    if (this.password.value !== this.repeatNewPassword.value) {
+      this.passwordUpdateError = true;
+      return;
+    }
 
-
-  ngOnInit(): void{
-    console.log('sign-in ngOnInit')
-    this.isLoginIncorrect = false;
+    console.log('Atualizando senha:', this.password.value);
+    // Lógica de atualização de senha aqui
+    this.passwordUpdateError = false;
   }
-
-
-  validateFields(): boolean {
-    return this.email.valid && this.password.valid;
-  }
-
-  login(){
-    console.log('botao de login clicado');
-
-    let credentials : UserCredentialDto = {
-      email : this.email.value!,
-      password: this.password.value!,
-    };
-
-    console.log(credentials);
-
-    this.authenticationSevice.authenticate(credentials);
-  }
-
-
 }

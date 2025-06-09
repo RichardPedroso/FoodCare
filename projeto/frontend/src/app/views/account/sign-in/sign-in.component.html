@@ -1,23 +1,44 @@
 <div class="base-form">
-    <form class="form">
-        <h2>App</h2>
-        <mat-form-field>
-            <mat-label>Email</mat-label>
-            <input matInput placeholder="Email" required="" [formControl]="email">
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Senha</mat-label>
-            <input matInput type="password" placeholder="Senha" maxlength="10" required [formControl]="password">
-        </mat-form-field>
-        <button mat-raised-button color="primary" (click)="login()" [disabled]="!validateFields()">Login</button>
+  <form class="form">
+    <h2>Meu perfil</h2>
 
-        @if (isLoginIncorrect) {
-            <p class="text-danger mt-4">Email e/ou senha incorretos.</p>
-        }
+    <h3>Dados cadastrais</h3>
 
-        <hr>
-        <div class="mt-4">
-            <p>Não possui uma conta? <a href="account/sign-up">Clique aqui</a> para criar agora mesmo!</p>
-        </div>
-    </form>
+    <mat-form-field class="w-100">
+      <mat-label>Email</mat-label>
+      <input matInput [value]="email" readonly>
+    </mat-form-field>
+
+    <mat-form-field class="w-100">
+      <mat-label>Nome completo</mat-label>
+      <input matInput placeholder="Nome completo" [formControl]="fullname">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="updateProfile()">Atualizar</button>
+
+    <br><br>
+
+    <h3>Atualizar senha</h3>
+
+    <mat-form-field class="w-100">
+      <mat-label>Senha antiga</mat-label>
+      <input matInput type="password" placeholder="Senha antiga" [formControl]="password">
+    </mat-form-field>
+
+    <mat-form-field class="w-100">
+      <mat-label>Senha nova</mat-label>
+      <input matInput type="password" placeholder="Nova senha" [formControl]="password">
+    </mat-form-field>
+
+    <mat-form-field class="w-100">
+      <mat-label>Repita a nova senha</mat-label>
+      <input matInput type="password" placeholder="Repita a nova senha" [formControl]="repeatNewPassword">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="updatePassword()">Atualizar</button>
+
+    @if (passwordUpdateError) {
+      <p class="text-danger mt-4">Erro ao atualizar a senha.</p>
+    }
+  </form>
 </div>
