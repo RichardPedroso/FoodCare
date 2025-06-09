@@ -1,23 +1,80 @@
-<div class="base-form">
-    <form class="form">
-        <h2>App</h2>
-        <mat-form-field>
-            <mat-label>Email</mat-label>
-            <input matInput placeholder="Email" required="" [formControl]="email">
-        </mat-form-field>
-        <mat-form-field>
-            <mat-label>Senha</mat-label>
-            <input matInput type="password" placeholder="Senha" maxlength="10" required [formControl]="password">
-        </mat-form-field>
-        <button mat-raised-button color="primary" (click)="login()" [disabled]="!validateFields()">Login</button>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link rel="stylesheet" href="sign-in.css">
+</head>
+<body>
+  <header>
+    <img src="logo.png" alt="Logo FoodCare" class="logo">
+    <blockquote>
+      “Quando repartimos o pão, multiplicamos a esperança e diminuímos a fome do mundo.”
+      <footer>~Betinho (Herbert de Souza)</footer>
+    </blockquote>
+  </header>
 
-        @if (isLoginIncorrect) {
-            <p class="text-danger mt-4">Email e/ou senha incorretos.</p>
-        }
+  <main>
+    <section class="info">
+      <div class="options">
+        <button id="btn-donor">Doador</button>
+        <button id="btn-beneficiary">Beneficiário</button>
+      </div>
+      <div class="description" id="description">
+        Selecione uma opção para saber mais!
+      </div>
+    </section>
 
-        <hr>
-        <div class="mt-4">
-            <p>Não possui uma conta? <a href="account/sign-up">Clique aqui</a> para criar agora mesmo!</p>
+    <section class="login">
+      <h2>Login</h2>
+      <form>
+        <label for="email">Email</label>
+        <input type="email" id="email" required>
+        <label for="password">Senha</label>
+        <input type="password" id="password" required>
+        <a href="#">esqueci minha senha</a>
+        <div class="buttons">
+          <button type="button">não tenho conta</button>
+          <button type="submit">entrar</button>
         </div>
-    </form>
-</div>
+      </form>
+    </section>
+  </main>
+
+  <section class="carousel">
+    
+    <!-- Fotos abaixo com o efeito carrossel da direita para a esquerda contendo famílias que foram ajudadas (irão aparecer de forma aleatória) -->
+    
+    <div class="slides">
+      <div class="photos"></div>
+      <div class="photos"></div>
+      <div class="photos"></div>
+    </div>
+    <div class="pagination">
+      <span>&lt;</span>
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span>&gt;</span>
+    </div>
+  </section>
+
+  <footer>
+    <div class="contact">
+      <a href="#">Sobre Nós</a>
+      <img src="instagram-icon.png" alt="Instagram">
+    </div>
+  </footer>
+
+  <script>
+    const description = document.getElementById("description");
+    document.getElementById("btn-donor").onclick = () => {
+      description.textContent = "Informações para doadores: por que doar, estatísticas, etc.";
+    };
+    document.getElementById("btn-beneficiary").onclick = () => {
+      description.textContent = "Informações para beneficiários: segurança, eficiência, etc.";
+    };
+  </script>
+</body>
+</html>

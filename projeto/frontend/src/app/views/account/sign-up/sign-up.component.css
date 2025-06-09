@@ -1,20 +1,110 @@
-.base-form {
-    height: 100%;
-    background: linear-gradient(180deg, rgba(2, 0, 36, 1) 0%, #4050b5, rgb(202, 246, 255) 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* text-align: center; */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  color: #2a2a2a;
 }
 
-.form {
-    width: 30rem;
-    margin: auto;
-    background-color: rgb(255, 255, 255);
-    padding: 4rem 1rem;
-    border-radius: 1rem;
+.logo {
+  width: 100px;
+  margin: 20px;
 }
 
-mat-form-field {
-    display: block;
+h1 {
+  margin: 10px 0 30px;
+  color: #264653;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.buttons button {
+  padding: 10px 20px;
+  border-radius: 30px;
+  border: none;
+  background: #e76f51;
+  font-size: 1em;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+  transition: background-color 0.2s ease;
+}
+
+.buttons button:hover {
+  background-color: #d45d3c;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 40px;
+  padding: 20px;
+}
+
+.form-box {
+  border: 1px solid #264653;
+  border-radius: 15px;
+  padding: 20px;
+  background: white;
+  width: 300px;
+  display: block;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.form-box h2,
+.form-box h3 {
+  margin: 10px 0;
+  color: #f4a261;
+}
+
+.form-box label {
+  display: block;
+  text-align: left;
+  margin: 10px 0 5px;
+  font-weight: bold;
+  color: #264653;
+}
+
+.form-box input {
+  width: 100%;
+  padding: 5px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.create {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #e76f51;
+  color: white;
+  border-radius: 15px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.create:hover {
+  background-color: #d45d3c;
+}
+
+.central-description {
+  max-width: 280px;
+  text-align: left;
+}
+
+#wallpaper {
+  margin-top: 20px;
+  height: 120px;
+  background-color: #ccc;
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
 }

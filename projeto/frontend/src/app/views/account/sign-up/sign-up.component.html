@@ -1,83 +1,106 @@
-<div class="base-form">
-    <form class="form mat-elevation-z4" [formGroup]="form">
-        <h2 class="text-center">Crie sua conta!</h2>
-        <mat-form-field>
-            <mat-label>Nome completo</mat-label>
-            <input matInput placeholder="Nome completo" formControlName="fullname">
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro</title>
+  <link rel="stylesheet" href="sign-up.css">
+</head>
+<body>
+  <header>
+    <img src="logo.png" alt="Logo FoodCare" class="logo">
+  </header>
 
-            <mat-error ngIf="form.controls.fullname.hasError('required')">
-                Campo obrigastorio
-            </mat-error>
+  <h1>O que eu sou?</h1>
 
-            @if (form.controls['fullname'].hasError('minlength')) {
-                <p id="text-danger">Nome deve ter no mínimo {{fullnameMinlength}} caracteres. </p>
-            }
-            @else if (form.controls['fullname'].hasError('maxlength')) {
-                <p id="text-danger">Nome deve ter no máximo {{fullnameMaxlength}} caracteres. </p>
-            }
+  <div class="buttons">
+    <button id="btn-donor">Doador</button>
+    <button id="btn-beneficiary">Beneficiário</button>
+  </div>
 
-        </mat-form-field>
+  <main>
+    <div id="form-unified" class="form-box">
+      <h2>Cadastro</h2>
 
-        <mat-form-field>
-            <mat-label>Email</mat-label>
-            <input matInput placeholder="Email" required="" formControlName="email">
+      <label for="name">Nome
+        <input type="text" id="name" name="name">
+      </label>
 
-            <mat-error ngIf="form.controls.email.hasError('required)">
-                Campo obrigatório
-            </mat-error>
+      <label for="celular">Celular
+        <input type="tel" id="celular" name="celular">
+      </label>
 
-            @if (form.controls['email'].hasError('email')) {
-                <p class="text-danger">Email invalido.</p>
-            }
+      <label for="email">Email
+        <input type="text" id="email" name="email">
+      </label>
 
+      <label for="password">Senha
+        <input type="password" id="password" name="password">
+      </label>
 
-        </mat-form-field>
+      <div id="beneficiary-extra" style="display: none;">
+        <label for="amount-people">Quantidade de pessoas
+          <input type="number" id="amount-people" name="amount-people">
+        </label>
 
-        <mat-form-field>
-            <mat-label>Senha</mat-label>
-            <input matInput type="password" placeholder="Senha" maxlength="10" formControlName="password">
-            <mat-error ngIf="form.controls.password.hasError('required')">
-                Campo obrigatório
-            </mat-error>
-            @if (form.controls['password'].hasError('minlength')) {
-                <p class="text-danger">Senha deve ter no mínimo {{passwordMinlength}} caracteres.</p>
-            }
-            @else if (form.controls['password'].hasError('maxlength')) {
-                <p class="text-danger">Senha deve ter no mínimo {{passwordMaxlength}} caracteres.</p>
-            }
-        
-        </mat-form-field>
+        <label for="family-income">Renda Familiar
+          <input type="text" id="family-income" name="family-income">
+        </label>
+      </div>
 
-        
-        <mat-form-field>
-            <mat-label>Repita a senha</mat-label>
-            <input matInput type="repeatPassword" placeholder="Senha" formControlName="repeatPassword">
+      <h3>Endereço</h3>
+      <div class="adress">
+        <label for="cep">CEP
+          <input type="text" id="public-place" name="public-place">
+        </label>
 
-            <mat-error ngIf="form.controls.repeatPassword.hasError('required')">
-                Campo obrigatorio
-            </mat-error>
-            @if (form.controls['repeatPassword'].hasError('minlength')) {
-                <p class="text-danger">Senha deve ter no minimo {{passwordMinlength}} caracteres</p>
-    
-            }
-            @else if(form.controls['repeatPassword'].hasError('maxlength')) {
-                <p class="text-danger">Senha deve ter no minimo {{passwordMaxlength}} caracteres</p>
-            }
-    
-            @else if (!arePasswordValid()) {
-                <p class="text-danger" > As senhas não são iguais</p>
-            }
-        </mat-form-field>
-        
+        <label for="town">Cidade
+          <input type="text" id="number" name="number">
+        </label>
 
-        
-        <div class="text-center">
-            <button color="primary" [disabled]="!validateFields()">Criar</button>
-        </div>
+        <label for="public-place">Logradouro
+          <input type="text" id="neighborhood" name="neighborhood">
+        </label>
 
-        <hr>
-        <div class="mt-4">
-            <p>Já possui uma conta? <a href="account/sign-in">Clique aqui</a> para entrar agora mesmo!</p>
-        </div>
-    </form>
-</div>
+        <label for="number">Número
+          <input type="text" id="town" name="town">
+        </label>
+
+        <label for="neighborhood">Bairro
+          <input type="text" id="cep" name="cep">
+        </label>
+      </div>
+
+      <button class="create">Criar</button>
+    </div>
+
+    <div class="central-description">
+      <div id="wallpaper"></div>
+    </div>
+  </main>
+
+  <script>
+    const btnDonor = document.getElementById("btn-donor");
+    const btnBeneficiary = document.getElementById("btn-beneficiary");
+    const beneficiaryExtra = document.getElementById("beneficiary-extra");
+    const wallpaper = document.getElementById("wallpaper");
+
+    let typeUser = 'donor'; // valor padrão
+
+    btnDonor.onclick = () => {
+      beneficiaryExtra.style.display = "none";
+      wallpaper.style.backgroundImage = "url('wallpaper-donor.jpg')";
+      typeUser = 'donor';
+    };
+
+    btnBeneficiary.onclick = () => {
+      beneficiaryExtra.style.display = "block";
+      wallpaper.style.backgroundImage = "url('wallpaper-beneficiary.jpg')";
+      typeUser = 'beneficiary';
+    };
+
+    // Estado inicial
+    beneficiaryExtra.style.display = "none";
+    wallpaper.style.backgroundImage = "url('wallpaper-donor.jpg')";
+  </script>
+</body>
+</html>
