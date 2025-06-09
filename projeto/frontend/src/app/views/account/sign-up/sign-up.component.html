@@ -1,106 +1,79 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Cadastro</title>
-  <link rel="stylesheet" href="sign-up.css">
-</head>
-<body>
-  <header>
-    <img src="logo.png" alt="Logo FoodCare" class="logo">
-  </header>
-
+<div class="base-form">
   <h1>O que eu sou?</h1>
 
-  <div class="buttons">
-    <button id="btn-donor">Doador</button>
-    <button id="btn-beneficiary">Beneficiário</button>
+  <form class="form">
+    <h2>Cadastro</h2>
+
+    <mat-form-field class="w-100">
+      <mat-label>Nome</mat-label>
+      <input matInput placeholder="Nome" [formControl]="fullname">
+    </mat-form-field>
+
+    <mat-form-field class="w-100">
+      <mat-label>Celular</mat-label>
+      <input matInput placeholder="Celular" [formControl]="cellphone" type="tel">
+    </mat-form-field>
+
+    <mat-form-field class="w-100">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="Email" [formControl]="email" type="email">
+    </mat-form-field>
+
+    <mat-form-field class="w-100">
+      <mat-label>Senha</mat-label>
+      <input matInput placeholder="Senha" [formControl]="password" type="password">
+    </mat-form-field>
+
+    <div *ngIf="userType === 'beneficiary'">
+      <mat-form-field class="w-100">
+        <mat-label>Quantidade de pessoas</mat-label>
+        <input matInput placeholder="Quantidade de pessoas" [formControl]="amountPeople" type="number">
+      </mat-form-field>
+
+      <mat-form-field class="w-100">
+        <mat-label>Renda Familiar</mat-label>
+        <input matInput placeholder="Renda Familiar" [formControl]="familyIncome">
+      </mat-form-field>
+    </div>
+
+    <h3>Endereço</h3>
+
+    <mat-form-field class="w-100">
+      <mat-label>CEP</mat-label>
+      <input matInput placeholder="CEP" [formControl]="cep">
+    </mat-form-field>
+
+    <mat-form-field class="w-100">
+      <mat-label>Cidade</mat-label>
+      <input matInput placeholder="Cidade" [formControl]="city">
+    </mat-form-field>
+
+    <mat-form-field class="w-100">
+      <mat-label>Logradouro</mat-label>
+      <input matInput placeholder="Logradouro" [formControl]="publicPlace">
+    </mat-form-field>
+
+    <mat-form-field class="w-100">
+      <mat-label>Número</mat-label>
+      <input matInput placeholder="Número" [formControl]="number">
+    </mat-form-field>
+
+    <mat-form-field class="w-100">
+      <mat-label>Bairro</mat-label>
+      <input matInput placeholder="Bairro" [formControl]="neighborhood">
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="create()">Criar</button>
+  </form>
+
+  <div class="text-center">
+            <button color="primary" [disabled]="!validateFields()">Criar</button>
   </div>
-
-  <main>
-    <div id="form-unified" class="form-box">
-      <h2>Cadastro</h2>
-
-      <label for="name">Nome
-        <input type="text" id="name" name="name">
-      </label>
-
-      <label for="celular">Celular
-        <input type="tel" id="celular" name="celular">
-      </label>
-
-      <label for="email">Email
-        <input type="text" id="email" name="email">
-      </label>
-
-      <label for="password">Senha
-        <input type="password" id="password" name="password">
-      </label>
-
-      <div id="beneficiary-extra" style="display: none;">
-        <label for="amount-people">Quantidade de pessoas
-          <input type="number" id="amount-people" name="amount-people">
-        </label>
-
-        <label for="family-income">Renda Familiar
-          <input type="text" id="family-income" name="family-income">
-        </label>
-      </div>
-
-      <h3>Endereço</h3>
-      <div class="adress">
-        <label for="cep">CEP
-          <input type="text" id="public-place" name="public-place">
-        </label>
-
-        <label for="town">Cidade
-          <input type="text" id="number" name="number">
-        </label>
-
-        <label for="public-place">Logradouro
-          <input type="text" id="neighborhood" name="neighborhood">
-        </label>
-
-        <label for="number">Número
-          <input type="text" id="town" name="town">
-        </label>
-
-        <label for="neighborhood">Bairro
-          <input type="text" id="cep" name="cep">
-        </label>
-      </div>
-
-      <button class="create">Criar</button>
-    </div>
-
-    <div class="central-description">
-      <div id="wallpaper"></div>
-    </div>
-  </main>
-
-  <script>
-    const btnDonor = document.getElementById("btn-donor");
-    const btnBeneficiary = document.getElementById("btn-beneficiary");
-    const beneficiaryExtra = document.getElementById("beneficiary-extra");
-    const wallpaper = document.getElementById("wallpaper");
-
-    let typeUser = 'donor'; // valor padrão
-
-    btnDonor.onclick = () => {
-      beneficiaryExtra.style.display = "none";
-      wallpaper.style.backgroundImage = "url('wallpaper-donor.jpg')";
-      typeUser = 'donor';
-    };
-
-    btnBeneficiary.onclick = () => {
-      beneficiaryExtra.style.display = "block";
-      wallpaper.style.backgroundImage = "url('wallpaper-beneficiary.jpg')";
-      typeUser = 'beneficiary';
-    };
-
-    // Estado inicial
-    beneficiaryExtra.style.display = "none";
-    wallpaper.style.backgroundImage = "url('wallpaper-donor.jpg')";
-  </script>
-</body>
-</html>
+  <div class="mt-4">
+            <p>Já possui uma conta? <a href="account/sign-in">Clique aqui</a> para entrar agora mesmo!</p>
+  </div>
+  <div class="central-description">
+    <!-- <div id="wallpaper" [ngStyle]="{'background-image': 'url(' + wallpaperUrl + ')'}"></div> -->
+     <!-- este é o fundo do site -->
+  </div>
+</div>
