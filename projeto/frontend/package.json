@@ -21,7 +21,7 @@
     "@angular/platform-browser": "^19.2.0",
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/platform-server": "^19.2.0",
-    "@angular/router": "^19.2.0",
+    "@angular/router": "^19.2.14",
     "@angular/ssr": "^19.2.13",
     "@fortawesome/angular-fontawesome": "^2.0.1",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
