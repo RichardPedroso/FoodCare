@@ -1,9 +1,0 @@
-Apontamentos: 
-- Na descrição dos requisitos não funcionais pode adotar o padrão de nomenclatura:  RNF XX -<nome>, pode remover a palavra "nome" antes do nome dado ao requisito
-- DCU: 
-    - DCU geral não contempla o Módulo de Cadastros?
-    - DCU (Acesso, Relatórios, Doação e Solicitação) definir o tipo de relacionamentos entre os casos de uso como (include, extends, generalização)
-        - Login e recuperar senha
-        - Registrar Doações e Acompanhar Doações
-        - Solicitar Doações e Acompanhar Estado da Solicitação
--As telas coloco os apontamentos assim que liberar o acesso ao Figma
