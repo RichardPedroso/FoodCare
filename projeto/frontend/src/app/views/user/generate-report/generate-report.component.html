@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerar Relatório</title>
+  <link rel="stylesheet" href="generate-report.css">
+</head>
+<body>
+
+  <div class="report-container">
+    <div class="buttons-toggle">
+      <button id="btn-donor" class="active">Doador</button>
+      <button id="btn-beneficiary">Beneficiário</button>
+    </div>
+
+    <!-- Relatório DOADOR -->
+    <div id="report-donor" class="report-content">
+      <div class="column">
+        <div class="card">
+          <div class="value">35</div>
+          <div class="subtitle">Total de Doações</div>
+        </div>
+        <div class="card">
+          <div class="value">5</div>
+          <div class="subtitle">Média por Semana</div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="card">
+          <div class="value">120</div>
+          <div class="subtitle">Pessoas Ajudadas</div>
+        </div>
+        <div class="card">
+          <div class="value">3</div>
+          <div class="subtitle">Solicitações por Semana</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Relatório BENEFICIÁRIO -->
+    <div id="report-beneficiary" class="report-content" style="display: none;">
+      <div class="column">
+        <div class="card">
+          <div class="value">10</div>
+          <div class="subtitle">Cestas Básicas</div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="card">
+          <div class="value">4</div>
+          <div class="subtitle">Cestas de Higiene</div>
+        </div>
+      </div>
+
+      <div class="linha-inferior">
+        <div class="card">
+          <div class="value">14</div>
+          <div class="subtitle">Total de Cestas</div>
+        </div>
+        <div class="card">
+          <div class="value">6</div>
+          <div class="subtitle">Meses Solicitando</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const btnDonor = document.getElementById('btn-donor');
+    const btnBeneficiary = document.getElementById('btn-beneficiary');
+    const reportDonor = document.getElementById('report-donor');
+    const reportBeneficiary = document.getElementById('report-beneficiary');
+
+    btnDonor.onclick = () => {
+      btnDonor.classList.add('active');
+      btnBeneficiary.classList.remove('active');
+      reportDonor.style.display = 'flex';
+      reportBeneficiary.style.display = 'none';
+    };
+
+    btnBeneficiary.onclick = () => {
+      btnBeneficiary.classList.add('active');
+      btnDonor.classList.remove('active');
+      reportDonor.style.display = 'none';
+      reportBeneficiary.style.display = 'flex';
+    };
+  </script>
+
+</body>
+</html>
