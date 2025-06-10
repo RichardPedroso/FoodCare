@@ -34,7 +34,7 @@ import { UserCredentialDto } from '../../../domain/dto/user-credential';
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.css'
 })
-export class MeuPerfilComponent {
+export class SignInComponent {
   email: string = 'usuario@exemplo.com';
 
   fullname = new FormControl('');
