@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-    private ProductDao productDao;
+    private final ProductDao productDao;
 
     public ProductServiceImpl(ProductDao productDao) {
         this.productDao = productDao;
@@ -25,7 +25,7 @@ public class ProductServiceImpl implements ProductService {
         if(entity.getName().isEmpty()){
             return invalidResponse;
         }
-        final int id = productDao.add(entity);
+        final int id = productDao.create(entity);
         return id;
     }
 
@@ -35,9 +35,13 @@ public class ProductServiceImpl implements ProductService {
             return;
         }
 
-        productDao.remove(id);
+        productDao.delete(id);
+
+
 
     }
+
+
 
     @Override
     public Product findById(int id) {
@@ -45,14 +49,13 @@ public class ProductServiceImpl implements ProductService {
             return null;
         }
 
-        Product entity = productDao.readById(id);
+        Product entity = productDao.findByid(id);
         return entity;
-
     }
 
     @Override
     public List<Product> findAll() {
-        final List<Product> entities = productDao.readAll();
+        final List<Product> entities = productDao.findAll();
 
         return entities;
     }
@@ -69,7 +72,7 @@ public class ProductServiceImpl implements ProductService {
             return;
         }
 
-        productDao.updateInformation(id, entity);
+        productDao.update(id, entity);
 
     }
 

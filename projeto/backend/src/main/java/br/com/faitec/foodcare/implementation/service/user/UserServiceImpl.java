@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserModel findByid(int id) {
+    public UserModel findById(int id) {
         if (id < 0) {
             return null;
         }
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
             return;
         }
 
-        UserModel userModel = findByid(id);
+        UserModel userModel = findById(id);
         if (userModel == null) {
             return;
         }
@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updatePassword(int id, String oldPassword, String newPassword) {
 
-        UserModel user = findByid(id);
+        UserModel user = findById(id);
         if (user == null) {
             return false;
         }

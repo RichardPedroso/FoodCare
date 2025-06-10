@@ -30,7 +30,7 @@ public class UserRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserModel> getEntityById(@PathVariable final int id) {
-        UserModel entity = userService.findByid(id);
+        UserModel entity = userService.findById(id);
 
         return entity == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
     }

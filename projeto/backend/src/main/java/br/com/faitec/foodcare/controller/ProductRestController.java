@@ -26,7 +26,7 @@ public class ProductRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getEntityById(@PathVariable final int id){
-        Product entity = productService.findByid(id);
+        Product entity = productService.findById(id);
 
         if(entity == null){
             return ResponseEntity.notFound().build();
