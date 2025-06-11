@@ -1,79 +1,108 @@
 <div class="base-form">
-  <h1>O que eu sou?</h1>
+  <form class="form mat-elevation-z4" [formGroup]="form">
 
-  <form class="form">
     <h2>Cadastro</h2>
 
-    <mat-form-field class="w-100">
-      <mat-label>Nome</mat-label>
-      <input matInput placeholder="Nome" [formControl]="fullname">
+    <mat-form-field>
+      <mat-label>Nome completo</mat-label>
+      <input matInput placeholder="Nome" formControlName="name">
+
+      <mat-error ngIf="form.controls.name.hasError('required')">
+        Campo obrigatório
+      </mat-error>
+
+      @if(form.controls['name'].hasError('minlength')){
+        <P class="text-danger">
+            Nome deve ter no minimo {{nameMinLength}} cararacteres.
+        </P>
+        }
+
+      @else if(form.controls['name'].hasError('maxlength')){
+        <p class="text-danger">
+            Nome deve ter no maximo {{nameMaxLength}} cararacteres.
+        </p>
+        }
     </mat-form-field>
 
-    <mat-form-field class="w-100">
-      <mat-label>Celular</mat-label>
-      <input matInput placeholder="Celular" [formControl]="cellphone" type="tel">
-    </mat-form-field>
-
-    <mat-form-field class="w-100">
+    <mat-form-field>
       <mat-label>Email</mat-label>
-      <input matInput placeholder="Email" [formControl]="email" type="email">
+      <input matInput placeholder="Email" formControlName="email" type="email">
+      
+      <mat-error ngIf="form.controls.email.hasError('required')">
+        Campo obrigatório
+      </mat-error>
+
+      @if(form.controls['email'].hasError('email')){
+        <p class="text-danger">Email inválido.</p>
+      }
     </mat-form-field>
 
-    <mat-form-field class="w-100">
+    <mat-form-field>
       <mat-label>Senha</mat-label>
-      <input matInput placeholder="Senha" [formControl]="password" type="password">
+      <input matInput placeholder="Senha" formControlName="password" type="password">
+    
+      <mat-error ngIf="form.controls.password.hasError('required')">
+        Campo obrigatório
+      </mat-error>
+    
+      @if(form.controls['password'].hasError('minlength')){
+        <p class="text-danger">
+            Senha deve ter no minimo {{passwordMinLength}} cararacteres.</p>
+      }
+
+      @else if(form.controls['password'].hasError('maxlength')){
+        <p class="text-danger">
+            Senha deve ter no maximo {{passwordMaxLength}} cararacteres.</p>
+      }
     </mat-form-field>
 
-    <div *ngIf="userType === 'beneficiary'">
-      <mat-form-field class="w-100">
-        <mat-label>Quantidade de pessoas</mat-label>
-        <input matInput placeholder="Quantidade de pessoas" [formControl]="amountPeople" type="number">
-      </mat-form-field>
 
-      <mat-form-field class="w-100">
-        <mat-label>Renda Familiar</mat-label>
-        <input matInput placeholder="Renda Familiar" [formControl]="familyIncome">
-      </mat-form-field>
+    <mat-form-field>
+      <mat-label>Repita a senha</mat-label>
+      <input matInput type="password" placeholder="Repita a senha" formControlName="repeatPassword">
+
+      <mat-error ngIf="form.controls.repeatPassword.hasError('required')">
+          Campo obrigatório
+      </mat-error>
+
+      @if(!arePasswordsValid()){
+      <p class="text-danger">
+          As senhas não são iguais.
+      </p>
+      }
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Número</mat-label>
+      <input matInput placeholder="Número" formControlName="number">
+    
+      <mat-error ngIf="form.controls.number.hasError('required')">
+        Campo obrigatório
+      </mat-error>
+    
+      @if(form.controls['number'].hasError('minlength')){
+        <p class="text-danger">
+          Número deve ter no minimo {{numberMinlength}} cararacteres.</p>
+        }
+
+        @else if(form.controls['number'].hasError('maxlength')){
+        <p class="text-danger">
+            Número deve ter no maximo {{numberMaxlength}} cararacteres.</p>
+        }
+    </mat-form-field>
+    
+    <div class="text-center">
+      <button color="primary" [disabled]="!validateFields()">Criar</button>
+    </div>    
+    
+    <div class="mt-4">
+        <p>Já possui uma conta? <a href="account/sign-in">Clique aqui</a> para entrar agora mesmo!</p>
     </div>
 
-    <h3>Endereço</h3>
+    <div class="central-description">
+      <!-- <div id="wallpaper" [ngStyle]="{'background-image': 'url(' + wallpaperUrl + ')'}"></div> -->
+       <!-- este é o fundo do site -->
+    </div>
 
-    <mat-form-field class="w-100">
-      <mat-label>CEP</mat-label>
-      <input matInput placeholder="CEP" [formControl]="cep">
-    </mat-form-field>
-
-    <mat-form-field class="w-100">
-      <mat-label>Cidade</mat-label>
-      <input matInput placeholder="Cidade" [formControl]="city">
-    </mat-form-field>
-
-    <mat-form-field class="w-100">
-      <mat-label>Logradouro</mat-label>
-      <input matInput placeholder="Logradouro" [formControl]="publicPlace">
-    </mat-form-field>
-
-    <mat-form-field class="w-100">
-      <mat-label>Número</mat-label>
-      <input matInput placeholder="Número" [formControl]="number">
-    </mat-form-field>
-
-    <mat-form-field class="w-100">
-      <mat-label>Bairro</mat-label>
-      <input matInput placeholder="Bairro" [formControl]="neighborhood">
-    </mat-form-field>
-
-    <button mat-raised-button color="primary" (click)="create()">Criar</button>
   </form>
-
-  <div class="text-center">
-            <button color="primary" [disabled]="!validateFields()">Criar</button>
-  </div>
-  <div class="mt-4">
-            <p>Já possui uma conta? <a href="account/sign-in">Clique aqui</a> para entrar agora mesmo!</p>
-  </div>
-  <div class="central-description">
-    <!-- <div id="wallpaper" [ngStyle]="{'background-image': 'url(' + wallpaperUrl + ')'}"></div> -->
-     <!-- este é o fundo do site -->
-  </div>
 </div>

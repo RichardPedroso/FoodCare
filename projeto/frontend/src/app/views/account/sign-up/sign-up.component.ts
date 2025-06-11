@@ -34,121 +34,69 @@ import * as fontawesome from '@fortawesome/free-solid-svg-icons'
 })
 export class SignUpComponent implements OnInit {
 
-  userType: 'donor' | 'beneficiary' = 'donor'; // Pode setar via algum botão externo
+  form!: FormGroup;
 
-  // Definição dos FormControls para o template
-  fullname = new FormControl('', [
-    Validators.required,
-    Validators.minLength(2),
-    Validators.maxLength(50),
-  ]);
+  numberMinlength: number = 11;
+  numberMaxlength: number = 11;
 
-  cellphone = new FormControl('', [
-    Validators.required,
-    Validators.pattern(/^\+?\d{10,15}$/)
-  ]);
+  nameMinLength: number = 5;
+  nameMaxLength: number = 50;
 
-  email = new FormControl('', [
-    Validators.required,
-    Validators.email
-  ]);
+  passwordMinLength: number = 6;
+  passwordMaxLength: number = 18;
 
-  password = new FormControl('', [
-    Validators.required,
-    Validators.minLength(6),
-    Validators.maxLength(20)
-  ]);
+  repeatPasswordMinLength: number = 6;
+  repeatPasswordMaxLength: number = 18;
 
-  amountPeople = new FormControl(null, [
-    // Só obrigatório se for beneficiary, pode validar depois na função validateFields
-  ]);
+  constructor(private formbuilder: FormBuilder) {
+  }
+  ngOnInit(): void {
+    this.initializeForm();
+  }
+  initializeForm() {
+    console.log('formulario de sign-up inicializado');
+    this.form = this.formbuilder.group({
+      fullname: ['', [
+        Validators.required,
+        Validators.minLength(this.nameMinLength),
+        Validators.maxLength(this.nameMaxLength),
+      ]],
+      email: ['', [
+        Validators.required,
+        Validators.email
+      ]],
+      password: ['', [
+        Validators.required,
+        Validators.minLength(this.passwordMinLength),
+        Validators.maxLength(this.passwordMaxLength),
+      ]],
+      repeatPassword: ['', [
+        Validators.required,
+        Validators.minLength(this.repeatPasswordMinLength),
+        Validators.maxLength(this.repeatPasswordMaxLength),
+      ]],
+      number: ['', [
+        Validators.required,
+        Validators.minLength(this.numberMinlength),
+        Validators.maxLength(this.numberMaxlength),
+      ]]
 
-  familyIncome = new FormControl('', [
-    // Igual acima, validação condicional
-  ]);
-
-  cep = new FormControl('', [
-    Validators.required,
-    Validators.pattern(/^\d{5}-?\d{3}$/)
-  ]);
-
-  city = new FormControl('', [
-    Validators.required
-  ]);
-
-  publicPlace = new FormControl('', [
-    Validators.required
-  ]);
-
-  number = new FormControl('', [
-    Validators.required
-  ]);
-
-  neighborhood = new FormControl('', [
-    Validators.required
-  ]);
-
-  constructor() {}
-
-  ngOnInit(): void {}
-
-  // Função que retorna true se todos os campos obrigatórios forem válidos
+    })
+  }
   validateFields(): boolean {
-    const requiredValid =
-      this.fullname.valid &&
-      this.cellphone.valid &&
-      this.email.valid &&
-      this.password.valid &&
-      this.cep.valid &&
-      this.city.valid &&
-      this.publicPlace.valid &&
-      this.number.valid &&
-      this.neighborhood.valid;
-
-    // Se for beneficiary, esses campos também são obrigatórios e validados
-    if (this.userType === 'beneficiary') {
-      return requiredValid &&
-        this.amountPeople.valid &&
-        this.familyIncome.valid;
+    let isNameValid = this.form.controls['name'].valid;
+    let isEmailValid = this.form.controls['email'].valid;
+    let isPasswordValid = this.form.controls['password'].valid;
+    let isRepeatPasswordValid = this.form.controls['repeatPassword'].valid;
+    let isCellPhoneValid = this.form.controls['cellphone'].valid;
+    if (!this.arePasswordsValid()) {
+      return false;
     }
 
-    return requiredValid;
+    return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid;
   }
 
-  create() {
-    if (!this.validateFields()) {
-      // Pode adicionar feedback visual aqui
-      console.warn('Formulário inválido');
-      return;
-    }
-
-    const formData = {
-      fullname: this.fullname.value,
-      cellphone: this.cellphone.value,
-      email: this.email.value,
-      password: this.password.value,
-      amountPeople: this.userType === 'beneficiary' ? this.amountPeople.value : null,
-      familyIncome: this.userType === 'beneficiary' ? this.familyIncome.value : null,
-      cep: this.cep.value,
-      city: this.city.value,
-      publicPlace: this.publicPlace.value,
-      number: this.number.value,
-      neighborhood: this.neighborhood.value,
-      userType: this.userType
-    };
-
-    console.log('Criando usuário com dados:', formData);
-    // Aqui chama sua API ou qualquer lógica para cadastro
-  }
-
-  // Exemplo de método para mudar o tipo do usuário
-  setUserType(type: 'donor' | 'beneficiary') {
-    this.userType = type;
-
-    // Se quiser, pode resetar os controles opcionais
-    if (type === 'donor') {
-      this.amountPeople.reset();
-      this.familyIncome.reset();
-    }
+  arePasswordsValid() {
+    return this.form.controls['password'].value === this.form.controls['repeatPassword'].value;
   }
 }
