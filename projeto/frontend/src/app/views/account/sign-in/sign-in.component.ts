@@ -18,7 +18,8 @@ import { UserCredentialDto } from '../../../domain/dto/user-credential';
 
 @Component({
   selector: 'app-sign-in',
-  imports: [RouterOutlet,
+  imports: [
+      RouterOutlet,
       MatToolbarModule,
       FormsModule,
       MatButtonModule,
@@ -32,30 +33,77 @@ import { UserCredentialDto } from '../../../domain/dto/user-credential';
       ReactiveFormsModule,
       MatInputModule],
   templateUrl: './sign-in.component.html',
-  styleUrl: './sign-in.component.css'
+  styleUrl: './sign-in.component.css',
 })
 export class SignInComponent {
-  email: string = 'usuario@exemplo.com';
 
-  fullname = new FormControl('');
-  password = new FormControl('');
-  repeatNewPassword = new FormControl('');
+  email = new FormControl(null);
 
-  passwordUpdateError: boolean = false;
+  password = new FormControl(null, [Validators.minLength(2), Validators.maxLength(4)]);
 
-  updateProfile() {
-    console.log('Nome completo:', this.fullname.value);
-    // Lógica de atualização de nome aqui
+  isLoginIncorrect: boolean = false;
+
+  constructor(private router: Router, private authenticationService: AuthenticationService,) {
+    console.log('sign-in constructor');
   }
 
-  updatePassword() {
-    if (this.password.value !== this.repeatNewPassword.value) {
-      this.passwordUpdateError = true;
+  ngOnInit(): void {
+    console.log('sign-in ngOnInit');
+    this.isLoginIncorrect = false;
+
+    //this.loginIfCredentialsIsValid();
+
+  }
+
+  loginIfCredentialsIsValid() {
+    console.log('verificando as credenciais...');
+    if (this.authenticationService.isAuthenticated()) {
+      console.log('credeciais validas, navegando para tela principal')
+      this.router.navigate(['']);
       return;
     }
 
-    console.log('Atualizando senha:', this.password.value);
-    // Lógica de atualização de senha aqui
-    this.passwordUpdateError = false;
+    console.log('credenciais invaidas ou nao existem no cache')
+
+  }
+
+  validateFields(): boolean {
+    return this.email.valid && this.password.valid;
+  }
+
+  login() {
+    console.log('botao de login clicado');
+
+    let credentials: UserCredentialDto = {
+      email: this.email.value!,
+      password: this.password.value!,
+    };
+
+    console.log(credentials);
+
+    this.authenticationService.authenticate(credentials)
+
+      .subscribe({
+        next: (value: any) => {
+          console.log(value);
+
+          let user: UserCredentialDto = {
+
+            email: value.email,
+            password: value.password
+
+          }
+
+
+          this.authenticationService.addDataToLocalStorage(user);
+
+          this.router.navigate(['']);
+
+        },
+        error: (err) => {
+          console.error('ocorreu um erro no servidor');
+          console.error(err);
+        }
+      });
   }
 }
