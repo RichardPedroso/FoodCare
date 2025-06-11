@@ -1,6 +1,6 @@
 package br.com.faitec.foodcare.configuration;
 
-import br.com.faitec.foodcare.implementation.dao.fake.UserFakeDaoImpl;
+
 import br.com.faitec.foodcare.port.dao.user.UserDao;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,10 +21,7 @@ public class AppConfiguration {
         System.out.println("---------");
     }
 
-    @Bean
-    public UserDao getUserFakeDao(){
-        return new UserFakeDaoImpl();
-    }
+
 
 }
 

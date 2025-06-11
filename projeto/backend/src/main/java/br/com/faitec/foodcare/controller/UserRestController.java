@@ -5,6 +5,7 @@ import br.com.faitec.foodcare.domain.UserModel;
 import br.com.faitec.foodcare.domain.dto.UpdatePasswordDto;
 import br.com.faitec.foodcare.domain.dto.UpdateUserDto;
 import br.com.faitec.foodcare.port.service.user.UserService;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
