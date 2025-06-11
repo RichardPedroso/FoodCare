@@ -35,7 +35,7 @@ export const routes: Routes = [
         canActivate: [authenticationGuard],
         children:[
             {
-                path: "main",
+                path: "",
                 component: MainComponent
             },
             {
