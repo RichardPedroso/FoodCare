@@ -6,7 +6,7 @@ import { authenticationGuard } from './services/security/guard/authentication.gu
 import { MyProfileComponent } from './views/account/my-profile/my-profile.component';
 import { AboutUsComponent } from './views/about/about-us/about-us.component';
 import { ResetPasswordComponent } from './views/account/reset-password/reset-password.component';
-import { homeComponent } from './views/app/home/home.component';
+import { HomeComponent } from './views/app/home/home.component';
 import { NotFoundComponent } from './views/not-found/not-found.component';
 import { FollowActionsComponent } from './views/user/follow-actions/follow-actions.component';
 import { MakeActionComponent } from './views/user/make-action/make-action.component';
@@ -14,8 +14,8 @@ import { GenerateReportComponent } from './views/user/generate-report/generate-r
 
 export const routes: Routes = [
     {
-        path: "app/home",
-        component: homeComponent
+        path: "",
+        component: HomeComponent
     },
     {
         path: "account/sign-in",
