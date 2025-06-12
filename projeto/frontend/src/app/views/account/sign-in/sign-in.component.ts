@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -20,6 +20,7 @@ import { UserCredentialDto } from '../../../domain/dto/user-credential';
   selector: 'app-sign-in',
   imports: [
       RouterOutlet,
+      RouterLink,
       MatToolbarModule,
       FormsModule,
       MatButtonModule,
@@ -41,7 +42,7 @@ export class SignInComponent {
 
   email = new FormControl(null);
 
-  password = new FormControl(null, [Validators.minLength(2), Validators.maxLength(4)]);
+  password = new FormControl(null, [Validators.minLength(6), Validators.maxLength(18)]);
 
   isLoginIncorrect: boolean = false;
 
@@ -96,8 +97,7 @@ export class SignInComponent {
 
           this.authenticationService.addDataToLocalStorage(user);
 
-          this.router.navigate(['']);
-
+          this.router.navigate(['/home']);
         },
         error: (err) => {
           console.error('ocorreu um erro no servidor');
