@@ -1,4 +1,3 @@
-
 <body>
   <header>
     <div class="logo">
@@ -20,52 +19,29 @@
 
   <main>
     <div class="buttons-toggle">
-      <button id="btn-donor" class="active" onclick="alternate('donor')">Doador</button>
-      <button id="btn-beneficiary" onclick="alternate('beneficiary')">Beneficiário</button>
+      <button id="btn-donor" class="active" (click)="alternate('donor')" [class.active]="selectedType === 'donor'">Doador</button>
+      <button id="btn-beneficiary" (click)="alternate('beneficiary')" [class.active]="selectedType === 'beneficiary'">Beneficiário</button>
     </div>
 
     <section class="welcome-text">
-      <h1 id="title-welcome">Bem vindo(a), “nome do usuário”!</h1>
+      <h1 id="title-welcome">Bem vindo(a), {{ userName }}!</h1>
     </section>
 
     <section class="actions" id="actions">
-      <!-- Conteúdo dinâmico será inserido aqui -->
+      @if(selectedType === 'donor'){
+        <button>Acompanhar Doações</button>
+        <button>Fazer Doação</button>
+        <button>Gerar Relatório</button>
+      }
+      @else if (selectedType === 'beneficiary') {
+        <button>Acompanhar Solicitações</button>
+        <button>Solicitar Doação</button>
+        <button>Gerar Relatório</button>
+      }
     </section>
 
-    <section class="message hidden" id="message-beneficiary">
+    <section class="message" [class.hidden]="selectedType !== 'beneficiary'" id="message-beneficiary">
       <p>Adicionar verificação se uma solicitação já foi realizada no mês</p>
     </section>
   </main>
-
-  <script>
-    function alternate(type) {
-      const btnDOnor = document.getElementById("btn-donor");
-      const btnBeneficiary = document.getElementById("btn-beneficiary");
-      const actions = document.getElementById("actions");
-      const message = document.getElementById("message-beneficiary");
-
-      btnDOnor.classList.remove("active");
-      btnBeneficiary.classList.remove("active");
-      message.classList.add("hidden");
-
-      if (type === "donor") {
-        btnDOnor.classList.add("active");
-        actions.innerHTML = `
-          <button>Acompanhar Doações</button>
-          <button>Fazer Doação</button>
-          <button>Gerar Relatório</button>
-        `;
-      } else if (type === "beneficiary") {
-        btnBeneficiary.classList.add("active");
-        actions.innerHTML = `
-          <button>Acompanhar Solicitações</button>
-          <button>Solicitar Doação</button>
-          <button>Gerar Relatório</button>
-        `;
-        message.classList.remove("hidden");
-      }
-    }
-
-    window.onload = () => alternate('donor');
-  </script>
 </body>
