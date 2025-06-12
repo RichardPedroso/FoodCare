@@ -1,91 +1,136 @@
-.base-form {
+header {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  padding: 40px 20px;
-  background-color: #f2f2f2;
+  background-color: #264653;
+  color: white;
+  padding: 15px 30px;
+  flex-wrap: wrap;
 }
 
-.form {
-  background-color: white;
-  padding: 30px 40px;
-  border-radius: 10px;
-  max-width: 450px;
-  width: 100%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  text-align: left;
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.form h2 {
-  color: #264653;
-  margin-bottom: 20px;
-  font-size: 28px;
+.logo img {
+  width: 40px;
 }
 
-.form h3 {
-  color: #2a2a2a;
-  margin-bottom: 15px;
-  font-size: 20px;
+.logo span {
+  font-size: 24px;
+  font-weight: bold;
+  color: #f4a261;
+  text-transform: lowercase;
 }
 
-mat-form-field {
-  display: block;
-  width: 100%;
-  margin-bottom: 20px;
+nav {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
 }
 
-.mat-mdc-form-field-infix {
-  background-color: #f2f2f2;
-  padding: 10px;
-  border-radius: 4px;
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  transition: color 0.3s ease;
 }
 
-input[matInput] {
-  padding: 10px;
+nav a:hover {
+  color: #f4a261;
+  text-decoration: underline;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
   font-size: 16px;
 }
 
-button[mat-raised-button] {
+.user img {
+  width: 35px;
+  border-radius: 50%;
+  border: 2px solid #f4a261;
+}
+
+main {
+  padding: 40px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  color: #2a2a2a;
+}
+
+.buttons-toggle {
+  margin-bottom: 30px;
+}
+
+.buttons-toggle button {
+  padding: 10px 25px;
+  margin: 0 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #ccc;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.buttons-toggle button.active {
   background-color: #e76f51;
   color: white;
-  font-weight: bold;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
 }
 
-button[mat-raised-button]:hover {
+.buttons-toggle button:hover:not(.active) {
+  background-color: #d45d3c;
+  color: white;
+}
+
+.welcome-text h1 {
+  font-size: 32px;
+  margin-bottom: 40px;
+  color: #264653;
+  font-weight: bold;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.actions button {
+  background-color: #e76f51;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 12px 30px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  min-width: 180px;
+}
+
+.actions button:hover {
   background-color: #d45d3c;
 }
 
-button[mat-raised-button]:disabled {
-  background-color: #ccc;
-  color: #666;
-  cursor: not-allowed;
-}
-
-.text-danger {
+.message {
+  font-weight: bold;
+  font-size: 18px;
   color: #e63946;
-  font-weight: bold;
-  font-size: 14px;
+  margin-top: 30px;
 }
 
-.mt-2 {
-  margin-top: 8px;
-}
-
-.mt-4 {
-  margin-top: 16px;
-}
-
-.mt-4 a {
-  color: #264653;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.mt-4 a:hover {
-  text-decoration: underline;
+.hidden {
+  display: none;
 }
