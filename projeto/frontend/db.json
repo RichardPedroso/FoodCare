@@ -1,0 +1,72 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "title": "a title",
+      "views": 100
+    },
+    {
+      "id": "2",
+      "title": "another title",
+      "views": 200
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "text": "a comment about post 1",
+      "postId": "1"
+    },
+    {
+      "id": "2",
+      "text": "another comment about post 1",
+      "postId": "1"
+    },
+    {
+      "id": "83fe",
+      "email": "lalala",
+      "password": "123"
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  },
+  "user": [
+    {
+      "id": "1",
+      "fullname": "tiburguin",
+      "email": "tiburgus@gmail.com",
+      "password": "789"
+    },
+    {
+      "id": "2",
+      "fullname": "aroldo",
+      "email": "aroldus@gmail.com",
+      "password": "123"
+    },
+    {
+      "id": "8f9c",
+      "fullname": "tiburguin",
+      "email": "tiburgus@gmail.com",
+      "password": "789"
+    },
+    {
+      "id": "2832",
+      "fullname": "tiburguin",
+      "email": "tiburgus@gmail.com",
+      "password": "789"
+    },
+    {
+      "id": "8ac4",
+      "fullname": "tiburguin",
+      "email": "tiburgus@gmail.com",
+      "password": "789"
+    },
+    {
+      "id": "aa85",
+      "fullname": "tiburguin",
+      "email": "tiburgus@gmail.com",
+      "password": "789"
+    }
+  ]
+}
