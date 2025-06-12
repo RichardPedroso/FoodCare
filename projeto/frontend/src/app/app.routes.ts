@@ -11,64 +11,59 @@ import { NotFoundComponent } from './views/not-found/not-found.component';
 import { FollowActionsComponent } from './views/user/follow-actions/follow-actions.component';
 import { MakeActionComponent } from './views/user/make-action/make-action.component';
 import { GenerateReportComponent } from './views/user/generate-report/generate-report.component';
+import { AppComponent } from './app.component';
 
 export const routes: Routes = [
 
-    {
-        path: "",
-        component: HomeComponent
-    },
-    {
-        path: "account/sign-in",
-        component: SignInComponent
-    },
-    {
-        path: "account/sign-up",
-        component: SignUpComponent
-    },
-    {
-        path: "account/reset-password",
-        component: ResetPasswordComponent
-    },
-    {
-        path: "",
-        component: MainComponent,
-        canActivate: [authenticationGuard],
-        children:[
-            {
-                path: "",
-                component: MainComponent
-            },
-            {
-                path: "account/my-profile",
-                component: MyProfileComponent
-            },
-            {
-                path: "about-us",
-                component: AboutUsComponent
-            },
-            {
-                path: "user",
-                children: [
-                    {
-                        path: "make-action",
-                        component: MakeActionComponent
-                    },
-                    {
-                        path: "follow-actions",
-                        component: FollowActionsComponent
-                    },
-                    {
-                        path: "generate-report",
-                        component: GenerateReportComponent
-                    },
-                ]
-            },
-            {
-                path: '**',
-                component: NotFoundComponent
-            },
-        ]
-    },
-    
+  {
+    path: '',
+    component: HomeComponent
+  },
+
+  {
+    path: 'account/sign-in',
+    component: SignInComponent
+  },
+  {
+    path: 'account/sign-up',
+    component: SignUpComponent
+  },
+  {
+    path: 'account/reset-password',
+    component: ResetPasswordComponent
+  },
+
+  {
+    path: 'main',
+    component: MainComponent,
+    canActivate: [authenticationGuard],
+    children: [
+      {
+        path: 'about-us',
+        component: AboutUsComponent
+      },
+      {
+        path: 'user/make-action',
+        component: MakeActionComponent
+      },
+      {
+        path: 'user/follow-actions',
+        component: FollowActionsComponent
+      },
+      {
+        path: 'user/generate-report',
+        component: GenerateReportComponent
+      },
+      {
+        path: '**',
+        component: NotFoundComponent
+      }
+    ]
+  },
+
+  {
+    path: '**',
+    component: NotFoundComponent
+  }
+
 ];
