@@ -7,6 +7,7 @@ import { User } from '../../domain/model/user';
 @Injectable({
   providedIn: 'root'
 })
+
 export class UserReadService {
 
   constructor(private http: HttpClient) { }

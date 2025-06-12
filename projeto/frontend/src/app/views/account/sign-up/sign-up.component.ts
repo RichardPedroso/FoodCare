@@ -28,10 +28,12 @@ import * as fontawesome from '@fortawesome/free-solid-svg-icons'
     MatTooltipModule,
     FontAwesomeModule,
     ReactiveFormsModule,
-    MatInputModule],
+    MatInputModule,
+  ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css'
 })
+
 export class SignUpComponent implements OnInit {
 
   form!: FormGroup;
@@ -48,33 +50,39 @@ export class SignUpComponent implements OnInit {
   repeatPasswordMinLength: number = 6;
   repeatPasswordMaxLength: number = 18;
 
-  constructor(private formbuilder: FormBuilder) {
-  }
+  constructor(private formbuilder: FormBuilder) {}
+
   ngOnInit(): void {
     this.initializeForm();
   }
+
   initializeForm() {
     console.log('formulario de sign-up inicializado');
     this.form = this.formbuilder.group({
+
       fullname: ['', [
         Validators.required,
         Validators.minLength(this.nameMinLength),
         Validators.maxLength(this.nameMaxLength),
       ]],
+
       email: ['', [
         Validators.required,
         Validators.email
       ]],
+
       password: ['', [
         Validators.required,
         Validators.minLength(this.passwordMinLength),
         Validators.maxLength(this.passwordMaxLength),
       ]],
+
       repeatPassword: ['', [
         Validators.required,
         Validators.minLength(this.repeatPasswordMinLength),
         Validators.maxLength(this.repeatPasswordMaxLength),
       ]],
+
       number: ['', [
         Validators.required,
         Validators.minLength(this.numberMinlength),
@@ -83,6 +91,7 @@ export class SignUpComponent implements OnInit {
 
     })
   }
+
   validateFields(): boolean {
     let isNameValid = this.form.controls['name'].valid;
     let isEmailValid = this.form.controls['email'].valid;
@@ -99,4 +108,5 @@ export class SignUpComponent implements OnInit {
   arePasswordsValid() {
     return this.form.controls['password'].value === this.form.controls['repeatPassword'].value;
   }
+  
 }

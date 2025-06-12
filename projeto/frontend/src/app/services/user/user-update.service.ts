@@ -15,7 +15,7 @@ export class UserUpdateService {
   async update(id: string, fullname: string): Promise<any>{
     let userToUpdate: User = await this.userReadService.findById(id);
     if(userToUpdate == null){
-      throw new Error("Usuário não encontrado");
+      throw new Error('Usuário não encontrado');
     }
 
     userToUpdate.fullname = fullname;
@@ -26,11 +26,11 @@ export class UserUpdateService {
   async updatePassword(id: string, oldPassword: string, newPassword: String): Promise<any>{
     let  userToUpdate: User = await this.userReadService.findById(id);
     if(userToUpdate == null){
-      throw new Error("Usuário não encontrado");
+      throw new Error('Usuário não encontrado');
     }
 
     if(oldPassword !== userToUpdate.password){
-      throw new Error("Senha antiga invalida");
+      throw new Error('Senha antiga invalida');
     }
 
     let data = {
@@ -39,4 +39,5 @@ export class UserUpdateService {
 
     return await firstValueFrom(this.http.put<any>(`${environment.api_endpoint}/user/password/${id}`, data));
   }
+
 }

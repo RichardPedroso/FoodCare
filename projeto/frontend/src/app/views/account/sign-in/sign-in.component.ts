@@ -31,10 +31,12 @@ import { UserCredentialDto } from '../../../domain/dto/user-credential';
       MatTooltipModule,
       FontAwesomeModule,
       ReactiveFormsModule,
-      MatInputModule],
+      MatInputModule,
+    ],
   templateUrl: './sign-in.component.html',
   styleUrl: './sign-in.component.css',
 })
+
 export class SignInComponent {
 
   email = new FormControl(null);
@@ -52,7 +54,6 @@ export class SignInComponent {
     this.isLoginIncorrect = false;
 
     //this.loginIfCredentialsIsValid();
-
   }
 
   loginIfCredentialsIsValid() {
@@ -64,7 +65,6 @@ export class SignInComponent {
     }
 
     console.log('credenciais invaidas ou nao existem no cache')
-
   }
 
   validateFields(): boolean {
@@ -93,7 +93,6 @@ export class SignInComponent {
             password: value.password
 
           }
-
 
           this.authenticationService.addDataToLocalStorage(user);
 

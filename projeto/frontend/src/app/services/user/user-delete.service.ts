@@ -6,14 +6,13 @@ import { environment } from '../../../environments/environment.development';
 @Injectable({
   providedIn: 'root'
 })
+
 export class UserDeleteService {
 
   constructor(private http: HttpClient) {}
 
     delete(id: string){
-      return firstValueFrom(
-        this.http.delete(`${environment.api_endpoint}/user/${id}`)
-      )
+      return firstValueFrom(this.http.delete(`${environment.api_endpoint}/user/${id}`));
     }
    
 }

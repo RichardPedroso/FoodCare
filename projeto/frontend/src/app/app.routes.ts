@@ -13,6 +13,7 @@ import { MakeActionComponent } from './views/user/make-action/make-action.compon
 import { GenerateReportComponent } from './views/user/generate-report/generate-report.component';
 
 export const routes: Routes = [
+
     {
         path: "",
         component: HomeComponent
@@ -69,4 +70,5 @@ export const routes: Routes = [
             },
         ]
     },
+    
 ];

@@ -8,7 +8,9 @@ import { environment } from '../environments/environment.development';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
+
 export class AppComponent {
+  
   constructor(){
     console.log(environment);
   }

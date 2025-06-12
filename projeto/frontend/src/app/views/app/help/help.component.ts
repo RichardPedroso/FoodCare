@@ -6,6 +6,7 @@ import { Component } from '@angular/core';
   templateUrl: './help.component.html',
   styleUrl: './help.component.css'
 })
+
 export class HelpComponent {
 
 }
