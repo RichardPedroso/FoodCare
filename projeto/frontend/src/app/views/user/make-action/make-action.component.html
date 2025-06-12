@@ -1,19 +1,5 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Doação e Solicitação</title>
-  <link rel="stylesheet" href="make-action.css">
-</head>
-<body>
-  <header>
-    <div class="logo">
-      <img src="logo.png" alt="FoodCare Logo">
-      <span>foodcare</span>
-    </div>
-  </header>
-
-  <main>
+<div>
+  <form class="form mat-elevation-z4">
     <h1>O que você deseja fazer?</h1>
 
     <div class="buttons-toggle">
@@ -21,7 +7,6 @@
       <button id="btn-request">Solicitar</button>
     </div>
 
-    <!-- Formulário de Doação -->
     <section id="form-donation" class="form-container">
       <form class="donation-form">
         <h2>Sua Doação</h2>
@@ -66,7 +51,6 @@
       </div>
     </section>
 
-    <!-- Formulário de Solicitação -->
     <section id="form-request" class="form-container hidden">
       <form class="solicitation-form">
         <h2>Sua Solicitação</h2>
@@ -116,58 +100,6 @@
         <button class="action-btn">Sim</button>
       </div>
     </section>
-  </main>
-
-  <script>
-    const btnDonate = document.getElementById("btn-donate");
-    const btnSolicitate = document.getElementById("btn-request");
-    const formDonation = document.getElementById("form-donation");
-    const formRequest = document.getElementById("form-request");
-
-    btnDonate.addEventListener("click", () => {
-      formDonation.classList.remove("hidden");
-      formRequest.classList.add("hidden");
-      btnDonate.classList.add("active");
-      btnSolicitate.classList.remove("active");
-    });
-
-    btnSolicitate.addEventListener("click", () => {
-      formDonation.classList.add("hidden");
-      formRequest.classList.remove("hidden");
-      btnDonate.classList.remove("active");
-      btnSolicitate.classList.add("active");
-    });
-
-    const itensOptions = {
-      "food": ["Arroz", "Feijão", "Açúcar", "Sal", "Macarrão", "Farinha"],
-      "drink": ["Água", "Refrigerante", "Suco de caixa", "Suco em pó"],
-      "product-hygien": ["Papel higiênico", "Papel toalha", "Sabonete", "Shampoo"]
-    };
-
-    function refreshOptions() {
-      const description = document.getElementById("description-select").value;
-      const nameSelect = document.getElementById("name-select");
-      nameSelect.innerHTML = '<option value="">Selecione o name</option>';
-
-      if (itensOptions[description]) {
-        itensOptions[description].forEach(item => {
-          const option = document.createElement("option");
-          option.value = item.toLowerCase().replace(/\s/g, "-");
-          option.textContent = item;
-          nameSelect.appendChild(option);
-        });
-      }
-    }
-
-    const typeRequest = document.getElementById("tipo-request");
-    const basicQunatity = document.getElementById("amount-basic");
-    const hygieneQuantity = document.getElementById("amount-hygien");
-
-    typeRequest.addEventListener("change", function () {
-      const value = this.value;
-      basicQunatity.style.display = value === "cestaBasica" ? "block" : "none";
-      hygieneamount.style.display = value === "cestaHigiene" ? "block" : "none";
-    });
-  </script>
-</body>
-</html>
+    
+  </form>
+</div>
