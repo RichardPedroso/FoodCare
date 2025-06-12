@@ -1,0 +1,99 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  text-align: center;
+}
+
+/* Formulário centralizado com sombra */
+.form {
+  max-width: 800px;
+  margin: 60px auto;
+  background-color: white;
+  padding: 40px 30px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Título principal */
+.form h1 {
+  margin-bottom: 30px;
+  color: #2a2a2a;
+}
+
+/* Botões de toggle */
+.buttons-toggle {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.buttons-toggle button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  background-color: #ccc;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.buttons-toggle button.active {
+  background-color: #e76f51;
+  color: white;
+}
+
+.buttons-toggle button:hover {
+  background-color: #d45d3c;
+  color: white;
+}
+
+/* Seções de tabelas */
+.table-container {
+  margin-top: 20px;
+}
+
+/* Títulos das seções */
+.table-container h2 {
+  margin-bottom: 15px;
+  color: #264653;
+}
+
+/* Tabelas */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+thead {
+  background-color: #264653;
+  color: white;
+}
+
+th, td {
+  padding: 14px;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+}
+
+tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+/* Ocultar */
+.hidden {
+  display: none;
+}
