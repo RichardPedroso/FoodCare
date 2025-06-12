@@ -1,49 +1,91 @@
-.container {
-  max-width: 600px;
-  margin: 80px auto;
-  background: rgba(38, 70, 83, 0.85);
-  padding: 40px 30px;
-  border-radius: 15px;
-  color: #f2f2f2;
-  text-align: center;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-  backdrop-filter: blur(10px);
+.base-form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background-color: #f2f2f2;
 }
 
-.logo {
-  width: 80px;
-  margin-bottom: 25px;
+.form {
+  background-color: white;
+  padding: 30px 40px;
+  border-radius: 10px;
+  max-width: 450px;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
 }
 
-.container p {
-  font-family: Arial, sans-serif;
-  font-size: 18px;
-  line-height: 1.5;
-  margin: 12px 0;
-  color: #f2f2f2;
+.form h2 {
+  color: #264653;
+  margin-bottom: 20px;
+  font-size: 28px;
 }
 
-.container p strong {
-  color: #f4a261;
-  font-weight: bold;
+.form h3 {
+  color: #2a2a2a;
+  margin-bottom: 15px;
+  font-size: 20px;
 }
 
-.button {
-  display: inline-block;
-  margin-top: 30px;
-  padding: 12px 28px;
+mat-form-field {
+  display: block;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.mat-mdc-form-field-infix {
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+input[matInput] {
+  padding: 10px;
+  font-size: 16px;
+}
+
+button[mat-raised-button] {
   background-color: #e76f51;
   color: white;
   font-weight: bold;
-  font-family: Arial, sans-serif;
-  font-size: 18px;
+  padding: 12px 20px;
   border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  text-decoration: none;
+  border-radius: 6px;
+  font-size: 16px;
   transition: background-color 0.3s ease;
 }
 
-.button:hover {
+button[mat-raised-button]:hover {
   background-color: #d45d3c;
+}
+
+button[mat-raised-button]:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.text-danger {
+  color: #e63946;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.mt-2 {
+  margin-top: 8px;
+}
+
+.mt-4 {
+  margin-top: 16px;
+}
+
+.mt-4 a {
+  color: #264653;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.mt-4 a:hover {
+  text-decoration: underline;
 }

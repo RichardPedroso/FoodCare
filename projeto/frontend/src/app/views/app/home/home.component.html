@@ -1,16 +1,49 @@
-<div>
-    <div class="container">
-    <!-- Papel de parede com <br> Blur na página inteira</h1> -->
+<header>
+  <div class="logo">
+    <img src="logo.png" alt="FoodCare Logo" />
+    <span>foodcare</span>
+  </div>
 
-    <img src="logo.png" alt="Logo FoodCare" class="logo">
-    <p>FoodCare é o projeto de um sistema para arrecadação e distribuição de doações</p>
-    <p>Por meio da gerência de todos os processos, garantimos</p>
-    <p><strong>confiança e eficiência</strong></p>
-    <p>desde o registro de doações até a entrega aos indivíduos necessitados.</p>
+  <nav>
+    <a routerLink="about-us">Sobre Nós</a>
+    <a routerLink="user/make-action">Fazer Doação</a>
+    <a routerLink="user/follow-actions">Acompanhar Doações</a>
+    <a routerLink="user/generate-report">Gerar Relatório</a>
+  </nav>
 
-    <div class="mt-4">
-        <a href="account/sign-in" class="button">Conhecer</a>
-    </div>
-    
-    </div>
-</div>
+  <div class="user">
+    <img src="usuario.png" alt="User" />
+    <span>Usuário</span>
+  </div>
+</header>
+
+<main>
+  <div class="buttons-toggle">
+    <button id="btn-donor" (click)="alternate('donor')" [class.active]="selectedType === 'donor'">Doador</button>
+    <button id="btn-beneficiary" (click)="alternate('beneficiary')" [class.active]="selectedType === 'beneficiary'">Beneficiário</button>
+  </div>
+
+  <section class="welcome-text">
+    <h1 id="title-welcome">Bem vindo(a), {{ userName }}!</h1>
+  </section>
+
+  <section class="actions" id="actions">
+    @if(selectedType === 'donor'){
+      <button>Acompanhar Doações</button>
+      <button>Fazer Doação</button>
+      <button>Gerar Relatório</button>
+    }
+    @else if (selectedType === 'beneficiary') {
+      <button>Acompanhar Solicitações</button>
+      <button>Solicitar Doação</button>
+      <button>Gerar Relatório</button>
+    }
+  </section>
+
+  <section class="message" [class.hidden]="selectedType !== 'beneficiary'" id="message-beneficiary">
+    <p>Adicionar verificação se uma solicitação já foi realizada no mês</p>
+  </section>
+
+  <!-- Importante: o conteúdo filho das rotas aparece aqui -->
+  <router-outlet></router-outlet>
+</main>
