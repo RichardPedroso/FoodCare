@@ -1,19 +1,5 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Acompanhamento - Doações e Solicitações</title>
-  <link rel="stylesheet" href="follow-actions.css">
-</head>
-<body>
-  <header>
-    <div class="logo">
-      <img src="logo.png" alt="FoodCare Logo">
-      <span>foodcare</span>
-    </div>
-  </header>
-
-  <main>
+<div>
+  <form class="form mat-elevation-z4">
     <h1>Acompanhamento</h1>
 
     <div class="buttons-toggle">
@@ -62,27 +48,6 @@
         </tbody>
       </table>
     </section>
-  </main>
-
-  <script>
-    const btnDonations = document.getElementById("btn-donations");
-    const btnRequests = document.getElementById("btn-requests");
-    const tableDonations = document.getElementById("table-donations");
-    const tableRequests = document.getElementById("table-requests");
-
-    btnDonations.addEventListener("click", () => {
-      tableDonations.classList.remove("hidden");
-      tableRequests.classList.add("hidden");
-      btnDonations.classList.add("active");
-      btnRequests.classList.remove("active");
-    });
-
-    btnRequests.addEventListener("click", () => {
-      tableDonations.classList.add("hidden");
-      tableRequests.classList.remove("hidden");
-      btnDonations.classList.remove("active");
-      btnRequests.classList.add("active");
-    });
-  </script>
-</body>
-</html>
+    
+  </form>
+</div>
