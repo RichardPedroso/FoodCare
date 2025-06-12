@@ -29,12 +29,9 @@ export class AuthenticationService {
   }
 
   isAuthenticated(): boolean {
-    let email = localStorage.getItem('email');
-    if (email != null && email === 'tiburcinhao@gmail.com') {
-      console.log(`email encontrado: ${email}`);
-      return true;
-    }
-    return false;
+    const email = localStorage.getItem('email');
+    const password = localStorage.getItem('password');
+    return email !== null && password !== null;
   }
 
   addDataToLocalStorage(user: UserCredentialDto) {
