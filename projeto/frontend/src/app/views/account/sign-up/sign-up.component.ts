@@ -60,7 +60,7 @@ export class SignUpComponent implements OnInit {
     console.log('formulario de sign-up inicializado');
     this.form = this.formbuilder.group({
 
-      fullname: ['', [
+      name: ['', [
         Validators.required,
         Validators.minLength(this.nameMinLength),
         Validators.maxLength(this.nameMaxLength),
@@ -97,12 +97,12 @@ export class SignUpComponent implements OnInit {
     let isEmailValid = this.form.controls['email'].valid;
     let isPasswordValid = this.form.controls['password'].valid;
     let isRepeatPasswordValid = this.form.controls['repeatPassword'].valid;
-    let isCellPhoneValid = this.form.controls['cellphone'].valid;
+    let isNumberValid = this.form.controls['number'].valid;
     if (!this.arePasswordsValid()) {
       return false;
     }
 
-    return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid;
+    return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isNumberValid;
   }
 
   arePasswordsValid() {
