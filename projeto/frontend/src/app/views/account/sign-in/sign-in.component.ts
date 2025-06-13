@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -38,7 +38,7 @@ import { UserCredentialDto } from '../../../domain/dto/user-credential';
   styleUrl: './sign-in.component.css',
 })
 
-export class SignInComponent implements OnInit{
+export class SignInComponent{
 
   email = new FormControl(null);
 
