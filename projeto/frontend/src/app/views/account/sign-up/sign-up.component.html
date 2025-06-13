@@ -1,130 +1,129 @@
 <div class="base-form">
   <form class="form mat-elevation-z4" [formGroup]="form">
-
-    <h2>Cadastro</h2>
-
-    <mat-form-field>
-      <mat-label>Nome completo</mat-label>
-      <input matInput placeholder="Nome" formControlName="name">
-
-      <mat-error ngIf="form.controls.name.hasError('required')">
-        Campo obrigatório
-      </mat-error>
-
-      @if(form.controls['name'].hasError('minlength')){
-        <P class="text-danger">
-            Nome deve ter no minimo {{nameMinLength}} cararacteres.
-        </P>
+      <h2>Cadastro</h2>
+      
+      <mat-form-field>
+        <mat-label>Nome completo</mat-label>
+        <input matInput placeholder="Nome" formControlName="name">
+      
+        <mat-error ngIf="form.controls.name.hasError('required')">
+          Campo obrigatório
+        </mat-error>
+      
+        @if(form.controls['name'].hasError('minlength')){
+          <P class="text-danger">
+              Nome deve ter no minimo {{nameMinLength}} cararacteres.
+          </P>
+          }
+        
+        @else if(form.controls['name'].hasError('maxlength')){
+          <p class="text-danger">
+              Nome deve ter no maximo {{nameMaxLength}} cararacteres.
+          </p>
+          }
+      </mat-form-field>
+    
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Email" formControlName="email" type="email">
+        
+        <mat-error ngIf="form.controls.email.hasError('required')">
+          Campo obrigatório
+        </mat-error>
+      
+        @if(form.controls['email'].hasError('email')){
+          <p class="text-danger">Email inválido.</p>
         }
-
-      @else if(form.controls['name'].hasError('maxlength')){
+      </mat-form-field>
+    
+      <mat-form-field>
+        <mat-label>Senha</mat-label>
+        <input matInput placeholder="Senha" formControlName="password" type="password">
+      
+        <mat-error ngIf="form.controls.password.hasError('required')">
+          Campo obrigatório
+        </mat-error>
+      
+        @if(form.controls['password'].hasError('minlength')){
+          <p class="text-danger">
+              Senha deve ter no minimo {{passwordMinLength}} cararacteres.</p>
+        }
+      
+        @else if(form.controls['password'].hasError('maxlength')){
+          <p class="text-danger">
+              Senha deve ter no maximo {{passwordMaxLength}} cararacteres.</p>
+        }
+      </mat-form-field>
+    
+    
+      <mat-form-field>
+        <mat-label>Repita a senha</mat-label>
+        <input matInput type="password" placeholder="Repita a senha" formControlName="repeatPassword">
+      
+        <mat-error ngIf="form.controls.repeatPassword.hasError('required')">
+            Campo obrigatório
+        </mat-error>
+      
+        @if(!arePasswordsValid()){
         <p class="text-danger">
-            Nome deve ter no maximo {{nameMaxLength}} cararacteres.
+            As senhas não são iguais.
         </p>
         }
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Email</mat-label>
-      <input matInput placeholder="Email" formControlName="email" type="email">
+      </mat-form-field>
+    
+      <mat-form-field>
+        <mat-label>Número</mat-label>
+        <input matInput placeholder="Número" formControlName="number">
       
-      <mat-error ngIf="form.controls.email.hasError('required')">
-        Campo obrigatório
-      </mat-error>
-
-      @if(form.controls['email'].hasError('email')){
-        <p class="text-danger">Email inválido.</p>
-      }
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Senha</mat-label>
-      <input matInput placeholder="Senha" formControlName="password" type="password">
-    
-      <mat-error ngIf="form.controls.password.hasError('required')">
-        Campo obrigatório
-      </mat-error>
-    
-      @if(form.controls['password'].hasError('minlength')){
-        <p class="text-danger">
-            Senha deve ter no minimo {{passwordMinLength}} cararacteres.</p>
-      }
-
-      @else if(form.controls['password'].hasError('maxlength')){
-        <p class="text-danger">
-            Senha deve ter no maximo {{passwordMaxLength}} cararacteres.</p>
-      }
-    </mat-form-field>
-
-
-    <mat-form-field>
-      <mat-label>Repita a senha</mat-label>
-      <input matInput type="password" placeholder="Repita a senha" formControlName="repeatPassword">
-
-      <mat-error ngIf="form.controls.repeatPassword.hasError('required')">
+        <mat-error ngIf="form.controls.number.hasError('required')">
           Campo obrigatório
-      </mat-error>
-
-      @if(!arePasswordsValid()){
-      <p class="text-danger">
-          As senhas não são iguais.
-      </p>
-      }
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Número</mat-label>
-      <input matInput placeholder="Número" formControlName="number">
+        </mat-error>
+      
+        @if(form.controls['number'].hasError('minlength')){
+          <p class="text-danger">
+            Número deve ter no minimo {{numberMinlength}} cararacteres.</p>
+          }
+        
+          @else if(form.controls['number'].hasError('maxlength')){
+          <p class="text-danger">
+              Número deve ter no maximo {{numberMaxlength}} cararacteres.</p>
+          }
+      </mat-form-field>
     
-      <mat-error ngIf="form.controls.number.hasError('required')">
-        Campo obrigatório
-      </mat-error>
-    
-      @if(form.controls['number'].hasError('minlength')){
-        <p class="text-danger">
-          Número deve ter no minimo {{numberMinlength}} cararacteres.</p>
-        }
-
-        @else if(form.controls['number'].hasError('maxlength')){
-        <p class="text-danger">
-            Número deve ter no maximo {{numberMaxlength}} cararacteres.</p>
-        }
-    </mat-form-field>
-
-    <div class="user-type-buttons">
-      <label class="tipo-do-usuario">Tipo de usuário</label>
-      <div class="button-group">
-        <button class="doador" mat-raised-buttoncolor="primary"[disabled]="form.get('user_type')?.value === 'donor' "(click)="form.get('user_type')?.setValue('donor')">
-          Doador
-        </button>
-        <button class="beneficiario" mat-raised-buttoncolor="accent"[disabled]="form.get('user_type')?.value === 'beneficiary' "(click)="form.get('user_type')?.setValue('beneficiary')">
-          Beneficiário
-        </button>
+      <div class="user-type-buttons">
+        <label class="tipo-do-usuario">Tipo de usuário</label>
+        <div class="button-group">
+          <button class="doador" mat-raised-buttoncolor="primary"[disabled]="form.get('user_type')?.value === 'donor' "(click)="form.get('user_type')?.setValue('donor')">
+            Doador
+          </button>
+          <button class="beneficiario" mat-raised-buttoncolor="accent"[disabled]="form.get('user_type')?.value === 'beneficiary' "(click)="form.get('user_type')?.setValue('beneficiary')">
+            Beneficiário
+          </button>
+        </div>
       </div>
-    </div>
-
-    @if (form.get('user_type')?.value === 'beneficiary') {
-      <mat-form-field>
-        <mat-label>Renda familiar</mat-label>
-        <input matInput placeholder="Renda" formControlName="family_income" type="number">
-      </mat-form-field>
     
-      <mat-form-field>
-        <mat-label>Quantidade de pessoas</mat-label>
-        <input matInput placeholder="Quantidade" formControlName="people_quantity" type="number">
-      </mat-form-field>
-    }
+      @if (form.get('user_type')?.value === 'beneficiary') {
+        <mat-form-field>
+          <mat-label>Renda familiar</mat-label>
+          <input matInput placeholder="Renda" formControlName="family_income" type="number">
+        </mat-form-field>
+      
+        <mat-form-field>
+          <mat-label>Quantidade de pessoas</mat-label>
+          <input matInput placeholder="Quantidade" formControlName="people_quantity" type="number">
+        </mat-form-field>
+      }
+      
+      <div class="text-center">
+        <button class="criar" color="primary" [disabled]="!validateFields()" (click)="signUp()">Criar</button>
+      </div>    
+      
+      <div class="mt-4">
+          <p>Já possui uma conta? <a class="Clique-aqui" href="account/sign-in">Clique aqui</a> para entrar agora mesmo!</p>
+      </div>
     
-    <div class="text-center">
-      <button class="criar" color="primary" [disabled]="!validateFields()" (click)="signUp()">Criar</button>
-    </div>    
-    
-    <div class="mt-4">
-        <p>Já possui uma conta? <a class="Clique-aqui" href="account/sign-in">Clique aqui</a> para entrar agora mesmo!</p>
-    </div>
-
-    <div class="central-description">
-      <!-- <div id="wallpaper" [ngStyle]="{'background-image': 'url(' + wallpaperUrl + ')'}"></div> -->
-    </div>
+      <div class="central-description">
+        <!-- <div id="wallpaper" [ngStyle]="{'background-image': 'url(' + wallpaperUrl + ')'}"></div> -->
+      </div>
   </form>
 </div>

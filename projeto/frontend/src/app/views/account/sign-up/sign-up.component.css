@@ -6,6 +6,12 @@
   display: flex;
 }
 
+
+h2{
+  justify-content: center;
+  display: flex;
+}
+
 :host {
   width: 100vw;
   height: 100vh;
@@ -17,7 +23,7 @@
 
 .form {
   background-color: #f0feff;
-  padding: 30px 40px;
+  padding: -0px 40px;
   border-radius: 10px;
   max-width: 500px;
   width: 100%;
@@ -30,10 +36,10 @@
   font-size: 28px;
 }
 
+
 mat-form-field {
   display: block;
   width: 100%;
-  margin-bottom: 20px;
 }
 
 .mat-mdc-form-field-infix {
