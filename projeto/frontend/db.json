@@ -36,13 +36,13 @@
       "id": "1",
       "name": "tiburgus",
       "email": "tiburgus@gmail.com",
-      "password": "123456",
+      "password": "1234567",
       "phone": "3",
       "user_type": "donor",
       "is_admin": false,
       "family_income": "",
       "people_quantity": "",
-      "municipality_id": "1" 
+      "municipality_id": "1"
     },
     {
       "id": "2",
@@ -54,7 +54,7 @@
       "is_admin": false,
       "family_income": "",
       "people_quantity": "",
-      "municipality_id": "2" 
+      "municipality_id": "2"
     },
     {
       "id": "3",
@@ -66,19 +66,19 @@
       "is_admin": false,
       "family_income": "2222",
       "people_quantity": "4",
-      "municipality_id": "3" 
+      "municipality_id": "3"
     },
     {
       "id": "4",
       "name": "tiburgos",
       "email": "tiburgos@gmail.com",
-      "password": "123456789",
+      "password": "12345ab",
       "phone": "3",
       "user_type": "beneficiary",
       "is_admin": false,
       "family_income": "1234",
       "people_quantity": "4",
-      "municipality_id": "4" 
+      "municipality_id": "4"
     }
   ]
 }
