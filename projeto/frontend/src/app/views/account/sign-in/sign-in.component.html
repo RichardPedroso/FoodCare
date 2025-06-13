@@ -1,9 +1,10 @@
-<body class="base-form">
-  <form class="form mat-elevation-z4">
+<body>
+  <div class="base-form">
+    <div class="conteiner">
 
-    <h2>Meu perfil</h2>
+      <form class="form mat-elevation-z4">
 
-    <h3>Dados cadastrais</h3>
+        <h2>Meu perfil</h2>
 
     <mat-form-field>
       <mat-label>Email</mat-label>
@@ -20,15 +21,17 @@
     
     <button mat-raised-button color="primary" (click)="login()" [disabled]="!validateFields()">Login</button>
 
-    @if(isLoginIncorrect) {
-      <p class="text-danger mt-2">
-        Email e/ou senha incorretos.
-      </p>
-    }
+      @if(isLoginIncorrect) {
+        <p class="text-danger mt-2">
+          Email e/ou senha incorretos.
+        </p>
+      }
 
-    <div class="mt-4">
-      <p>Não possui uma conta? <a routerLink="/account/sign-up">Clique aqui</a> para criar agora mesmo!</p>
+        <div class="mt-4">
+          <p>Não possui uma conta? <a routerLink="/account/sign-up">Clique aqui</a> para criar agora mesmo!</p>
+        </div>
+      </form>
     </div>
-  </form>
-  <router-outlet></router-outlet>
+    <router-outlet></router-outlet>
+  </div>
 </body>
