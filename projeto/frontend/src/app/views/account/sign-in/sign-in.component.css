@@ -3,10 +3,11 @@
   justify-content: center;
   align-items: center;
   padding: 40px 30px;
+  
 }
 
 .conteiner{
-  background-color: #d2e9f1;
+  background-color: #f0feff;
   padding: 30px 40px;
   border-radius: 10px;
   text-align: center;
@@ -14,6 +15,7 @@
   display: flex;
   align-items: center;
   margin-top: 220px;
+  
 }
 
 :host {
@@ -26,12 +28,12 @@
 }
 
 body{
-    margin: 0;
+  margin: 0;
   padding: 0;
   width: 100%;
   height: 100vh;
   background-color: rgba(42, 87, 105, 0.85);
-  box-sizing: border-box;
+
 }
 
 .form h2 {
@@ -106,7 +108,7 @@ button[mat-raised-button]:disabled {
 }
 
 .mt-4 a {
-  color: #4474fa;
+  color: rgb(95, 95, 255);
   text-decoration: none;
   font-weight: bold;
 }
