@@ -1,19 +1,27 @@
-.container {
-  max-width: 600px;
-  margin: 80px auto;
-  background: rgba(38, 70, 83, 0.85);
+.elemets {
   padding: 40px 30px;
-  border-radius: 15px;
-  color: #f2f2f2;
+  background-color:rgba(42, 66, 75, 0.85) ;
+  border-radius: 20px;
   text-align: center;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-  backdrop-filter: blur(10px);
+  justify-content: center;
+  width: 560px;
 }
 
-.logo {
-  width: 80px;
-  margin-bottom: 25px;
+.container{
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 270px;
+  
 }
+
+body{
+  
+  background-color:rgba(42, 66, 75, 0.85) ;
+}
+
+
 
 .container p {
   font-family: Arial, sans-serif;
