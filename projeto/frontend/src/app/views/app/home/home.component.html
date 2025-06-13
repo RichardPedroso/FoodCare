@@ -1,20 +1,20 @@
 <header>
   <div class="logo">
     <img src="logo.png" alt="FoodCare Logo" />
-    <span>foodcare</span>
+    <span>Foodcare</span>
   </div>
 
-  <nav>
-    <a routerLink="about-us">Sobre Nós</a>
-    <a routerLink="user/make-action">Fazer Doação</a>
-    <a routerLink="user/follow-actions">Acompanhar Doações</a>
-    <a routerLink="user/generate-report">Gerar Relatório</a>
+  <nav class="navbar">
+      <a routerLink="about-us">Sobre Nós</a>
+      <a routerLink="user/make-action">Fazer Doação</a>
+      <a routerLink="user/follow-actions">Acompanhar Doações</a>
+      <a routerLink="user/generate-report">Gerar Relatório</a>
   </nav>
 
   <div class="user">
     <img src="usuario.png" alt="User" />
     <span>Usuário</span>
-    <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+    <button class="logout" mat-raised-button color="warn" (click)="logout()">Logout</button>
   </div>
 </header>
 

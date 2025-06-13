@@ -2,7 +2,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #264653;
+  background-color: #366679;
   color: white;
   padding: 15px 30px;
   flex-wrap: wrap;
@@ -16,6 +16,12 @@ header {
 
 .logo img {
   width: 40px;
+}
+
+.logout{
+  background-color: #e76f51;
+  border-radius: 5px;
+  padding: 6px 10px;
 }
 
 .logo span {
@@ -36,12 +42,13 @@ nav a {
   text-decoration: none;
   font-weight: bold;
   font-size: 16px;
-  transition: color 0.3s ease;
+  transition: color 0.7s ease;
+  padding: 0px 10px;
 }
 
 nav a:hover {
   color: #f4a261;
-  text-decoration: underline;
+  text-shadow: 0 0 10px rgb(255, 255, 255);
 }
 
 .user {
@@ -95,7 +102,7 @@ main {
 .welcome-text h1 {
   font-size: 32px;
   margin-bottom: 40px;
-  color: #264653;
+  color: #ffffff;
   font-weight: bold;
 }
 
@@ -133,4 +140,15 @@ main {
 
 .hidden {
   display: none;
+}
+
+
+:host {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999; 
+  background-color: #263f49;
 }
