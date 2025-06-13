@@ -44,6 +44,8 @@ export class SignInComponent {
 
   password = new FormControl(null, [Validators.minLength(6), Validators.maxLength(18)]);
 
+  hidePassword: boolean = true;
+
   isLoginIncorrect: boolean = false;
 
   constructor(private router: Router, private authenticationService: AuthenticationService,) {
