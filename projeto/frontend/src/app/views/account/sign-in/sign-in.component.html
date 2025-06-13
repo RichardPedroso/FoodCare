@@ -6,26 +6,24 @@
 
         <h2>Meu perfil</h2>
 
+    <h3>Dados cadastrais</h3>
+
     <mat-form-field>
       <mat-label>Email</mat-label>
       <input matInput placeholder="Email" required="" [formControl]="email">
     </mat-form-field>
-
     <mat-form-field>
       <mat-label>Senha</mat-label>
-      <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Senha" maxlength="13" required [formControl]="password">
-      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Toggle password visibility'" [attr.aria-pressed]="!hidePassword">
-        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-      </button>
+      <input matInput type="password" placeholder="Senha" maxlength="13" required [formControl]="password">
     </mat-form-field>
-    
+
     <button mat-raised-button color="primary" (click)="login()" [disabled]="!validateFields()">Login</button>
 
-      @if(isLoginIncorrect) {
-        <p class="text-danger mt-2">
-          Email e/ou senha incorretos.
-        </p>
-      }
+    @if(isLoginIncorrect) {
+      <p class="text-danger mt-2">
+        Email e/ou senha incorretos.
+      </p>
+    }
 
         <div class="mt-4">
           <p>Não possui uma conta? <a routerLink="/account/sign-up">Clique aqui</a> para criar agora mesmo!</p>
