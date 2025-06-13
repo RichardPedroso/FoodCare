@@ -39,6 +39,10 @@ export const routes: Routes = [
     canActivate: [authenticationGuard],
     children: [
       {
+        path: "my-profile",
+        component: MyProfileComponent
+      },
+      {
         path: 'about-us',
         component: AboutUsComponent
       },
@@ -54,13 +58,8 @@ export const routes: Routes = [
         path: 'user/generate-report',
         component: GenerateReportComponent
       },
-      {
-        path: '**',
-        component: NotFoundComponent
-      }
     ]
   },
-
   {
     path: '**',
     component: NotFoundComponent
