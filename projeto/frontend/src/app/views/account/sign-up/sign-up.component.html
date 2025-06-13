@@ -92,12 +92,12 @@
     </mat-form-field>
 
     <div class="user-type-buttons">
-      <label>Tipo de usuário</label>
+      <label class="tipo-do-usuario">Tipo de usuário</label>
       <div class="button-group">
-        <button mat-raised-buttoncolor="primary"[disabled]="form.get('user_type')?.value === 'donor' "(click)="form.get('user_type')?.setValue('donor')">
+        <button class="doador" mat-raised-buttoncolor="primary"[disabled]="form.get('user_type')?.value === 'donor' "(click)="form.get('user_type')?.setValue('donor')">
           Doador
         </button>
-        <button mat-raised-buttoncolor="accent"[disabled]="form.get('user_type')?.value === 'beneficiary' "(click)="form.get('user_type')?.setValue('beneficiary')">
+        <button class="beneficiario" mat-raised-buttoncolor="accent"[disabled]="form.get('user_type')?.value === 'beneficiary' "(click)="form.get('user_type')?.setValue('beneficiary')">
           Beneficiário
         </button>
       </div>
@@ -116,11 +116,11 @@
     }
     
     <div class="text-center">
-      <button color="primary" [disabled]="!validateFields()" (click)="signUp()">Criar</button>
+      <button class="criar" color="primary" [disabled]="!validateFields()" (click)="signUp()">Criar</button>
     </div>    
     
     <div class="mt-4">
-        <p>Já possui uma conta? <a href="account/sign-in">Clique aqui</a> para entrar agora mesmo!</p>
+        <p>Já possui uma conta? <a class="Clique-aqui" href="account/sign-in">Clique aqui</a> para entrar agora mesmo!</p>
     </div>
 
     <div class="central-description">

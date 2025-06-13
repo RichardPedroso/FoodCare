@@ -1,10 +1,9 @@
 .base-form {
-  display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 20px;
-  background-color: #264653;
+  background-color: rgba(42, 87, 105, 0.85);
   min-height: 100vh;
+  display: flex;
 }
 
 :host {
@@ -17,12 +16,11 @@
 }
 
 .form {
-  background-color: white;
+  background-color: #f0feff;
   padding: 30px 40px;
   border-radius: 10px;
   max-width: 500px;
   width: 100%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: left;
 }
 
@@ -97,6 +95,9 @@ button[color="primary"]:disabled {
 
 .text-center {
   text-align: center;
+  justify-content: center;
+  display: flex;
+  padding: 10px 150px;
 }
 
 .central-description {
@@ -111,4 +112,32 @@ button[color="primary"]:disabled {
   display: flex;
   gap: 12px;
   margin-top: 8px;
+}
+
+.doador{
+  border-radius: 7px;
+}
+
+.beneficiario{
+  border-radius: 7px;
+}
+
+.button-group{
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.tipo-do-usuario{
+  justify-content: center;
+  display: flex;
+}
+
+.mt-4{
+  justify-content: center;
+  display: flex;
+}
+
+.mt-4 .Clique-aqui{
+  color: rgb(95, 95, 255);
 }
