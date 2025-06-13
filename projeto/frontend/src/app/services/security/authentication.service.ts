@@ -9,48 +9,43 @@ import { environment } from '../../../environments/environment.development';
 })
 export class AuthenticationService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-authenticate(credentials: UserCredentialDto): Observable<any> {
-  const headers = new HttpHeaders({
-    'Content-Type': 'application/json'
-  });
+  // Autentica o usuário no json-server
+  authenticate(credentials: UserCredentialDto): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
 
-  const body = {
-    email: credentials.email,
-    password: credentials.password
-  };
+    const url = `${environment.authentication_api_endpoint}/user?email=${credentials.email}&password=${credentials.password}`;
 
-  const url = `${environment.authentication_api_endpoint}/user?email=${body.email}&password=${body.password}`;
+    console.log('Tentando autenticar usuário com:', credentials);
 
-  console.log('Tentando autenticar usuário com:', body);
-  console.log('Endpoint chamado:', url);
+    return this.http.get<any>(url, { headers });
+  }
 
-  return this.http.get<any>(url, { headers });
-}
+  addDataToLocalStorage(user: any): void {
+    console.log('Armazenando dados completos do usuário no localStorage...');
+    localStorage.setItem('user', JSON.stringify(user));
+  }
 
   isAuthenticated(): boolean {
-    const email = localStorage.getItem('email');
-    const password = localStorage.getItem('password');
-    return email !== null && password !== null;
+    return localStorage.getItem('user') !== null;
   }
 
-  addDataToLocalStorage(user: UserCredentialDto) {
-    console.log('adicionando dados no cache....')
-    localStorage.setItem('email', user.email);
-    localStorage.setItem('password', user.password);
+  getCurrentUser(): any {
+    return JSON.parse(localStorage.getItem('user') || 'null');
   }
 
-  logout() {
-    localStorage.clear();
+  logout(): void {
+    localStorage.removeItem('user');
   }
 
-createUser(user: any): Observable<any> {
-  const headers = new HttpHeaders({
-    'Content-Type': 'application/json'
-  });
+  createUser(user: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
 
-  return this.http.post<any>(`${environment.authentication_api_endpoint}/user`, user, { headers });
+    return this.http.post<any>(`${environment.authentication_api_endpoint}/user`, user, { headers });
+  }
 }
-
-} 
