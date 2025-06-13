@@ -10,6 +10,12 @@
   backdrop-filter: blur(10px);
 }
 
+
+body{
+  background-color: rgba(64, 104, 121, 0.85);
+  background-size: cover;
+}
+
 .logo {
   width: 80px;
   margin-bottom: 25px;
