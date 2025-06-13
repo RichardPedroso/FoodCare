@@ -11,11 +11,12 @@
     <a routerLink="user/generate-report">Gerar Relatório</a>
   </nav>
 
-  <div class="user">
-    <img src="usuario.png" alt="User" />
-    <span>Usuário</span>
-    <button mat-raised-button color="warn" (click)="logout()">Logout</button>
-  </div>
+<div class="user">
+  <img src="usuario.png" alt="User" />
+  <button mat-raised-button color="primary" [routerLink]="['my-profile']">Minha Conta</button>
+  <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+</div>
+
 </header>
 
 <main>

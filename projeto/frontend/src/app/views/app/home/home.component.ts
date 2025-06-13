@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { AuthenticationService } from '../../../services/security/authentication.service';
 import { Router } from '@angular/router';
 
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [
     RouterOutlet,
-
+    RouterLink
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
