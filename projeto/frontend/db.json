@@ -34,39 +34,51 @@
   "user": [
     {
       "id": "1",
-      "fullname": "tiburguin",
+      "name": "tiburgus",
       "email": "tiburgus@gmail.com",
-      "password": "789"
+      "password": "123456",
+      "phone": "3",
+      "user_type": "donor",
+      "is_admin": false,
+      "family_income": "",
+      "people_quantity": "",
+      "municipality_id": "1" 
     },
     {
       "id": "2",
-      "fullname": "aroldo",
+      "name": "aroldus",
       "email": "aroldus@gmail.com",
-      "password": "123"
+      "password": "1234567",
+      "phone": "3",
+      "user_type": "donor",
+      "is_admin": false,
+      "family_income": "",
+      "people_quantity": "",
+      "municipality_id": "2" 
     },
     {
-      "id": "8f9c",
-      "fullname": "tiburguin",
-      "email": "tiburgus@gmail.com",
-      "password": "789"
+      "id": "3",
+      "name": "tiburgas",
+      "email": "tiburgas@gmail.com",
+      "password": "12345678",
+      "phone": "3",
+      "user_type": "beneficiary",
+      "is_admin": false,
+      "family_income": "",
+      "people_quantity": "",
+      "municipality_id": "3" 
     },
     {
-      "id": "2832",
-      "fullname": "tiburguin",
-      "email": "tiburgus@gmail.com",
-      "password": "789"
-    },
-    {
-      "id": "8ac4",
-      "fullname": "tiburguin",
-      "email": "tiburgus@gmail.com",
-      "password": "789"
-    },
-    {
-      "id": "aa85",
-      "fullname": "tiburguin",
-      "email": "tiburgus@gmail.com",
-      "password": "789"
+      "id": "4",
+      "name": "tiburgos",
+      "email": "tiburgos@gmail.com",
+      "password": "123456789",
+      "phone": "3",
+      "user_type": "beneficiary",
+      "is_admin": false,
+      "family_income": "",
+      "people_quantity": "",
+      "municipality_id": "4" 
     }
   ]
 }
