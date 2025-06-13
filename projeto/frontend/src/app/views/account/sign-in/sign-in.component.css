@@ -2,23 +2,22 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #2b596b;
   padding: 40px 30px;
 }
 
-.body{
-  background-color:#264653;
-  height: 100vh;
-}
-
-.form {
-  background-color: white;
+.conteiner{
+  background-color: #d2e9f1;
   padding: 30px 40px;
   border-radius: 10px;
-  max-width: 450px;
-  width: 100%;
-  box-shadow: 0 4px 8px rgba(46, 36, 36, 0.1);
-  text-align: left;
+  text-align: center;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  margin-top: 220px;
+}
+
+body{
+    background-color: #2d596b;
 }
 
 .form h2 {
@@ -57,8 +56,8 @@ input[matInput] {
 }
 
 button[mat-raised-button] {
-  background-color: #e76f51;
-  color: white;
+  background-color: #f0896c;
+  color: rgb(0, 0, 0);
   font-weight: bold;
   padding: 12px 20px;
   border: none;
@@ -68,12 +67,12 @@ button[mat-raised-button] {
 }
 
 button[mat-raised-button]:hover {
-  background-color: #d45d3c;
+  background-color: #ffc3b2;
 }
 
 button[mat-raised-button]:disabled {
-  background-color: #ccc;
-  color: #666;
+  background-color: #f7a779;
+  color: #000000;
   cursor: not-allowed;
 }
 
@@ -88,11 +87,12 @@ button[mat-raised-button]:disabled {
 }
 
 .mt-4 {
+  
   margin-top: 16px;
 }
 
 .mt-4 a {
-  color: #264653;
+  color: #4474fa;
   text-decoration: none;
   font-weight: bold;
 }
