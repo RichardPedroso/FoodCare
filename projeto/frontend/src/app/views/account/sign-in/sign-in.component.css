@@ -16,6 +16,15 @@
   margin-top: 220px;
 }
 
+:host {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999; 
+}
+
 body{
     margin: 0;
   padding: 0;
