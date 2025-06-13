@@ -7,6 +7,15 @@
   min-height: 100vh;
 }
 
+:host {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999; 
+}
+
 .form {
   background-color: white;
   padding: 30px 40px;
