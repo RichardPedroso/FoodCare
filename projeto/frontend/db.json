@@ -64,8 +64,8 @@
       "phone": "3",
       "user_type": "beneficiary",
       "is_admin": false,
-      "family_income": "",
-      "people_quantity": "",
+      "family_income": "2222",
+      "people_quantity": "4",
       "municipality_id": "3" 
     },
     {
@@ -76,8 +76,8 @@
       "phone": "3",
       "user_type": "beneficiary",
       "is_admin": false,
-      "family_income": "",
-      "people_quantity": "",
+      "family_income": "1234",
+      "people_quantity": "4",
       "municipality_id": "4" 
     }
   ]
