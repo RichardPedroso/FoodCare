@@ -90,9 +90,33 @@
             Número deve ter no maximo {{numberMaxlength}} cararacteres.</p>
         }
     </mat-form-field>
+
+    <div class="user-type-buttons">
+      <label>Tipo de usuário</label>
+      <div class="button-group">
+        <button mat-raised-buttoncolor="primary"[disabled]="form.get('user_type')?.value === 'donor' "(click)="form.get('user_type')?.setValue('donor')">
+          Doador
+        </button>
+        <button mat-raised-buttoncolor="accent"[disabled]="form.get('user_type')?.value === 'beneficiary' "(click)="form.get('user_type')?.setValue('beneficiary')">
+          Beneficiário
+        </button>
+      </div>
+    </div>
+
+    @if (form.get('user_type')?.value === 'beneficiary') {
+      <mat-form-field>
+        <mat-label>Renda familiar</mat-label>
+        <input matInput placeholder="Renda" formControlName="family_income" type="number">
+      </mat-form-field>
+    
+      <mat-form-field>
+        <mat-label>Quantidade de pessoas</mat-label>
+        <input matInput placeholder="Quantidade" formControlName="people_quantity" type="number">
+      </mat-form-field>
+    }
     
     <div class="text-center">
-      <button color="primary" [disabled]="!validateFields()">Criar</button>
+      <button color="primary" [disabled]="!validateFields()" (click)="signUp()">Criar</button>
     </div>    
     
     <div class="mt-4">

@@ -45,4 +45,12 @@ authenticate(credentials: UserCredentialDto): Observable<any> {
     localStorage.clear();
   }
 
+createUser(user: any): Observable<any> {
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json'
+  });
+
+  return this.http.post<any>(`${environment.authentication_api_endpoint}/user`, user, { headers });
+}
+
 } 

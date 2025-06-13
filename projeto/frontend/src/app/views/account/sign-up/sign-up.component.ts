@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, Router  } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -13,6 +13,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatInputModule } from '@angular/material/input';
 
 import * as fontawesome from '@fortawesome/free-solid-svg-icons'
+import { AuthenticationService } from '../../../services/security/authentication.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -50,7 +51,15 @@ export class SignUpComponent implements OnInit {
   repeatPasswordMinLength: number = 6;
   repeatPasswordMaxLength: number = 18;
 
-  constructor(private formbuilder: FormBuilder) {}
+  people_quantityMinLenght: number = 1;
+
+  family_incomeMinLenght: number = 0;
+
+  constructor(
+    private formbuilder: FormBuilder,
+    private authService: AuthenticationService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.initializeForm();
@@ -87,8 +96,19 @@ export class SignUpComponent implements OnInit {
         Validators.required,
         Validators.minLength(this.numberMinlength),
         Validators.maxLength(this.numberMaxlength),
-      ]]
+      ]],
 
+      user_type: ['standard'],
+
+      people_quantity: ['', [
+        Validators.required,
+        Validators.minLength(this.people_quantityMinLenght),
+      ]],
+      family_income: ['', [
+        Validators.required,
+        Validators.minLength(this.family_incomeMinLenght),
+      ]],
+      
     })
   }
 
@@ -109,4 +129,41 @@ export class SignUpComponent implements OnInit {
     return this.form.controls['password'].value === this.form.controls['repeatPassword'].value;
   }
   
+  signUp() {
+    if (!this.validateFields()){
+      return;
+    }
+  
+    const formData = this.form.value;
+  
+    const newUser: any = {
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+      number: formData.number,
+      user_type: formData.user_type || 'standard',
+    };
+  
+    if (newUser.user_type === 'beneficiary') {
+      newUser.family_income = formData.family_income;
+      newUser.people_quantity = formData.people_quantity;
+    
+      if (!newUser.family_income || !newUser.people_quantity) {
+        console.error("Campos obrigatórios faltando para beneficiário.");
+        return;
+      }
+    }
+  
+    this.authService.createUser(newUser).subscribe({
+      next: (createdUser) => {
+        console.log("Usuário criado com sucesso:", createdUser);
+        this.authService.addDataToLocalStorage(createdUser);
+        this.router.navigate(['/home']);
+      },
+      error: (err) => {
+        console.error("Erro ao criar usuário:", err);
+      }
+    });
+  }
+
 }

@@ -93,3 +93,13 @@ button[color="primary"]:disabled {
 .central-description {
   margin-top: 30px;
 }
+
+.user-type-buttons {
+  margin-top: 16px;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
