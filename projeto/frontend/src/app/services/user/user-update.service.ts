@@ -12,13 +12,13 @@ export class UserUpdateService {
 
   constructor(private http: HttpClient, private userReadService: UserReadService) { }
 
-  async update(id: string, fullname: string): Promise<any>{
+  async update(id: string, name: string): Promise<any>{
     let userToUpdate: User = await this.userReadService.findById(id);
     if(userToUpdate == null){
       throw new Error('Usuário não encontrado');
     }
 
-    userToUpdate.fullname = fullname;
+    userToUpdate.name = name;
 
     return firstValueFrom(this.http.put<any>(`${environment.api_endpoint}/user/${id}`, userToUpdate));
   }
