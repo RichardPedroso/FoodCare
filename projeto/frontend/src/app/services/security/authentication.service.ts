@@ -11,22 +11,23 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient) { }
 
-  authenticate(credentials: UserCredentialDto): Observable<any> {
-    console.log('autenticando usuario');
+authenticate(credentials: UserCredentialDto): Observable<any> {
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json'
+  });
 
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
+  const body = {
+    email: credentials.email,
+    password: credentials.password
+  };
 
-    const body = {
-      email: credentials.email,
-      password: credentials.password
-    }
+  const url = `${environment.authentication_api_endpoint}/user?email=${body.email}&password=${body.password}`;
 
-    //return this.http.post<any>('http://localhost:8080/authenticate', body, { headers });
+  console.log('Tentando autenticar usuário com:', body);
+  console.log('Endpoint chamado:', url);
 
-    return this.http.get<any>(`${environment.authentication_api_endpoint}/user/1`);
-  }
+  return this.http.get<any>(url, { headers });
+}
 
   isAuthenticated(): boolean {
     const email = localStorage.getItem('email');

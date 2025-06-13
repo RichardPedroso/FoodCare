@@ -72,37 +72,36 @@ export class SignInComponent {
     return this.email.valid && this.password.valid;
   }
 
-  login() {
-    console.log('botao de login clicado');
+login() {
+  console.log('Botão de login clicado');
 
-    let credentials: UserCredentialDto = {
-      email: this.email.value!,
-      password: this.password.value!,
-    };
+  let credentials: UserCredentialDto = {
+    email: this.email.value!,
+    password: this.password.value!,
+  };
 
-    console.log(credentials);
+  console.log('Credenciais submetidas:', credentials);
 
-    this.authenticationService.authenticate(credentials)
+  this.authenticationService.authenticate(credentials)
+    .subscribe({
+      next: (users: any[]) => {
+        console.log('Resultado da busca no json-server:', users);
 
-      .subscribe({
-        next: (value: any) => {
-          console.log(value);
-
-          let user: UserCredentialDto = {
-
-            email: value.email,
-            password: value.password
-
-          }
+        if (users.length > 0) {
+          const user = users[0];
+          console.log('Login bem-sucedido. Usuário encontrado:', user);
 
           this.authenticationService.addDataToLocalStorage(user);
-
           this.router.navigate(['/home']);
-        },
-        error: (err) => {
-          console.error('ocorreu um erro no servidor');
-          console.error(err);
+        } else {
+          console.warn('Login falhou. Nenhum usuário encontrado com essas credenciais.');
+          this.isLoginIncorrect = true;
         }
-      });
-  }
+      },
+      error: (err) => {
+        console.error('Erro ao tentar autenticar no servidor:', err);
+        this.isLoginIncorrect = true;
+      }
+    });
+}
 }
