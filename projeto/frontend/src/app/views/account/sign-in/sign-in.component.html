@@ -19,6 +19,10 @@
       </button>
     </mat-form-field>
     
+    <button mat-raised-button color="primary" routerLink="/account/reset-password" class="forgot-password">
+      Esqueci minha senha
+    </button>
+
     <button mat-raised-button color="primary" (click)="login()" [disabled]="!validateFields()">Login</button>
 
       @if(isLoginIncorrect) {
