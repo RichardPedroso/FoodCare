@@ -1,52 +1,67 @@
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-            <a href="">Home</a>
-        </li>
-        <li class="breadcrumb-item active" aria-current="page">Meu perfil</li>
-    </ol>
-</nav>
-<h1>Meu perfil</h1>
-<hr>
+<header>
+  <div class="logo">
+    <img src="logo.png" alt="FoodCare Logo" />
+    <span>foodcare</span>
+  </div>
 
-<h2>Dados cadastrais</h2>
-<form class="form">
-    <div class="form-row">
-        <div class="form-group col-12 mt-2">
-            <label for="email">Email</label>
-            <input type="text" class="form-control" id="email" value="email@email.com" readonly>
-        </div>
-        <div class="form-group col-12 mt-2">
-            <label for="name">Nome completo</label>
-            <input type="text" class="form-control" id="name" placeholder="Nome completo">
-        </div>
-        <div class="col-12 text-end mt-2">
-            <div class="col-12 text-end mt-2">
-                <button class="btn btn-primary col-4">Atualizar</button>
-            </div>
-        </div>
-    </div>
-</form>
-<hr>
-<h2>Atualizar senha</h2>
-<form class="form">
-    <div class="form-row">
-        <div class="form-group col-12 mt-2">
-            <label for="name">Senha antiga</label>
-            <input type="text" class="form-control" id="name" placeholder="Senha antiga">
-        </div>
-        <div class="form-group col-12 mt-2">
-            <label for="newPassword">Senha nova</label>
-            <input type="text" class="form-control" id="newPassword" placeholder="Nova senha">
-        </div>
-        <div class="form-group col-12 mt-2">
-            <label for="repeatNewPassword">Repita a nova senha</label>
-            <input type="text" class="form-control" id="repeatNewPassword" placeholder="Repita a nova senha">
-        </div>
-        <div class="col-12 text-end mt-2">
-            <div class="col-12 text-end mt-2">
-                <button class="btn btn-primary col-4">Atualizar</button>
-            </div>
-        </div>
-    </div>
-</form>
+  <nav>
+    <a routerLink="about-us">Sobre Nós</a>
+    <a routerLink="user/make-action">Fazer Doação</a>
+    <a routerLink="user/follow-actions">Acompanhar Doações</a>
+    <a routerLink="user/generate-report">Gerar Relatório</a>
+  </nav>
+  
+</header>
+
+<div class="base-form">
+  <div class="form">
+    <h2>Meu Perfil</h2>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Nome</mat-label>
+      <input matInput [value]="user?.name" disabled />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput [value]="user?.email" disabled />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Telefone</mat-label>
+      <input matInput [value]="user?.phone" disabled />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Cidade</mat-label>
+      <input matInput [value]="user?.city" disabled />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Rua</mat-label>
+      <input matInput [value]="user?.street" disabled />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Bairro</mat-label>
+      <input matInput [value]="user?.neighborhood" disabled />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>CEP</mat-label>
+      <input matInput [value]="user?.zip_code" disabled />
+    </mat-form-field>
+
+    @if (user?.user_type === 'beneficiary') {
+      <mat-form-field appearance="fill">
+        <mat-label>Renda Familiar</mat-label>
+        <input matInput [value]="user?.family_income" disabled />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Quantidade de Pessoas</mat-label>
+        <input matInput [value]="user?.people_quantity" disabled />
+      </mat-form-field>
+    }
+  </div>
+</div>

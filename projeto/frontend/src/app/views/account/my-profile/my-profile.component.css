@@ -1,0 +1,106 @@
+.base-form { 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background-color: #264653;
+  min-height: 100vh;
+}
+
+.form {
+  background-color: white;
+  padding: 30px 40px;
+  border-radius: 10px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.form h2 {
+  color: #264653;
+  margin-bottom: 20px;
+  font-size: 28px;
+}
+
+mat-form-field {
+  display: block;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.mat-mdc-form-field-infix {
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+input[matInput] {
+  padding: 10px;
+  font-size: 16px;
+}
+
+button[color="primary"] {
+  background-color: #e76f51;
+  color: white;
+  font-weight: bold;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+button[color="primary"]:hover {
+  background-color: #d45d3c;
+}
+
+button[color="primary"]:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.text-danger,
+mat-error {
+  color: #e63946;
+  font-weight: bold;
+  font-size: 14px;
+  margin-top: 4px;
+  display: block;
+}
+
+.mt-4 {
+  margin-top: 20px;
+}
+
+.mt-4 a {
+  color: #264653;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.mt-4 a:hover {
+  text-decoration: underline;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.central-description {
+  margin-top: 30px;
+}
+
+.user-type-buttons {
+  margin-top: 16px;
+}
+
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
