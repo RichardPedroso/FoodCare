@@ -71,15 +71,23 @@ input[matInput] {
   font-size: 16px;
 }
 
+nav{
+  justify-content:space-evenly;
+  display: flex;
+  padding: 0px 10px;
+}
+
 button[mat-raised-button] {
   background-color: #f0896c;
   color: rgb(0, 0, 0);
   font-weight: bold;
-  padding: 12px 20px;
   border: none;
   border-radius: 6px;
   font-size: 16px;
   transition: background-color 0.3s ease;
+  justify-content: space-between;
+
+  
 }
 
 button[mat-raised-button]:hover {
@@ -90,6 +98,23 @@ button[mat-raised-button]:disabled {
   background-color: #f7a779;
   color: #000000;
   cursor: not-allowed;
+}
+
+
+.Login{
+  background-color: #f0896c;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+
+}
+
+.button .login:hover{
+  background-color: #ffc3b2;
 }
 
 .text-danger {
