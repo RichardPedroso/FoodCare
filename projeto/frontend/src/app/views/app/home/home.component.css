@@ -152,3 +152,20 @@ main {
   z-index: 9999; 
   background-color: #263f49;
 }
+
+
+.button-logout{
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  transition: color 0.7s ease;
+  padding: 3px 10px;
+  background-color: #e76f51;
+  border-radius: 8px;
+}
+
+.button-logout:hover{
+  color: #f4a261;
+  text-shadow: 0 0 10px rgb(255, 255, 255);
+}
