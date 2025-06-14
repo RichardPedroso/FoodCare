@@ -13,8 +13,8 @@
 
   <div class="user">
     <img src="usuario.png" alt="User" />
-    <span>Usuário</span>
-    <button class="button-logout" mat-raised-button color="warn" (click)="logout()">Logout</button>
+    <button mat-raised-button color="primary" [routerLink]="['my-profile']">Minha Conta</button>
+    <button mat-raised-button color="warn" (click)="logout()">Logout</button>
   </div>
 </header>
 

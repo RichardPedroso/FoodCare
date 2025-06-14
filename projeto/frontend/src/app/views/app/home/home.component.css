@@ -169,3 +169,13 @@ main {
   color: #f4a261;
   text-shadow: 0 0 10px rgb(255, 255, 255);
 }
+
+.user button{
+  border-radius: 8px;
+  padding: 5px 7px;
+  background-color: #e76f51;
+}
+
+.user button:hover{
+  background-color: #ac4b32;
+}
