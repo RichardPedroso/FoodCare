@@ -14,10 +14,13 @@ import { MatInputModule } from '@angular/material/input';
 
 import * as fontawesome from '@fortawesome/free-solid-svg-icons'
 import { AuthenticationService } from '../../../services/security/authentication.service';
+import { User } from '../../../domain/model/user';
+import { UserCreateService } from '../../../services/user/user-create.service';
 
 @Component({
   selector: 'app-sign-up',
-  imports: [RouterOutlet,
+  imports: [
+    RouterOutlet,
     MatToolbarModule,
     FormsModule,
     MatButtonModule,
@@ -37,10 +40,10 @@ import { AuthenticationService } from '../../../services/security/authentication
 
 export class SignUpComponent implements OnInit {
 
-  form!: FormGroup;
+  formSignUp!: FormGroup;
 
-  numberMinlength: number = 11;
-  numberMaxlength: number = 11;
+  phoneMinlength: number = 11;
+  phoneMaxlength: number = 11;
 
   nameMinLength: number = 5;
   nameMaxLength: number = 50;
@@ -51,13 +54,14 @@ export class SignUpComponent implements OnInit {
   repeatPasswordMinLength: number = 6;
   repeatPasswordMaxLength: number = 18;
 
-  people_quantityMinLenght: number = 1;
+  peopleQuantityMinLenght: number = 1;
 
-  family_incomeMinLenght: number = 0;
+  familyIncomeMinLenght: number = 0;
 
   constructor(
     private formbuilder: FormBuilder,
-    private authService: AuthenticationService,
+    private userCreateService: UserCreateService,
+    private authenticationService: AuthenticationService,
     private router: Router
   ) {}
 
@@ -67,7 +71,7 @@ export class SignUpComponent implements OnInit {
 
   initializeForm() {
     console.log('formulario de sign-up inicializado');
-    this.form = this.formbuilder.group({
+    this.formSignUp = this.formbuilder.group({
 
       name: ['', [
         Validators.required,
@@ -92,41 +96,53 @@ export class SignUpComponent implements OnInit {
         Validators.maxLength(this.repeatPasswordMaxLength),
       ]],
 
-      number: ['', [
+      phone: ['', [
         Validators.required,
-        Validators.minLength(this.numberMinlength),
-        Validators.maxLength(this.numberMaxlength),
+        Validators.minLength(this.phoneMinlength),
+        Validators.maxLength(this.phoneMaxlength),
       ]],
 
-      user_type: ['standard'],
-
-      people_quantity: ['', [
-        Validators.required,
-        Validators.minLength(this.people_quantityMinLenght),
+      userType: ['', [
+        Validators.required
       ]],
-      family_income: ['', [
+
+      peopleQuantity: ['', [
         Validators.required,
-        Validators.minLength(this.family_incomeMinLenght),
+        Validators.minLength(this.peopleQuantityMinLenght),
+      ]],
+
+      familyIncome: ['', [
+        Validators.required,
+        Validators.minLength(this.familyIncomeMinLenght),
       ]],
       
+      // municipality_id: ['', [
+      //   Validators.required,
+      // ]],
+
     })
   }
 
   validateFields(): boolean {
-    let isNameValid = this.form.controls['name'].valid;
-    let isEmailValid = this.form.controls['email'].valid;
-    let isPasswordValid = this.form.controls['password'].valid;
-    let isRepeatPasswordValid = this.form.controls['repeatPassword'].valid;
-    let isNumberValid = this.form.controls['number'].valid;
+    let isNameValid = this.formSignUp.controls['name'].valid;
+    let isEmailValid = this.formSignUp.controls['email'].valid;
+    let isPasswordValid = this.formSignUp.controls['password'].valid;
+    let isRepeatPasswordValid = this.formSignUp.controls['repeatPassword'].valid;
+    let isPhoneValid = this.formSignUp.controls['phone'].valid;
+    let isUserType = this.formSignUp.controls['userType'].valid;
+    let isPeopleQuantity = this.formSignUp.controls['peopleQuantity'].valid;
+    let isFamilyIncome = this.formSignUp.controls['familyIncome'].valid;
+    // adicionar let isMunicipalityId = this.formSignUp.controls['municipalityId'].valid;
+
     if (!this.arePasswordsValid()) {
       return false;
     }
 
-    return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isNumberValid;
+    return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType && isPeopleQuantity && isFamilyIncome;
   }
 
   arePasswordsValid() {
-    return this.form.controls['password'].value === this.form.controls['repeatPassword'].value;
+    return this.formSignUp.controls['password'].value === this.formSignUp.controls['repeatPassword'].value;
   }
   
   signUp() {
@@ -134,36 +150,34 @@ export class SignUpComponent implements OnInit {
       return;
     }
   
-    const formData = this.form.value;
+    const formDataSignUp = this.formSignUp.value;
   
-    const newUser: any = {
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      number: formData.number,
-      user_type: formData.user_type || 'standard',
+    const newUser: User = {
+      name: formDataSignUp.name,
+      email: formDataSignUp.email,
+      password: formDataSignUp.password,
+      phone: formDataSignUp.phone,
+      user_type: formDataSignUp.userType,
+      is_admin: false,
+      family_income: '',
+      people_quantity: '',
+      municipality_id: ''
     };
   
     if (newUser.user_type === 'beneficiary') {
-      newUser.family_income = formData.family_income;
-      newUser.people_quantity = formData.people_quantity;
-    
-      if (!newUser.family_income || !newUser.people_quantity) {
-        console.error("Campos obrigatórios faltando para beneficiário.");
-        return;
-      }
+      newUser.family_income = formDataSignUp.familyIncome;
+      newUser.people_quantity = formDataSignUp.peopleQuantity;
     }
   
-    this.authService.createUser(newUser).subscribe({
+    this.userCreateService.create(newUser).subscribe({
       next: (createdUser) => {
-        console.log("Usuário criado com sucesso:", createdUser);
-        this.authService.addDataToLocalStorage(createdUser);
+        console.log("usuario criado com sucesso: ", createdUser);
+        this.authenticationService.addDataToLocalStorage(createdUser);
         this.router.navigate(['/home']);
       },
-      error: (err) => {
-        console.error("Erro ao criar usuário:", err);
-      }
-    });
+      error: (errorCreateUser) =>
+        console.error("erro ao criar usuario:", errorCreateUser)
+    })
   }
 
 }

@@ -1,5 +1,5 @@
 <div class="base-form">
-  <form class="form mat-elevation-z4" [formGroup]="form">
+  <form class="form mat-elevation-z4" [formGroup]="formSignUp">
       <h2>Cadastro</h2>
       
       <mat-form-field>
@@ -10,13 +10,13 @@
           Campo obrigatório
         </mat-error>
       
-        @if(form.controls['name'].hasError('minlength')){
+        @if(formSignUp.controls['name'].hasError('minlength')){
           <P class="text-danger">
               Nome deve ter no minimo {{nameMinLength}} cararacteres.
           </P>
           }
         
-        @else if(form.controls['name'].hasError('maxlength')){
+        @else if(formSignUp.controls['name'].hasError('maxlength')){
           <p class="text-danger">
               Nome deve ter no maximo {{nameMaxLength}} cararacteres.
           </p>
@@ -31,8 +31,10 @@
           Campo obrigatório
         </mat-error>
       
-        @if(form.controls['email'].hasError('email')){
-          <p class="text-danger">Email inválido.</p>
+        @if(formSignUp.controls['email'].hasError('email')){
+          <p class="text-danger">
+            Email inválido.
+          </p>
         }
       </mat-form-field>
     
@@ -44,14 +46,16 @@
           Campo obrigatório
         </mat-error>
       
-        @if(form.controls['password'].hasError('minlength')){
+        @if(formSignUp.controls['password'].hasError('minlength')){
           <p class="text-danger">
-              Senha deve ter no minimo {{passwordMinLength}} cararacteres.</p>
+            Senha deve ter no minimo {{passwordMinLength}} cararacteres.
+          </p>
         }
       
-        @else if(form.controls['password'].hasError('maxlength')){
+        @else if(formSignUp.controls['password'].hasError('maxlength')){
           <p class="text-danger">
-              Senha deve ter no maximo {{passwordMaxLength}} cararacteres.</p>
+            Senha deve ter no maximo {{passwordMaxLength}} cararacteres.
+          </p>
         }
       </mat-form-field>
     
@@ -61,61 +65,61 @@
         <input matInput type="password" placeholder="Repita a senha" formControlName="repeatPassword">
       
         <mat-error ngIf="form.controls.repeatPassword.hasError('required')">
-            Campo obrigatório
+          Campo obrigatório
         </mat-error>
       
         @if(!arePasswordsValid()){
         <p class="text-danger">
-            As senhas não são iguais.
+          As senhas não são iguais.
         </p>
         }
       </mat-form-field>
     
       <mat-form-field>
         <mat-label>Número</mat-label>
-        <input matInput placeholder="Número" formControlName="number">
+        <input matInput placeholder="Número" formControlName="phone">
       
         <mat-error ngIf="form.controls.number.hasError('required')">
           Campo obrigatório
         </mat-error>
       
-        @if(form.controls['number'].hasError('minlength')){
+        @if(formSignUp.controls['phone'].hasError('minlength')){
           <p class="text-danger">
-            Número deve ter no minimo {{numberMinlength}} cararacteres.</p>
+            Número deve ter no minimo {{phoneMinlength}} cararacteres.</p>
           }
         
-          @else if(form.controls['number'].hasError('maxlength')){
+          @else if(formSignUp.controls['phone'].hasError('maxlength')){
           <p class="text-danger">
-              Número deve ter no maximo {{numberMaxlength}} cararacteres.</p>
+              Número deve ter no maximo {{phoneMaxlength}} cararacteres.</p>
           }
       </mat-form-field>
     
       <div class="user-type-buttons">
-        <label class="tipo-do-usuario">Tipo de usuário</label>
+        <label class="user-type">Tipo de usuário</label>
         <div class="button-group">
-          <button class="doador" mat-raised-buttoncolor="primary"[disabled]="form.get('user_type')?.value === 'donor' "(click)="form.get('user_type')?.setValue('donor')">
+          <button class="donors" mat-raised-buttoncolor="primary"[disabled]="formSignUp.get('userType')?.value === 'donor' "(click)="formSignUp.get('userType')?.setValue('donor')">
             Doador
           </button>
-          <button class="beneficiario" mat-raised-buttoncolor="accent"[disabled]="form.get('user_type')?.value === 'beneficiary' "(click)="form.get('user_type')?.setValue('beneficiary')">
+          <button class="beneficiary" mat-raised-buttoncolor="accent"[disabled]="formSignUp.get('userType')?.value === 'beneficiary' "(click)="formSignUp.get('userType')?.setValue('beneficiary')">
             Beneficiário
           </button>
         </div>
       </div>
     
-      @if (form.get('user_type')?.value === 'beneficiary') {
+      @if (formSignUp.get('userType')?.value === 'beneficiary') {
         <mat-form-field>
           <mat-label>Renda familiar</mat-label>
-          <input matInput placeholder="Renda" formControlName="family_income" type="number">
+          <input matInput placeholder="Renda" formControlName="familyIncome" type="phone">
         </mat-form-field>
       
         <mat-form-field>
           <mat-label>Quantidade de pessoas</mat-label>
-          <input matInput placeholder="Quantidade" formControlName="people_quantity" type="number">
+          <input matInput placeholder="Quantidade" formControlName="peopleQuantity" type="phone">
         </mat-form-field>
       }
       
       <div class="text-center">
-        <button class="criar" color="primary" [disabled]="!validateFields()" (click)="signUp()">Criar</button>
+        <button mat-raised-button class="create-account" color="primary" [disabled]="!validateFields()" (click)="signUp()">Criar</button>
       </div>    
       
       <div class="mt-4">
@@ -125,5 +129,6 @@
       <div class="central-description">
         <!-- <div id="wallpaper" [ngStyle]="{'background-image': 'url(' + wallpaperUrl + ')'}"></div> -->
       </div>
+      
   </form>
 </div>

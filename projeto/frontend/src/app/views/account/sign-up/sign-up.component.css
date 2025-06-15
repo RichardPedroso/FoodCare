@@ -120,11 +120,11 @@ button[color="primary"]:disabled {
   margin-top: 8px;
 }
 
-.doador{
+.donor{
   border-radius: 7px;
 }
 
-.beneficiario{
+.beneficiary{
   border-radius: 7px;
 }
 
@@ -134,7 +134,7 @@ button[color="primary"]:disabled {
   display: flex;
 }
 
-.tipo-do-usuario{
+.user-type{
   justify-content: center;
   display: flex;
 }
