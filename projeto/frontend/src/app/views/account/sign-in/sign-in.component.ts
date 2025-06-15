@@ -14,7 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 
 import * as fontawesome from '@fortawesome/free-solid-svg-icons'
 import { AuthenticationService } from '../../../services/security/authentication.service';
-import { UserCredentialDto } from '../../../domain/dto/user-credential';
+import { UserCredentialDto } from '../../../domain/dto/user-credential-dto';
 
 @Component({
   selector: 'app-sign-in',

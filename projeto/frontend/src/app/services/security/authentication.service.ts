@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { UserCredentialDto } from '../../domain/dto/user-credential';
+import { UserCredentialDto } from '../../domain/dto/user-credential-dto';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';

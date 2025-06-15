@@ -4,14 +4,15 @@ import { SignUpComponent } from './views/account/sign-up/sign-up.component';
 import { HomeComponent } from './views/app/home/home.component';
 import { authenticationGuard } from './services/security/guard/authentication.guard';
 import { MyProfileComponent } from './views/account/my-profile/my-profile.component';
-import { AboutUsComponent } from './views/about/about-us/about-us.component';
+import { AboutUsComponent } from './views/app/about-us/about-us.component';
 import { ResetPasswordComponent } from './views/account/reset-password/reset-password.component';
-import { LandComponent } from './views/app/land/land.component';
+import { LandComponent } from './views/land/land.component';
 import { NotFoundComponent } from './views/not-found/not-found.component';
-import { FollowActionsComponent } from './views/user/follow-actions/follow-actions.component';
-import { MakeActionComponent } from './views/user/make-action/make-action.component';
-import { GenerateReportComponent } from './views/user/generate-report/generate-report.component';
+
 import { AppComponent } from './app.component';
+import { MakeActionComponent } from './views/app/user/make-action/make-action.component';
+import { FollowActionsComponent } from './views/app/user/follow-actions/follow-actions.component';
+import { GenerateReportComponent } from './views/app/user/generate-report/generate-report.component';
 
 export const routes: Routes = [
 
