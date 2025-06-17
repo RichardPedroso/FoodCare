@@ -66,10 +66,10 @@ export class SignUpComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initializeForm();
+    this.initializeSignUpForm();
   }
 
-  initializeForm() {
+  initializeSignUpForm() {
     console.log('formulario de sign-up inicializado');
     this.formSignUp = this.formbuilder.group({
 
