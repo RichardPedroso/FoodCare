@@ -6,7 +6,7 @@ export interface User {
     phone: string,
     user_type: string,
     is_admin: boolean,
-    family_income: string,
-    people_quantity: string,
-    municipality_id: string
+    family_income?: string,
+    people_quantity?: string,
+    municipality_id?: string
 }
