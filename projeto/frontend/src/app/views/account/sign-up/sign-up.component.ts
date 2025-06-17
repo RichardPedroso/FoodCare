@@ -145,7 +145,7 @@ export class SignUpComponent implements OnInit {
     return this.formSignUp.controls['password'].value === this.formSignUp.controls['repeatPassword'].value;
   }
   
-  signUp() {
+  async signUp() {
     if (!this.validateFields()){
       return;
     }
@@ -163,21 +163,21 @@ export class SignUpComponent implements OnInit {
       people_quantity: '',
       municipality_id: ''
     };
-  
+
     if (newUser.user_type === 'beneficiary') {
       newUser.family_income = formDataSignUp.familyIncome;
       newUser.people_quantity = formDataSignUp.peopleQuantity;
+      // newUser.municipality_id = formDataSignUp.municipalityId;
     }
-  
-    this.userCreateService.create(newUser).subscribe({
-      next: (createdUser) => {
-        console.log("usuario criado com sucesso: ", createdUser);
-        this.authenticationService.addDataToLocalStorage(createdUser);
-        this.router.navigate(['/home']);
-      },
-      error: (errorCreateUser) =>
-        console.error("erro ao criar usuario:", errorCreateUser)
-    })
-  }
 
+    try{
+      const createdUser = await this.userCreateService.create(newUser);
+      console.log("usuario criado com sucesso: ", createdUser);
+
+      this.authenticationService.addDataToLocalStorage(createdUser);
+      this.router.navigate(['/home']);
+    }catch(errorCreateUser){
+      console.error("erro ao criar usuario:", errorCreateUser);
+    }
+  }
 }

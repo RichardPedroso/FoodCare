@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { UserCredentialDto } from '../../domain/dto/user-credential-dto';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
+import { User } from '../../domain/model/user';
 
 @Injectable({
   providedIn: 'root'
@@ -13,18 +14,26 @@ export class AuthenticationService {
 
   // Autentica o usuário no json-server
   authenticate(credentials: UserCredentialDto): Observable<any> {
+    console.log("Autenticando o usuario");
+
     const headers = new HttpHeaders({
       'Content-Type': 'application/json'
     });
 
-    const url = `${environment.authentication_api_endpoint}/user?email=${credentials.email}&password=${credentials.password}`;
+    const urlCredentials = `${environment.authentication_api_endpoint}/user?email=${credentials.email}&password=${credentials.password}`;
 
-    console.log('Tentando autenticar usuário com:', credentials);
-
-    return this.http.get<any>(url, { headers });
+    return this.http.get<User[]>(urlCredentials, {headers}).pipe(
+      map(users => {
+        if(users.length > 0){
+          return users[0];
+        }else{
+          throw new Error('Credenciais inválidas')
+        }
+      })
+    )
   }
 
-  addDataToLocalStorage(user: any): void {
+  addDataToLocalStorage(user: User): void {
     console.log('Armazenando dados completos do usuário no localStorage...');
     localStorage.setItem('user', JSON.stringify(user));
   }
@@ -33,19 +42,13 @@ export class AuthenticationService {
     return localStorage.getItem('user') !== null;
   }
 
-  getCurrentUser(): any {
-    return JSON.parse(localStorage.getItem('user') || 'null');
+  getCurrentUser(): User | null {
+    const userJson = localStorage.getItem('user');
+    return userJson ? JSON.parse(userJson) as User : null;
   }
 
   logout(): void {
     localStorage.removeItem('user');
   }
 
-  createUser(user: any): Observable<any> {
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json'
-    });
-
-    return this.http.post<any>(`${environment.authentication_api_endpoint}/user`, user, { headers });
-  }
 }

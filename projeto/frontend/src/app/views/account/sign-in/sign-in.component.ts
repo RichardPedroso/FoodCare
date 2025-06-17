@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import * as fontawesome from '@fortawesome/free-solid-svg-icons'
 import { AuthenticationService } from '../../../services/security/authentication.service';
 import { UserCredentialDto } from '../../../domain/dto/user-credential-dto';
+import { User } from '../../../domain/model/user';
 
 @Component({
   selector: 'app-sign-in',
@@ -48,7 +49,10 @@ export class SignInComponent{
 
   isLoginIncorrect: boolean = false;
 
-  constructor(private router: Router, private authenticationService: AuthenticationService,) {
+  constructor(
+    private router: Router,
+    private authenticationService: AuthenticationService,
+  ) {
     console.log('sign-in constructor');
   }
 
@@ -56,54 +60,46 @@ export class SignInComponent{
     console.log('sign-in ngOnInit');
     this.isLoginIncorrect = false;
 
-    //this.loginIfCredentialsIsValid();
+    this.loginIfCredentialsIsValid();
   }
 
   loginIfCredentialsIsValid() {
     console.log('verificando as credenciais...');
     if (this.authenticationService.isAuthenticated()) {
       console.log('credeciais validas, navegando para tela principal')
-      this.router.navigate(['']);
+      this.router.navigate(['/home']);
       return;
     }
 
-    console.log('credenciais invaidas ou nao existem no cache')
+    console.log('credenciais invalidas ou nao existem no cache')
   }
 
   validateFields(): boolean {
     return this.email.valid && this.password.valid;
   }
 
-login() {
-  console.log('Botão de login clicado');
+  login() {
+    console.log('Botão de login clicado');
 
-  let credentials: UserCredentialDto = {
-    email: this.email.value!,
-    password: this.password.value!,
-  };
+    const credentials: UserCredentialDto = {
+      email: this.email.value!,
+      password: this.password.value!,
+    };
 
-  console.log('Credenciais submetidas:', credentials);
+    console.log('Credenciais submetidas:', credentials);
 
-  this.authenticationService.authenticate(credentials)
-    .subscribe({
-      next: (users: any[]) => {
-        console.log('Resultado da busca no json-server:', users);
-
-        if (users.length > 0) {
-          const user = users[0];
-          console.log('Login bem-sucedido. Usuário encontrado:', user);
+    this.authenticationService.authenticate(credentials)
+      .subscribe({
+        next: (user: User) => {
+          console.log('Resultado da busca no json-server:', user);
 
           this.authenticationService.addDataToLocalStorage(user);
           this.router.navigate(['/home']);
-        } else {
-          console.warn('Login falhou. Nenhum usuário encontrado com essas credenciais.');
-          this.isLoginIncorrect = true;
-        }
       },
       error: (err) => {
         console.error('Erro ao tentar autenticar no servidor:', err);
         this.isLoginIncorrect = true;
       }
     });
-}
+  }
 }

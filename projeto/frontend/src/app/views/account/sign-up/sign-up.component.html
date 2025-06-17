@@ -121,11 +121,11 @@
       <div class="text-center">
         <button mat-raised-button class="create-account" color="primary" [disabled]="!validateFields()" (click)="signUp()">Criar</button>
       </div>    
-      
+      <router-outlet></router-outlet>
+      <hr>
       <div class="mt-4">
           <p>Já possui uma conta? <a class="Clique-aqui" href="account/sign-in">Clique aqui</a> para entrar agora mesmo!</p>
       </div>
-    
       <div class="central-description">
         <!-- <div id="wallpaper" [ngStyle]="{'background-image': 'url(' + wallpaperUrl + ')'}"></div> -->
       </div>

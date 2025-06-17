@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../../domain/model/user';
 import { environment } from '../../../environments/environment.development';
+import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,9 +12,8 @@ export class UserCreateService {
 
   constructor(private http: HttpClient) {}
 
-  create(user: User){
+  async create(user: User): Promise<User>{
     console.log(user);
-    return this.http.post(`${environment.api_endpoint}/user`, user);
+    return await firstValueFrom(this.http.post<User>(`${environment.api_endpoint}/user`, user));
   }
-  
 }
