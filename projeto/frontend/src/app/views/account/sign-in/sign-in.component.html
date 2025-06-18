@@ -18,11 +18,13 @@
         <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
       </button>
     </mat-form-field>
+
     <nav>
       <button mat-raised-button color="primary" routerLink="/account/reset-password" class="forgot-password">
         Esqueci minha senha
       </button>
-      <button class="Login" mat-raised-button color="primary"   (click)="login()" [disabled]="!validateFields()">Login</button>
+
+      <button class="Login" mat-raised-button color="primary" (click)="login()" [disabled]="!validateFields()">Login</button>
     </nav>
 
       @if(isLoginIncorrect) {
