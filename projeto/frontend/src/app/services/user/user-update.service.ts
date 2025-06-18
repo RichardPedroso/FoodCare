@@ -23,21 +23,16 @@ export class UserUpdateService {
     return firstValueFrom(this.http.put<any>(`${environment.api_endpoint}/user/${id}`, userToUpdate));
   }
 
-  async updatePassword(id: string, oldPassword: string, newPassword: String): Promise<any>{
-    let  userToUpdate: User = await this.userReadService.findById(id);
-    if(userToUpdate == null){
-      throw new Error('Usuário não encontrado');
+  async updatePassword(id: string, newPassword: string): Promise<any>{
+    const userToUpdate: User | null = await this.userReadService.findById(id);
+
+    if(!userToUpdate){
+      throw new Error('Usuário não encontrado');  
     }
 
-    if(oldPassword !== userToUpdate.password){
-      throw new Error('Senha antiga invalida');
-    }
+    userToUpdate.password = newPassword;
 
-    let data = {
-      password: newPassword
-    };
-
-    return await firstValueFrom(this.http.put<any>(`${environment.api_endpoint}/user/password/${id}`, data));
+    return await firstValueFrom(this.http.put<User>(`${environment.api_endpoint}/user/${id}`, userToUpdate));
   }
 
 }

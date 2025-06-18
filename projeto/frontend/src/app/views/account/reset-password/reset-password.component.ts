@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { MatError, MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card'; 
+import { UserUpdateService } from '../../../services/user/user-update.service';
 
 
 @Component({
@@ -28,48 +29,56 @@ import {MatCardModule} from '@angular/material/card';
   ],
 })
 
-export class ResetPasswordComponent {
-  resetForm: FormGroup;
+export class ResetPasswordComponent implements OnInit{
+
+  resetPasswordForm!: FormGroup;
+
   showPasswordFields = false;
   isEmailInvalid = false;
   passwordMismatch = false;
+
   userIdToUpdate: string | null = null;
   
+  passwordMinLength: number = 6;
+  passwordMaxLength: number = 18;
 
   constructor(
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private router: Router
-  ) {
-    this.resetForm = this.formBuilder.group({
+    private router: Router,
+    private userUpdateService: UserUpdateService
+  ) {}
+
+  ngOnInit(): void {
+    this.initializeResetPasswordForm();
+  }
+
+  initializeResetPasswordForm(){
+    console.log('formulario de resetPassword inicializado');
+    this.resetPasswordForm = this.formBuilder.group({
+
       email: ['', [
-        Validators.required, Validators.email
+        Validators.required,
+        Validators.email
       ]],
+
       newPassword: ['', [
-        Validators.required, Validators.minLength(6)
+        Validators.required,
+        Validators.minLength(this.passwordMinLength),
+        Validators.maxLength(this.passwordMaxLength),
       ]],
-      confirmPassword: ['', [
+
+      repeatPassword: ['', [
         Validators.required,
       ]]
+
     });
   }
 
-  get email() {
-    return this.resetForm.get('email');
-  }
-
-  get newPassword() {
-    return this.resetForm.get('newPassword');
-  }
-
-  get confirmPassword() {
-    return this.resetForm.get('confirmPassword');
-  }
-
   checkEmail(): void {
-    const email = this.email?.value;
-    this.http
-      .get<any[]>(`${environment.authentication_api_endpoint}/user?email=${email}`)
+    const email = this.resetPasswordForm.controls['email'].value;
+
+    this.http.get<any[]>(`${environment.authentication_api_endpoint}/user?email=${email}`)
       .subscribe(users => {
         if (users.length > 0) {
           this.isEmailInvalid = false;
@@ -82,21 +91,32 @@ export class ResetPasswordComponent {
       });
   }
 
-  updatePassword(): void {
-    if (!this.resetForm.valid || !this.userIdToUpdate) return;
+  arePasswordsValid() {
+    return this.resetPasswordForm.controls['newPassword'].value === this.resetPasswordForm.controls['repeatPassword'].value;
+  }
 
-    if (this.newPassword?.value !== this.confirmPassword?.value) {
+
+  async updatePassword(): Promise<void> {
+    if (!this.resetPasswordForm.valid || !this.userIdToUpdate) return;
+
+    if (!this.arePasswordsValid()) {
       this.passwordMismatch = true;
+      console.log("Senhas nao coincidem")
       return;
     }
 
     this.passwordMismatch = false;
 
-    this.http.patch(`${environment.authentication_api_endpoint}/user/${this.userIdToUpdate}`, {
-      password: this.newPassword?.value
-    }).subscribe(() => {
+    const newPassword = this.resetPasswordForm.controls['newPassword'].value;
+
+    try {
+      await this.userUpdateService.updatePassword(this.userIdToUpdate, newPassword);
       alert('Senha alterada com sucesso!');
       this.router.navigate(['account/sign-in']);
-    });
+    } catch (error: any) {
+      console.error('Erro ao atualizar a senha:', error);
+      alert('Ocorreu um erro ao atualizar a senha. Tente novamente.');
+    }
   }
+
 }
