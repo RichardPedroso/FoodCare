@@ -1,5 +1,5 @@
 <div class="base-form">
-  <form class="form mat-elevation-z4" [formGroup]="formSignUp">
+  <form class="form mat-elevation-z4" [formGroup]="signUpForm">
       <h2>Cadastro</h2>
       
       <mat-form-field>
@@ -10,13 +10,13 @@
           Campo obrigatório
         </mat-error>
       
-        @if(formSignUp.controls['name'].hasError('minlength')){
+        @if(signUpForm.controls['name'].hasError('minlength')){
           <P class="text-danger">
               Nome deve ter no minimo {{nameMinLength}} cararacteres.
           </P>
           }
         
-        @else if(formSignUp.controls['name'].hasError('maxlength')){
+        @else if(signUpForm.controls['name'].hasError('maxlength')){
           <p class="text-danger">
               Nome deve ter no maximo {{nameMaxLength}} cararacteres.
           </p>
@@ -31,7 +31,7 @@
           Campo obrigatório
         </mat-error>
       
-        @if(formSignUp.controls['email'].hasError('email')){
+        @if(signUpForm.controls['email'].hasError('email')){
           <p class="text-danger">
             Email inválido.
           </p>
@@ -46,13 +46,13 @@
           Campo obrigatório
         </mat-error>
       
-        @if(formSignUp.controls['password'].hasError('minlength')){
+        @if(signUpForm.controls['password'].hasError('minlength')){
           <p class="text-danger">
             Senha deve ter no minimo {{passwordMinLength}} cararacteres.
           </p>
         }
       
-        @else if(formSignUp.controls['password'].hasError('maxlength')){
+        @else if(signUpForm.controls['password'].hasError('maxlength')){
           <p class="text-danger">
             Senha deve ter no maximo {{passwordMaxLength}} cararacteres.
           </p>
@@ -83,12 +83,12 @@
           Campo obrigatório
         </mat-error>
       
-        @if(formSignUp.controls['phone'].hasError('minlength')){
+        @if(signUpForm.controls['phone'].hasError('minlength')){
           <p class="text-danger">
             Número deve ter no minimo {{phoneMinlength}} cararacteres.</p>
           }
         
-          @else if(formSignUp.controls['phone'].hasError('maxlength')){
+          @else if(signUpForm.controls['phone'].hasError('maxlength')){
           <p class="text-danger">
               Número deve ter no maximo {{phoneMaxlength}} cararacteres.</p>
           }
@@ -97,16 +97,16 @@
       <div class="user-type-buttons">
         <label class="user-type">Tipo de usuário</label>
         <div class="button-group">
-          <button class="donors" mat-raised-buttoncolor="primary"[disabled]="formSignUp.get('userType')?.value === 'donor' "(click)="formSignUp.get('userType')?.setValue('donor')">
+          <button class="donors" mat-raised-buttoncolor="primary"[disabled]="signUpForm.get('userType')?.value === 'donor' "(click)="signUpForm.get('userType')?.setValue('donor')">
             Doador
           </button>
-          <button class="beneficiary" mat-raised-buttoncolor="accent"[disabled]="formSignUp.get('userType')?.value === 'beneficiary' "(click)="formSignUp.get('userType')?.setValue('beneficiary')">
+          <button class="beneficiary" mat-raised-buttoncolor="accent"[disabled]="signUpForm.get('userType')?.value === 'beneficiary' "(click)="signUpForm.get('userType')?.setValue('beneficiary')">
             Beneficiário
           </button>
         </div>
       </div>
     
-      @if (formSignUp.get('userType')?.value === 'beneficiary') {
+      @if (signUpForm.get('userType')?.value === 'beneficiary') {
         <mat-form-field>
           <mat-label>Renda familiar</mat-label>
           <input matInput placeholder="Renda" formControlName="familyIncome" type="phone">

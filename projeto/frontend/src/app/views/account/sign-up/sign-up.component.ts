@@ -40,7 +40,7 @@ import { UserCreateService } from '../../../services/user/user-create.service';
 
 export class SignUpComponent implements OnInit {
 
-  formSignUp!: FormGroup;
+  signUpForm!: FormGroup;
 
   phoneMinlength: number = 11;
   phoneMaxlength: number = 11;
@@ -71,7 +71,7 @@ export class SignUpComponent implements OnInit {
 
   initializeSignUpForm() {
     console.log('formulario de sign-up inicializado');
-    this.formSignUp = this.formbuilder.group({
+    this.signUpForm = this.formbuilder.group({
 
       name: ['', [
         Validators.required,
@@ -124,15 +124,15 @@ export class SignUpComponent implements OnInit {
   }
 
   validateFields(): boolean {
-    let isNameValid = this.formSignUp.controls['name'].valid;
-    let isEmailValid = this.formSignUp.controls['email'].valid;
-    let isPasswordValid = this.formSignUp.controls['password'].valid;
-    let isRepeatPasswordValid = this.formSignUp.controls['repeatPassword'].valid;
-    let isPhoneValid = this.formSignUp.controls['phone'].valid;
-    let isUserType = this.formSignUp.controls['userType'].valid;
-    let isPeopleQuantity = this.formSignUp.controls['peopleQuantity'].valid;
-    let isFamilyIncome = this.formSignUp.controls['familyIncome'].valid;
-    // adicionar let isMunicipalityId = this.formSignUp.controls['municipalityId'].valid;
+    let isNameValid = this.signUpForm.controls['name'].valid;
+    let isEmailValid = this.signUpForm.controls['email'].valid;
+    let isPasswordValid = this.signUpForm.controls['password'].valid;
+    let isRepeatPasswordValid = this.signUpForm.controls['repeatPassword'].valid;
+    let isPhoneValid = this.signUpForm.controls['phone'].valid;
+    let isUserType = this.signUpForm.controls['userType'].valid;
+    let isPeopleQuantity = this.signUpForm.controls['peopleQuantity'].valid;
+    let isFamilyIncome = this.signUpForm.controls['familyIncome'].valid;
+    // adicionar let isMunicipalityId = this.signUpForm.controls['municipalityId'].valid;
 
     if (!this.arePasswordsValid()) {
       return false;
@@ -142,7 +142,7 @@ export class SignUpComponent implements OnInit {
   }
 
   arePasswordsValid() {
-    return this.formSignUp.controls['password'].value === this.formSignUp.controls['repeatPassword'].value;
+    return this.signUpForm.controls['password'].value === this.signUpForm.controls['repeatPassword'].value;
   }
   
   async signUp() {
@@ -150,7 +150,7 @@ export class SignUpComponent implements OnInit {
       return;
     }
   
-    const formDataSignUp = this.formSignUp.value;
+    const formDataSignUp = this.signUpForm.value;
   
     const newUser: User = {
       name: formDataSignUp.name,
