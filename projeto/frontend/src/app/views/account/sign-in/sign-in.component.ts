@@ -67,7 +67,7 @@ export class SignInComponent{
     console.log('verificando as credenciais...');
     if (this.authenticationService.isAuthenticated()) {
       console.log('credeciais validas, navegando para tela principal')
-      this.router.navigate(['/home']);
+      this.router.navigate(['/main']);
       return;
     }
 
@@ -94,7 +94,7 @@ export class SignInComponent{
           console.log('Resultado da busca no json-server:', user);
 
           this.authenticationService.addDataToLocalStorage(user);
-          this.router.navigate(['/home']);
+          this.router.navigate(['/main']);
       },
       error: (err) => {
         console.error('Erro ao tentar autenticar no servidor:', err);

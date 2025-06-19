@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { MakeActionComponent } from './views/app/user/make-action/make-action.component';
 import { FollowActionsComponent } from './views/app/user/follow-actions/follow-actions.component';
 import { GenerateReportComponent } from './views/app/user/generate-report/generate-report.component';
+import { MainComponent } from './views/app/main/main.component';
 
 export const routes: Routes = [
 
@@ -33,14 +34,17 @@ export const routes: Routes = [
     path: 'account/reset-password',
     component: ResetPasswordComponent
   },
-
   {
-    path: 'home',
-    component: HomeComponent,
+    path: 'main',
+    component: MainComponent,
     canActivate: [authenticationGuard],
     children: [
       {
-        path: "my-profile",
+        path: '',
+        component: HomeComponent
+      },
+      {
+        path: "account/my-profile",
         component: MyProfileComponent
       },
       {
