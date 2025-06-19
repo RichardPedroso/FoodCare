@@ -18,9 +18,9 @@ import { AuthenticationService } from '../../../services/security/authentication
 export class MyProfileComponent implements OnInit {
   user: any;
 
-  constructor(private authService: AuthenticationService) {}
+  constructor(private authenticationService: AuthenticationService) {}
 
   ngOnInit(): void {
-    this.user = this.authService.getCurrentUser();
+    this.user = this.authenticationService.getCurrentUser();
   }
 }

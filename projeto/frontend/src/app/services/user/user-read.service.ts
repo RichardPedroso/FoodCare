@@ -28,5 +28,5 @@ export class UserReadService {
   findByEmail(email: String): Promise<User>{
     return firstValueFrom(this.http.get<any>(`${environment.api_endpoint}/user/?email=${email}`));
   }
-
+  
 }
