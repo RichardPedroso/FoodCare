@@ -144,13 +144,10 @@ main {
 
 
 :host {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999; 
+  display: block;
+  width: 100%;
   background-color: #263f49;
+  min-height: 100vh;
 }
 
 

@@ -4,8 +4,7 @@ import { AuthenticationService } from '../../../services/security/authentication
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-main',
-  standalone: true,
+  selector: 'app-home',
   imports: [
     RouterOutlet,
     RouterLink
@@ -19,15 +18,13 @@ export class HomeComponent {
   selectedType: 'donor' | 'beneficiary' = 'donor';
   userName = 'nome do usuário';
 
+  constructor(
+    private authenticationService: AuthenticationService,
+    private router: Router
+  ) {}
+
   alternate(type: 'donor' | 'beneficiary'): void {
     this.selectedType = type;
-  }
-
-  constructor(private authService: AuthenticationService, private router: Router) {}
-
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/account/sign-in']);
   }
 
 }
