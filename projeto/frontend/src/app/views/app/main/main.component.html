@@ -1,0 +1,28 @@
+<div class="main-layout">
+  <header>
+
+    <div class="logo">
+      <img src="logo.png" alt="FoodCare Logo" />
+      <a routerLink="/main/">FoodCare</a>
+    </div>
+
+    <nav class="navbar">
+      <a routerLink="/main/about-us">Sobre Nós</a>
+      <a routerLink="/main/user/make-action">Fazer Doação</a>
+      <a routerLink="/main/user/follow-actions">Acompanhar Doações</a>
+      <a routerLink="/main/user/generate-report">Gerar Relatório</a>
+    </nav>
+
+    <div class="user">
+      <img src="usuario.png" alt="User" />
+      <button mat-raised-button color="primary" [routerLink]="['/main/account/my-profile']">Minha Conta</button>
+      <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+    </div>
+
+  </header>
+
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+</div>
+
