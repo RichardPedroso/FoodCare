@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { AuthenticationService } from '../../../services/security/authentication.service';
 import { Router } from '@angular/router';
+import { UserReadService } from '../../../services/user/user-read.service';
+import { User } from '../../../domain/model/user';
 
 @Component({
   selector: 'app-home',
@@ -13,15 +15,20 @@ import { Router } from '@angular/router';
   styleUrl: './home.component.css'
 })
 
-export class HomeComponent {
+export class HomeComponent implements OnInit{
   
+  user: User | null = null;
+  userName: string | undefined;
   selectedType: 'donor' | 'beneficiary' = 'donor';
-  userName = 'nome do usuário';
 
   constructor(
     private authenticationService: AuthenticationService,
-    private router: Router
   ) {}
+
+  ngOnInit(): void {
+    this.user = this.authenticationService.getCurrentUser();
+    this.userName = this.user?.name;
+  }
 
   alternate(type: 'donor' | 'beneficiary'): void {
     this.selectedType = type;
