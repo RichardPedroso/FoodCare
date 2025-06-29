@@ -130,12 +130,19 @@ export class SignUpComponent implements OnInit {
     let isRepeatPasswordValid = this.signUpForm.controls['repeatPassword'].valid;
     let isPhoneValid = this.signUpForm.controls['phone'].valid;
     let isUserType = this.signUpForm.controls['userType'].valid;
+
+    let userTypeValue = this.signUpForm.controls['userType'].value;
+
     let isPeopleQuantity = this.signUpForm.controls['peopleQuantity'].valid;
     let isFamilyIncome = this.signUpForm.controls['familyIncome'].valid;
     // adicionar let isMunicipalityId = this.signUpForm.controls['municipalityId'].valid;
 
     if (!this.arePasswordsValid()) {
       return false;
+    }
+    
+    if (userTypeValue === 'donor'){
+      return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType;
     }
 
     return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType && isPeopleQuantity && isFamilyIncome;
@@ -175,7 +182,7 @@ export class SignUpComponent implements OnInit {
       console.log("usuario criado com sucesso: ", createdUser);
 
       this.authenticationService.addDataToLocalStorage(createdUser);
-      this.router.navigate(['/home']);
+      this.router.navigate(['/main']);
     }catch(errorCreateUser){
       console.error("erro ao criar usuario:", errorCreateUser);
     }
