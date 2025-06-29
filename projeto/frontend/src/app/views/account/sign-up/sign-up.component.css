@@ -1,7 +1,7 @@
 .base-form {
   justify-content: center;
   align-items: center;
-  background-color: rgba(42, 87, 105, 0.85);
+  background-color: #264653;
   min-height: 100vh;
   display: flex;
 }
@@ -11,7 +11,7 @@ h2{
   justify-content: center;
   display: flex;
 }
-
+/*
 :host {
   width: 100vw;
   height: 100vh;
@@ -20,7 +20,7 @@ h2{
   left: 0;
   z-index: 9999; 
 }
-
+*/
 .form {
   background-color: #f0feff;
   padding: -0px 40px;
@@ -43,7 +43,7 @@ mat-form-field {
 }
 
 .mat-mdc-form-field-infix {
-  background-color: #f2f2f2;
+  background-color: #264653;
   padding: 10px;
   border-radius: 4px;
 }

@@ -142,7 +142,7 @@ main {
   display: none;
 }
 
-
+/*
 :host {
   width: 100vw;
   height: 100vh;
@@ -152,7 +152,7 @@ main {
   z-index: 9999; 
   background-color: #263f49;
 }
-
+*/
 
 .button-logout{
   color: #ffffff;
@@ -178,4 +178,8 @@ main {
 
 .user button:hover{
   background-color: #ac4b32;
+}
+
+.main-layout{
+  background-color: #366679;
 }
