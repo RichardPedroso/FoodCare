@@ -1,4 +1,4 @@
-.base-form {
+.page-container {
   justify-content: center;
   align-items: center;
   background-color: #264653;
@@ -21,7 +21,7 @@ h2{
   z-index: 9999; 
 }
 */
-.form {
+.form-card {
   background-color: #f0feff;
   padding: -0px 40px;
   border-radius: 10px;
@@ -30,7 +30,7 @@ h2{
   text-align: left;
 }
 
-.form h2 {
+.form-card h2 {
   color: #264653;
   margin-bottom: 20px;
   font-size: 28px;
@@ -99,7 +99,7 @@ button[color="primary"]:disabled {
   text-decoration: underline;
 }
 
-.text-center {
+.content-center {
   text-align: center;
   justify-content: center;
   display: flex;
@@ -120,13 +120,11 @@ button[color="primary"]:disabled {
   margin-top: 8px;
 }
 
-.donor{
+.user-type-button{
   border-radius: 7px;
 }
 
-.beneficiary{
-  border-radius: 7px;
-}
+
 
 .button-group{
   justify-content: center;
@@ -139,11 +137,11 @@ button[color="primary"]:disabled {
   display: flex;
 }
 
-.mt-4{
+.action-section{
   justify-content: center;
   display: flex;
 }
 
-.mt-4 .Clique-aqui{
+.action-section .link-text{
   color: rgb(95, 95, 255);
 }

@@ -8,7 +8,7 @@ body {
 }
 
 /* Formulário centralizado com sombra */
-.form {
+.form-card {
   max-width: 800px;
   margin: 60px auto;
   background-color: white;
@@ -18,13 +18,13 @@ body {
 }
 
 /* Título principal */
-.form h1 {
+.form-card h1 {
   margin-bottom: 30px;
   color: #2a2a2a;
 }
 
 /* Botões de toggle */
-.buttons-toggle {
+.toggle-buttons {
   margin-bottom: 30px;
   display: flex;
   justify-content: center;
@@ -32,7 +32,7 @@ body {
   flex-wrap: wrap;
 }
 
-.buttons-toggle button {
+.toggle-buttons button {
   padding: 10px 20px;
   border: none;
   border-radius: 6px;
@@ -42,23 +42,23 @@ body {
   transition: background-color 0.2s ease;
 }
 
-.buttons-toggle button.active {
+.toggle-buttons button.active {
   background-color: #e76f51;
   color: white;
 }
 
-.buttons-toggle button:hover {
+.toggle-buttons button:hover {
   background-color: #d45d3c;
   color: white;
 }
 
 /* Seções de tabelas */
-.table-container {
+.data-table-section {
   margin-top: 20px;
 }
 
 /* Títulos das seções */
-.table-container h2 {
+.data-table-section h2 {
   margin-bottom: 15px;
   color: #264653;
 }
@@ -88,7 +88,7 @@ tbody tr:last-child td {
   border-bottom: none;
 }
 
-.placeholder {
+.placeholder-text {
   color: #999;
   font-style: italic;
 }

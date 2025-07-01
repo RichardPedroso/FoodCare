@@ -1,4 +1,4 @@
-.base-form { 
+.page-container { 
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7,7 +7,7 @@
   min-height: 100vh;
 }
 
-.form {
+.form-card {
   background-color: white;
   padding: 30px 40px;
   border-radius: 10px;
@@ -17,7 +17,7 @@
   text-align: left;
 }
 
-.form h2 {
+.form-card h2 {
   color: #264653;
   margin-bottom: 20px;
   font-size: 28px;
@@ -73,21 +73,21 @@ mat-error {
   display: block;
 }
 
-.mt-4 {
+.action-section {
   margin-top: 20px;
 }
 
-.mt-4 a {
+.action-section a {
   color: #264653;
   text-decoration: none;
   font-weight: bold;
 }
 
-.mt-4 a:hover {
+.action-section a:hover {
   text-decoration: underline;
 }
 
-.text-center {
+.content-center {
   text-align: center;
 }
 

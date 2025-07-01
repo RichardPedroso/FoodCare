@@ -1,4 +1,4 @@
-.mensagem{
+.content-card{
   max-width: 600px;
   margin: 80px auto;
   background-color: rgba(32, 76, 94, 0.85);
@@ -27,7 +27,7 @@ body{
   z-index: 9999; 
 }
 
-.container{
+.page-container{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -40,14 +40,14 @@ body{
   box-sizing: border-box;
 }
 
-.logo {
+.brand-logo {
   width: 80px;
   margin-bottom: 25px;
   background-size: cover;
   background-position: center;
 }
 
-.container p {
+.page-container p {
 
   justify-content: center;
   align-items: center;
@@ -59,12 +59,12 @@ body{
   color: #f2f2f2;
 }
 
-.container p strong {
+.page-container p strong {
   color: #f4a261;
   font-weight: bold;
 }
 
-.button {
+.primary-button {
   display: inline-block;
   margin-top: 30px;
   padding: 12px 28px;
@@ -80,6 +80,6 @@ body{
   transition: background-color 0.3s ease;
 }
 
-.button:hover {
+.primary-button:hover {
   background-color: #d45d3c;
 }

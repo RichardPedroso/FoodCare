@@ -1,14 +1,14 @@
 <main>
-  <div class="buttons-toggle">
+  <div class="toggle-buttons">
     <button id="btn-donor" (click)="alternate('donor')" [class.active]="selectedType === 'donor'">Doador</button>
     <button id="btn-beneficiary" (click)="alternate('beneficiary')" [class.active]="selectedType === 'beneficiary'">Beneficiário</button>
   </div>
 
-  <section class="welcome-text">
+  <section class="welcome-section">
     <h1 id="title-welcome">Bem vindo(a) {{ userName }}!</h1>
   </section>
 
-  <section class="actions" id="actions">
+  <section class="action-buttons" id="actions">
     @if(selectedType === 'donor'){
       <button>Acompanhar Doações</button>
       <button>Fazer Doação</button>
@@ -21,7 +21,7 @@
     }
   </section>
 
-  <section class="message" [class.hidden]="selectedType !== 'beneficiary'" id="message-beneficiary">
+  <section class="info-message" [class.hidden]="selectedType !== 'beneficiary'" id="message-beneficiary">
     <p>Adicionar verificação se uma solicitação já foi realizada no mês</p>
   </section>
 </main>

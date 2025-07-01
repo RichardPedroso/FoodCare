@@ -7,7 +7,7 @@ body {
   color: #333;
 }
 
-.logo {
+.brand-logo {
   width: 100px;
   margin: 20px;
 }
@@ -24,13 +24,13 @@ main {
   padding: 20px;
 }
 
-.buttons-toggle {
+.toggle-buttons {
   display: flex;
   gap: 10px;
   margin-bottom: 30px;
 }
 
-.buttons-toggle button {
+.toggle-buttons button {
   padding: 10px 20px;
   border: none;
   background-color: #ccc;
@@ -40,16 +40,16 @@ main {
   transition: background-color 0.2s;
 }
 
-.buttons-toggle button.active {
+.toggle-buttons button.active {
   background-color: #e76f51;
 }
 
-.buttons-toggle button:hover {
+.toggle-buttons button:hover {
   background-color: #d45d3c;
 }
 
 
-.report-container {
+.page-container {
   display: flex;
   justify-content: center;
   gap: 50px;
@@ -57,16 +57,14 @@ main {
   margin-bottom: 40px;
 }
 
-.column {
+.data-column {
   display: flex;
   flex-direction: column;
   gap: 30px;
   width: 48%;
 }
 
-.lower-report,
-.lower-line,
-.linha-inferior {
+.bottom-row {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -75,8 +73,7 @@ main {
   margin-top: 30px;
 }
 
-.info-box,
-.card {
+.info-card {
   background: white;
   border: 1px solid #264653;
   border-radius: 15px;
@@ -87,15 +84,13 @@ main {
   flex: 1;
 }
 
-.valor-emphasis,
-.value {
+.stat-value {
   font-size: 2.5em;
   font-weight: bold;
   color: #264653;
 }
 
-.description,
-.subtitle {
+.stat-label {
   margin-top: 10px;
   font-size: 1em;
   color: #f4a261;

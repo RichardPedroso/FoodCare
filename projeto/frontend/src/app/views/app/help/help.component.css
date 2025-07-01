@@ -1,0 +1,53 @@
+.page-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.breadcrumb {
+  background-color: #f8f9fa;
+  padding: 10px 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.breadcrumb-item a {
+  color: #e76f51;
+  text-decoration: none;
+}
+
+.breadcrumb-item.active {
+  color: #6c757d;
+}
+
+.content-section {
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.content-section h1 {
+  color: #264653;
+  margin-bottom: 20px;
+}
+
+.content-section h2 {
+  color: #264653;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.content-section p {
+  line-height: 1.6;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.text-end {
+  text-align: right;
+}
+
+.text-end small {
+  color: #6c757d;
+}

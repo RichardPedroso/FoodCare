@@ -1,8 +1,8 @@
 <body>
-  <div class="base-form">
-    <div class="conteiner">
+  <div class="page-container">
+    <div class="form-wrapper">
 
-      <form class="form mat-elevation-z4">
+      <form class="form-card mat-elevation-z4">
 
         <h2>Login</h2>
 
@@ -20,11 +20,11 @@
     </mat-form-field>
 
     <nav>
-      <button mat-raised-button color="primary" routerLink="/account/reset-password" class="forgot-password">
+      <button mat-raised-button color="primary" routerLink="/account/reset-password" class="secondary-button">
         Esqueci minha senha
       </button>
 
-      <button class="Login" mat-raised-button color="primary" (click)="login()" [disabled]="!validateFields()">Login</button>
+      <button class="primary-button" mat-raised-button color="primary" (click)="login()" [disabled]="!validateFields()">Login</button>
     </nav>
 
       @if(isLoginIncorrect) {
@@ -33,7 +33,7 @@
         </p>
       }
 
-        <div class="mt-4">
+        <div class="action-section">
           <p>Não possui uma conta? <a routerLink="/account/sign-up">Clique aqui</a> para criar agora mesmo!</p>
         </div>
       </form>

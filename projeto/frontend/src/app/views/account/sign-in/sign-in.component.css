@@ -1,4 +1,4 @@
-.base-form {
+.page-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,7 +6,7 @@
   
 }
 
-.conteiner{
+.form-wrapper{
   background-color: #f0feff;
   padding: 30px 40px;
   border-radius: 10px;
@@ -36,7 +36,7 @@ body{
 
 }
 
-.form h2 {
+.form-card h2 {
   justify-content: center;
   display: flex;
   color: #264653;
@@ -44,7 +44,7 @@ body{
   font-size: 35px;
 }
 
-.form h3 {
+.form-card h3 {
   justify-content: center;
   display: flex;
   color: #2a2a2a;
@@ -101,7 +101,7 @@ button[mat-raised-button]:disabled {
 }
 
 
-.Login{
+.primary-button{
   background-color: #f0896c;
   color: rgb(0, 0, 0);
   font-weight: bold;
@@ -113,7 +113,7 @@ button[mat-raised-button]:disabled {
 
 }
 
-.button .login:hover{
+.primary-button:hover{
   background-color: #ffc3b2;
 }
 
@@ -123,21 +123,21 @@ button[mat-raised-button]:disabled {
   font-size: 14px;
 }
 
-.mt-2 {
+.error-message {
   margin-top: 8px;
 }
 
-.mt-4 {
+.action-section {
   
   margin-top: 16px;
 }
 
-.mt-4 a {
+.action-section a {
   color: rgb(95, 95, 255);
   text-decoration: none;
   font-weight: bold;
 }
 
-.mt-4 a:hover {
+.action-section a:hover {
   text-decoration: underline;
 }
