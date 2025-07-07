@@ -142,17 +142,20 @@ main {
   display: none;
 }
 
-/*
 :host {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999; 
-  background-color: #263f49;
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-*/
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 .button-logout{
   color: #ffffff;
@@ -182,4 +185,8 @@ main {
 
 .page-layout{
   background-color: #366679;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
 }

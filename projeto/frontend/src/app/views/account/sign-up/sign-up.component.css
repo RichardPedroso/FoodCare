@@ -1,9 +1,27 @@
+:host {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .page-container {
+  display: flex;
   justify-content: center;
   align-items: center;
+  width: 100vw;
+  height: 100vh;
   background-color: #264653;
-  min-height: 100vh;
-  display: flex;
+  margin: 0;
+  padding: 0;
 }
 
 
@@ -11,16 +29,7 @@ h2{
   justify-content: center;
   display: flex;
 }
-/*
-:host {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999; 
-}
-*/
+
 .form-card {
   background-color: #f0feff;
   padding: -0px 40px;
