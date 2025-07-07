@@ -18,26 +18,21 @@ header {
   width: 40px;
 }
 
-.logout{
-  background-color: #e76f51;
-  border-radius: 5px;
-  padding: 6px 10px;
-}
-
-.brand-logo span {
+.brand-logo a {
   font-size: 24px;
   font-weight: bold;
   color: #f4a261;
+  text-decoration: none;
   text-transform: lowercase;
 }
 
-nav {
+.main-navbar {
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
 }
 
-nav a {
+.main-navbar a {
   color: white;
   text-decoration: none;
   font-weight: bold;
@@ -46,7 +41,7 @@ nav a {
   padding: 0px 10px;
 }
 
-nav a:hover {
+.main-navbar a:hover {
   color: #f4a261;
   text-shadow: 0 0 10px rgb(255, 255, 255);
 }
@@ -59,10 +54,51 @@ nav a:hover {
   font-size: 16px;
 }
 
-.user-section img {
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-info img {
   width: 35px;
   border-radius: 50%;
   border: 2px solid #f4a261;
+}
+
+.user-info span {
+  color: white;
+}
+
+.user-menu {
+  display: flex;
+  gap: 8px;
+}
+
+.profile-btn, .logout-btn {
+  border-radius: 8px;
+  padding: 5px 7px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.profile-btn {
+  background-color: #e76f51;
+  color: white;
+}
+
+.profile-btn:hover {
+  background-color: #ac4b32;
+}
+
+.logout-btn {
+  background-color: #e76f51;
+  color: white;
+}
+
+.logout-btn:hover {
+  background-color: #ac4b32;
 }
 
 main {

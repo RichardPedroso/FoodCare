@@ -8,15 +8,18 @@
 
     <nav class="main-navbar">
       <a routerLink="/main/about-us">Sobre Nós</a>
-      <a routerLink="/main/user/make-action">Fazer Doação</a>
-      <a routerLink="/main/user/follow-actions">Acompanhar Doações</a>
-      <a routerLink="/main/user/generate-report">Gerar Relatório</a>
+      <a routerLink="/main/help">Ajuda</a>
     </nav>
 
     <div class="user-section">
-      <img src="usuario.png" alt="User" />
-      <button mat-raised-button color="primary" [routerLink]="['/main/account/my-profile']">Minha Conta</button>
-      <button mat-raised-button color="warn" (click)="logout()">Logout</button>
+      <div class="user-info">
+        <img src="usuario.png" alt="User" />
+        <span>{{ userName }}</span>
+      </div>
+      <div class="user-menu">
+        <button class="profile-btn" [routerLink]="['/main/account/my-profile']">Minha Conta</button>
+        <button class="logout-btn" (click)="logout()">Sair</button>
+      </div>
     </div>
 
   </header>
