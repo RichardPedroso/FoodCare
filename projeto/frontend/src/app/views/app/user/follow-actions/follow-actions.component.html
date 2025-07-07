@@ -2,60 +2,51 @@
   <form class="form-card mat-elevation-z4">
     <h1>Acompanhamento</h1>
 
-    <div class="toggle-buttons">
-      <button id="btn-donations" class="active">Doações</button>
-      <button id="btn-requests">Solicitações</button>
-    </div>
+    @if(userType === 'donor') {
+      <section class="data-table-section">
+        <h2>Situação Doações</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Quantidade</th>
+              <th>Data</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="4" class="placeholder-text">
+                Tabela com cada doação registrada pelo doador
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    }
 
-    <section id="table-donations" class="data-table-section">
-      <h2>Situação Doações</h2>
-      <table>
-        <thead>
-          
-          <tr>
-            <th>Tipo</th>
-            <th>Quantidade</th>
-            <th>Data</th>
-            <th>Status</th>
-          </tr>
-
-        </thead>
-        <tbody>
-
-          <tr>
-            <td colspan="4" class="placeholder-text">
-              Tabela com cada doação registrada pelo doador
-            </td>
-          </tr>
-
-        </tbody>
-      </table>
-    </section>
-
-    <section id="table-requests" class="data-table-section hidden">
-      <h2>Situação Solicitações</h2>
-      <table>
-        <thead>
-
-          <tr>
-            <th>Tipo</th>
-            <th>Quantidade</th>
-            <th>Data</th>
-            <th>Status</th>
-          </tr>
-
-        </thead>
-        <tbody>
-          
-          <tr>
-            <td colspan="4" class="placeholder-text">
-              Tabela com cada solicitação registrada pelo beneficiário
-            </td>
-          </tr>
-          
-        </tbody>
-      </table>
-    </section>
+    @if(userType === 'beneficiary') {
+      <section class="data-table-section">
+        <h2>Situação Solicitações</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th>Quantidade</th>
+              <th>Data</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="4" class="placeholder-text">
+                Tabela com cada solicitação registrada pelo beneficiário
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    }
     
   </form>
 </div>

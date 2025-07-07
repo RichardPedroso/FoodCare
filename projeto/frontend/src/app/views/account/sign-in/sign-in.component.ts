@@ -92,8 +92,16 @@ export class SignInComponent{
       .subscribe({
         next: (user: User) => {
           console.log('Resultado da busca no json-server:', user);
+          console.log('Tipo de usuário:', user.user_type);
 
           this.authenticationService.addDataToLocalStorage(user);
+          
+          if (user.user_type === 'donor') {
+            console.log('Usuário identificado como doador');
+          } else if (user.user_type === 'beneficiary') {
+            console.log('Usuário identificado como beneficiário');
+          }
+          
           this.router.navigate(['/main']);
       },
       error: (err) => {

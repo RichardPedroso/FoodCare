@@ -1,59 +1,56 @@
 <div class="page-container">
   
-  <div class="toggle-buttons">
-    <button id="btn-donor" class="active">Doador</button>
-    <button id="btn-beneficiary">Beneficiário</button>
-  </div>
-
-  <div id="report-donor" class="report-section">
-
-    <div class="data-column">
-      <div class="info-card">
-        <div class="stat-value">35</div>
-        <div class="stat-label">Total de Doações</div>
+  @if(userType === 'donor') {
+    <div class="report-section">
+      <div class="data-column">
+        <div class="info-card">
+          <div class="stat-value">35</div>
+          <div class="stat-label">Total de Doações</div>
+        </div>
+        <div class="info-card">
+          <div class="stat-value">5</div>
+          <div class="stat-label">Média por Semana</div>
+        </div>
       </div>
-      <div class="info-card">
-        <div class="stat-value">5</div>
-        <div class="stat-label">Média por Semana</div>
-      </div>
-    </div>
-    <div class="data-column">
-      <div class="info-card">
-        <div class="stat-value">120</div>
-        <div class="stat-label">Pessoas Ajudadas</div>
-      </div>
-      <div class="info-card">
-        <div class="stat-value">3</div>
-        <div class="stat-label">Solicitações por Semana</div>
+      <div class="data-column">
+        <div class="info-card">
+          <div class="stat-value">120</div>
+          <div class="stat-label">Pessoas Ajudadas</div>
+        </div>
+        <div class="info-card">
+          <div class="stat-value">3</div>
+          <div class="stat-label">Solicitações por Semana</div>
+        </div>
       </div>
     </div>
-  </div>
+  }
 
-  <div id="report-beneficiary" class="report-section" style="display: none;">
+  @if(userType === 'beneficiary') {
+    <div class="report-section">
+      <div class="data-column">
+        <div class="info-card">
+          <div class="stat-value">10</div>
+          <div class="stat-label">Cestas Básicas</div>
+        </div>
+      </div>
+      <div class="data-column">
+        <div class="info-card">
+          <div class="stat-value">4</div>
+          <div class="stat-label">Cestas de Higiene</div>
+        </div>
+      </div>
 
-    <div class="data-column">
-      <div class="info-card">
-        <div class="stat-value">10</div>
-        <div class="stat-label">Cestas Básicas</div>
+      <div class="bottom-row">
+        <div class="info-card">
+          <div class="stat-value">14</div>
+          <div class="stat-label">Total de Cestas</div>
+        </div>
+        <div class="info-card">
+          <div class="stat-value">6</div>
+          <div class="stat-label">Meses Solicitando</div>
+        </div>
       </div>
     </div>
-    <div class="data-column">
-      <div class="info-card">
-        <div class="stat-value">4</div>
-        <div class="stat-label">Cestas de Higiene</div>
-      </div>
-    </div>
+  }
 
-    <div class="bottom-row">
-      <div class="info-card">
-        <div class="stat-value">14</div>
-        <div class="stat-label">Total de Cestas</div>
-      </div>
-      <div class="info-card">
-        <div class="stat-value">6</div>
-        <div class="stat-label">Meses Solicitando</div>
-      </div>
-    </div>
-
-  </div>
 </div>

@@ -190,3 +190,50 @@ main {
   margin: 0;
   padding: 0;
 }
+
+.welcome-section {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.welcome-section h1 {
+  font-size: 32px;
+  margin-bottom: 40px;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 40px;
+  padding: 0 20px;
+}
+
+.action-buttons button {
+  background-color: #e76f51;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 12px 30px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  min-width: 180px;
+}
+
+.action-buttons button:hover {
+  background-color: #d45d3c;
+}
+
+.info-message {
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  color: #e63946;
+  margin-top: 30px;
+  padding: 0 20px;
+}

@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { AuthenticationService } from '../../../services/security/authentication.service';
 import { Router } from '@angular/router';
+import { User } from '../../../domain/model/user';
 
 @Component({
   selector: 'app-main',
@@ -13,13 +14,18 @@ import { Router } from '@angular/router';
   styleUrl: './main.component.css'
 })
 
-export class MainComponent {
+export class MainComponent implements OnInit {
   
-  selectedType: 'donor' | 'beneficiary' = 'donor';
-  userName = 'nome do usuário';
+  user: User | null = null;
+  userType: 'donor' | 'beneficiary' = 'donor';
+  userName: string = '';
 
-  alternate(type: 'donor' | 'beneficiary'): void {
-    this.selectedType = type;
+  ngOnInit(): void {
+    this.user = this.authenticationService.getCurrentUser();
+    if (this.user) {
+      this.userName = this.user.name;
+      this.userType = this.user.user_type as 'donor' | 'beneficiary';
+    }
   }
 
   constructor(
