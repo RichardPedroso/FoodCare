@@ -18,23 +18,28 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Cidade</mat-label>
-      <input matInput [value]="user?.city" disabled />
+      <mat-label>Rua</mat-label>
+      <input matInput [value]="municipality?.street" disabled />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Rua</mat-label>
-      <input matInput [value]="user?.street" disabled />
+      <mat-label>Número</mat-label>
+      <input matInput [value]="municipality?.number" disabled />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Bairro</mat-label>
-      <input matInput [value]="user?.neighborhood" disabled />
+      <input matInput [value]="municipality?.neighborhood" disabled />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Cidade</mat-label>
+      <input matInput [value]="municipality?.city" disabled />
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>CEP</mat-label>
-      <input matInput [value]="user?.zip_code" disabled />
+      <input matInput [value]="municipality?.zip_code" disabled />
     </mat-form-field>
 
     @if (user?.user_type === 'beneficiary') {
