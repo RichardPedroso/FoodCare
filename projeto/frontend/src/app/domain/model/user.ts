@@ -8,5 +8,5 @@ export interface User {
     is_admin: boolean,
     family_income?: string,
     people_quantity?: string,
-    municipality_id?: string
+    municipality_id: string
 }
