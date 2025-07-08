@@ -6,9 +6,11 @@
         <mat-label>Nome completo</mat-label>
         <input matInput placeholder="Nome" formControlName="name">
       
-        <mat-error ngIf="form.controls.name.hasError('required')">
-          Campo obrigatório
-        </mat-error>
+        @if(signUpForm.controls['name'].hasError('required')){
+          <mat-error>
+            Campo obrigatório
+          </mat-error>
+        }
       
         @if(signUpForm.controls['name'].hasError('minlength')){
           <P class="text-danger">
@@ -27,9 +29,11 @@
         <mat-label>Email</mat-label>
         <input matInput placeholder="Email" formControlName="email" type="email">
         
-        <mat-error ngIf="form.controls.email.hasError('required')">
-          Campo obrigatório
-        </mat-error>
+        @if(signUpForm.controls['email'].hasError('required')){
+          <mat-error>
+            Campo obrigatório
+          </mat-error>
+        }
       
         @if(signUpForm.controls['email'].hasError('email')){
           <p class="text-danger">
@@ -42,9 +46,11 @@
         <mat-label>Senha</mat-label>
         <input matInput placeholder="Senha" formControlName="password" type="password">
       
-        <mat-error ngIf="form.controls.password.hasError('required')">
-          Campo obrigatório
-        </mat-error>
+        @if(signUpForm.controls['password'].hasError('required')){
+          <mat-error>
+            Campo obrigatório
+          </mat-error>
+        }
       
         @if(signUpForm.controls['password'].hasError('minlength')){
           <p class="text-danger">
@@ -64,9 +70,11 @@
         <mat-label>Repita a senha</mat-label>
         <input matInput type="password" placeholder="Repita a senha" formControlName="repeatPassword">
       
-        <mat-error ngIf="form.controls.repeatPassword.hasError('required')">
-          Campo obrigatório
-        </mat-error>
+        @if(signUpForm.controls['repeatPassword'].hasError('required')){
+          <mat-error>
+            Campo obrigatório
+          </mat-error>
+        }
       
         @if(!arePasswordsValid()){
         <p class="text-danger">
@@ -79,9 +87,11 @@
         <mat-label>Número</mat-label>
         <input matInput placeholder="Número" formControlName="phone">
       
-        <mat-error ngIf="form.controls.number.hasError('required')">
-          Campo obrigatório
-        </mat-error>
+        @if(signUpForm.controls['phone'].hasError('required')){
+          <mat-error>
+            Campo obrigatório
+          </mat-error>
+        }
       
         @if(signUpForm.controls['phone'].hasError('minlength')){
           <p class="text-danger">
@@ -106,6 +116,35 @@
         </div>
       </div>
     
+      <mat-form-field>
+        <mat-label>Rua</mat-label>
+        <input matInput placeholder="Rua" formControlName="street">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Número</mat-label>
+        <input matInput placeholder="Número" formControlName="number">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Bairro</mat-label>
+        <input matInput placeholder="Bairro" formControlName="neighborhood">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Cidade</mat-label>
+        <mat-select formControlName="city">
+          <mat-option value="Santa Rita do Sapucaí">Santa Rita do Sapucaí</mat-option>
+          <mat-option value="Pouso Alegre">Pouso Alegre</mat-option>
+          <mat-option value="Itajubá">Itajubá</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>CEP (opcional)</mat-label>
+        <input matInput placeholder="00000-000" formControlName="zipCode" maxlength="9">
+      </mat-form-field>
+
       @if (signUpForm.get('userType')?.value === 'beneficiary') {
         <mat-form-field>
           <mat-label>Renda familiar</mat-label>

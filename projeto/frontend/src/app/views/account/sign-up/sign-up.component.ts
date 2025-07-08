@@ -11,15 +11,19 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { CommonModule } from '@angular/common';
 
 import * as fontawesome from '@fortawesome/free-solid-svg-icons'
 import { AuthenticationService } from '../../../services/security/authentication.service';
 import { User } from '../../../domain/model/user';
 import { UserCreateService } from '../../../services/user/user-create.service';
 
+
 @Component({
   selector: 'app-sign-up',
   imports: [
+    CommonModule,
     RouterOutlet,
     MatToolbarModule,
     FormsModule,
@@ -33,6 +37,7 @@ import { UserCreateService } from '../../../services/user/user-create.service';
     FontAwesomeModule,
     ReactiveFormsModule,
     MatInputModule,
+    MatSelectModule,
   ],
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css'
@@ -61,6 +66,7 @@ export class SignUpComponent implements OnInit {
   constructor(
     private formbuilder: FormBuilder,
     private userCreateService: UserCreateService,
+
     private authenticationService: AuthenticationService,
     private router: Router
   ) {}
@@ -111,14 +117,34 @@ export class SignUpComponent implements OnInit {
         Validators.minLength(this.peopleQuantityMinLenght),
       ]],
 
+      street: ['', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(100),
+      ]],
+
+      number: ['', [
+        Validators.required,
+        Validators.minLength(1),
+        Validators.maxLength(10),
+      ]],
+
+      neighborhood: ['', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(50),
+      ]],
+
+      city: ['', [
+        Validators.required,
+      ]],
+
+      zipCode: [''],
+
       familyIncome: ['', [
         Validators.required,
         Validators.minLength(this.familyIncomeMinLenght),
       ]],
-      
-      // municipality_id: ['', [
-      //   Validators.required,
-      // ]],
 
     })
   }
@@ -130,22 +156,27 @@ export class SignUpComponent implements OnInit {
     let isRepeatPasswordValid = this.signUpForm.controls['repeatPassword'].valid;
     let isPhoneValid = this.signUpForm.controls['phone'].valid;
     let isUserType = this.signUpForm.controls['userType'].valid;
+    let isStreet = this.signUpForm.controls['street'].valid;
+    let isNumber = this.signUpForm.controls['number'].valid;
+    let isNeighborhood = this.signUpForm.controls['neighborhood'].valid;
+    let isCity = this.signUpForm.controls['city'].valid;
 
     let userTypeValue = this.signUpForm.controls['userType'].value;
 
     let isPeopleQuantity = this.signUpForm.controls['peopleQuantity'].valid;
     let isFamilyIncome = this.signUpForm.controls['familyIncome'].valid;
-    // adicionar let isMunicipalityId = this.signUpForm.controls['municipalityId'].valid;
 
     if (!this.arePasswordsValid()) {
       return false;
     }
     
+    let addressValid = isStreet && isNumber && isNeighborhood && isCity;
+
     if (userTypeValue === 'donor'){
-      return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType;
+      return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType && addressValid;
     }
 
-    return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType && isPeopleQuantity && isFamilyIncome;
+    return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType && addressValid && isPeopleQuantity && isFamilyIncome;
   }
 
   arePasswordsValid() {
@@ -159,32 +190,53 @@ export class SignUpComponent implements OnInit {
   
     const formDataSignUp = this.signUpForm.value;
   
-    const newUser: User = {
-      name: formDataSignUp.name,
-      email: formDataSignUp.email,
-      password: formDataSignUp.password,
-      phone: formDataSignUp.phone,
-      user_type: formDataSignUp.userType,
-      is_admin: false,
-      family_income: '',
-      people_quantity: '',
-      municipality_id: ''
+    // Criar novo municipality com dados do usuário
+    const newMunicipality = {
+      street: formDataSignUp.street,
+      number: formDataSignUp.number,
+      neighborhood: formDataSignUp.neighborhood,
+      city: formDataSignUp.city,
+      zip_code: formDataSignUp.zipCode || ''
     };
 
-    if (newUser.user_type === 'beneficiary') {
-      newUser.family_income = formDataSignUp.familyIncome;
-      newUser.people_quantity = formDataSignUp.peopleQuantity;
-      // newUser.municipality_id = formDataSignUp.municipalityId;
-    }
-
     try{
+      // Criar municipality primeiro
+      const municipalityResponse = await fetch('http://localhost:3000/municipality', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newMunicipality)
+      });
+      
+      const createdMunicipality = await municipalityResponse.json();
+      console.log("municipality criado com sucesso: ", createdMunicipality);
+
+      // Criar usuário com municipality_id
+      const newUser: User = {
+        name: formDataSignUp.name,
+        email: formDataSignUp.email,
+        password: formDataSignUp.password,
+        phone: formDataSignUp.phone,
+        user_type: formDataSignUp.userType,
+        is_admin: false,
+        family_income: '',
+        people_quantity: '',
+        municipality_id: createdMunicipality.id
+      };
+
+      if (newUser.user_type === 'beneficiary') {
+        newUser.family_income = formDataSignUp.familyIncome;
+        newUser.people_quantity = formDataSignUp.peopleQuantity;
+      }
+
       const createdUser = await this.userCreateService.create(newUser);
       console.log("usuario criado com sucesso: ", createdUser);
 
       this.authenticationService.addDataToLocalStorage(createdUser);
       this.router.navigate(['/main']);
-    }catch(errorCreateUser){
-      console.error("erro ao criar usuario:", errorCreateUser);
+    }catch(error){
+      console.error("erro ao criar usuario ou municipality:", error);
     }
   }
 }
