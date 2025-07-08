@@ -31,6 +31,55 @@
   "profile": {
     "name": "typicode"
   },
+  "municipality": [
+    {
+      "id": "1",
+      "street": "Rua das Flores",
+      "number": "123",
+      "neighborhood": "Centro",
+      "city": "Santa Rita do Sapucaí",
+      "zip_code": "37540-000"
+    },
+    {
+      "id": "2",
+      "street": "Avenida Brasil",
+      "number": "456",
+      "neighborhood": "Vila Nova",
+      "city": "Pouso Alegre",
+      "zip_code": "37550-000"
+    },
+    {
+      "id": "3",
+      "street": "Rua São José",
+      "number": "789",
+      "neighborhood": "São Vicente",
+      "city": "Itajubá",
+      "zip_code": "37500-000"
+    },
+    {
+      "id": "4",
+      "street": "Rua Coronel Alfredo",
+      "number": "321",
+      "neighborhood": "Fátima",
+      "city": "Santa Rita do Sapucaí"
+    },
+    {
+      "id": "b30e",
+      "street": "Abu",
+      "number": "11",
+      "neighborhood": "Abu",
+      "city": "Santa Rita do Sapucaí",
+      "zip_code": "11111111"
+    },
+    {
+      "id": "a30e",
+      "street": "ze1",
+      "number": "11",
+      "neighborhood": "ze2",
+      "city": "Pouso Alegre",
+      "zip_code": "12312-12"
+    }
+  ],
   "user": [
     {
       "id": "1",
@@ -79,6 +128,42 @@
       "family_income": "1234",
       "people_quantity": "4",
       "municipality_id": "4"
+    },
+    {
+      "id": "bc67",
+      "name": "Edu du",
+      "email": "edu@gmail.com",
+      "password": "123456",
+      "phone": "12345678902",
+      "user_type": "donor",
+      "is_admin": false,
+      "family_income": "",
+      "people_quantity": "",
+      "municipality_id": "2"
+    },
+    {
+      "id": "8d70",
+      "name": "babu a",
+      "email": "babu@gmail.com",
+      "password": "asdzxc",
+      "phone": "11111111111",
+      "user_type": "donor",
+      "is_admin": false,
+      "family_income": "",
+      "people_quantity": "",
+      "municipality_id": "b30e"
+    },
+    {
+      "id": "1fdb",
+      "name": "zezao",
+      "email": "zezao@gmail.com",
+      "password": "123asd",
+      "phone": "12312312312",
+      "user_type": "beneficiary",
+      "is_admin": false,
+      "family_income": "2000",
+      "people_quantity": "5",
+      "municipality_id": "a30e"
     }
   ]
 }
