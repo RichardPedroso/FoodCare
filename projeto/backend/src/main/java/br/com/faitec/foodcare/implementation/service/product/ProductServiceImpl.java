@@ -36,12 +36,7 @@ public class ProductServiceImpl implements ProductService {
         }
 
         productDao.delete(id);
-
-
-
     }
-
-
 
     @Override
     public Product findById(int id) {
@@ -73,7 +68,6 @@ public class ProductServiceImpl implements ProductService {
         }
 
         productDao.update(id, entity);
-
     }
 
     @Override
@@ -84,9 +78,7 @@ public class ProductServiceImpl implements ProductService {
             return false;
         }
 
-        product.setName(newName);
-        return true;
-
+        return productDao.updateNameDao(id, newName);
     }
 
     @Override
@@ -97,9 +89,7 @@ public class ProductServiceImpl implements ProductService {
             return false;
         }
 
-        product.setQuantity(newQuantity);
-        return true;
-
+        return productDao.updateQuantity(id, newQuantity);
     }
 
     @Override
@@ -110,8 +100,6 @@ public class ProductServiceImpl implements ProductService {
             return false;
         }
 
-        product.setExpirationDate(newExpirationDate);
-        return true;
-
+        return productDao.updateExpirationDate(id, newExpirationDate);
     }
 }
