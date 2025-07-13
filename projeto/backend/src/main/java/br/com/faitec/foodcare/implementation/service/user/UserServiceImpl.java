@@ -3,10 +3,7 @@ package br.com.faitec.foodcare.implementation.service.user;
 import br.com.faitec.foodcare.domain.UserModel;
 import br.com.faitec.foodcare.port.dao.user.UserDao;
 import br.com.faitec.foodcare.port.service.user.UserService;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -107,7 +104,7 @@ public class UserServiceImpl implements UserService {
 
         boolean response = userDao.updatePassword(id, newPassword);
 
-        return true;
+        return response;
     }
 
 }
