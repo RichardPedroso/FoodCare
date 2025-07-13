@@ -4,11 +4,11 @@ import br.com.faitec.foodcare.domain.UserModel;
 import br.com.faitec.foodcare.port.dao.user.UserDao;
 import br.com.faitec.foodcare.port.service.user.UserService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     private final UserDao userDao;
 
     public UserServiceImpl(UserDao userDao){
@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserModel findByid(int id) {
+    public UserModel findById(int id) {
         if (id < 0) {
             return null;
         }
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
             return;
         }
 
-        UserModel userModel = findByid(id);
+        UserModel userModel = findById(id);
         if (userModel == null) {
             return;
         }
@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updatePassword(int id, String oldPassword, String newPassword) {
 
-        UserModel user = findByid(id);
+        UserModel user = findById(id);
         if (user == null) {
             return false;
         }
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
 
         boolean response = userDao.updatePassword(id, newPassword);
 
-        return true;
+        return response;
     }
 
 }

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Product {
     private int id;
-    private String nome;
-    private double quantidade;
-    private String dataDeValidade;
+    private String name;
+    private int quantity;
+    private String expirationDate;
 }

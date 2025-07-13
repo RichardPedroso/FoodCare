@@ -30,7 +30,7 @@ public class UserRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserModel> getEntityById(@PathVariable final int id) {
-        UserModel entity = userService.findByid(id);
+        UserModel entity = userService.findById(id);
 
         return entity == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
     }
@@ -73,7 +73,7 @@ public class UserRestController {
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<UserModel> getEntityByEmail(@RequestBody final String email) {
+    public ResponseEntity<UserModel> getEntityByEmail(@PathVariable final String email) {
 
         final UserModel entity = userService.findByEmail(email);
 
@@ -81,7 +81,7 @@ public class UserRestController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(entity);
     }
 
 

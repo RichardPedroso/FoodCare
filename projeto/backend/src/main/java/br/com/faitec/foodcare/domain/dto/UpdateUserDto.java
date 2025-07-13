@@ -5,11 +5,13 @@ import br.com.faitec.foodcare.domain.UserModel;
 public class UpdateUserDto {
     private int id;
     private String fullName;
+    private String email;
 
     public UserModel toUserModel(){
         final UserModel entity = new UserModel();
         entity.setId(id);
         entity.setFullname(fullName);
+        entity.setEmail(email);
         return entity;
     }
 
@@ -27,5 +29,13 @@ public class UpdateUserDto {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
