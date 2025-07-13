@@ -5,7 +5,6 @@ import br.com.faitec.foodcare.domain.UserModel;
 import br.com.faitec.foodcare.domain.dto.UpdatePasswordDto;
 import br.com.faitec.foodcare.domain.dto.UpdateUserDto;
 import br.com.faitec.foodcare.port.service.user.UserService;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -74,7 +73,7 @@ public class UserRestController {
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<UserModel> getEntityByEmail(@RequestBody final String email) {
+    public ResponseEntity<UserModel> getEntityByEmail(@PathVariable final String email) {
 
         final UserModel entity = userService.findByEmail(email);
 
@@ -82,7 +81,7 @@ public class UserRestController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(entity);
     }
 
 
