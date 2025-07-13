@@ -10,6 +10,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+@RestController
+@RequestMapping("/api/product")
 public class ProductRestController {
     private final ProductService productService;
 
@@ -20,7 +22,6 @@ public class ProductRestController {
     @GetMapping
     public ResponseEntity<List<Product>> getEntites(){
         List<Product> entities = productService.findAll();
-
         return ResponseEntity.ok(entities);
     }
 
@@ -33,14 +34,12 @@ public class ProductRestController {
         }
 
         return ResponseEntity.ok(entity);
-
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> delete(@PathVariable final int id){
+    public ResponseEntity<Void> delete(@PathVariable final int id){
         productService.delete(id);
-
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping
@@ -57,26 +56,24 @@ public class ProductRestController {
         Product entity = data.toProduct();
         productService.update(id, entity);
 
-
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Product> updateName(@PathVariable final int id, @RequestBody final UpdateProductDto data){
-        Product entity = data.toProduct();
-        productService.update(id, entity);
-
-
-        return ResponseEntity.noContent().build();
+    @PutMapping("/{id}/name")
+    public ResponseEntity<Void> updateName(@PathVariable final int id, @RequestBody final String newName){
+        boolean updated = productService.updateName(id, newName);
+        return updated ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Product> updatePrice(@PathVariable final int id, @RequestBody final UpdateProductDto data){
-        Product entity = data.toProduct();
-        productService.update(id, entity);
+    @PutMapping("/{id}/quantity")
+    public ResponseEntity<Void> updateQuantity(@PathVariable final int id, @RequestBody final Integer newQuantity){
+        boolean updated = productService.updateQuantity(id, newQuantity);
+        return updated ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
 
-
-        return ResponseEntity.noContent().build();
+    @PutMapping("/{id}/expiration-date")
+    public ResponseEntity<Void> updateExpirationDate(@PathVariable final int id, @RequestBody final String newExpirationDate){
+        boolean updated = productService.updateExpirationDate(id, newExpirationDate);
+        return updated ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 }
-
