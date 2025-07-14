@@ -14,6 +14,7 @@ import { MakeActionComponent } from './views/app/user/make-action/make-action.co
 import { FollowActionsComponent } from './views/app/user/follow-actions/follow-actions.component';
 import { GenerateReportComponent } from './views/app/user/generate-report/generate-report.component';
 import { MainComponent } from './views/app/main/main.component';
+import { HelpComponent } from './views/app/help/help.component';
 
 export const routes: Routes = [
 
@@ -50,6 +51,10 @@ export const routes: Routes = [
       {
         path: 'about-us',
         component: AboutUsComponent
+      },
+      {
+        path: 'help',
+        component: HelpComponent
       },
       {
         path: 'user/make-action',
