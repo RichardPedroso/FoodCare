@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet, Router, NavigationEnd } from '@angular/router';
 import { AuthenticationService } from '../../../services/security/authentication.service';
-import { Router } from '@angular/router';
 import { User } from '../../../domain/model/user';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-main',
@@ -19,6 +19,7 @@ export class MainComponent implements OnInit {
   user: User | null = null;
   userType: 'donor' | 'beneficiary' = 'donor';
   userName: string = '';
+  isChildRouteActive: boolean = false;
 
   ngOnInit(): void {
     this.user = this.authenticationService.getCurrentUser();
@@ -26,6 +27,12 @@ export class MainComponent implements OnInit {
       this.userName = this.user.name;
       this.userType = this.user.user_type as 'donor' | 'beneficiary';
     }
+    
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      this.isChildRouteActive = event.url !== '/main' && event.url !== '/main/';
+    });
   }
 
   constructor(

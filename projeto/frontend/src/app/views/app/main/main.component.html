@@ -25,27 +25,29 @@
   </header>
 
   <main>
-    <section class="welcome-section">
-      <h1>Bem vindo(a) {{ userName }}!</h1>
-    </section>
-
-    <section class="action-buttons">
-      @if(userType === 'donor'){
-        <button routerLink="/main/user/follow-actions">Acompanhar Doações</button>
-        <button routerLink="/main/user/make-action">Fazer Doação</button>
-        <button routerLink="/main/user/generate-report">Gerar Relatório</button>
-      }
-      @else if (userType === 'beneficiary') {
-        <button routerLink="/main/user/follow-actions">Acompanhar Solicitações</button>
-        <button routerLink="/main/user/make-action">Solicitar Doação</button>
-        <button routerLink="/main/user/generate-report">Gerar Relatório</button>
-      }
-    </section>
-
-    @if(userType === 'beneficiary') {
-      <section class="info-message">
-        <p>Adicionar verificação se uma solicitação já foi realizada no mês</p>
+    @if(!isChildRouteActive) {
+      <section class="welcome-section">
+        <h1>Bem vindo(a) {{ userName }}!</h1>
       </section>
+
+      <section class="action-buttons">
+        @if(userType === 'donor'){
+          <button routerLink="/main/user/follow-actions">Acompanhar Doações</button>
+          <button routerLink="/main/user/make-action">Fazer Doação</button>
+          <button routerLink="/main/user/generate-report">Gerar Relatório</button>
+        }
+        @else if (userType === 'beneficiary') {
+          <button routerLink="/main/user/follow-actions">Acompanhar Solicitações</button>
+          <button routerLink="/main/user/make-action">Solicitar Doação</button>
+          <button routerLink="/main/user/generate-report">Gerar Relatório</button>
+        }
+      </section>
+
+      @if(userType === 'beneficiary') {
+        <section class="info-message">
+          <p>Adicionar verificação se uma solicitação já foi realizada no mês</p>
+        </section>
+      }
     }
     
     <router-outlet></router-outlet>
