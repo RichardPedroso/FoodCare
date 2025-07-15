@@ -58,7 +58,7 @@ body {
   margin-bottom: 20px;
   font-size: 1em;
   line-height: 1.6;
-  color: #2a2a2a;
+  color: #8d5b2a;
 }
 
 footer {
@@ -66,8 +66,9 @@ footer {
   justify-content: space-between;
   align-items: flex-end;
   padding: 20px 40px;
-  border-top: 3px solid #f4a261;
-  background-color: #264653;
+  border-top: 4px solid #f4a261;
+  
+
 }
 
 .contact-emails {
