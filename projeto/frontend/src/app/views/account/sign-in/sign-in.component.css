@@ -19,20 +19,23 @@
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-color: #264653;
+  background-color: #f3decc;
   margin: 0;
   padding: 0;
+  
 }
 
 .form-wrapper{
-  background-color: #f0feff;
+  background-color: #f7dec7;
   padding: 30px 40px;
   border-radius: 10px;
   text-align: center;
   justify-content: center;
   display: flex;
   align-items: center;
-  margin-top: 220px;
+  margin-top: center;
+  box-shadow:  0 0 10px #42632c;
+  
   
 }
 
@@ -40,9 +43,9 @@
 .form-card h2 {
   justify-content: center;
   display: flex;
-  color: #264653;
   margin-bottom: 20px;
   font-size: 35px;
+  color: #8a5725;
 }
 
 .form-card h3 {
@@ -53,7 +56,9 @@
   font-size: 15px;
 }
 
-
+form{
+color: #945f29;
+}
 
 mat-form-field {
   display: block;
@@ -79,7 +84,7 @@ nav{
 }
 
 button[mat-raised-button] {
-  background-color: #f0896c;
+  background-color: #9e6730;
   color: rgb(0, 0, 0);
   font-weight: bold;
   border: none;
@@ -87,23 +92,25 @@ button[mat-raised-button] {
   font-size: 16px;
   transition: background-color 0.3s ease;
   justify-content: space-between;
+  color: white;
 
-  
 }
 
 button[mat-raised-button]:hover {
-  background-color: #ffc3b2;
+  background-color: #cc7c46;
+  color: white;
 }
 
 button[mat-raised-button]:disabled {
-  background-color: #f7a779;
+  background-color: #9e6730;
   color: #000000;
   cursor: not-allowed;
+  color: white;
 }
 
 
 .primary-button{
-  background-color: #f0896c;
+  background-color: #db586c;
   color: rgb(0, 0, 0);
   font-weight: bold;
   padding: 12px 20px;
@@ -115,13 +122,14 @@ button[mat-raised-button]:disabled {
 }
 
 .primary-button:hover{
-  background-color: #ffc3b2;
+  background-color: #cc7c46;
 }
 
 .text-danger {
-  color: #e63946;
+  color: #b03648;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 18px;
+  margin-top: 15px;
 }
 
 .error-message {
@@ -134,11 +142,12 @@ button[mat-raised-button]:disabled {
 }
 
 .action-section a {
-  color: rgb(95, 95, 255);
+  color: #ff952b;
   text-decoration: none;
   font-weight: bold;
 }
 
 .action-section a:hover {
   text-decoration: underline;
+  color: #b03648;
 }

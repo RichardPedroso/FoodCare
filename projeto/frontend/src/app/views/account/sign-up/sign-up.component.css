@@ -19,30 +19,37 @@
   align-items: flex-start;
   width: 100vw;
   min-height: 100vh;
-  background-color: #264653;
+  background-color: #f3decc;
   margin: 0;
   padding: 20px 0;
   overflow-y: auto;
+ 
+}
+
+form{
+color: #945f29;
 }
 
 
 h2{
+  
   justify-content: center;
   display: flex;
 }
 
 .form-card {
-  background-color: #f0feff;
+  background-color: #f7dec7;
   padding: 30px;
   border-radius: 10px;
   max-width: 500px;
   width: 100%;
   text-align: left;
   margin: 20px;
+  box-shadow:  0 0 10px #42632c;
 }
 
 .form-card h2 {
-  color: #264653;
+  color: #8a5725;
   margin-bottom: 20px;
   font-size: 28px;
 }
@@ -65,7 +72,7 @@ input[matInput] {
 }
 
 button[color="primary"] {
-  background-color: #e76f51;
+  background-color: #9e6730;
   color: white;
   font-weight: bold;
   padding: 12px 20px;
@@ -79,17 +86,17 @@ button[color="primary"] {
 }
 
 button[color="primary"]:hover {
-  background-color: #d45d3c;
+  background-color: #cc7c46;
 }
 
 button[color="primary"]:disabled {
   background-color: #ccc;
-  color: #666;
+  color: #5f5f5f;
   cursor: not-allowed;
 }
 
 .text-danger, mat-error {
-  color: #e63946;
+  color: #b03648;
   font-weight: bold;
   font-size: 14px;
   margin-top: 4px;
@@ -101,7 +108,7 @@ button[color="primary"]:disabled {
 }
 
 .mt-4 a {
-  color: #264653;
+  color: #8a5725;
   text-decoration: none;
   font-weight: bold;
 }
@@ -133,28 +140,29 @@ button[color="primary"]:disabled {
 
 .user-type-button{
   border-radius: 7px;
-  background-color: #f0896c;
+  background-color: #9e6730;
   color: #000;
-  border: 1px solid #f0896c;
+  border: 1px solid #b0364800;
   padding: 10px 20px;
   font-weight: bold;
   transition: all 0.2s ease;
   outline: none;
+  color: white;
 }
 
 .user-type-button:hover {
-  background-color: #ffc3b2;
+  background-color: #cc7c46 ;
 }
 
 .user-type-button:focus {
-  background-color: #e76f51;
+  background-color: #a86b2e;
   color: white;
   outline: none;
   box-shadow: none;
 }
 
 .user-type-button:disabled {
-  background-color: #e76f51;
+  background-color: #9e6730;
   color: white;
 }
 
@@ -177,5 +185,11 @@ button[color="primary"]:disabled {
 }
 
 .action-section .link-text{
-  color: rgb(95, 95, 255);
+  color: #ff952b;
 }
+
+.action-section .link-text:hover{
+  text-decoration: underline;
+  color: #b03648;
+}
+

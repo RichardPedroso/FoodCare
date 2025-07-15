@@ -1,15 +1,12 @@
 .content-card{
   max-width: 600px;
   margin: 80px auto;
-  background-color: rgba(32, 76, 94, 0.85);
+  background-color: #f7dec7;
   padding: 40px 30px;
   border-radius: 15px;
   text-align: center;
-  box-shadow: inset 0 0 10px;
- 
+  box-shadow: 0 0 10px #42632c;
 }
-
-
 
 :host {
   display: block;
@@ -32,14 +29,14 @@
   align-items: center;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(42, 87, 105, 0.85);
+  background-color: #f3decc;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
 .brand-logo {
-  width: 80px;
+  width: 130px;
   margin-bottom: 25px;
   background-size: cover;
   background-position: center;
@@ -54,11 +51,11 @@
   font-size: 18px;
   line-height: 1.5;
   margin: 12px 0;
-  color: #f2f2f2;
+  color: #000000;
 }
 
 .page-container p strong {
-  color: #f4a261;
+  color: #5a863d;
   font-weight: bold;
 }
 
@@ -66,7 +63,7 @@
   display: inline-block;
   margin-top: 30px;
   padding: 12px 28px;
-  background-color: #e76f51;
+  background-color: #9e6730;
   color: white;
   font-weight: bold;
   font-family: Arial, sans-serif;
@@ -79,5 +76,5 @@
 }
 
 .primary-button:hover {
-  background-color: #d45d3c;
+  background-color: #cc7c46;
 }

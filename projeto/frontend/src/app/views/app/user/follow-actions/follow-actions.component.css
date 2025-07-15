@@ -11,16 +11,16 @@ body {
 .form-card {
   max-width: 800px;
   margin: 60px auto;
-  background-color: white;
+  background-color: #fcdec2;
   padding: 40px 30px;
   border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 15px #537e37;
 }
 
 /* Título principal */
 .form-card h1 {
   margin-bottom: 30px;
-  color: #2a2a2a;
+  color: #9e6730;
 }
 
 /* Botões de toggle */
@@ -43,13 +43,13 @@ body {
 }
 
 .toggle-buttons button.active {
-  background-color: #e76f51;
-  color: white;
+  background-color: #9e6730;
+  color: #9e6730;
 }
 
 .toggle-buttons button:hover {
-  background-color: #d45d3c;
-  color: white;
+  background-color: #9e6730;
+  color: #9e6730;
 }
 
 /* Seções de tabelas */
@@ -60,21 +60,23 @@ body {
 /* Títulos das seções */
 .data-table-section h2 {
   margin-bottom: 15px;
-  color: #264653;
+  color: #9e6730;
 }
 
 /* Tabelas */
 table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #fff;
+  background-color: #ffeedf;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+
+ 
 }
 
 thead {
-  background-color: #264653;
+  background-color: #8f5f30;
   color: white;
 }
 
@@ -89,7 +91,7 @@ tbody tr:last-child td {
 }
 
 .placeholder-text {
-  color: #999;
+  color: #000000;
   font-style: italic;
 }
 

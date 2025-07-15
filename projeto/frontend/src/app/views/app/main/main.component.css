@@ -2,10 +2,12 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #366679;
-  color: white;
+  background-color: #f8d5b5 ;
+  color: rgb(255, 255, 255);
   padding: 15px 30px;
   flex-wrap: wrap;
+  border-radius: 0px 0px 17px 17px ;
+  box-shadow:  0px 0px 13px #537e37;
 }
 
 .brand-logo {
@@ -15,13 +17,15 @@ header {
 }
 
 .brand-logo img {
-  width: 40px;
+  margin-left: -10px;
+  width: 80px;
 }
 
 .brand-logo a {
-  font-size: 24px;
+  margin-left: -15px;
+  font-size: 35px;
   font-weight: bold;
-  color: #f4a261;
+  color: #537e37;
   text-decoration: none;
   text-transform: lowercase;
 }
@@ -30,31 +34,35 @@ header {
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
+  
 }
 
 .main-navbar a {
-  color: white;
+  color: #9b642e;
   text-decoration: none;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 20px;
   transition: color 0.7s ease;
   padding: 0px 10px;
 }
 
 .main-navbar a:hover {
-  color: #f4a261;
-  text-shadow: 0 0 10px rgb(255, 255, 255);
+  
+  text-shadow: 0px 0px 10px #9b642e;
+  
 }
 
 .user-section {
+  
   display: flex;
   align-items: center;
   gap: 8px;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 20px;
 }
 
 .user-info {
+  
   display: flex;
   align-items: center;
   gap: 8px;
@@ -67,15 +75,17 @@ header {
 }
 
 .user-info span {
-  color: white;
+  color: rgb(0, 0, 0);
 }
 
 .user-menu {
+  
   display: flex;
   gap: 8px;
 }
 
 .profile-btn, .logout-btn {
+  
   border-radius: 8px;
   padding: 5px 7px;
   border: none;
@@ -84,21 +94,23 @@ header {
 }
 
 .profile-btn {
-  background-color: #e76f51;
+ background-color: #9e6730;
   color: white;
+  font-size: 15px;
 }
 
 .profile-btn:hover {
-  background-color: #ac4b32;
+  background-color: #cc7c46;
 }
 
 .logout-btn {
-  background-color: #e76f51;
+  font-size: 15px;
+  background-color: #9e6730;
   color: white;
 }
 
 .logout-btn:hover {
-  background-color: #ac4b32;
+  background-color: #cc7c46;
 }
 
 main {
@@ -107,6 +119,7 @@ main {
   margin: 0 auto;
   text-align: center;
   color: #2a2a2a;
+  
 }
 
 .toggle-buttons {
@@ -126,12 +139,12 @@ main {
 }
 
 .toggle-buttons button.active {
-  background-color: #e76f51;
+  background-color: #9e6730;
   color: white;
 }
 
 .toggle-buttons button:hover:not(.active) {
-  background-color: #d45d3c;
+  background-color: #cc7c46;
   color: white;
 }
 
@@ -151,7 +164,7 @@ main {
 }
 
 .action-buttons button {
-  background-color: #e76f51;
+  background-color: #9e6730;
   border: none;
   border-radius: 8px;
   color: white;
@@ -164,13 +177,13 @@ main {
 }
 
 .action-buttons button:hover {
-  background-color: #d45d3c;
+  background-color: #cc7c46;
 }
 
 .info-message {
   font-weight: bold;
   font-size: 18px;
-  color: #e63946;
+  color: #b03648;
   margin-top: 30px;
 }
 
@@ -200,27 +213,27 @@ main {
   font-size: 16px;
   transition: color 0.7s ease;
   padding: 3px 10px;
-  background-color: #e76f51;
+  background-color: #9e6730;
   border-radius: 8px;
 }
 
 .button-logout:hover{
-  color: #f4a261;
+  color: #cc7c46;
   text-shadow: 0 0 10px rgb(255, 255, 255);
 }
 
 .user-section button{
   border-radius: 8px;
   padding: 5px 7px;
-  background-color: #e76f51;
+  background-color: #9e6730;
 }
 
 .user-section button:hover{
-  background-color: #ac4b32;
+  background-color: #cc7c46;
 }
 
 .page-layout{
-  background-color: #366679;
+  background-color: #f3decc;
   width: 100%;
   min-height: 100vh;
   margin: 0;
@@ -235,7 +248,7 @@ main {
 .welcome-section h1 {
   font-size: 32px;
   margin-bottom: 40px;
-  color: #ffffff;
+  color: #000000;
   font-weight: bold;
 }
 
@@ -249,7 +262,7 @@ main {
 }
 
 .action-buttons button {
-  background-color: #e76f51;
+  background-color: #9e6730;
   border: none;
   border-radius: 8px;
   color: white;
@@ -262,14 +275,14 @@ main {
 }
 
 .action-buttons button:hover {
-  background-color: #d45d3c;
+  background-color: #cc7c46;
 }
 
 .info-message {
   text-align: center;
   font-weight: bold;
   font-size: 18px;
-  color: #e63946;
+  color: #b03648;
   margin-top: 30px;
   padding: 0 20px;
 }

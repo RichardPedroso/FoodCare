@@ -78,6 +78,14 @@
       "neighborhood": "ze2",
       "city": "Pouso Alegre",
       "zip_code": "12312-12"
+    },
+    {
+      "id": "4507",
+      "street": "asd",
+      "number": "asd",
+      "neighborhood": "asdasasdadas",
+      "city": "Santa Rita do Sapucaí",
+      "zip_code": "37540000"
     }
   ],
   "user": [
@@ -164,6 +172,18 @@
       "family_income": "2000",
       "people_quantity": "5",
       "municipality_id": "a30e"
+    },
+    {
+      "id": "56ca",
+      "name": "pintao",
+      "email": "pintao@123.mail",
+      "password": "pintao",
+      "phone": "66666666666",
+      "user_type": "beneficiary",
+      "is_admin": false,
+      "family_income": "100000000000000000000000",
+      "people_quantity": "1000000",
+      "municipality_id": "4507"
     }
   ]
 }

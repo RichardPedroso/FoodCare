@@ -24,17 +24,18 @@
 }
 
 .form-card {
-  background-color: white;
+  background-color: #f7dec7;
   padding: 30px 40px;
   border-radius: 10px;
   max-width: 500px;
   width: 100%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0px 10px #42632c;
   text-align: left;
+  color:#8a5725;
 }
 
 .form-card h2 {
-  color: #264653;
+  color: #8a5725;
   margin-bottom: 20px;
   font-size: 28px;
 }
@@ -56,30 +57,6 @@ input[matInput] {
   font-size: 16px;
 }
 
-button[color="primary"] {
-  background-color: #e76f51;
-  color: white;
-  font-weight: bold;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-  width: 100%;
-  margin-top: 10px;
-  cursor: pointer;
-}
-
-button[color="primary"]:hover {
-  background-color: #d45d3c;
-}
-
-button[color="primary"]:disabled {
-  background-color: #ccc;
-  color: #666;
-  cursor: not-allowed;
-}
-
 .text-danger,
 mat-error {
   color: #e63946;
@@ -94,7 +71,7 @@ mat-error {
 }
 
 .action-section a {
-  color: #264653;
+  color: #945f29;
   text-decoration: none;
   font-weight: bold;
 }
