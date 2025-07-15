@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { AuthenticationService } from '../../../services/security/authentication.service';
 import { MunicipalityReadService } from '../../../services/municipality/municipality-read.service';
 import { Municipality } from '../../../domain/model/municipality';
@@ -11,8 +14,11 @@ import { Municipality } from '../../../domain/model/municipality';
   standalone: true,
   imports: [
     CommonModule,
+    RouterModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule
   ],
   templateUrl: './my-profile.component.html',
   styleUrl: './my-profile.component.css'

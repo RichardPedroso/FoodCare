@@ -1,43 +1,70 @@
-<body>
-  <div class="page-container">
-    <div class="form-wrapper">
+<div class="auth-container">
+  <div class="auth-card fade-in">
+    <div class="auth-header">
+      <h1 class="auth-title">Entrar</h1>
+      <p class="auth-subtitle">Acesse sua conta FoodCare</p>
+    </div>
 
-      <form class="form-card mat-elevation-z4">
+    <form class="auth-form">
+      <div class="form-group">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <input matInput 
+                 type="email" 
+                 placeholder="seu@email.com" 
+                 [formControl]="email"
+                 required>
+          <mat-icon matPrefix>email</mat-icon>
+        </mat-form-field>
+      </div>
 
-        <h2>Login</h2>
+      <div class="form-group">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Senha</mat-label>
+          <input matInput 
+                 [type]="hidePassword ? 'password' : 'text'" 
+                 placeholder="Sua senha" 
+                 maxlength="13" 
+                 [formControl]="password"
+                 required>
+          <mat-icon matPrefix>lock</mat-icon>
+          <button mat-icon-button 
+                  matSuffix 
+                  (click)="hidePassword = !hidePassword" 
+                  [attr.aria-label]="'Toggle password visibility'" 
+                  [attr.aria-pressed]="!hidePassword"
+                  type="button">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
 
-    <mat-form-field>
-      <mat-label>Email</mat-label>
-      <input matInput placeholder="Email" required="" [formControl]="email">
-    </mat-form-field>
+      <div class="form-actions">
+        <button type="button" 
+                class="btn btn-secondary" 
+                routerLink="/account/reset-password">
+          Esqueci minha senha
+        </button>
 
-    <mat-form-field>
-      <mat-label>Senha</mat-label>
-      <input matInput [type]="hidePassword ? 'password' : 'text'" placeholder="Senha" maxlength="13" required [formControl]="password">
-      <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Toggle password visibility'" [attr.aria-pressed]="!hidePassword">
-        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-      </button>
-    </mat-form-field>
+        <button type="button" 
+                class="btn btn-primary" 
+                (click)="login()" 
+                [disabled]="!validateFields()">
+          Entrar
+        </button>
+      </div>
 
-    <nav>
-      <button mat-raised-button color="primary" routerLink="/account/reset-password" class="secondary-button">
-        Esqueci minha senha
-      </button>
+      <div class="error-message" *ngIf="isLoginIncorrect">
+        <mat-icon>error</mat-icon>
+        <span>Email e/ou senha incorretos.</span>
+      </div>
+    </form>
 
-      <button class="primary-button" mat-raised-button color="primary" (click)="login()" [disabled]="!validateFields()">Login</button>
-    </nav>
-
-      @if(isLoginIncorrect) {
-        <p class="text-danger mt-2">
-          Email e/ou senha incorretos.
-        </p>
-      }
-
-        <div class="action-section">
-          <p>Não possui uma conta? <a routerLink="/account/sign-up">Clique aqui</a> para criar agora mesmo!</p>
-        </div>
-      </form>
+    <div class="auth-footer">
+      <p>Não possui uma conta? 
+        <a routerLink="/account/sign-up" class="auth-link">Criar conta</a>
+      </p>
     </div>
   </div>
   <router-outlet></router-outlet>
-</body>
+</div>
