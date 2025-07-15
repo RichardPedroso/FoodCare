@@ -37,7 +37,8 @@
 
   <main class="main-content">
     <div class="container">
-      <div *ngIf="!isChildRouteActive" class="dashboard">
+      @if(!isChildRouteActive){
+      <div class="dashboard">
         <section class="welcome-section">
           <div class="welcome-card card">
             <h1 class="welcome-title">Bem-vindo(a), {{ userName }}!</h1>
@@ -47,7 +48,8 @@
 
         <section class="actions-section">
           <div class="actions-grid">
-            <ng-container *ngIf="userType === 'donor'">
+            @if(userType === 'donor'){
+            <ng-container >
               <div class="action-card card" routerLink="/main/user/follow-actions">
                 <div class="action-icon">📋</div>
                 <h3>Acompanhar Doações</h3>
@@ -59,7 +61,6 @@
                 <div class="action-icon">🎁</div>
                 <h3>Fazer Doação</h3>
                 <p>Registre uma nova doação</p>
-                
               </div>
               
               <div class="action-card card" routerLink="/main/user/generate-report">
@@ -69,8 +70,9 @@
                 
               </div>
             </ng-container>
-
-            <ng-container *ngIf="userType === 'beneficiary'">
+          }
+            @if(userType === 'beneficiary'){
+            <ng-container>
               <div class="action-card card" routerLink="/main/user/follow-actions">
                 <div class="action-icon">📋</div>
                 <h3>Acompanhar Solicitações</h3>
@@ -92,10 +94,12 @@
                 
               </div>
             </ng-container>
+          }
           </div>
         </section>
-
-        <section *ngIf="userType === 'beneficiary'" class="info-section">
+        
+        @if(userType === 'beneficiary'){
+        <section class="info-section">
           <div class="info-card card">
             
             <div class="info-content">
@@ -104,8 +108,9 @@
             </div>
           </div>
         </section>
+      }
       </div>
-      
+    } 
       <router-outlet></router-outlet>
     </div>
   </main>
