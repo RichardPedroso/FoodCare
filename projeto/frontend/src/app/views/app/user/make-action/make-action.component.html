@@ -4,32 +4,36 @@
     @if(userType === 'donor') {
       <h1>Sua Doação</h1>
       <section class="form-section">
-        <form class="donation-form">
-          <label>Descrição</label>
-          <select name="description" id="description-select">
+        <form class="donation-form" #donationForm>
+          <label>Tipo de Produto</label>
+          <select name="productType" id="productType-select" #productType>
             <option value="">Selecione uma opção</option>
-            <option value="food">Alimento</option>
-            <option value="drink">Bebida</option>
-            <option value="product-hygien">Produto de Higiene</option>
+            <option value="basic">Alimentos Básicos</option>
+            <option value="hygiene">Produtos de Higiene</option>
           </select>
 
-          <label>Nome</label>
-          <select name="name" id="name-select">
-            <option value="">Selecione o nome</option>
+          <label>Produto</label>
+          <select name="product_id" id="product-select" #productId required>
+            <option value="">Selecione o produto</option>
+            <option value="1">Arroz</option>
+            <option value="2">Feijão</option>
+            <option value="3">Batata-palha</option>
+            <option value="4">Papel-toalha</option>
+            <option value="5">Papel-higiênico</option>
+            <option value="6">Sabonete</option>
           </select>
 
-          <label>Data de validade</label>
-          <input type="date" name="validity">
+          <label>Data de Validade</label>
+          <input type="date" name="expirationDate" #expirationDate required>
 
           <label>Quantidade</label>
-          <div class="quantity-section">
-            <input type="number" name="amount" min="0">
-            <label><input type="checkbox" name="unidade" value="kg"> Kg</label>
-            <label><input type="checkbox" name="unidade" value="l"> L</label>
-          </div>
+          <input type="number" name="quantity" min="1" #quantity required>
 
-          <label>Data</label>
-          <input type="date" name="date">
+          <label>Unidade</label>
+          <div class="unit-section">
+            <label><input type="radio" name="unit" value="Kg" #unitKg required> Kg</label>
+            <label><input type="radio" name="unit" value="L" #unitL required> L</label>
+          </div>
 
           <label>Solicitar coleta:</label>
           <label><input type="checkbox" name="collect" value="yes"> Sim</label>
@@ -38,7 +42,7 @@
 
         <div class="action-buttons">
           <p>Registrar Doação?</p>
-          <button class="primary-button">Sim</button>
+          <button class="primary-button" (click)="registerDonation(productId.value, expirationDate.value, quantity.value, unitKg.checked ? 'Kg' : (unitL.checked ? 'L' : ''))">Sim</button>
           <p>Compartilhar doação nas redes sociais?</p>
           <button class="primary-button">Sim</button>
         </div>

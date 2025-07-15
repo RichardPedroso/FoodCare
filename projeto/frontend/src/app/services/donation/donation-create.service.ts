@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Product } from '../../domain/model/product';
+import { Donation } from '../../domain/model/donation';
 import { environment } from '../../../environments/environment.development';
 import { firstValueFrom } from 'rxjs';
 
@@ -8,11 +8,11 @@ import { firstValueFrom } from 'rxjs';
   providedIn: 'root'
 })
 
-export class ProductCreateService {
+export class DonationCreateService {
 
   constructor(private http: HttpClient) {}
 
-  async create(product: Product): Promise<Product>{
-    return await firstValueFrom(this.http.post<Product>(`${environment.api_endpoint}/product`, product));
+  async create(donation: Donation): Promise<Donation>{
+    return await firstValueFrom(this.http.post<Donation>(`${environment.api_endpoint}/donation`, donation));
   }
 }

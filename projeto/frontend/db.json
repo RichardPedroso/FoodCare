@@ -80,6 +80,143 @@
       "zip_code": "12312-12"
     }
   ],
+  "category": [
+    {
+      "id": "1",
+      "description": "Alimentos Básicos",
+      "is_active": true
+    },
+    {
+      "id": "2",
+      "description": "Produtos de Higiene",
+      "is_active": true
+    }
+  ],
+  "product": [
+    {
+      "id": "1",
+      "name": "Arroz",
+      "productType": "basic",
+      "stock": 3,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1"
+    },
+    {
+      "id": "2",
+      "name": "Feijão",
+      "productType": "basic",
+      "stock": 16,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1"
+    },
+    {
+      "id": "3",
+      "name": "Batata-palha",
+      "productType": "basic",
+      "stock": 3,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1"
+    },
+    {
+      "id": "4",
+      "name": "Papel-toalha",
+      "productType": "hygiene",
+      "stock": 0,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "2"
+    },
+    {
+      "id": "5",
+      "name": "Papel-higiênico",
+      "productType": "hygiene",
+      "stock": 0,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "2"
+    },
+    {
+      "id": "6",
+      "name": "Sabonete",
+      "productType": "hygiene",
+      "stock": 0,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "2"
+    }
+  ],
+  "donation": [
+    {
+      "id": "8f48",
+      "donation_date": "2025-07-14T18:29:00.381Z",
+      "user_id": "2"
+    },
+    {
+      "id": "c50e",
+      "donation_date": "2025-07-14T18:29:46.162Z",
+      "user_id": "2"
+    },
+    {
+      "id": "c177",
+      "donation_date": "2025-07-14T18:31:43.431Z",
+      "user_id": "2"
+    },
+    {
+      "id": "378d",
+      "donation_date": "2025-07-14T18:33:02.826Z",
+      "user_id": "2"
+    },
+    {
+      "id": "a439",
+      "donation_date": "2025-07-14T18:37:05.754Z",
+      "user_id": "2"
+    }
+  ],
+  "donation_product": [
+    {
+      "id": "8a52",
+      "quantity": 5,
+      "expirationDate": "2056-03-22T00:00:00.000Z",
+      "unit": "Kg",
+      "donation_id": "8f48",
+      "product_id": "2"
+    },
+    {
+      "id": "453c",
+      "quantity": 3,
+      "expirationDate": "2054-05-23T00:00:00.000Z",
+      "unit": "Kg",
+      "donation_id": "c50e",
+      "product_id": "1"
+    },
+    {
+      "id": "91bb",
+      "quantity": 3,
+      "expirationDate": "2032-05-22T00:00:00.000Z",
+      "unit": "Kg",
+      "donation_id": "c177",
+      "product_id": "2"
+    },
+    {
+      "id": "c2ca",
+      "quantity": 3,
+      "expirationDate": "2026-10-03T00:00:00.000Z",
+      "unit": "Kg",
+      "donation_id": "378d",
+      "product_id": "3"
+    },
+    {
+      "id": "3fb2",
+      "quantity": 8,
+      "expirationDate": "2045-04-03T00:00:00.000Z",
+      "unit": "Kg",
+      "donation_id": "a439",
+      "product_id": "2"
+    }
+  ],
   "user": [
     {
       "id": "1",
