@@ -1,173 +1,232 @@
-<div class="page-container">
-  <form class="form-card mat-elevation-z4" [formGroup]="signUpForm">
-      <h2>Cadastro</h2>
-      
-      <mat-form-field>
-        <mat-label>Nome completo</mat-label>
-        <input matInput placeholder="Nome" formControlName="name">
-      
-        @if(signUpForm.controls['name'].hasError('required')){
-          <mat-error>
-            Campo obrigatório
-          </mat-error>
-        }
-      
-        @if(signUpForm.controls['name'].hasError('minlength')){
-          <P class="text-danger">
-              Nome deve ter no minimo {{nameMinLength}} cararacteres.
-          </P>
-          }
+<div class="auth-container">
+  <div class="auth-card fade-in">
+    <div class="auth-header">
+      <h1 class="auth-title">Criar Conta</h1>
+      <p class="auth-subtitle">Junte-se à rede FoodCare</p>
+    </div>
+
+    <form class="auth-form" [formGroup]="signUpForm">
+      <!-- Informações Pessoais -->
+      <div class="form-section">
+        <h3 class="section-title">Informações Pessoais</h3>
         
-        @else if(signUpForm.controls['name'].hasError('maxlength')){
-          <p class="text-danger">
-              Nome deve ter no maximo {{nameMaxLength}} cararacteres.
-          </p>
-          }
-      </mat-form-field>
-    
-      <mat-form-field>
-        <mat-label>Email</mat-label>
-        <input matInput placeholder="Email" formControlName="email" type="email">
-        
-        @if(signUpForm.controls['email'].hasError('required')){
-          <mat-error>
-            Campo obrigatório
-          </mat-error>
-        }
-      
-        @if(signUpForm.controls['email'].hasError('email')){
-          <p class="text-danger">
-            Email inválido.
-          </p>
-        }
-      </mat-form-field>
-    
-      <mat-form-field>
-        <mat-label>Senha</mat-label>
-        <input matInput placeholder="Senha" formControlName="password" type="password">
-      
-        @if(signUpForm.controls['password'].hasError('required')){
-          <mat-error>
-            Campo obrigatório
-          </mat-error>
-        }
-      
-        @if(signUpForm.controls['password'].hasError('minlength')){
-          <p class="text-danger">
-            Senha deve ter no minimo {{passwordMinLength}} cararacteres.
-          </p>
-        }
-      
-        @else if(signUpForm.controls['password'].hasError('maxlength')){
-          <p class="text-danger">
-            Senha deve ter no maximo {{passwordMaxLength}} cararacteres.
-          </p>
-        }
-      </mat-form-field>
-    
-    
-      <mat-form-field>
-        <mat-label>Repita a senha</mat-label>
-        <input matInput type="password" placeholder="Repita a senha" formControlName="repeatPassword">
-      
-        @if(signUpForm.controls['repeatPassword'].hasError('required')){
-          <mat-error>
-            Campo obrigatório
-          </mat-error>
-        }
-      
-        @if(!arePasswordsValid()){
-        <p class="text-danger">
-          As senhas não são iguais.
-        </p>
-        }
-      </mat-form-field>
-    
-      <mat-form-field>
-        <mat-label>Número de Telefone</mat-label>
-        <input matInput placeholder="Número" formControlName="phone">
-      
-        @if(signUpForm.controls['phone'].hasError('required')){
-          <mat-error>
-            Campo obrigatório
-          </mat-error>
-        }
-      
-        @if(signUpForm.controls['phone'].hasError('minlength')){
-          <p class="text-danger">
-            Número deve ter no minimo {{phoneMinlength}} cararacteres.</p>
-          }
-        
-          @else if(signUpForm.controls['phone'].hasError('maxlength')){
-          <p class="text-danger">
-              Número deve ter no maximo {{phoneMaxlength}} cararacteres.</p>
-          }
-      </mat-form-field>
-    
-      <div class="user-type-buttons">
-        <label class="user-type">Tipo de usuário</label>
-        <div class="button-group">
-          <button class="user-type-button" mat-raised-buttoncolor="primary"[disabled]="signUpForm.get('userType')?.value === 'donor' "(click)="signUpForm.get('userType')?.setValue('donor')">
-            Doador
-          </button>
-          <button class="user-type-button" mat-raised-buttoncolor="accent"[disabled]="signUpForm.get('userType')?.value === 'beneficiary' "(click)="signUpForm.get('userType')?.setValue('beneficiary')">
-            Beneficiário
-          </button>
+        <div class="form-group">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nome completo</mat-label>
+            <input matInput 
+                   placeholder="Seu nome completo" 
+                   formControlName="name">
+            <mat-icon matPrefix>person</mat-icon>
+            <mat-error *ngIf="signUpForm.controls['name'].hasError('required')">
+              Campo obrigatório
+            </mat-error>
+            <mat-error *ngIf="signUpForm.controls['name'].hasError('minlength')">
+              Nome deve ter no mínimo {{nameMinLength}} caracteres
+            </mat-error>
+            <mat-error *ngIf="signUpForm.controls['name'].hasError('maxlength')">
+              Nome deve ter no máximo {{nameMaxLength}} caracteres
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email</mat-label>
+            <input matInput 
+                   type="email" 
+                   placeholder="seu@email.com" 
+                   formControlName="email">
+            <mat-icon matPrefix>email</mat-icon>
+            <mat-error *ngIf="signUpForm.controls['email'].hasError('required')">
+              Campo obrigatório
+            </mat-error>
+            <mat-error *ngIf="signUpForm.controls['email'].hasError('email')">
+              Email inválido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Telefone</mat-label>
+            <input matInput 
+                   placeholder="(00) 00000-0000" 
+                   formControlName="phone">
+            <mat-icon matPrefix>phone</mat-icon>
+            <mat-error *ngIf="signUpForm.controls['phone'].hasError('required')">
+              Campo obrigatório
+            </mat-error>
+            <mat-error *ngIf="signUpForm.controls['phone'].hasError('minlength')">
+              Telefone deve ter no mínimo {{phoneMinlength}} caracteres
+            </mat-error>
+            <mat-error *ngIf="signUpForm.controls['phone'].hasError('maxlength')">
+              Telefone deve ter no máximo {{phoneMaxlength}} caracteres
+            </mat-error>
+          </mat-form-field>
         </div>
       </div>
-    
-      <mat-form-field>
-        <mat-label>Rua</mat-label>
-        <input matInput placeholder="Rua" formControlName="street">
-      </mat-form-field>
 
-      <mat-form-field>
-        <mat-label>Número</mat-label>
-        <input matInput placeholder="Número" formControlName="number">
-      </mat-form-field>
+      <!-- Senha -->
+      <div class="form-section">
+        <h3 class="section-title">Segurança</h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Senha</mat-label>
+              <input matInput 
+                     type="password" 
+                     placeholder="Sua senha" 
+                     formControlName="password">
+              <mat-icon matPrefix>lock</mat-icon>
+              <mat-error *ngIf="signUpForm.controls['password'].hasError('required')">
+                Campo obrigatório
+              </mat-error>
+              <mat-error *ngIf="signUpForm.controls['password'].hasError('minlength')">
+                Senha deve ter no mínimo {{passwordMinLength}} caracteres
+              </mat-error>
+              <mat-error *ngIf="signUpForm.controls['password'].hasError('maxlength')">
+                Senha deve ter no máximo {{passwordMaxLength}} caracteres
+              </mat-error>
+            </mat-form-field>
+          </div>
 
-      <mat-form-field>
-        <mat-label>Bairro</mat-label>
-        <input matInput placeholder="Bairro" formControlName="neighborhood">
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Cidade</mat-label>
-        <mat-select formControlName="city">
-          <mat-option value="Santa Rita do Sapucaí">Santa Rita do Sapucaí</mat-option>
-          <mat-option value="Pouso Alegre">Pouso Alegre</mat-option>
-          <mat-option value="Itajubá">Itajubá</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>CEP (opcional)</mat-label>
-        <input matInput placeholder="00000-000" formControlName="zipCode" maxlength="9">
-      </mat-form-field>
-
-      @if (signUpForm.get('userType')?.value === 'beneficiary') {
-        <mat-form-field>
-          <mat-label>Renda familiar</mat-label>
-          <input matInput placeholder="Renda" formControlName="familyIncome" type="phone">
-        </mat-form-field>
-      
-        <mat-form-field>
-          <mat-label>Quantidade de pessoas</mat-label>
-          <input matInput placeholder="Quantidade" formControlName="peopleQuantity" type="phone">
-        </mat-form-field>
-      }
-      
-      <div class="content-center">
-        <button mat-raised-button class="primary-button" color="primary" [disabled]="!validateFields()" (click)="signUp()">Criar</button>
-      </div>    
-      <router-outlet></router-outlet>
-      <hr>
-      <div class="action-section">
-          <p>Já possui uma conta? <a class="link-text" href="account/sign-in">Clique aqui</a> para entrar agora mesmo!</p>
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Confirmar senha</mat-label>
+              <input matInput 
+                     type="password" 
+                     placeholder="Repita sua senha" 
+                     formControlName="repeatPassword">
+              <mat-icon matPrefix>lock_outline</mat-icon>
+              <mat-error *ngIf="signUpForm.controls['repeatPassword'].hasError('required')">
+                Campo obrigatório
+              </mat-error>
+              <mat-error *ngIf="!arePasswordsValid() && signUpForm.controls['repeatPassword'].value">
+                As senhas não coincidem
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
       </div>
-      <div class="central-description">
-        <!-- <div id="wallpaper" [ngStyle]="{'background-image': 'url(' + wallpaperUrl + ')'}"></div> -->
+
+      <!-- Tipo de Usuário -->
+      <div class="form-section">
+        <h3 class="section-title">Tipo de Usuário</h3>
+        <div class="user-type-selection">
+          <div class="user-type-card" 
+               [class.selected]="signUpForm.get('userType')?.value === 'donor'"
+               (click)="signUpForm.get('userType')?.setValue('donor')">
+            <div class="user-type-icon">🎁</div>
+            <h4>Doador</h4>
+            <p>Quero doar alimentos e ajudar pessoas necessitadas</p>
+          </div>
+          
+          <div class="user-type-card" 
+               [class.selected]="signUpForm.get('userType')?.value === 'beneficiary'"
+               (click)="signUpForm.get('userType')?.setValue('beneficiary')">
+            <div class="user-type-icon">🙏</div>
+            <h4>Beneficiário</h4>
+            <p>Preciso de ajuda com doações de alimentos</p>
+          </div>
+        </div>
       </div>
-      
-  </form>
+
+      <!-- Endereço -->
+      <div class="form-section">
+        <h3 class="section-title">Endereço</h3>
+        
+        <div class="form-row">
+          <div class="form-group flex-2">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Rua</mat-label>
+              <input matInput placeholder="Nome da rua" formControlName="street">
+              <mat-icon matPrefix>home</mat-icon>
+            </mat-form-field>
+          </div>
+          
+          <div class="form-group flex-1">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Número</mat-label>
+              <input matInput placeholder="123" formControlName="number">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Bairro</mat-label>
+              <input matInput placeholder="Nome do bairro" formControlName="neighborhood">
+            </mat-form-field>
+          </div>
+          
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Cidade</mat-label>
+              <mat-select formControlName="city">
+                <mat-option value="Santa Rita do Sapucaí">Santa Rita do Sapucaí</mat-option>
+                <mat-option value="Pouso Alegre">Pouso Alegre</mat-option>
+                <mat-option value="Itajubá">Itajubá</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>CEP (opcional)</mat-label>
+            <input matInput placeholder="00000-000" formControlName="zipCode" maxlength="9">
+            <mat-icon matPrefix>location_on</mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Informações Específicas para Beneficiário -->
+      <div class="form-section" *ngIf="signUpForm.get('userType')?.value === 'beneficiary'">
+        <h3 class="section-title">Informações Socioeconômicas</h3>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Renda familiar</mat-label>
+              <input matInput 
+                     placeholder="R$ 0,00" 
+                     formControlName="familyIncome" 
+                     type="number">
+              <mat-icon matPrefix>attach_money</mat-icon>
+            </mat-form-field>
+          </div>
+          
+          <div class="form-group">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Pessoas na família</mat-label>
+              <input matInput 
+                     placeholder="0" 
+                     formControlName="peopleQuantity" 
+                     type="number">
+              <mat-icon matPrefix>group</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botão de Cadastro -->
+      <div class="form-actions">
+        <button type="button" 
+                class="btn btn-primary btn-large" 
+                [disabled]="!validateFields()" 
+                (click)="signUp()">
+          Criar Conta
+        </button>
+      </div>
+    </form>
+
+    <div class="auth-footer">
+      <p>Já possui uma conta? 
+        <a routerLink="/account/sign-in" class="auth-link">Faze login</a>
+      </p>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
 </div>

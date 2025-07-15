@@ -1,56 +1,112 @@
-<div class="page-layout">
-  <header>
+<div class="main-layout">
+  <header class="main-header">
+    <div class="container">
+      <div class="header-content">
+        <div class="brand-section">
+          <img src="img/png/logo-foodcare.png" alt="FoodCare Logo" class="header-logo">
+          <a routerLink="/main/" class="brand-name">FoodCare</a>
+        </div>
 
-    <div class="brand-logo">
-      <img src="img/png/logo-foodcare.png" alt="FoodCare Logo" />
-      <a routerLink="/main/">FoodCare</a>
-    </div>
+        <nav class="main-nav">
+          <a routerLink="/main/about-us" class="nav-link">Sobre Nós</a>
+          <a routerLink="/main/help" class="nav-link">Ajuda</a>
+        </nav>
 
-    <nav class="main-navbar">
-      <a routerLink="/main/about-us">Sobre Nós</a>
-      <a routerLink="/main/help">Ajuda</a>
-    </nav>
-
-    <div class="user-section">
-      <div class="user-info">
-        <img src="usuario.png" alt="User" />
-        <span>{{ userName }}</span>
+        <div class="user-section">
+          <div class="user-info">
+            <div class="user-avatar">
+              
+            </div>
+            <span class="user-name">{{ userName }}</span>
+          </div>
+          
+          <div class="user-actions">
+            <button class="btn btn-secondary btn-sm" [routerLink]="['/main/account/my-profile']">
+              
+              Conta
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="logout()">
+              
+              Sair
+            </button>
+          </div>
+        </div>
       </div>
-      <div class="user-menu">
-        <button class="profile-btn" [routerLink]="['/main/account/my-profile']">Minha Conta</button>
-        <button class="logout-btn" (click)="logout()">Sair</button>
-      </div>
     </div>
-
   </header>
 
-  <main>
-    @if(!isChildRouteActive) {
-      <section class="welcome-section">
-        <h1>Bem vindo(a) {{ userName }}!</h1>
-      </section>
-
-      <section class="action-buttons">
-        @if(userType === 'donor'){
-          <button routerLink="/main/user/follow-actions">Acompanhar Doações</button>
-          <button routerLink="/main/user/make-action">Fazer Doação</button>
-          <button routerLink="/main/user/generate-report">Gerar Relatório</button>
-        }
-        @else if (userType === 'beneficiary') {
-          <button routerLink="/main/user/follow-actions">Acompanhar Solicitações</button>
-          <button routerLink="/main/user/make-action">Solicitar Doação</button>
-          <button routerLink="/main/user/generate-report">Gerar Relatório</button>
-        }
-      </section>
-
-      @if(userType === 'beneficiary') {
-        <section class="info-message">
-          <p>Adicionar verificação se uma solicitação já foi realizada no mês</p>
+  <main class="main-content">
+    <div class="container">
+      <div *ngIf="!isChildRouteActive" class="dashboard">
+        <section class="welcome-section">
+          <div class="welcome-card card">
+            <h1 class="welcome-title">Bem-vindo(a), {{ userName }}!</h1>
+            <p class="welcome-subtitle">O que você gostaria de fazer hoje?</p>
+          </div>
         </section>
-      }
-    }
-    
-    <router-outlet></router-outlet>
+
+        <section class="actions-section">
+          <div class="actions-grid">
+            <ng-container *ngIf="userType === 'donor'">
+              <div class="action-card card" routerLink="/main/user/follow-actions">
+                <div class="action-icon">📋</div>
+                <h3>Acompanhar Doações</h3>
+                <p>Veja o status das suas doações</p>
+                
+              </div>
+              
+              <div class="action-card card" routerLink="/main/user/make-action">
+                <div class="action-icon">🎁</div>
+                <h3>Fazer Doação</h3>
+                <p>Registre uma nova doação</p>
+                
+              </div>
+              
+              <div class="action-card card" routerLink="/main/user/generate-report">
+                <div class="action-icon">📊</div>
+                <h3>Gerar Relatório</h3>
+                <p>Visualize suas estatísticas</p>
+                
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="userType === 'beneficiary'">
+              <div class="action-card card" routerLink="/main/user/follow-actions">
+                <div class="action-icon">📋</div>
+                <h3>Acompanhar Solicitações</h3>
+                <p>Veja o status das suas solicitações</p>
+                
+              </div>
+              
+              <div class="action-card card" routerLink="/main/user/make-action">
+                <div class="action-icon">🙏</div>
+                <h3>Solicitar Doação</h3>
+                <p>Faça uma nova solicitação</p>
+                
+              </div>
+              
+              <div class="action-card card" routerLink="/main/user/generate-report">
+                <div class="action-icon">📊</div>
+                <h3>Gerar Relatório</h3>
+                <p>Visualize suas estatísticas</p>
+                
+              </div>
+            </ng-container>
+          </div>
+        </section>
+
+        <section *ngIf="userType === 'beneficiary'" class="info-section">
+          <div class="info-card card">
+            
+            <div class="info-content">
+              <h4>Informação Importante</h4>
+              <p>Lembre-se: você pode fazer apenas uma solicitação por mês. Verifique se já não possui uma solicitação ativa.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+      
+      <router-outlet></router-outlet>
+    </div>
   </main>
 </div>
-

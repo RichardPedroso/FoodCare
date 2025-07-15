@@ -1,16 +1,45 @@
-<body>
-    <div class="page-container">
-        <div class="content-card">
-            <!-- Papel de parede com <br> Blur na página inteira</h1> -->
-            <img src="img/png/logo-foodcare.png" alt="Logo FoodCare" class="brand-logo">
-            <p>FoodCare é o projeto de um sistema para arrecadação e distribuição de doações</p>
-            <p>Por meio da gerência de todos os processos, garantimos</p>
-            <p><strong>confiança e eficiência</strong></p>
-            <p>desde o registro de doações até a entrega aos indivíduos necessitados.</p>
-            <div class="action-section">
-                <a routerLink="/account/sign-in" class="primary-button">Conhecer</a>
+<div class="landing-container">
+    <div class="hero-section fade-in">
+        <div class="hero-content">
+            <div class="brand-section">
+                <img src="img/png/logo-foodcare.png" alt="Logo FoodCare" class="brand-logo">
+                <h1 class="brand-title">FoodCare</h1>
+            </div>
+            
+            <div class="hero-text">
+                <h2 class="hero-subtitle">Sistema inteligente para arrecadação e distribuição de doações</h2>
+                <p class="hero-description">
+                    Por meio da gerência de todos os processos, garantimos 
+                    <span class="highlight">confiança e eficiência</span> 
+                    desde o registro de doações até a entrega aos indivíduos necessitados.
+                </p>
+            </div>
+            
+            <div class="cta-section">
+                <a routerLink="/account/sign-in" class="btn btn-primary btn-large">
+                    Começar Agora
+                </a>
+                <p class="cta-subtitle">Faça parte desta rede de solidariedade</p>
             </div>
         </div>
-        <router-outlet></router-outlet>
+        
+        <div class="features-preview">
+            <div class="feature-item">
+                <div class="feature-icon">🤝</div>
+                <h3>Conecta</h3>
+                <p>Doadores e beneficiários</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">📊</div>
+                <h3>Organiza</h3>
+                <p>Processos e relatórios</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon">🎯</div>
+                <h3>Garante</h3>
+                <p>Transparência total</p>
+            </div>
+        </div>
     </div>
-</body>
+    <router-outlet></router-outlet>
+</div>

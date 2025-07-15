@@ -1,57 +1,143 @@
-<div class="page-container">
-  <div class="form-card">
-    <h2>Meu Perfil</h2>
+<div class="profile-container">
+  <div class="container">
+    <div class="profile-header fade-in">
+      <h1 class="page-title">Meu Perfil</h1>
+      <p class="page-subtitle">Visualize suas informações pessoais</p>
+    </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Nome</mat-label>
-      <input matInput [value]="user?.name" disabled />
-    </mat-form-field>
+    <div class="profile-content">
+      <div class="profile-card card fade-in">
+        <div class="card-header">
+          <div class="profile-avatar">
+            <mat-icon>person</mat-icon>
+          </div>
+          <div class="profile-info">
+            <h2>{{user?.name}}</h2>
+            <span class="user-type-badge" [class]="user?.user_type">
+              {{user?.user_type === 'donor' ? 'Doador' : 'Beneficiário'}}
+            </span>
+          </div>
+        </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Email</mat-label>
-      <input matInput [value]="user?.email" disabled />
-    </mat-form-field>
+        <div class="profile-sections">
+          <!-- Informações Pessoais -->
+          <div class="info-section">
+            <h3 class="section-title">
+              <mat-icon>person_outline</mat-icon>
+              Informações Pessoais
+            </h3>
+            
+            <div class="info-grid">
+              <div class="info-item">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Nome Completo</mat-label>
+                  <input matInput [value]="user?.name" readonly>
+                  <mat-icon matPrefix>badge</mat-icon>
+                </mat-form-field>
+              </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Telefone</mat-label>
-      <input matInput [value]="user?.phone" disabled />
-    </mat-form-field>
+              <div class="info-item">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Email</mat-label>
+                  <input matInput [value]="user?.email" readonly>
+                  <mat-icon matPrefix>email</mat-icon>
+                </mat-form-field>
+              </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Rua</mat-label>
-      <input matInput [value]="municipality?.street" disabled />
-    </mat-form-field>
+              <div class="info-item">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Telefone</mat-label>
+                  <input matInput [value]="user?.phone" readonly>
+                  <mat-icon matPrefix>phone</mat-icon>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Número</mat-label>
-      <input matInput [value]="municipality?.number" disabled />
-    </mat-form-field>
+          <!-- Endereço -->
+          <div class="info-section">
+            <h3 class="section-title">
+              <mat-icon>home</mat-icon>
+              Endereço
+            </h3>
+            
+            <div class="info-grid">
+              <div class="info-item span-2">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Rua</mat-label>
+                  <input matInput [value]="municipality?.street" readonly>
+                  <mat-icon matPrefix>location_on</mat-icon>
+                </mat-form-field>
+              </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Bairro</mat-label>
-      <input matInput [value]="municipality?.neighborhood" disabled />
-    </mat-form-field>
+              <div class="info-item">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Número</mat-label>
+                  <input matInput [value]="municipality?.number" readonly>
+                </mat-form-field>
+              </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>Cidade</mat-label>
-      <input matInput [value]="municipality?.city" disabled />
-    </mat-form-field>
+              <div class="info-item">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Bairro</mat-label>
+                  <input matInput [value]="municipality?.neighborhood" readonly>
+                </mat-form-field>
+              </div>
 
-    <mat-form-field appearance="fill">
-      <mat-label>CEP</mat-label>
-      <input matInput [value]="municipality?.zip_code" disabled />
-    </mat-form-field>
+              <div class="info-item">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Cidade</mat-label>
+                  <input matInput [value]="municipality?.city" readonly>
+                </mat-form-field>
+              </div>
 
-    @if (user?.user_type === 'beneficiary') {
-      <mat-form-field appearance="fill">
-        <mat-label>Renda Familiar</mat-label>
-        <input matInput [value]="user?.family_income" disabled />
-      </mat-form-field>
+              <div class="info-item">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>CEP</mat-label>
+                  <input matInput [value]="municipality?.zip_code" readonly>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Quantidade de Pessoas</mat-label>
-        <input matInput [value]="user?.people_quantity" disabled />
-      </mat-form-field>
-    }
+          <!-- Informações Específicas para Beneficiário -->
+          <div class="info-section" *ngIf="user?.user_type === 'beneficiary'">
+            <h3 class="section-title">
+              <mat-icon>family_restroom</mat-icon>
+              Informações Familiares
+            </h3>
+            
+            <div class="info-grid">
+              <div class="info-item">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Renda Familiar</mat-label>
+                  <input matInput [value]="'R$ ' + user?.family_income" readonly>
+                  <mat-icon matPrefix>attach_money</mat-icon>
+                </mat-form-field>
+              </div>
+
+              <div class="info-item">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Pessoas na Família</mat-label>
+                  <input matInput [value]="user?.people_quantity + ' pessoas'" readonly>
+                  <mat-icon matPrefix>group</mat-icon>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="profile-actions">
+          <button class="btn btn-secondary" routerLink="/main/account/reset-password">
+            <mat-icon>lock_reset</mat-icon>
+            Alterar Senha
+          </button>
+          <button class="btn btn-primary" routerLink="/main">
+            <mat-icon>arrow_back</mat-icon>
+            Voltar ao Dashboard
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
