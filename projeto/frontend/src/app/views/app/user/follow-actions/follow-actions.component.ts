@@ -1,10 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { AuthenticationService } from '../../../../services/security/authentication.service';
 import { User } from '../../../../domain/model/user';
 
 @Component({
   selector: 'app-follow-actions',
-  imports: [],
+  imports: [
+    MatIconModule,
+    MatButtonModule,
+    RouterModule
+  ],
   templateUrl: './follow-actions.component.html',
   styleUrl: './follow-actions.component.css'
 })

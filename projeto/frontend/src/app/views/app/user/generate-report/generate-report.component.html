@@ -1,56 +1,178 @@
-<div class="page-container">
-  
-  @if(userType === 'donor') {
-    <div class="report-section">
-      <div class="data-column">
-        <div class="info-card">
-          <div class="stat-value">35</div>
-          <div class="stat-label">Total de Doações</div>
+<div class="report-container">
+  <div class="container">
+    <div class="report-header fade-in">
+      <h1 class="page-title">Relatórios e Estatísticas</h1>
+      <p class="page-subtitle">
+        @if(userType === 'donor') {
+          Visualize o impacto das suas doações
+        } @else {
+          Acompanhe seu histórico de recebimentos
+        }
+      </p>
+    </div>
+
+    <div class="report-content">
+      @if(userType === 'donor') {
+        <div class="stats-grid">
+          <div class="stat-card card fade-in">
+            <div class="stat-header">
+              <div class="stat-icon donor">
+                <mat-icon>volunteer_activism</mat-icon>
+              </div>
+              <h3>Total de Doações</h3>
+            </div>
+            <div class="stat-value">35</div>
+            <div class="stat-description">Doações realizadas até hoje</div>
+          </div>
+
+          <div class="stat-card card fade-in">
+            <div class="stat-header">
+              <div class="stat-icon success">
+                <mat-icon>trending_up</mat-icon>
+              </div>
+              <h3>Média Semanal</h3>
+            </div>
+            <div class="stat-value">5</div>
+            <div class="stat-description">Doações por semana</div>
+          </div>
+
+          <div class="stat-card card fade-in">
+            <div class="stat-header">
+              <div class="stat-icon primary">
+                <mat-icon>group</mat-icon>
+              </div>
+              <h3>Pessoas Ajudadas</h3>
+            </div>
+            <div class="stat-value">120</div>
+            <div class="stat-description">Beneficiários atendidos</div>
+          </div>
+
+          <div class="stat-card card fade-in">
+            <div class="stat-header">
+              <div class="stat-icon info">
+                <mat-icon>schedule</mat-icon>
+              </div>
+              <h3>Solicitações/Semana</h3>
+            </div>
+            <div class="stat-value">3</div>
+            <div class="stat-description">Média de solicitações recebidas</div>
+          </div>
         </div>
-        <div class="info-card">
-          <div class="stat-value">5</div>
-          <div class="stat-label">Média por Semana</div>
+
+        <div class="impact-section">
+          <div class="impact-card card">
+            <div class="impact-header">
+              <mat-icon>eco</mat-icon>
+              <h2>Impacto Social</h2>
+            </div>
+            <div class="impact-content">
+              <div class="impact-item">
+                <div class="impact-number">2.5kg</div>
+                <div class="impact-label">Alimentos doados por semana</div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-number">15</div>
+                <div class="impact-label">Famílias beneficiadas</div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-number">98%</div>
+                <div class="impact-label">Taxa de aproveitamento</div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div class="data-column">
-        <div class="info-card">
-          <div class="stat-value">120</div>
-          <div class="stat-label">Pessoas Ajudadas</div>
+      }
+
+      @if(userType === 'beneficiary') {
+        <div class="stats-grid">
+          <div class="stat-card card fade-in">
+            <div class="stat-header">
+              <div class="stat-icon primary">
+                <mat-icon>shopping_basket</mat-icon>
+              </div>
+              <h3>Cestas Básicas</h3>
+            </div>
+            <div class="stat-value">10</div>
+            <div class="stat-description">Cestas básicas recebidas</div>
+          </div>
+
+          <div class="stat-card card fade-in">
+            <div class="stat-header">
+              <div class="stat-icon success">
+                <mat-icon>clean_hands</mat-icon>
+              </div>
+              <h3>Cestas de Higiene</h3>
+            </div>
+            <div class="stat-value">4</div>
+            <div class="stat-description">Kits de higiene recebidos</div>
+          </div>
+
+          <div class="stat-card card fade-in">
+            <div class="stat-header">
+              <div class="stat-icon donor">
+                <mat-icon>inventory</mat-icon>
+              </div>
+              <h3>Total de Cestas</h3>
+            </div>
+            <div class="stat-value">14</div>
+            <div class="stat-description">Total de itens recebidos</div>
+          </div>
+
+          <div class="stat-card card fade-in">
+            <div class="stat-header">
+              <div class="stat-icon info">
+                <mat-icon>calendar_month</mat-icon>
+              </div>
+              <h3>Meses Ativos</h3>
+            </div>
+            <div class="stat-value">6</div>
+            <div class="stat-description">Meses solicitando doações</div>
+          </div>
         </div>
-        <div class="info-card">
-          <div class="stat-value">3</div>
-          <div class="stat-label">Solicitações por Semana</div>
+
+        <div class="timeline-section">
+          <div class="timeline-card card">
+            <div class="timeline-header">
+              <mat-icon>timeline</mat-icon>
+              <h2>Histórico de Recebimentos</h2>
+            </div>
+            <div class="timeline-content">
+              <div class="timeline-item">
+                <div class="timeline-date">Dezembro 2024</div>
+                <div class="timeline-description">1 Cesta Básica + 1 Kit Higiene</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-date">Novembro 2024</div>
+                <div class="timeline-description">1 Cesta Básica</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-date">Outubro 2024</div>
+                <div class="timeline-description">1 Kit Higiene</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+
+      <div class="actions-section">
+        <div class="actions-card card">
+          <h3>Ações Disponíveis</h3>
+          <div class="action-buttons">
+            <button class="btn btn-primary" onclick="window.print()">
+              <mat-icon>print</mat-icon>
+              Imprimir Relatório
+            </button>
+            <button class="btn btn-secondary">
+              <mat-icon>download</mat-icon>
+              Baixar PDF
+            </button>
+            <button class="btn btn-secondary">
+              <mat-icon>share</mat-icon>
+              Compartilhar
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  }
-
-  @if(userType === 'beneficiary') {
-    <div class="report-section">
-      <div class="data-column">
-        <div class="info-card">
-          <div class="stat-value">10</div>
-          <div class="stat-label">Cestas Básicas</div>
-        </div>
-      </div>
-      <div class="data-column">
-        <div class="info-card">
-          <div class="stat-value">4</div>
-          <div class="stat-label">Cestas de Higiene</div>
-        </div>
-      </div>
-
-      <div class="bottom-row">
-        <div class="info-card">
-          <div class="stat-value">14</div>
-          <div class="stat-label">Total de Cestas</div>
-        </div>
-        <div class="info-card">
-          <div class="stat-value">6</div>
-          <div class="stat-label">Meses Solicitando</div>
-        </div>
-      </div>
-    </div>
-  }
-
+  </div>
 </div>

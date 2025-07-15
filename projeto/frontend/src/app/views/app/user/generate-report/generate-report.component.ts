@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 import { AuthenticationService } from '../../../../services/security/authentication.service';
 import { User } from '../../../../domain/model/user';
 
 @Component({
   selector: 'app-generate-report',
-  imports: [],
+  imports: [
+    MatIconModule,
+    MatButtonModule
+  ],
   templateUrl: './generate-report.component.html',
   styleUrl: './generate-report.component.css'
 })

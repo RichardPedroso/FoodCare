@@ -1,52 +1,170 @@
-<div>
-  <form class="form-card mat-elevation-z4">
-    <h1>Acompanhamento</h1>
+<div class="follow-container">
+  <div class="container">
+    <div class="follow-header fade-in">
+      <h1 class="page-title">
+        @if(userType === 'donor') {
+          Acompanhar Doações
+        } @else {
+          Acompanhar Solicitações
+        }
+      </h1>
+      <p class="page-subtitle">
+        @if(userType === 'donor') {
+          Visualize o status de todas as suas doações
+        } @else {
+          Acompanhe suas solicitações e histórico
+        }
+      </p>
+    </div>
 
-    @if(userType === 'donor') {
-      <section class="data-table-section">
-        <h2>Situação Doações</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Tipo</th>
-              <th>Quantidade</th>
-              <th>Data</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colspan="4" class="placeholder-text">
-                Tabela com cada doação registrada pelo doador
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-    }
+    <div class="follow-content">
+      @if(userType === 'donor') {
+        <div class="data-card card fade-in">
+          <div class="card-header">
+            <div class="card-icon">
+              <mat-icon>volunteer_activism</mat-icon>
+            </div>
+            <h2>Histórico de Doações</h2>
+          </div>
 
-    @if(userType === 'beneficiary') {
-      <section class="data-table-section">
-        <h2>Situação Solicitações</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>Tipo</th>
-              <th>Quantidade</th>
-              <th>Data</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td colspan="4" class="placeholder-text">
-                Tabela com cada solicitação registrada pelo beneficiário
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </section>
-    }
-    
-  </form>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>
+                    <mat-icon>inventory</mat-icon>
+                    Produto
+                  </th>
+                  <th>
+                    <mat-icon>scale</mat-icon>
+                    Quantidade
+                  </th>
+                  <th>
+                    <mat-icon>event</mat-icon>
+                    Data
+                  </th>
+                  <th>
+                    <mat-icon>info</mat-icon>
+                    Status
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="empty-state">
+                  <td colspan="4">
+                    <div class="empty-content">
+                      <mat-icon>inbox</mat-icon>
+                      <h3>Nenhuma doação encontrada</h3>
+                      <p>Suas doações registradas aparecerão aqui</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-actions">
+            <button class="btn btn-primary" routerLink="/main/user/make-action">
+              <mat-icon>add</mat-icon>
+              Nova Doação
+            </button>
+            <button class="btn btn-secondary">
+              <mat-icon>download</mat-icon>
+              Exportar Dados
+            </button>
+          </div>
+        </div>
+      }
+
+      @if(userType === 'beneficiary') {
+        <div class="data-card card fade-in">
+          <div class="card-header">
+            <div class="card-icon">
+              <mat-icon>request_quote</mat-icon>
+            </div>
+            <h2>Histórico de Solicitações</h2>
+          </div>
+
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>
+                    <mat-icon>shopping_basket</mat-icon>
+                    Tipo
+                  </th>
+                  <th>
+                    <mat-icon>scale</mat-icon>
+                    Quantidade
+                  </th>
+                  <th>
+                    <mat-icon>event</mat-icon>
+                    Data
+                  </th>
+                  <th>
+                    <mat-icon>info</mat-icon>
+                    Status
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="empty-state">
+                  <td colspan="4">
+                    <div class="empty-content">
+                      <mat-icon>inbox</mat-icon>
+                      <h3>Nenhuma solicitação encontrada</h3>
+                      <p>Suas solicitações aparecerão aqui</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-actions">
+            <button class="btn btn-primary" routerLink="/main/user/make-action">
+              <mat-icon>add</mat-icon>
+              Nova Solicitação
+            </button>
+            <button class="btn btn-secondary">
+              <mat-icon>download</mat-icon>
+              Exportar Dados
+            </button>
+          </div>
+        </div>
+      }
+
+      <div class="stats-overview">
+        <div class="stat-card card">
+          <div class="stat-icon">
+            <mat-icon>trending_up</mat-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">0</div>
+            <div class="stat-label">Este Mês</div>
+          </div>
+        </div>
+
+        <div class="stat-card card">
+          <div class="stat-icon">
+            <mat-icon>history</mat-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">0</div>
+            <div class="stat-label">Total</div>
+          </div>
+        </div>
+
+        <div class="stat-card card">
+          <div class="stat-icon">
+            <mat-icon>check_circle</mat-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">0</div>
+            <div class="stat-label">Concluídas</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

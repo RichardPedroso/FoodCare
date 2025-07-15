@@ -1,81 +1,181 @@
-<div>
-  <form class="form-card mat-elevation-z4">
-    
-    @if(userType === 'donor') {
-      <h1>Sua Doação</h1>
-      <section class="form-section">
-        <form class="donation-form" #donationForm>
-          <label>Tipo de Produto</label>
-          <select name="productType" id="productType-select" #productType>
-            <option value="">Selecione uma opção</option>
-            <option value="basic">Alimentos Básicos</option>
-            <option value="hygiene">Produtos de Higiene</option>
-          </select>
+<div class="action-container">
+  <div class="container">
+    <div class="action-header fade-in">
+      <h1 class="page-title">
+        @if(userType === 'donor') {
+          Registrar Doação
+        } @else {
+          Fazer Solicitação
+        }
+      </h1>
+      <p class="page-subtitle">
+        @if(userType === 'donor') {
+          Cadastre os alimentos que você deseja doar
+        } @else {
+          Solicite os itens que você precisa
+        }
+      </p>
+    </div>
 
-          <label>Produto</label>
-          <select name="product_id" id="product-select" #productId required>
-            <option value="">Selecione o produto</option>
-            <option value="1">Arroz</option>
-            <option value="2">Feijão</option>
-            <option value="3">Batata-palha</option>
-            <option value="4">Papel-toalha</option>
-            <option value="5">Papel-higiênico</option>
-            <option value="6">Sabonete</option>
-          </select>
-
-          <label>Data de Validade</label>
-          <input type="date" name="expirationDate" #expirationDate required>
-
-          <label>Quantidade</label>
-          <input type="number" name="quantity" min="1" #quantity required>
-
-          <label>Unidade</label>
-          <div class="unit-section">
-            <label><input type="radio" name="unit" value="Kg" #unitKg required> Kg</label>
-            <label><input type="radio" name="unit" value="L" #unitL required> L</label>
+    <div class="action-content">
+      @if(userType === 'donor') {
+        <div class="action-card card fade-in">
+          <div class="card-header">
+            <div class="card-icon">
+              <mat-icon>volunteer_activism</mat-icon>
+            </div>
+            <h2>Nova Doação</h2>
           </div>
 
-          <label>Solicitar coleta:</label>
-          <label><input type="radio" name="collect" value="yes"> Sim</label>
-          <label><input type="radio" name="collect" value="no"> Não</label>
-        </form>
+          <form class="action-form" #donationForm>
+            <div class="form-section">
+              <h3 class="section-title">Informações do Produto</h3>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Tipo de Produto</mat-label>
+                    <mat-select #productType>
+                      <mat-option value="">Selecione uma opção</mat-option>
+                      <mat-option value="basic">Alimentos Básicos</mat-option>
+                      <mat-option value="hygiene">Produtos de Higiene</mat-option>
+                    </mat-select>
+                    <mat-icon matPrefix>category</mat-icon>
+                  </mat-form-field>
+                </div>
 
-        <div class="action-buttons">
-          <p>Registrar Doação?</p>
-          <button class="primary-button" (click)="registerDonation(productId.value, expirationDate.value, quantity.value, unitKg.checked ? 'Kg' : (unitL.checked ? 'L' : ''))">Sim</button>
-          <p>Compartilhar doação nas redes sociais?</p>
-          <button class="primary-button">Sim</button>
+                <div class="form-group">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Produto</mat-label>
+                    <mat-select #productId required>
+                      <mat-option value="">Selecione o produto</mat-option>
+                      <mat-option value="1">Arroz</mat-option>
+                      <mat-option value="2">Feijão</mat-option>
+                      <mat-option value="3">Batata-palha</mat-option>
+                      <mat-option value="4">Papel-toalha</mat-option>
+                      <mat-option value="5">Papel-higiênico</mat-option>
+                      <mat-option value="6">Sabonete</mat-option>
+                    </mat-select>
+                    <mat-icon matPrefix>inventory</mat-icon>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Data de Validade</mat-label>
+                    <input matInput type="date" #expirationDate required>
+                    <mat-icon matPrefix>event</mat-icon>
+                  </mat-form-field>
+                </div>
+
+                <div class="form-group">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Quantidade</mat-label>
+                    <input matInput type="number" min="1" #quantity required>
+                    <mat-icon matPrefix>scale</mat-icon>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="section-subtitle">Unidade de Medida</label>
+                <mat-radio-group class="radio-group">
+                  <mat-radio-button value="Kg" #unitKg>Quilograma (Kg)</mat-radio-button>
+                  <mat-radio-button value="L" #unitL>Litro (L)</mat-radio-button>
+                </mat-radio-group>
+              </div>
+
+              <div class="form-group">
+                <label class="section-subtitle">Solicitar Coleta</label>
+                <mat-radio-group class="radio-group">
+                  <mat-radio-button value="yes">Sim, preciso de coleta</mat-radio-button>
+                  <mat-radio-button value="no">Não, entregarei pessoalmente</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" 
+                      class="btn btn-primary btn-large" 
+                      (click)="registerDonation(productId.value, expirationDate.value, quantity.value, unitKg.checked ? 'Kg' : (unitL.checked ? 'L' : ''))">
+                <mat-icon>save</mat-icon>
+                Registrar Doação
+              </button>
+              
+              <button type="button" class="btn btn-secondary">
+                <mat-icon>share</mat-icon>
+                Compartilhar
+              </button>
+            </div>
+          </form>
         </div>
-      </section>
-    }
+      }
 
-    @if(userType === 'beneficiary') {
-      <h1>Sua Solicitação</h1>
-      <section class="form-section">
-        <form class="solicitation-form">
-          <label for="tipo-request">Solicitar</label>
-          <select id="tipo-request" name="tipo-request">
-            <option value="">Selecione uma opção</option>
-            <option value="basicBasket">Cesta Básica</option>
-            <option value="HygienBasket">Cesta Higiene</option>
-          </select>
+      @if(userType === 'beneficiary') {
+        <div class="action-card card fade-in">
+          <div class="card-header">
+            <div class="card-icon">
+              <mat-icon>request_quote</mat-icon>
+            </div>
+            <h2>Nova Solicitação</h2>
+          </div>
 
-          <label for="data">Data</label>
-          <input type="date" id="date" name="date">
+          <form class="action-form">
+            <div class="form-section">
+              <h3 class="section-title">Tipo de Solicitação</h3>
+              
+              <div class="form-row">
+                <div class="form-group">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Tipo de Cesta</mat-label>
+                    <mat-select>
+                      <mat-option value="">Selecione uma opção</mat-option>
+                      <mat-option value="basicBasket">Cesta Básica</mat-option>
+                      <mat-option value="HygienBasket">Cesta de Higiene</mat-option>
+                    </mat-select>
+                    <mat-icon matPrefix>shopping_basket</mat-icon>
+                  </mat-form-field>
+                </div>
 
-          <label>Solicitar entrega:</label>
-          <label><input type="radio" name="deliver" value="yes"> Sim</label>
-          <label><input type="radio" name="deliver" value="no"> Não</label>
-        </form>
+                <div class="form-group">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Data da Solicitação</mat-label>
+                    <input matInput type="date">
+                    <mat-icon matPrefix>event</mat-icon>
+                  </mat-form-field>
+                </div>
+              </div>
 
-        <div class="action-buttons">
-          <p>Registrar Solicitação?</p>
-          <button class="primary-button">Sim</button>
-          <p>Compartilhar Solicitação nas redes sociais?</p>
-          <button class="primary-button">Sim</button>
+              <div class="form-group">
+                <label class="section-subtitle">Solicitar Entrega</label>
+                <mat-radio-group class="radio-group">
+                  <mat-radio-button value="yes">Sim, preciso de entrega</mat-radio-button>
+                  <mat-radio-button value="no">Não, buscarei pessoalmente</mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+
+            <div class="info-message">
+              <mat-icon>info</mat-icon>
+              <span>Lembre-se: você pode fazer apenas uma solicitação por mês.</span>
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-primary btn-large">
+                <mat-icon>send</mat-icon>
+                Registrar Solicitação
+              </button>
+              
+              <button type="button" class="btn btn-secondary">
+                <mat-icon>share</mat-icon>
+                Compartilhar
+              </button>
+            </div>
+          </form>
         </div>
-      </section>
-    }
-    
-  </form>
+      }
+    </div>
+  </div>
 </div>

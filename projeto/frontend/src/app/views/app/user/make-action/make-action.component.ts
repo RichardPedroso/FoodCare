@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatButtonModule } from '@angular/material/button';
 import { AuthenticationService } from '../../../../services/security/authentication.service';
 import { User } from '../../../../domain/model/user';
 import { Donation } from '../../../../domain/model/donation';
@@ -9,7 +15,14 @@ import { ProductUpdateService } from '../../../../services/product/product-updat
 
 @Component({
   selector: 'app-make-action',
-  imports: [],
+  imports: [
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatButtonModule
+  ],
   templateUrl: './make-action.component.html',
   styleUrl: './make-action.component.css'
 })
