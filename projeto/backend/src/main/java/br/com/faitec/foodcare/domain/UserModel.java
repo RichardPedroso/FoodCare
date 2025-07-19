@@ -9,14 +9,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserModel {
     private int id;
+    private String name;
     private String email;
     private String password;
-    private String fullname;
-    private UserRole role;
-
-    public enum UserRole{
-        Administrador,
-        User
+    private String phone;
+    private UserType userType;
+    private boolean isAdmin;
+    private double familyIncome;
+    private int peopleQuantity;
+    private int municipalityId;
+    
+    public enum UserType {
+        DONOR,
+        BENEFICIARY
     }
-
 }
