@@ -82,14 +82,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean updateQuantity(int id, int newQuantity) {
+    public boolean updateQuantity(int id, int newStock) {
         Product product = findById(id);
 
         if(product == null){
             return false;
         }
 
-        return productDao.updateQuantity(id, newQuantity);
+        return productDao.updateQuantity(id, newStock);
     }
 
     @Override
