@@ -92,14 +92,5 @@ public class ProductServiceImpl implements ProductService {
         return productDao.updateQuantity(id, newStock);
     }
 
-    @Override
-    public boolean updateExpirationDate(int id, String newExpirationDate) {
-        Product product = findById(id);
 
-        if(product == null){
-            return false;
-        }
-
-        return productDao.updateExpirationDate(id, newExpirationDate);
-    }
 }
