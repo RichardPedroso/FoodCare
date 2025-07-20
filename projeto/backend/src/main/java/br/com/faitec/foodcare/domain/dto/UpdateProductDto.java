@@ -18,7 +18,7 @@ public class UpdateProductDto {
         entity.setName(name);
         entity.setProductType(productType);
         entity.setStock(stock);
-        entity.setIsActive(isActive);
+        entity.setActive(isActive);
         entity.setBasketQuantity(basketQuantity);
         entity.setCategoryId(categoryId);
         entity.setExpirationDate(expirationDate);
