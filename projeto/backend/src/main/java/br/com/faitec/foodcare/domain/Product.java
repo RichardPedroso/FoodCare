@@ -10,6 +10,10 @@ import lombok.NoArgsConstructor;
 public class Product {
     private int id;
     private String name;
-    private int quantity;
+    private String productType; // basic ou hygiene
+    private int stock;
+    private boolean isActive;
+    private int basketQuantity;
+    private int categoryId;
     private String expirationDate;
 }
