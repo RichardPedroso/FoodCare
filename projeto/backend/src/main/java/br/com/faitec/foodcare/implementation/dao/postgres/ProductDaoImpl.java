@@ -51,15 +51,6 @@ public class ProductDaoImpl implements ProductDao {
         }
     }
 
-    @Override
-    public boolean updateExpirationDate(int id, String newExpirationDate) {
-        Product product = findByid(id);
-        if (product != null) {
-            product.setExpirationDate(newExpirationDate);
-            return true;
-        }
-        return false;
-    }
 
     @Override
     public boolean updateNameDao(int id, String newName) {
