@@ -71,9 +71,5 @@ public class ProductRestController {
         return updated ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
-    @PutMapping("/{id}/expiration-date")
-    public ResponseEntity<Void> updateExpirationDate(@PathVariable final int id, @RequestBody final String newExpirationDate){
-        boolean updated = productService.updateExpirationDate(id, newExpirationDate);
-        return updated ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
-    }
+
 }
