@@ -2,10 +2,12 @@ package br.com.faitec.foodcare.controller;
 
 
 import br.com.faitec.foodcare.domain.Municipality;
+import br.com.faitec.foodcare.domain.Request;
 import br.com.faitec.foodcare.domain.UserModel;
 import br.com.faitec.foodcare.domain.dto.UpdatePasswordDto;
 import br.com.faitec.foodcare.domain.dto.UpdateUserDto;
 import br.com.faitec.foodcare.port.service.municipality.MunicipalityService;
+import br.com.faitec.foodcare.port.service.request.RequestService;
 import br.com.faitec.foodcare.port.service.user.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +21,12 @@ import java.util.List;
 public class UserRestController {
     private final UserService userService;
     private final MunicipalityService municipalityService;
+    private final RequestService requestService;
 
-    public UserRestController(UserService userService, MunicipalityService municipalityService){
+    public UserRestController(UserService userService, MunicipalityService municipalityService, RequestService requestService){
         this.userService = userService;
         this.municipalityService = municipalityService;
+        this.requestService = requestService;
     }
 
     @GetMapping()
@@ -103,5 +107,17 @@ public class UserRestController {
         }
         
         return ResponseEntity.ok(municipality);
+    }
+    
+    @GetMapping("/{id}/requests")
+    public ResponseEntity<List<Request>> getUserRequests(@PathVariable final int id) {
+        UserModel user = userService.findById(id);
+        
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        List<Request> requests = requestService.findByUserId(id);
+        return ResponseEntity.ok(requests);
     }
 }
