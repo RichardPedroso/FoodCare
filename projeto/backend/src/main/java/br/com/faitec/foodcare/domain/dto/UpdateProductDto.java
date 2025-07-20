@@ -5,16 +5,23 @@ import br.com.faitec.foodcare.domain.Product;
 public class UpdateProductDto {
     private int id;
     private String name;
-    private int quantity;
+    private String productType;
+    private int stock;
+    private boolean isActive;
+    private int basketQuantity;
+    private int categoryId;
     private String expirationDate;
 
     public Product toProduct(){
         final Product entity = new Product();
         entity.setId(id);
         entity.setName(name);
-        entity.setQuantity(quantity);
+        entity.setProductType(productType);
+        entity.setStock(stock);
+        entity.setIsActive(isActive);
+        entity.setBasketQuantity(basketQuantity);
+        entity.setCategoryId(categoryId);
         entity.setExpirationDate(expirationDate);
-
 
         return entity;
     }
@@ -35,12 +42,44 @@ public class UpdateProductDto {
         this.name = name;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public String getProductType() {
+        return productType;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public int getBasketQuantity() {
+        return basketQuantity;
+    }
+
+    public void setBasketQuantity(int basketQuantity) {
+        this.basketQuantity = basketQuantity;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getExpirationDate() {
