@@ -66,8 +66,8 @@ public class ProductRestController {
     }
 
     @PutMapping("/{id}/quantity")
-    public ResponseEntity<Void> updateQuantity(@PathVariable final int id, @RequestBody final Integer newQuantity){
-        boolean updated = productService.updateQuantity(id, newQuantity);
+    public ResponseEntity<Void> updateQuantity(@PathVariable final int id, @RequestBody final Integer newStock){
+        boolean updated = productService.updateQuantity(id, newStock);
         return updated ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
