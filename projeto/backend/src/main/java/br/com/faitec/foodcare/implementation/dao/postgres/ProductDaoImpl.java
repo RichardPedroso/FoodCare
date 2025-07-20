@@ -72,10 +72,10 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public boolean updateQuantity(int id, int newQuantity) {
+    public boolean updateQuantity(int id, int newStock) {
         Product product = findByid(id);
         if (product != null) {
-            product.setQuantity(newQuantity);
+            product.setStock(newStock);
             return true;
         }
         return false;
