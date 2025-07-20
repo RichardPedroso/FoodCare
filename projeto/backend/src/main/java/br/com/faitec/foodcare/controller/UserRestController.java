@@ -1,9 +1,11 @@
 package br.com.faitec.foodcare.controller;
 
 
+import br.com.faitec.foodcare.domain.Municipality;
 import br.com.faitec.foodcare.domain.UserModel;
 import br.com.faitec.foodcare.domain.dto.UpdatePasswordDto;
 import br.com.faitec.foodcare.domain.dto.UpdateUserDto;
+import br.com.faitec.foodcare.port.service.municipality.MunicipalityService;
 import br.com.faitec.foodcare.port.service.user.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +18,11 @@ import java.util.List;
 @RequestMapping("/api/user")
 public class UserRestController {
     private final UserService userService;
+    private final MunicipalityService municipalityService;
 
-    public UserRestController(UserService userService){
+    public UserRestController(UserService userService, MunicipalityService municipalityService){
         this.userService = userService;
+        this.municipalityService = municipalityService;
     }
 
     @GetMapping()
@@ -84,5 +88,20 @@ public class UserRestController {
         return ResponseEntity.ok(entity);
     }
 
-
+    @GetMapping("/{id}/municipality")
+    public ResponseEntity<Municipality> getUserMunicipality(@PathVariable final int id) {
+        UserModel user = userService.findById(id);
+        
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        Municipality municipality = municipalityService.findById(user.getMunicipalityId());
+        
+        if (municipality == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        return ResponseEntity.ok(municipality);
+    }
 }
