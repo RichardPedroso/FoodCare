@@ -1,7 +1,9 @@
 package br.com.faitec.foodcare.controller;
 
+import br.com.faitec.foodcare.domain.Category;
 import br.com.faitec.foodcare.domain.Product;
 import br.com.faitec.foodcare.domain.dto.UpdateProductDto;
+import br.com.faitec.foodcare.port.service.category.CategoryService;
 import br.com.faitec.foodcare.port.service.product.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,9 +16,11 @@ import java.util.List;
 @RequestMapping("/api/product")
 public class ProductRestController {
     private final ProductService productService;
+    private final CategoryService categoryService;
 
-    public ProductRestController(ProductService productService){
+    public ProductRestController(ProductService productService, CategoryService categoryService){
         this.productService = productService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping
@@ -69,6 +73,23 @@ public class ProductRestController {
     public ResponseEntity<Void> updateQuantity(@PathVariable final int id, @RequestBody final Integer newStock){
         boolean updated = productService.updateQuantity(id, newStock);
         return updated ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}/category")
+    public ResponseEntity<Category> getProductCategory(@PathVariable final int id) {
+        Product product = productService.findById(id);
+        
+        if (product == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        Category category = categoryService.findById(product.getCategoryId());
+        
+        if (category == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        return ResponseEntity.ok(category);
     }
 
 
