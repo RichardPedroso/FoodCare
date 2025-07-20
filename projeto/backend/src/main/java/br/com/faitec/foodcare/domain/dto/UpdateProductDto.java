@@ -12,7 +12,6 @@ public class UpdateProductDto {
     private boolean isActive;
     private int basketQuantity;
     private int categoryId;
-    private String expirationDate;
 
     public Product toProduct(){
         final Product entity = new Product();
@@ -23,7 +22,6 @@ public class UpdateProductDto {
         entity.setActive(isActive);
         entity.setBasketQuantity(basketQuantity);
         entity.setCategoryId(categoryId);
-        entity.setExpirationDate(expirationDate);
 
         return entity;
     }
