@@ -15,5 +15,4 @@ public class Product {
     private boolean isActive;
     private int basketQuantity;
     private int categoryId;
-    private String expirationDate;
 }
