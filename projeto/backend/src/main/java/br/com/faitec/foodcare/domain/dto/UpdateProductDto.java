@@ -1,53 +1,30 @@
 package br.com.faitec.foodcare.domain.dto;
 
 import br.com.faitec.foodcare.domain.Product;
+import lombok.Data;
 
+@Data
 public class UpdateProductDto {
     private int id;
     private String name;
-    private int quantity;
-    private String expirationDate;
+    private String productType;
+    private int stock;
+    private boolean isActive;
+    private int basketQuantity;
+    private int categoryId;
 
     public Product toProduct(){
         final Product entity = new Product();
         entity.setId(id);
         entity.setName(name);
-        entity.setQuantity(quantity);
-        entity.setExpirationDate(expirationDate);
-
+        entity.setProductType(productType);
+        entity.setStock(stock);
+        entity.setActive(isActive);
+        entity.setBasketQuantity(basketQuantity);
+        entity.setCategoryId(categoryId);
 
         return entity;
     }
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public String getExpirationDate() {
-        return expirationDate;
-    }
-
-    public void setExpirationDate(String expirationDate) {
-        this.expirationDate = expirationDate;
-    }
 }

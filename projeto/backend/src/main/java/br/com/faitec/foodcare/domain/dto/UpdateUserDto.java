@@ -1,41 +1,32 @@
 package br.com.faitec.foodcare.domain.dto;
 
 import br.com.faitec.foodcare.domain.UserModel;
+import lombok.Data;
 
+@Data
 public class UpdateUserDto {
     private int id;
-    private String fullName;
+    private String name;
     private String email;
+    private String phone;
+    private UserModel.UserType userType;
+    private boolean isAdmin;
+    private double familyIncome;
+    private int peopleQuantity;
+    private int municipalityId;
 
     public UserModel toUserModel(){
         final UserModel entity = new UserModel();
         entity.setId(id);
-        entity.setFullname(fullName);
+        entity.setName(name);
         entity.setEmail(email);
+        entity.setPhone(phone);
+        entity.setUserType(userType);
+        entity.setAdmin(isAdmin);
+        entity.setFamilyIncome(familyIncome);
+        entity.setPeopleQuantity(peopleQuantity);
+        entity.setMunicipalityId(municipalityId);
         return entity;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 }

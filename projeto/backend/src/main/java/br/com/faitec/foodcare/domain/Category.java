@@ -7,12 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
+public class Category {
     private int id;
-    private String name;
-    private String productType;
-    private int stock;
+    private String description;
     private boolean isActive;
-    private int basketQuantity;
-    private int categoryId;
 }
