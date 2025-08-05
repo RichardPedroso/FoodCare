@@ -35,8 +35,10 @@
                 <div class="form-group">
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Tipo de Produto</mat-label>
-                    <mat-select #productType>
-                      <mat-option value="">Selecione uma opção</mat-option>
+                    <mat-select #productType (selectionChange)="onProductTypeChange(productType.value)">
+                      @if (!productType.value) {
+                        <mat-option value="">Selecione uma opção</mat-option>
+                      }
                       <mat-option value="basic">Alimentos Básicos</mat-option>
                       <mat-option value="hygiene">Produtos de Higiene</mat-option>
                     </mat-select>
@@ -47,14 +49,13 @@
                 <div class="form-group">
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Produto</mat-label>
-                    <mat-select #productId required>
-                      <mat-option value="">Selecione o produto</mat-option>
-                      <mat-option value="1">Arroz</mat-option>
-                      <mat-option value="2">Feijão</mat-option>
-                      <mat-option value="3">Batata-palha</mat-option>
-                      <mat-option value="4">Papel-toalha</mat-option>
-                      <mat-option value="5">Papel-higiênico</mat-option>
-                      <mat-option value="6">Sabonete</mat-option>
+                    <mat-select #productId required (selectionChange)="onProductChange(productId.value)">
+                      @if (!productId.value) {
+                        <mat-option value="">Selecione o produto</mat-option>
+                      }
+                      @for (product of filteredProducts; track product.id) {
+                        <mat-option [value]="product.id">{{ product.name }}</mat-option>
+                      }
                     </mat-select>
                     <mat-icon matPrefix>inventory</mat-icon>
                   </mat-form-field>
@@ -65,26 +66,29 @@
                 <div class="form-group">
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Data de Validade</mat-label>
-                    <input matInput type="date" #expirationDate required>
+                    <input matInput [matDatepicker]="picker" #expirationDate 
+                           placeholder="dd/mm/aaaa" 
+                           readonly
+                           required>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
                     <mat-icon matPrefix>event</mat-icon>
                   </mat-form-field>
+                  @if (isDateInvalid(expirationDate.value)) {
+                    <div class="error-message">A data de validade não pode ser anterior à data atual.</div>
+                  }
                 </div>
 
                 <div class="form-group">
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Quantidade</mat-label>
                     <input matInput type="number" min="1" #quantity required>
+                    @if (selectedProduct) {
+                      <span matTextSuffix>{{ selectedProduct.measure_type }}</span>
+                    }
                     <mat-icon matPrefix>scale</mat-icon>
                   </mat-form-field>
                 </div>
-              </div>
-
-              <div class="form-group">
-                <label class="section-subtitle">Unidade de Medida</label>
-                <mat-radio-group class="radio-group">
-                  <mat-radio-button value="Kg" #unitKg>Quilograma (Kg)</mat-radio-button>
-                  <mat-radio-button value="L" #unitL>Litro (L)</mat-radio-button>
-                </mat-radio-group>
               </div>
 
               <div class="form-group">
@@ -99,7 +103,7 @@
             <div class="form-actions">
               <button type="button" 
                       class="btn btn-primary btn-large" 
-                      (click)="registerDonation(productId.value, expirationDate.value, quantity.value, unitKg.checked ? 'Kg' : (unitL.checked ? 'L' : ''))">
+                      (click)="registerDonation(productId.value, expirationDate.value, quantity.value)">
                 <mat-icon>save</mat-icon>
                 Registrar Doação
               </button>
@@ -130,8 +134,10 @@
                 <div class="form-group">
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Tipo de Cesta</mat-label>
-                    <mat-select>
-                      <mat-option value="">Selecione uma opção</mat-option>
+                    <mat-select #basketType>
+                      @if (!basketType.value) {
+                        <mat-option value="">Selecione uma opção</mat-option>
+                      }
                       <mat-option value="basicBasket">Cesta Básica</mat-option>
                       <mat-option value="HygienBasket">Cesta de Higiene</mat-option>
                     </mat-select>
@@ -142,9 +148,12 @@
                 <div class="form-group">
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Data da Solicitação</mat-label>
-                    <input matInput type="date">
+                    <input matInput type="date" #requestDate [min]="getCurrentDate()">
                     <mat-icon matPrefix>event</mat-icon>
                   </mat-form-field>
+                  @if (requestDate.value && requestDate.value < getCurrentDate()) {
+                    <div class="error-message">A data da solicitação não pode ser anterior à data atual.</div>
+                  }
                 </div>
               </div>
 

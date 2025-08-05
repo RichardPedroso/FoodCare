@@ -116,7 +116,8 @@
       "stock": 3,
       "isActive": true,
       "basketQuantity": 0,
-      "category_id": "1"
+      "category_id": "1",
+      "measure_type": "Kg"
     },
     {
       "id": "2",
@@ -125,7 +126,8 @@
       "stock": 16,
       "isActive": true,
       "basketQuantity": 0,
-      "category_id": "1"
+      "category_id": "1",
+      "measure_type": "Kg"
     },
     {
       "id": "3",
@@ -134,16 +136,18 @@
       "stock": 3,
       "isActive": true,
       "basketQuantity": 0,
-      "category_id": "1"
+      "category_id": "1",
+      "measure_type": "Kg"
     },
     {
       "id": "4",
       "name": "Papel-toalha",
       "productType": "hygiene",
-      "stock": 0,
+      "stock": 8,
       "isActive": true,
       "basketQuantity": 0,
-      "category_id": "2"
+      "category_id": "2",
+      "measure_type": "Un"
     },
     {
       "id": "5",
@@ -152,7 +156,8 @@
       "stock": 0,
       "isActive": true,
       "basketQuantity": 0,
-      "category_id": "2"
+      "category_id": "2",
+      "measure_type": "Un"
     },
     {
       "id": "6",
@@ -161,7 +166,18 @@
       "stock": 0,
       "isActive": true,
       "basketQuantity": 0,
-      "category_id": "2"
+      "category_id": "2",
+      "measure_type": "Un"
+    },
+    {
+      "id": "7",
+      "name": "Óleo de Soja",
+      "productType": "basic",
+      "stock": 2,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "L"
     }
   ],
   "donation": [
@@ -189,6 +205,16 @@
       "id": "a439",
       "donation_date": "2025-07-14T18:37:05.754Z",
       "user_id": "2"
+    },
+    {
+      "id": "4077",
+      "donation_date": "2025-08-05T23:26:25.802Z",
+      "user_id": "bc67"
+    },
+    {
+      "id": "36ad",
+      "donation_date": "2025-08-05T23:31:35.112Z",
+      "user_id": "bc67"
     }
   ],
   "donation_product": [
@@ -231,6 +257,22 @@
       "unit": "Kg",
       "donation_id": "a439",
       "product_id": "2"
+    },
+    {
+      "id": "c410",
+      "quantity": 2,
+      "expirationDate": null,
+      "unit": "L",
+      "donation_id": "4077",
+      "product_id": "7"
+    },
+    {
+      "id": "0c58",
+      "quantity": 8,
+      "expirationDate": null,
+      "unit": "Un",
+      "donation_id": "36ad",
+      "product_id": "4"
     }
   ],
   "user": [

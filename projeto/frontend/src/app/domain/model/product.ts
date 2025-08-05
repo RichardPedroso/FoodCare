@@ -5,5 +5,6 @@ export interface Product {
     stock: number,
     isActive: boolean,
     basketQuantity: number,
-    category_id: string
+    category_id: string,
+    measure_type: string
 }
