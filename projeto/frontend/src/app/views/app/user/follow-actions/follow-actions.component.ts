@@ -36,6 +36,10 @@ export class FollowActionsComponent implements OnInit {
   userType: 'donor' | 'beneficiary' = 'donor';
   donations: DonationDisplay[] = [];
   loading = false;
+  thisMonthCount = 0;
+  totalCount = 0;
+  availableCount = 0;
+  usedCount = 0;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -74,11 +78,27 @@ export class FollowActionsComponent implements OnInit {
           status: 'Disponível'
         };
       });
+      
+      this.calculateStats(userDonations);
     } catch (error) {
       console.error('Erro ao carregar doações:', error);
     } finally {
       this.loading = false;
     }
+  }
+
+  private calculateStats(donations: Donation[]): void {
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+    
+    this.totalCount = donations.length;
+    this.thisMonthCount = donations.filter(donation => {
+      const donationDate = new Date(donation.donation_date);
+      return donationDate.getMonth() === currentMonth && donationDate.getFullYear() === currentYear;
+    }).length;
+    this.availableCount = donations.length; // Todas as doações são consideradas disponíveis
+    this.usedCount = 0; // Nenhuma doação foi utilizada ainda
   }
 
 }

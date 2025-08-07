@@ -168,7 +168,7 @@
             <mat-icon>trending_up</mat-icon>
           </div>
           <div class="stat-content">
-            <div class="stat-number">0</div>
+            <div class="stat-number">{{ thisMonthCount }}</div>
             <div class="stat-label">Este Mês</div>
           </div>
         </div>
@@ -178,18 +178,28 @@
             <mat-icon>history</mat-icon>
           </div>
           <div class="stat-content">
-            <div class="stat-number">0</div>
+            <div class="stat-number">{{ totalCount }}</div>
             <div class="stat-label">Total</div>
           </div>
         </div>
 
         <div class="stat-card card">
           <div class="stat-icon">
-            <mat-icon>check_circle</mat-icon>
+            <mat-icon>inventory</mat-icon>
           </div>
           <div class="stat-content">
-            <div class="stat-number">0</div>
-            <div class="stat-label">Concluídas</div>
+            <div class="stat-number">{{ availableCount }}</div>
+            <div class="stat-label">Disponíveis</div>
+          </div>
+        </div>
+
+        <div class="stat-card card">
+          <div class="stat-icon">
+            <mat-icon>done_all</mat-icon>
+          </div>
+          <div class="stat-content">
+            <div class="stat-number">{{ usedCount }}</div>
+            <div class="stat-label">Utilizadas</div>
           </div>
         </div>
       </div>
