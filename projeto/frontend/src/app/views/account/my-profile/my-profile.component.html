@@ -20,7 +20,6 @@
         </div>
 
         <div class="profile-sections">
-          <!-- Informações Pessoais -->
           <div class="info-section">
             <h3 class="section-title">
               <mat-icon>person_outline</mat-icon>
@@ -54,7 +53,6 @@
             </div>
           </div>
 
-          <!-- Endereço -->
           <div class="info-section">
             <h3 class="section-title">
               <mat-icon>home</mat-icon>
@@ -100,7 +98,6 @@
             </div>
           </div>
 
-          <!-- Informações Específicas para Beneficiário -->
           <div class="info-section" *ngIf="user?.user_type === 'beneficiary'">
             <h3 class="section-title">
               <mat-icon>family_restroom</mat-icon>
@@ -128,7 +125,7 @@
         </div>
 
         <div class="profile-actions">
-          <button class="btn btn-secondary" routerLink="/main/account/reset-password">
+          <button class="btn btn-secondary" routerLink="/main/account/reset-user-password">
             <mat-icon>lock_reset</mat-icon>
             Alterar Senha
           </button>

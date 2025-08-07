@@ -6,6 +6,7 @@ import { authenticationGuard } from './services/security/guard/authentication.gu
 import { MyProfileComponent } from './views/account/my-profile/my-profile.component';
 import { AboutUsComponent } from './views/app/about-us/about-us.component';
 import { ResetPasswordComponent } from './views/account/reset-password/reset-password.component';
+import { ResetUserPasswordComponent } from './views/account/reset-user-password/reset-user-password.component';
 import { LandComponent } from './views/land/land.component';
 import { NotFoundComponent } from './views/not-found/not-found.component';
 
@@ -47,6 +48,10 @@ export const routes: Routes = [
       {
         path: "account/my-profile",
         component: MyProfileComponent
+      },
+      {
+        path: "account/reset-user-password",
+        component: ResetUserPasswordComponent
       },
       {
         path: 'about-us',
