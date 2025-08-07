@@ -19,6 +19,14 @@ interface DonationDisplay {
   status: string;
 }
 
+interface BasketRequest {
+  id?: string;
+  user_id: string;
+  request_date: Date;
+  basket_type: string;
+  status: string;
+}
+
 @Component({
   selector: 'app-follow-actions',
   imports: [
@@ -35,6 +43,7 @@ export class FollowActionsComponent implements OnInit {
   user: User | null = null;
   userType: 'donor' | 'beneficiary' = 'donor';
   donations: DonationDisplay[] = [];
+  basketRequests: BasketRequest[] = [];
   loading = false;
   thisMonthCount = 0;
   totalCount = 0;
@@ -53,6 +62,8 @@ export class FollowActionsComponent implements OnInit {
       this.userType = this.user.user_type as 'donor' | 'beneficiary';
       if (this.userType === 'donor') {
         await this.loadDonations();
+      } else {
+        await this.loadBasketRequests();
       }
     }
   }
@@ -87,6 +98,27 @@ export class FollowActionsComponent implements OnInit {
     }
   }
 
+  private async loadBasketRequests(): Promise<void> {
+    if (!this.user?.id) return;
+    
+    this.loading = true;
+    try {
+      const response = await fetch(`http://localhost:3000/basket_request?user_id=${this.user.id}`);
+      if (response.ok) {
+        this.basketRequests = await response.json();
+        this.basketRequests = this.basketRequests.map(request => ({
+          ...request,
+          request_date: new Date(request.request_date)
+        }));
+        this.calculateBasketStats(this.basketRequests);
+      }
+    } catch (error) {
+      console.error('Erro ao carregar solicitações de cestas:', error);
+    } finally {
+      this.loading = false;
+    }
+  }
+
   private calculateStats(donations: Donation[]): void {
     const now = new Date();
     const currentMonth = now.getMonth();
@@ -99,6 +131,20 @@ export class FollowActionsComponent implements OnInit {
     }).length;
     this.availableCount = donations.length; // Todas as doações são consideradas disponíveis
     this.usedCount = 0; // Nenhuma doação foi utilizada ainda
+  }
+
+  private calculateBasketStats(requests: BasketRequest[]): void {
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+    
+    this.totalCount = requests.length;
+    this.thisMonthCount = requests.filter(request => {
+      const requestDate = new Date(request.request_date);
+      return requestDate.getMonth() === currentMonth && requestDate.getFullYear() === currentYear;
+    }).length;
+    this.availableCount = requests.filter(request => request.status === 'pending').length;
+    this.usedCount = requests.filter(request => request.status === 'collected').length;
   }
 
 }
