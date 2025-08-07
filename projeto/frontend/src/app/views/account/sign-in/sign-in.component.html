@@ -54,12 +54,12 @@
         </button>
       </div>
 
-      @if(isLoginIncorrect){
-      <div class="error-message" *ngIf="isLoginIncorrect">
-        <mat-icon>error</mat-icon>
-        <span>Email e/ou senha incorretos.</span>
-      </div>
-    }
+      @if(isLoginIncorrect) {
+        <div class="error-message">
+          <mat-icon>error</mat-icon>
+          <span>Email e/ou senha incorretos.</span>
+        </div>
+      }
     </form>
 
     <div class="auth-footer">

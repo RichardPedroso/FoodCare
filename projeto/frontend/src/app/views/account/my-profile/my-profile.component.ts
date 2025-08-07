@@ -13,6 +13,7 @@ import { Municipality } from '../../../domain/model/municipality';
   selector: 'app-my-profile',
   standalone: true,
   imports: [
+    RouterModule,
     CommonModule,
     RouterModule,
     MatFormFieldModule,
