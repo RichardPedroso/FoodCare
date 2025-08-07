@@ -148,10 +148,15 @@
                 <div class="form-group">
                   <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Data da Solicitação</mat-label>
-                    <input matInput type="date" #requestDate [min]="getCurrentDate()">
+                    <input matInput [matDatepicker]="requestPicker" #requestDate 
+                           placeholder="dd/mm/aaaa" 
+                           readonly
+                           required>
+                    <mat-datepicker-toggle matIconSuffix [for]="requestPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #requestPicker></mat-datepicker>
                     <mat-icon matPrefix>event</mat-icon>
                   </mat-form-field>
-                  @if (requestDate.value && requestDate.value < getCurrentDate()) {
+                  @if (isDateInvalid(requestDate.value)) {
                     <div class="error-message">A data da solicitação não pode ser anterior à data atual.</div>
                   }
                 </div>
@@ -172,7 +177,9 @@
             </div>
 
             <div class="form-actions">
-              <button type="button" class="btn btn-primary btn-large">
+              <button type="button" 
+                      class="btn btn-primary btn-large"
+                      (click)="basketType.value === 'basicBasket' ? requestBasicBasket(requestDate.value) : basketType.value === 'HygienBasket' ? requestHygieneBasket(requestDate.value) : null">
                 <mat-icon>send</mat-icon>
                 Registrar Solicitação
               </button>

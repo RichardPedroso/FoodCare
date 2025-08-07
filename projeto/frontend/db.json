@@ -113,7 +113,7 @@
       "id": "1",
       "name": "Arroz",
       "productType": "basic",
-      "stock": 3,
+      "stock": 11,
       "isActive": true,
       "basketQuantity": 0,
       "category_id": "1",
@@ -123,7 +123,7 @@
       "id": "2",
       "name": "Feijão",
       "productType": "basic",
-      "stock": 16,
+      "stock": 24,
       "isActive": true,
       "basketQuantity": 0,
       "category_id": "1",
@@ -133,7 +133,7 @@
       "id": "3",
       "name": "Batata-palha",
       "productType": "basic",
-      "stock": 3,
+      "stock": 11,
       "isActive": true,
       "basketQuantity": 0,
       "category_id": "1",
@@ -143,7 +143,7 @@
       "id": "4",
       "name": "Papel-toalha",
       "productType": "hygiene",
-      "stock": 8,
+      "stock": 17,
       "isActive": true,
       "basketQuantity": 0,
       "category_id": "2",
@@ -153,7 +153,7 @@
       "id": "5",
       "name": "Papel-higiênico",
       "productType": "hygiene",
-      "stock": 0,
+      "stock": 9,
       "isActive": true,
       "basketQuantity": 0,
       "category_id": "2",
@@ -163,7 +163,47 @@
       "id": "6",
       "name": "Sabonete",
       "productType": "hygiene",
-      "stock": 0,
+      "stock": 9,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "2",
+      "measure_type": "Un"
+    },
+    {
+      "id": "19",
+      "name": "Creme Dental",
+      "productType": "hygiene",
+      "stock": 9,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "2",
+      "measure_type": "Un"
+    },
+    {
+      "id": "20",
+      "name": "Escova de Dentes",
+      "productType": "hygiene",
+      "stock": 9,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "2",
+      "measure_type": "Un"
+    },
+    {
+      "id": "21",
+      "name": "Absorvente Higiênico",
+      "productType": "hygiene",
+      "stock": 9,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "2",
+      "measure_type": "Un"
+    },
+    {
+      "id": "22",
+      "name": "Desodorante",
+      "productType": "hygiene",
+      "stock": 9,
       "isActive": true,
       "basketQuantity": 0,
       "category_id": "2",
@@ -173,11 +213,121 @@
       "id": "7",
       "name": "Óleo de Soja",
       "productType": "basic",
-      "stock": 2,
+      "stock": 10,
       "isActive": true,
       "basketQuantity": 0,
       "category_id": "1",
       "measure_type": "L"
+    },
+    {
+      "id": "8",
+      "name": "Carne",
+      "productType": "basic",
+      "stock": 8,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Kg"
+    },
+    {
+      "id": "9",
+      "name": "Leite",
+      "productType": "basic",
+      "stock": 8,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "L"
+    },
+    {
+      "id": "10",
+      "name": "Farinha de Trigo",
+      "productType": "basic",
+      "stock": 8,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Kg"
+    },
+    {
+      "id": "11",
+      "name": "Batata",
+      "productType": "basic",
+      "stock": 8,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Kg"
+    },
+    {
+      "id": "12",
+      "name": "Tomate",
+      "productType": "basic",
+      "stock": 8,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Kg"
+    },
+    {
+      "id": "13",
+      "name": "Pão Francês",
+      "productType": "basic",
+      "stock": 8,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Un"
+    },
+    {
+      "id": "14",
+      "name": "Café em Pó",
+      "productType": "basic",
+      "stock": 8,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Kg"
+    },
+    {
+      "id": "15",
+      "name": "Banana",
+      "productType": "basic",
+      "stock": 8,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Kg"
+    },
+    {
+      "id": "16",
+      "name": "Açúcar",
+      "productType": "basic",
+      "stock": 8,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Kg"
+    },
+    {
+      "id": "17",
+      "name": "Manteiga",
+      "productType": "basic",
+      "stock": 8,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Kg"
+    },
+    {
+      "id": "18",
+      "name": "Sal",
+      "productType": "basic",
+      "stock": 8,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Kg"
     }
   ],
   "donation": [
@@ -273,6 +423,29 @@
       "unit": "Un",
       "donation_id": "36ad",
       "product_id": "4"
+    }
+  ],
+  "basket_request": [
+    {
+      "id": "e536",
+      "user_id": "3",
+      "request_date": "2025-08-08T03:00:00.000Z",
+      "basket_type": "basic",
+      "status": "pending"
+    },
+    {
+      "id": "2159",
+      "user_id": "3",
+      "request_date": "2025-08-08T03:00:00.000Z",
+      "basket_type": "hygiene",
+      "status": "pending"
+    },
+    {
+      "id": "578b",
+      "user_id": "4",
+      "request_date": "2025-08-08T03:00:00.000Z",
+      "basket_type": "basic",
+      "status": "pending"
     }
   ],
   "user": [

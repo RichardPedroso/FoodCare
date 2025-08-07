@@ -150,4 +150,131 @@ export class MakeActionComponent implements OnInit {
     }
   }
 
+  async requestBasicBasket(requestDate: string): Promise<void> {
+    if (!this.user || !requestDate) {
+      alert('Por favor, preencha a data da solicitação.');
+      return;
+    }
+
+    try {
+      const hasRequestedThisMonth = await this.checkMonthlyBasketRequest('basic');
+      if (hasRequestedThisMonth) {
+        alert('Você já solicitou uma cesta básica neste mês. Aguarde o próximo mês para fazer uma nova solicitação.');
+        return;
+      }
+
+      const basicProducts = this.products.filter(product => product.productType === 'basic');
+      
+      const insufficientStock = basicProducts.filter(product => product.stock < 1);
+      if (insufficientStock.length > 0) {
+        alert('Não há estoque suficiente para formar uma cesta básica. Produtos em falta: ' + 
+              insufficientStock.map(p => p.name).join(', '));
+        return;
+      }
+
+      for (const product of basicProducts) {
+        await this.productUpdateService.updateStock(product.id!, -1);
+      }
+
+      const basketRequest = {
+        user_id: this.user.id!,
+        request_date: new Date(requestDate),
+        basket_type: 'basic',
+        status: 'pending'
+      };
+
+      const response = await fetch('http://localhost:3000/basket_request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(basketRequest)
+      });
+
+      if (response.ok) {
+        alert('Solicitação de cesta básica registrada com sucesso!');
+        this.router.navigate(['/main']);
+      } else {
+        throw new Error('Erro ao registrar solicitação');
+      }
+      
+    } catch (error) {
+      console.error('Erro ao solicitar cesta básica:', error);
+      alert('Erro ao solicitar cesta básica. Tente novamente.');
+    }
+  }
+
+  async requestHygieneBasket(requestDate: string): Promise<void> {
+    if (!this.user || !requestDate) {
+      alert('Por favor, preencha a data da solicitação.');
+      return;
+    }
+
+    try {
+      const hasRequestedThisMonth = await this.checkMonthlyBasketRequest('hygiene');
+      if (hasRequestedThisMonth) {
+        alert('Você já solicitou uma cesta de higiene neste mês. Aguarde o próximo mês para fazer uma nova solicitação.');
+        return;
+      }
+
+      const hygieneProducts = this.products.filter(product => product.productType === 'hygiene');
+      
+      const insufficientStock = hygieneProducts.filter(product => product.stock < 1);
+      if (insufficientStock.length > 0) {
+        alert('Não há estoque suficiente para formar uma cesta de higiene. Produtos em falta: ' + 
+              insufficientStock.map(p => p.name).join(', '));
+        return;
+      }
+
+      for (const product of hygieneProducts) {
+        await this.productUpdateService.updateStock(product.id!, -1);
+      }
+
+      const basketRequest = {
+        user_id: this.user.id!,
+        request_date: new Date(requestDate),
+        basket_type: 'hygiene',
+        status: 'pending'
+      };
+
+      const response = await fetch('http://localhost:3000/basket_request', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(basketRequest)
+      });
+
+      if (response.ok) {
+        alert('Solicitação de cesta de higiene registrada com sucesso!');
+        this.router.navigate(['/main']);
+      } else {
+        throw new Error('Erro ao registrar solicitação');
+      }
+      
+    } catch (error) {
+      console.error('Erro ao solicitar cesta de higiene:', error);
+      alert('Erro ao solicitar cesta de higiene. Tente novamente.');
+    }
+  }
+
+  private async checkMonthlyBasketRequest(basketType: string): Promise<boolean> {
+    if (!this.user?.id) return false;
+
+    try {
+      const response = await fetch(`http://localhost:3000/basket_request?user_id=${this.user.id}&basket_type=${basketType}`);
+      if (response.ok) {
+        const requests = await response.json();
+        const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
+
+        return requests.some((request: any) => {
+          const requestDate = new Date(request.request_date);
+          return requestDate.getMonth() === currentMonth && requestDate.getFullYear() === currentYear;
+        });
+      }
+      return false;
+    } catch (error) {
+      console.error('Erro ao verificar solicitações mensais:', error);
+      return false;
+    }
+  }
+
 }
