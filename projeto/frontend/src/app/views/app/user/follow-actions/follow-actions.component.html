@@ -50,15 +50,43 @@
                 </tr>
               </thead>
               <tbody>
-                <tr class="empty-state">
-                  <td colspan="4">
-                    <div class="empty-content">
-                      <mat-icon>inbox</mat-icon>
-                      <h3>Nenhuma doação encontrada</h3>
-                      <p>Suas doações registradas aparecerão aqui</p>
-                    </div>
-                  </td>
-                </tr>
+                @if(loading) {
+                  <tr>
+                    <td colspan="4" class="text-center">
+                      <mat-icon>hourglass_empty</mat-icon>
+                      Carregando...
+                    </td>
+                  </tr>
+                } @else if(donations.length === 0) {
+                  <tr class="empty-state">
+                    <td colspan="4">
+                      <div class="empty-content">
+                        <mat-icon>inbox</mat-icon>
+                        <h3>Nenhuma doação encontrada</h3>
+                        <p>Suas doações registradas aparecerão aqui</p>
+                      </div>
+                    </td>
+                  </tr>
+                } @else {
+                  @for(donation of donations; track donation.productName + donation.donationDate) {
+                    <tr>
+                      <td>
+                        <div class="product-info">
+                          <span class="product-name">{{ donation.productName }}</span>
+                        </div>
+                      </td>
+                      <td>
+                        <span class="quantity">{{ donation.quantity }} {{ donation.unit }}</span>
+                      </td>
+                      <td>
+                        <span class="date">{{ donation.donationDate | date:'dd/MM/yyyy' }}</span>
+                      </td>
+                      <td>
+                        <span class="status status-available">{{ donation.status }}</span>
+                      </td>
+                    </tr>
+                  }
+                }
               </tbody>
             </table>
           </div>
