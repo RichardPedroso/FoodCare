@@ -178,6 +178,116 @@
       "basketQuantity": 0,
       "category_id": "1",
       "measure_type": "L"
+    },
+    {
+      "id": "8",
+      "name": "Carne",
+      "productType": "basic",
+      "stock": 0,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Kg"
+    },
+    {
+      "id": "9",
+      "name": "Leite",
+      "productType": "basic",
+      "stock": 0,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "L"
+    },
+    {
+      "id": "10",
+      "name": "Farinha de Trigo",
+      "productType": "basic",
+      "stock": 0,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Kg"
+    },
+    {
+      "id": "11",
+      "name": "Batata",
+      "productType": "basic",
+      "stock": 0,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Kg"
+    },
+    {
+      "id": "12",
+      "name": "Tomate",
+      "productType": "basic",
+      "stock": 0,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Kg"
+    },
+    {
+      "id": "13",
+      "name": "Pão Francês",
+      "productType": "basic",
+      "stock": 0,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Un"
+    },
+    {
+      "id": "14",
+      "name": "Café em Pó",
+      "productType": "basic",
+      "stock": 0,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Kg"
+    },
+    {
+      "id": "15",
+      "name": "Banana",
+      "productType": "basic",
+      "stock": 0,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Kg"
+    },
+    {
+      "id": "16",
+      "name": "Açúcar",
+      "productType": "basic",
+      "stock": 0,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Kg"
+    },
+    {
+      "id": "17",
+      "name": "Manteiga",
+      "productType": "basic",
+      "stock": 0,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Kg"
+    },
+    {
+      "id": "18",
+      "name": "Sal",
+      "productType": "basic",
+      "stock": 0,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "1",
+      "measure_type": "Kg"
     }
   ],
   "donation": [
