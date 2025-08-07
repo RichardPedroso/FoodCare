@@ -170,6 +170,46 @@
       "measure_type": "Un"
     },
     {
+      "id": "19",
+      "name": "Creme Dental",
+      "productType": "hygiene",
+      "stock": 0,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "2",
+      "measure_type": "Un"
+    },
+    {
+      "id": "20",
+      "name": "Escova de Dentes",
+      "productType": "hygiene",
+      "stock": 0,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "2",
+      "measure_type": "Un"
+    },
+    {
+      "id": "21",
+      "name": "Absorvente Higiênico",
+      "productType": "hygiene",
+      "stock": 0,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "2",
+      "measure_type": "Un"
+    },
+    {
+      "id": "22",
+      "name": "Desodorante",
+      "productType": "hygiene",
+      "stock": 0,
+      "isActive": true,
+      "basketQuantity": 0,
+      "category_id": "2",
+      "measure_type": "Un"
+    },
+    {
       "id": "7",
       "name": "Óleo de Soja",
       "productType": "basic",
