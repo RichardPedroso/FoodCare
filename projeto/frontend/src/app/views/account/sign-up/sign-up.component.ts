@@ -48,8 +48,8 @@ export class SignUpComponent implements OnInit {
 
   signUpForm!: FormGroup;
 
-  phoneMinlength: number = 11;
-  phoneMaxlength: number = 11;
+  phoneMinlength: number = 14;
+  phoneMaxlength: number = 15;
 
   nameMinLength: number = 5;
   nameMaxLength: number = 50;
@@ -215,6 +215,40 @@ export class SignUpComponent implements OnInit {
 
     this.incomeError = '';
     return true;
+  }
+
+  formatPhone(event: any): void {
+    let value = event.target.value.replace(/\D/g, '');
+    let formattedValue = '';
+    
+    if (value.length > 0) {
+      if (value.length <= 2) {
+        formattedValue = `(${value}`;
+      } else if (value.length <= 6) {
+        formattedValue = `(${value.substring(0, 2)}) ${value.substring(2)}`;
+      } else if (value.length <= 10) {
+        formattedValue = `(${value.substring(0, 2)}) ${value.substring(2, 6)}-${value.substring(6)}`;
+      } else {
+        formattedValue = `(${value.substring(0, 2)}) ${value.substring(2, 7)}-${value.substring(7, 11)}`;
+      }
+    }
+    
+    this.signUpForm.get('phone')?.setValue(formattedValue, { emitEvent: false });
+  }
+
+  formatZipCode(event: any): void {
+    let value = event.target.value.replace(/\D/g, '');
+    let formattedValue = '';
+    
+    if (value.length > 0) {
+      if (value.length <= 5) {
+        formattedValue = value;
+      } else {
+        formattedValue = `${value.substring(0, 5)}-${value.substring(5, 8)}`;
+      }
+    }
+    
+    this.signUpForm.get('zipCode')?.setValue(formattedValue, { emitEvent: false });
   }
 
   arePasswordsValid() {

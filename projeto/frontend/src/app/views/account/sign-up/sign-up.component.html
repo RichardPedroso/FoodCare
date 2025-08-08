@@ -50,7 +50,9 @@
             <mat-label>Telefone</mat-label>
             <input matInput 
                    placeholder="(00) 00000-0000" 
-                   formControlName="phone">
+                   formControlName="phone"
+                   (input)="formatPhone($event)"
+                   maxlength="15">
             <mat-icon matPrefix>phone</mat-icon>
             <mat-error *ngIf="signUpForm.controls['phone'].hasError('required')">
               Campo obrigatório
@@ -174,7 +176,7 @@
         <div class="form-group">
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>CEP (opcional)</mat-label>
-            <input matInput placeholder="00000-000" formControlName="zipCode" maxlength="9">
+            <input matInput placeholder="00000-000" formControlName="zipCode" maxlength="9" (input)="formatZipCode($event)">
             <mat-icon matPrefix>location_on</mat-icon>
           </mat-form-field>
         </div>
