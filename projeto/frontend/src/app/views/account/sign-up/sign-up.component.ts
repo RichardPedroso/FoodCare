@@ -64,6 +64,8 @@ export class SignUpComponent implements OnInit {
 
   familyIncomeMinLenght: number = 0;
 
+  incomeError: string = '';
+
   constructor(
     private formbuilder: FormBuilder,
     private userCreateService: UserCreateService,
@@ -147,7 +149,16 @@ export class SignUpComponent implements OnInit {
         Validators.minLength(this.familyIncomeMinLenght),
       ]],
 
-    })
+    });
+
+    // Adicionar listeners para validação em tempo real
+    this.signUpForm.get('familyIncome')?.valueChanges.subscribe(() => {
+      this.validateIncomePerCapita();
+    });
+    
+    this.signUpForm.get('peopleQuantity')?.valueChanges.subscribe(() => {
+      this.validateIncomePerCapita();
+    });
   }
 
   validateFields(): boolean {
@@ -177,7 +188,33 @@ export class SignUpComponent implements OnInit {
       return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType && addressValid;
     }
 
-    return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType && addressValid && isPeopleQuantity && isFamilyIncome;
+    return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType && addressValid && isPeopleQuantity && isFamilyIncome && this.validateIncomePerCapita();
+  }
+
+  validateIncomePerCapita(): boolean {
+    const userType = this.signUpForm.controls['userType'].value;
+    if (userType !== 'beneficiary') {
+      this.incomeError = '';
+      return true;
+    }
+
+    const familyIncome = this.signUpForm.controls['familyIncome'].value;
+    const peopleQuantity = this.signUpForm.controls['peopleQuantity'].value;
+
+    if (!familyIncome || !peopleQuantity || peopleQuantity <= 0) {
+      this.incomeError = '';
+      return true;
+    }
+
+    const incomePerCapita = familyIncome / peopleQuantity;
+    
+    if (incomePerCapita > 1518) {
+      this.incomeError = 'Renda per capita acima de R$ 1.518,00. Você não está apto para receber auxílios.';
+      return false;
+    }
+
+    this.incomeError = '';
+    return true;
   }
 
   arePasswordsValid() {
