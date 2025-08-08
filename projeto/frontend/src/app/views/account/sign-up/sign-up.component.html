@@ -50,7 +50,9 @@
             <mat-label>Telefone</mat-label>
             <input matInput 
                    placeholder="(00) 00000-0000" 
-                   formControlName="phone">
+                   formControlName="phone"
+                   (input)="formatPhone($event)"
+                   maxlength="15">
             <mat-icon matPrefix>phone</mat-icon>
             <mat-error *ngIf="signUpForm.controls['phone'].hasError('required')">
               Campo obrigatório
