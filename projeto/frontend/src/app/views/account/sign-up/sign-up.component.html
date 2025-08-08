@@ -176,7 +176,7 @@
         <div class="form-group">
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>CEP (opcional)</mat-label>
-            <input matInput placeholder="00000-000" formControlName="zipCode" maxlength="9">
+            <input matInput placeholder="00000-000" formControlName="zipCode" maxlength="9" (input)="formatZipCode($event)">
             <mat-icon matPrefix>location_on</mat-icon>
           </mat-form-field>
         </div>

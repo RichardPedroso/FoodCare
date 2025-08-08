@@ -236,6 +236,21 @@ export class SignUpComponent implements OnInit {
     this.signUpForm.get('phone')?.setValue(formattedValue, { emitEvent: false });
   }
 
+  formatZipCode(event: any): void {
+    let value = event.target.value.replace(/\D/g, '');
+    let formattedValue = '';
+    
+    if (value.length > 0) {
+      if (value.length <= 5) {
+        formattedValue = value;
+      } else {
+        formattedValue = `${value.substring(0, 5)}-${value.substring(5, 8)}`;
+      }
+    }
+    
+    this.signUpForm.get('zipCode')?.setValue(formattedValue, { emitEvent: false });
+  }
+
   arePasswordsValid() {
     return this.signUpForm.controls['password'].value === this.signUpForm.controls['repeatPassword'].value;
   }
