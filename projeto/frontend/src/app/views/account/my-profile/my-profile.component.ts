@@ -9,6 +9,7 @@ import { AuthenticationService } from '../../../services/security/authentication
 import { MunicipalityReadService } from '../../../services/municipality/municipality-read.service';
 import { Municipality } from '../../../domain/model/municipality';
 
+
 @Component({
   selector: 'app-my-profile',
   standalone: true,
@@ -46,4 +47,6 @@ export class MyProfileComponent implements OnInit {
       });
     }
   }
+
+
 }
