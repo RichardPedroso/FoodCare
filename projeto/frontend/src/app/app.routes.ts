@@ -16,6 +16,7 @@ import { FollowActionsComponent } from './views/app/user/follow-actions/follow-a
 import { GenerateReportComponent } from './views/app/user/generate-report/generate-report.component';
 import { MainComponent } from './views/app/main/main.component';
 import { HelpComponent } from './views/app/help/help.component';
+import { DeleteAccountComponent } from './views/account/delete-account/delete-account.component';
 
 export const routes: Routes = [
 
@@ -52,6 +53,10 @@ export const routes: Routes = [
       {
         path: "account/reset-user-password",
         component: ResetUserPasswordComponent
+      },
+      {
+        path: 'account/delete-account',
+        component: DeleteAccountComponent
       },
       {
         path: 'about-us',

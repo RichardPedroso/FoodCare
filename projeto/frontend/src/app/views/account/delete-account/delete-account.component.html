@@ -1,0 +1,71 @@
+<div class="delete-account-container">
+  <div class="container">
+    <div class="delete-header fade-in">
+      <h1 class="page-title">Excluir Conta</h1>
+      <p class="page-subtitle">Esta ação não pode ser desfeita</p>
+    </div>
+
+    <div class="delete-content">
+      <div class="delete-card card fade-in">
+        <div class="warning-section">
+          <mat-icon class="warning-icon">warning</mat-icon>
+          <h3>Atenção!</h3>
+          <p>Ao excluir sua conta, todos os seus dados serão permanentemente removidos do sistema.</p>
+        </div>
+
+        <form [formGroup]="deleteForm" (ngSubmit)="deleteAccount()">
+          <div class="form-section">
+            <h3 class="section-title">Confirmação de Senha</h3>
+            
+            <div class="form-group">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Digite sua senha</mat-label>
+                <input matInput 
+                       type="password" 
+                       placeholder="Sua senha atual" 
+                       formControlName="password">
+                <mat-icon matPrefix>lock</mat-icon>
+                @if (deleteForm.controls['password'].hasError('required')) {
+                  <mat-error>
+                    Campo obrigatório
+                  </mat-error>
+                }
+              </mat-form-field>
+            </div>
+
+            <div class="message-section">
+              @if (errorMessage) {
+                <div class="error-message">
+                  <mat-icon>error</mat-icon>
+                  {{ errorMessage }}
+                </div>
+              }
+              
+              @if (successMessage) {
+                <div class="success-message">
+                  <mat-icon>check_circle</mat-icon>
+                  {{ successMessage }}
+                </div>
+              }
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" 
+                    class="btn btn-secondary" 
+                    routerLink="/main/account/my-profile">
+              <mat-icon>arrow_back</mat-icon>
+              Cancelar
+            </button>
+            <button type="submit" 
+                    class="btn btn-danger" 
+                    [disabled]="!deleteForm.valid">
+              <mat-icon>delete_forever</mat-icon>
+              Excluir Conta
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
