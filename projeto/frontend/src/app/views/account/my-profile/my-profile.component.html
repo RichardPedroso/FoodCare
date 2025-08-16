@@ -46,7 +46,7 @@
               <div class="info-item">
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Telefone</mat-label>
-                  <input matInput [value]="user?.phone" readonly>
+                  <input matInput [value]="formatPhone(user?.phone)" readonly>
                   <mat-icon matPrefix>phone</mat-icon>
                 </mat-form-field>
               </div>
