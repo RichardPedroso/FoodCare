@@ -87,7 +87,28 @@ export class MakeActionComponent implements OnInit {
 
   isDateInvalid(dateValue: any): boolean {
     if (!dateValue) return false;
-    return new Date(dateValue) < this.minDate;
+    
+    let parsedDate: Date;
+    
+    if (typeof dateValue === 'string' && dateValue.includes('/')) {
+      const parts = dateValue.split('/');
+      if (parts.length === 3) {
+        const day = parseInt(parts[0]);
+        const month = parseInt(parts[1]) - 1;
+        const year = parseInt(parts[2]);
+        parsedDate = new Date(year, month, day);
+      } else {
+        parsedDate = new Date(dateValue);
+      }
+    } else {
+      parsedDate = new Date(dateValue);
+    }
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    parsedDate.setHours(0, 0, 0, 0);
+    
+    return parsedDate < today;
   }
 
   onDateFocus(event: any): void {
@@ -96,7 +117,7 @@ export class MakeActionComponent implements OnInit {
     }
   }
 
-  onDateInput(event: any): void {
+  formatDate(event: any): void {
     let value = event.target.value.replace(/\D/g, '');
     
     if (value.length <= 2) {
@@ -115,6 +136,11 @@ export class MakeActionComponent implements OnInit {
   async registerDonation(productId: string, expirationDate: string, quantity: string): Promise<void> {
     if (!this.user || !productId || !expirationDate || !quantity || !this.selectedProduct) {
       alert('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    if (this.isDateInvalid(expirationDate)) {
+      alert('A data de validade não pode ser anterior à data atual.');
       return;
     }
 
@@ -153,6 +179,11 @@ export class MakeActionComponent implements OnInit {
   async requestBasicBasket(requestDate: string): Promise<void> {
     if (!this.user || !requestDate) {
       alert('Por favor, preencha a data da solicitação.');
+      return;
+    }
+
+    if (this.isDateInvalid(requestDate)) {
+      alert('A data da solicitação não pode ser anterior à data atual.');
       return;
     }
 
@@ -205,6 +236,11 @@ export class MakeActionComponent implements OnInit {
   async requestHygieneBasket(requestDate: string): Promise<void> {
     if (!this.user || !requestDate) {
       alert('Por favor, preencha a data da solicitação.');
+      return;
+    }
+
+    if (this.isDateInvalid(requestDate)) {
+      alert('A data da solicitação não pode ser anterior à data atual.');
       return;
     }
 

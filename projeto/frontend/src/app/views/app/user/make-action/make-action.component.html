@@ -68,7 +68,8 @@
                     <mat-label>Data de Validade</mat-label>
                     <input matInput [matDatepicker]="picker" #expirationDate 
                            placeholder="dd/mm/aaaa" 
-                           readonly
+                           (input)="formatDate($event)"
+                           maxlength="10"
                            required>
                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
@@ -150,7 +151,8 @@
                     <mat-label>Data da Solicitação</mat-label>
                     <input matInput [matDatepicker]="requestPicker" #requestDate 
                            placeholder="dd/mm/aaaa" 
-                           readonly
+                           (input)="formatDate($event)"
+                           maxlength="10"
                            required>
                     <mat-datepicker-toggle matIconSuffix [for]="requestPicker"></mat-datepicker-toggle>
                     <mat-datepicker #requestPicker></mat-datepicker>
