@@ -76,7 +76,38 @@ public class UserPostgresDaoImpl implements UserDao {
 
     @Override
     public UserModel findByEmail(String email) {
-        return null;
+        String sql = "SELECT id, name, email, password, phone, user_type, is_admin, family_income, people_quantity, municipality_id FROM user_model WHERE email = ?";
+        
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if(resultSet.next()) {
+                UserModel user = new UserModel();
+                user.setId(resultSet.getInt("id"));
+                user.setName(resultSet.getString("name"));
+                user.setEmail(resultSet.getString("email"));
+                user.setPassword(resultSet.getString("password"));
+                user.setPhone(resultSet.getString("phone"));
+                user.setUserType(UserModel.UserType.valueOf(resultSet.getString("user_type")));
+                user.setAdmin(resultSet.getBoolean("is_admin"));
+                user.setFamilyIncome(resultSet.getDouble("family_income"));
+                user.setPeopleQuantity(resultSet.getInt("people_quantity"));
+                user.setMunicipalityId(resultSet.getInt("municipality_id"));
+                
+                resultSet.close();
+                preparedStatement.close();
+                return user;
+            }
+            
+            resultSet.close();
+            preparedStatement.close();
+            return null;
+            
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
