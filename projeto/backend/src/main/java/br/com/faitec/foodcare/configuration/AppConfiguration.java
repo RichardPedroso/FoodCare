@@ -1,6 +1,5 @@
 package br.com.faitec.foodcare.configuration;
 
-
 import br.com.faitec.foodcare.implementation.dao.postgres.UserPostgresDaoImpl;
 import br.com.faitec.foodcare.port.dao.user.UserDao;
 import org.springframework.context.annotation.Bean;
@@ -25,8 +24,7 @@ public class AppConfiguration {
     }
 
     @Bean
-    public UserDao getUserFakeDao(final Connection connection) {
-        //return new UserFakeDaoImpl();
+    public UserDao userDao(final Connection connection) {
         return new UserPostgresDaoImpl(connection);
     }
 
