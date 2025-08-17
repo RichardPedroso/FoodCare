@@ -50,17 +50,18 @@ public class PostgresConnectionManagerConfiguration {
 
         ResultSet resultSet = statement.executeQuery(sql);
 
-        boolean dbExist = resultSet.next();
-        if (dbExist || resultSet.getInt("dbs") == 0){
-            String createDbsql = "CREATE DATABASE" + databaseName + " WITH ";
+        if (resultSet.next() && resultSet.getInt("dbs") == 0){
+            String createDbsql = "CREATE DATABASE " + databaseName + " WITH ";
             createDbsql += " OWNER = postgres ENCODING = 'UTF8' ";
-            createDbsql += " CONNECTION LIMIT = -1; ";
+            createDbsql += " CONNECTION LIMIT = -1";
 
             PreparedStatement preparedStatement = connection.prepareStatement(createDbsql);
             preparedStatement.execute();
             preparedStatement.close();
         }
-
+        
+        resultSet.close();
+        statement.close();
     }
 
     @Bean
