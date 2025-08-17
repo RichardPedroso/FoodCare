@@ -27,20 +27,11 @@ public class PostgresConnectionManagerConfiguration {
 
     @Bean
     public Connection getConnection() throws SQLException {
-        // Primeiro conecta no postgres padrão para criar o banco se necessário
         createDataBaseIfNotExist();
-        
-        // Depois conecta no banco específico
-        HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setJdbcUrl(databaseUrl);
-        hikariConfig.setUsername(databaseUsername);
-        hikariConfig.setPassword(databasePassword);
-
-        return new HikariDataSource(hikariConfig).getConnection();
+        return DriverManager.getConnection(databaseUrl, databaseUsername, databasePassword);
     }
 
     private void createDataBaseIfNotExist() throws SQLException {
-        // Conecta no postgres padrão para verificar/criar o banco
         final DataSource tempDataSource = DataSourceBuilder.create()
                 .url(databaseBaseUrl)
                 .username(databaseUsername)
@@ -50,7 +41,7 @@ public class PostgresConnectionManagerConfiguration {
         try (Connection connection = tempDataSource.getConnection();
              Statement statement = connection.createStatement()) {
 
-            String sql = "SELECT COUNT(*) AS dbs FROM pg_catalog.pg_database WHERE lower(datname) = '" + databaseName + "'";
+            String sql = "SELECT COUNT(*) AS dbs FROM pg_catalog.pg_database WHERE datname = '" + databaseName + "'";
             ResultSet resultSet = statement.executeQuery(sql);
 
             if (resultSet.next() && resultSet.getInt("dbs") == 0) {
