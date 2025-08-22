@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgClass } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -21,6 +22,7 @@ import { ProductReadService } from '../../../../services/product/product-read.se
 @Component({
   selector: 'app-make-action',
   imports: [
+    NgClass,
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
@@ -42,6 +44,10 @@ export class MakeActionComponent implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
   selectedProduct: Product | null = null;
+  canRequestBasic: boolean = true;
+  canRequestHygiene: boolean = true;
+  lastBasicRequest: Date | null = null;
+  lastHygieneRequest: Date | null = null;
 
   constructor(
     private router: Router,
@@ -56,6 +62,9 @@ export class MakeActionComponent implements OnInit {
     this.user = this.authenticationService.getCurrentUser();
     if (this.user) {
       this.userType = this.user.user_type as 'donor' | 'beneficiary';
+      if (this.userType === 'beneficiary') {
+        await this.checkRequestAvailability();
+      }
     }
     await this.loadProducts();
   }
@@ -209,7 +218,7 @@ export class MakeActionComponent implements OnInit {
 
       const basketRequest = {
         user_id: this.user.id!,
-        request_date: new Date(requestDate),
+        request_date: this.parseRequestDate(requestDate),
         basket_type: 'basic',
         status: 'pending'
       };
@@ -266,7 +275,7 @@ export class MakeActionComponent implements OnInit {
 
       const basketRequest = {
         user_id: this.user.id!,
-        request_date: new Date(requestDate),
+        request_date: this.parseRequestDate(requestDate),
         basket_type: 'hygiene',
         status: 'pending'
       };
@@ -311,6 +320,92 @@ export class MakeActionComponent implements OnInit {
       console.error('Erro ao verificar solicitações mensais:', error);
       return false;
     }
+  }
+
+  private async checkRequestAvailability(): Promise<void> {
+    if (!this.user?.id) return;
+
+    try {
+      const response = await fetch(`http://localhost:3000/basket_request?user_id=${this.user.id}`);
+      if (response.ok) {
+        const requests = await response.json();
+        
+        const basicRequests = requests.filter((r: any) => r.basket_type === 'basic');
+        const hygieneRequests = requests.filter((r: any) => r.basket_type === 'hygiene');
+        
+        if (basicRequests.length > 0) {
+          this.lastBasicRequest = new Date(Math.max(...basicRequests.map((r: any) => new Date(r.request_date).getTime())));
+        }
+        
+        if (hygieneRequests.length > 0) {
+          this.lastHygieneRequest = new Date(Math.max(...hygieneRequests.map((r: any) => new Date(r.request_date).getTime())));
+        }
+        
+        this.updateRequestAvailability();
+      }
+    } catch (error) {
+      console.error('Erro ao verificar disponibilidade de solicitações:', error);
+    }
+  }
+
+  private updateRequestAvailability(): void {
+    const now = new Date();
+    
+    if (this.lastBasicRequest) {
+      const nextBasicDate = new Date(this.lastBasicRequest);
+      nextBasicDate.setMonth(nextBasicDate.getMonth() + 1);
+      this.canRequestBasic = now >= nextBasicDate;
+    }
+    
+    if (this.lastHygieneRequest) {
+      const nextHygieneDate = new Date(this.lastHygieneRequest);
+      nextHygieneDate.setMonth(nextHygieneDate.getMonth() + 1);
+      this.canRequestHygiene = now >= nextHygieneDate;
+    }
+  }
+
+  getBasicBasketStatus(): string {
+    if (this.canRequestBasic) {
+      return 'Solicitação de cesta básica disponível';
+    }
+    
+    if (this.lastBasicRequest) {
+      const nextDate = new Date(this.lastBasicRequest);
+      nextDate.setMonth(nextDate.getMonth() + 1);
+      return `Próxima solicitação de cesta básica estará disponível em ${nextDate.toLocaleDateString('pt-BR')}`;
+    }
+    
+    return 'Solicitação de cesta básica disponível';
+  }
+
+  getHygieneBasketStatus(): string {
+    if (this.canRequestHygiene) {
+      return 'Solicitação de cesta de higiene disponível';
+    }
+    
+    if (this.lastHygieneRequest) {
+      const nextDate = new Date(this.lastHygieneRequest);
+      nextDate.setMonth(nextDate.getMonth() + 1);
+      return `Próxima solicitação de cesta de higiene estará disponível em ${nextDate.toLocaleDateString('pt-BR')}`;
+    }
+    
+    return 'Solicitação de cesta de higiene disponível';
+  }
+
+  private parseRequestDate(dateValue: any): Date {
+    if (!dateValue) return new Date();
+    
+    if (typeof dateValue === 'string' && dateValue.includes('/')) {
+      const parts = dateValue.split('/');
+      if (parts.length === 3) {
+        const day = parseInt(parts[0]);
+        const month = parseInt(parts[1]) - 1;
+        const year = parseInt(parts[2]);
+        return new Date(year, month, day);
+      }
+    }
+    
+    return new Date(dateValue);
   }
 
 }
