@@ -17,6 +17,7 @@ import { GenerateReportComponent } from './views/app/user/generate-report/genera
 import { MainComponent } from './views/app/main/main.component';
 import { HelpComponent } from './views/app/help/help.component';
 import { DeleteAccountComponent } from './views/account/delete-account/delete-account.component';
+import { MainAdminComponent } from './views/app/admin/main-admin/main-admin.component';
 
 export const routes: Routes = [
 
@@ -77,6 +78,10 @@ export const routes: Routes = [
       {
         path: 'user/generate-report',
         component: GenerateReportComponent
+      },
+      {
+        path: 'admin/dashboard',
+        component: MainAdminComponent
       },
     ]
   },

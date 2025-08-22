@@ -66,8 +66,14 @@ export class SignInComponent{
   loginIfCredentialsIsValid() {
     console.log('verificando as credenciais...');
     if (this.authenticationService.isAuthenticated()) {
-      console.log('credeciais validas, navegando para tela principal')
-      this.router.navigate(['/main']);
+      const user = this.authenticationService.getCurrentUser();
+      if (user?.user_type === 'admin') {
+        console.log('credenciais validas, navegando para dashboard admin')
+        this.router.navigate(['/main/admin/dashboard']);
+      } else {
+        console.log('credenciais validas, navegando para tela principal')
+        this.router.navigate(['/main']);
+      }
       return;
     }
 
@@ -96,13 +102,17 @@ export class SignInComponent{
 
           this.authenticationService.addDataToLocalStorage(user);
           
-          if (user.user_type === 'donor') {
-            console.log('Usuário identificado como doador');
-          } else if (user.user_type === 'beneficiary') {
-            console.log('Usuário identificado como beneficiário');
+          if (user.user_type === 'admin') {
+            console.log('Usuário identificado como administrador');
+            this.router.navigate(['/main/admin/dashboard']);
+          } else {
+            if (user.user_type === 'donor') {
+              console.log('Usuário identificado como doador');
+            } else if (user.user_type === 'beneficiary') {
+              console.log('Usuário identificado como beneficiário');
+            }
+            this.router.navigate(['/main']);
           }
-          
-          this.router.navigate(['/main']);
       },
       error: (err) => {
         console.error('Erro ao tentar autenticar no servidor:', err);
