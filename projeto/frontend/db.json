@@ -450,13 +450,23 @@
   ],
   "user": [
     {
+      "id": "admin1",
+      "name": "Admin",
+      "email": "admin@foodcare.com",
+      "password": "admin123",
+      "phone": "11999999999",
+      "user_type": "admin",
+      "family_income": "",
+      "people_quantity": "",
+      "municipality_id": "1"
+    },
+    {
       "id": "1",
       "name": "tiburgus",
       "email": "tiburgus@gmail.com",
       "password": "1234567",
       "phone": "3",
       "user_type": "donor",
-      "is_admin": false,
       "family_income": "",
       "people_quantity": "",
       "municipality_id": "1"
@@ -468,7 +478,6 @@
       "password": "1234567",
       "phone": "3",
       "user_type": "donor",
-      "is_admin": false,
       "family_income": "",
       "people_quantity": "",
       "municipality_id": "2"
@@ -480,7 +489,6 @@
       "password": "12345678",
       "phone": "3",
       "user_type": "beneficiary",
-      "is_admin": false,
       "family_income": "2222",
       "people_quantity": "4",
       "municipality_id": "3"
@@ -492,7 +500,6 @@
       "password": "pinto123",
       "phone": "3",
       "user_type": "beneficiary",
-      "is_admin": false,
       "family_income": "1234",
       "people_quantity": "4",
       "municipality_id": "4"
@@ -504,7 +511,6 @@
       "password": "123456",
       "phone": "12345678902",
       "user_type": "donor",
-      "is_admin": false,
       "family_income": "",
       "people_quantity": "",
       "municipality_id": "2"
@@ -516,7 +522,6 @@
       "password": "asdzxc",
       "phone": "11111111111",
       "user_type": "donor",
-      "is_admin": false,
       "family_income": "",
       "people_quantity": "",
       "municipality_id": "b30e"
@@ -528,7 +533,6 @@
       "password": "123asd",
       "phone": "12312312312",
       "user_type": "beneficiary",
-      "is_admin": false,
       "family_income": "2000",
       "people_quantity": "5",
       "municipality_id": "a30e"
@@ -540,7 +544,6 @@
       "password": "pintao",
       "phone": "66666666666",
       "user_type": "beneficiary",
-      "is_admin": false,
       "family_income": "100000000000000000000000",
       "people_quantity": "1000000",
       "municipality_id": "4507"
@@ -552,7 +555,6 @@
       "password": "24242424",
       "phone": "24924242424",
       "user_type": "donor",
-      "is_admin": false,
       "family_income": "",
       "people_quantity": "",
       "municipality_id": "c46b"

@@ -1,0 +1,70 @@
+<div class="container">
+  <div class="admin-header">
+    <h1>Dashboard Administrativo</h1>
+    <p class="text-secondary">Controle de estoque de produtos</p>
+  </div>
+
+  <div class="actions-section">
+    <div class="actions-grid">
+      <div class="action-card card" (click)="showBasicProducts()">
+        <div class="action-icon">📦</div>
+        <h3>Verificar estoque de "Produtos Básicos"</h3>
+        <p>Visualize o estoque de alimentos básicos</p>
+      </div>
+      
+      <div class="action-card card" (click)="showHygieneProducts()">
+        <div class="action-icon">🧴</div>
+        <h3>Verificar estoque de "Produtos de Higiene"</h3>
+        <p>Visualize o estoque de produtos de higiene</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="charts-container" *ngIf="showBasicChart || showHygieneChart">
+    <!-- Gráfico Produtos Básicos -->
+    <div class="chart-card card" *ngIf="showBasicChart">
+      <h2>Produtos Básicos</h2>
+      <div class="chart-container">
+        <div class="y-axis">
+          <div *ngFor="let label of getYAxisLabels()" class="y-label">{{label}}</div>
+        </div>
+        <div class="chart-area">
+          <div class="chart">
+            <div class="bars-container">
+              <div *ngFor="let product of basicProducts" class="bar-item">
+                <div class="bar-wrapper">
+                  <div class="bar" [style.height]="getBarHeight(product.stock)"></div>
+                  <span class="stock-value">{{product.stock}}</span>
+                </div>
+                <span class="product-name">{{product.name}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráfico Produtos de Higiene -->
+    <div class="chart-card card" *ngIf="showHygieneChart">
+      <h2>Produtos de Higiene</h2>
+      <div class="chart-container">
+        <div class="y-axis">
+          <div *ngFor="let label of getYAxisLabels()" class="y-label">{{label}}</div>
+        </div>
+        <div class="chart-area">
+          <div class="chart">
+            <div class="bars-container">
+              <div *ngFor="let product of hygieneProducts" class="bar-item">
+                <div class="bar-wrapper">
+                  <div class="bar" [style.height]="getBarHeight(product.stock)"></div>
+                  <span class="stock-value">{{product.stock}}</span>
+                </div>
+                <span class="product-name">{{product.name}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

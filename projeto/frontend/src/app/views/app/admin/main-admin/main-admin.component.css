@@ -1,0 +1,241 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-xl);
+}
+
+.admin-header {
+  text-align: center;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.admin-header h1 {
+  font-size: var(--font-size-3xl);
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-sm);
+  font-weight: 700;
+}
+
+.actions-section {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-xl);
+}
+
+.action-card {
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  position: relative;
+  padding: var(--spacing-xl);
+  text-align: center;
+  border: 2px solid transparent;
+  background: linear-gradient(135deg, var(--card-bg) 0%, rgba(255, 255, 255, 0.9) 100%);
+}
+
+.action-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px var(--shadow-medium);
+  border-color: rgba(158, 103, 48, 0.2);
+}
+
+.action-icon {
+  font-size: 3rem;
+  margin-bottom: var(--spacing-md);
+  display: block;
+}
+
+.action-card h3 {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.action-card p {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.charts-container {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-xl);
+}
+
+.chart-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: 0 4px 6px var(--shadow-light);
+  transition: box-shadow var(--transition-normal);
+}
+
+.chart-card:hover {
+  box-shadow: 0 8px 25px var(--shadow-medium);
+}
+
+.chart-card h2 {
+  font-size: var(--font-size-xl);
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-lg);
+  text-align: center;
+  font-weight: 600;
+}
+
+.chart-container {
+  display: flex;
+  gap: var(--spacing-md);
+  height: 450px;
+}
+
+.y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 50px;
+  padding-right: var(--spacing-sm);
+  height: 400px;
+  padding-bottom: 50px;
+}
+
+.y-label {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  text-align: right;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.chart-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart {
+  height: 400px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+}
+
+.bars-container {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--spacing-sm);
+  height: 100%;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.bar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  min-width: 60px;
+}
+
+.bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 80%;
+  position: relative;
+}
+
+.bar {
+  width: 40px;
+  background: linear-gradient(to top, var(--primary-color), var(--primary-hover));
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  transition: all var(--transition-normal);
+  min-height: 10px;
+  position: relative;
+  margin-top: auto;
+}
+
+.bar:hover {
+  background: linear-gradient(to top, var(--primary-hover), var(--accent-orange));
+  transform: scaleX(1.1);
+}
+
+.stock-value {
+  position: absolute;
+  top: -35px;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--primary-color);
+  background: var(--card-bg);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 2px 4px var(--shadow-light);
+}
+
+.product-name {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  text-align: center;
+  margin-top: var(--spacing-sm);
+  font-weight: 500;
+  max-width: 80px;
+  word-wrap: break-word;
+  line-height: 1.2;
+}
+
+@media (max-width: 768px) {
+  .actions-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+  
+  .charts-container {
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+  
+  .container {
+    padding: var(--spacing-lg);
+  }
+  
+  .chart-container {
+    height: 350px;
+  }
+  
+  .chart {
+    height: 300px;
+  }
+  
+  .y-axis {
+    width: 40px;
+    height: 300px;
+    padding-bottom: 40px;
+  }
+  
+  .y-label {
+    font-size: 10px;
+  }
+  
+  .bar {
+    width: 30px;
+  }
+  
+  .bars-container {
+    gap: var(--spacing-xs);
+  }
+  
+  .bar-item {
+    min-width: 40px;
+  }
+  
+  .product-name {
+    font-size: 10px;
+    max-width: 60px;
+  }
+}

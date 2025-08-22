@@ -291,7 +291,6 @@ export class SignUpComponent implements OnInit {
         password: formDataSignUp.password,
         phone: formDataSignUp.phone,
         user_type: formDataSignUp.userType,
-        is_admin: false,
         family_income: '',
         people_quantity: '',
         municipality_id: createdMunicipality.id
@@ -306,7 +305,12 @@ export class SignUpComponent implements OnInit {
       console.log("usuario criado com sucesso: ", createdUser);
 
       this.authenticationService.addDataToLocalStorage(createdUser);
-      this.router.navigate(['/main']);
+      
+      if (createdUser.user_type === 'admin') {
+        this.router.navigate(['/main/admin/dashboard']);
+      } else {
+        this.router.navigate(['/main']);
+      }
     }catch(error){
       console.error("erro ao criar usuario ou municipality:", error);
     }
