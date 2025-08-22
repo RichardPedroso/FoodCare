@@ -41,9 +41,9 @@ import { User } from '../../../domain/model/user';
 
 export class SignInComponent{
 
-  email = new FormControl(null);
+  email = new FormControl(null, [Validators.required, Validators.email]);
 
-  password = new FormControl(null, [Validators.minLength(6), Validators.maxLength(18)]);
+  password = new FormControl(null, [Validators.required]);
 
   hidePassword: boolean = true;
 

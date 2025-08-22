@@ -7,7 +7,9 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:FoodCare": "node dist/food-care/server/server.mjs"
+    "serve:ssr:FoodCare": "node dist/food-care/server/server.mjs",
+    "json-server": "json-server --watch db.json --port 3000",
+    "dev": "concurrently \"npm run json-server\" \"ng serve\""
   },
   "private": true,
   "dependencies": {
