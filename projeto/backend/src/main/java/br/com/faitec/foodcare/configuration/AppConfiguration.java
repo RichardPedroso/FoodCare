@@ -1,11 +1,14 @@
 package br.com.faitec.foodcare.configuration;
 
-
+import br.com.faitec.foodcare.implementation.dao.postgres.UserPostgresDaoImpl;
 import br.com.faitec.foodcare.port.dao.user.UserDao;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.sql.Connection;
 import java.util.Arrays;
 
 @Configuration
@@ -13,15 +16,61 @@ public class AppConfiguration {
     private final Environment environment;
 
     public AppConfiguration(Environment environment) {
-
         this.environment = environment;
 
-        System.out.println("---------");
+        System.out.println("------");
         System.out.println(Arrays.toString(environment.getActiveProfiles()));
-        System.out.println("---------");
+        System.out.println("------");
     }
 
+    @Bean
+    public UserDao userDao(final Connection connection) {
+        return new UserPostgresDaoImpl(connection);
+    }
 
+    @Bean
+    public br.com.faitec.foodcare.port.dao.municipality.MunicipalityDao municipalityDao(final Connection connection) {
+        return new br.com.faitec.foodcare.implementation.dao.postgres.MunicipalityDaoImpl(connection);
+    }
+
+    @Bean
+    public br.com.faitec.foodcare.port.dao.category.CategoryDao categoryDao(final Connection connection) {
+        return new br.com.faitec.foodcare.implementation.dao.postgres.CategoryDaoImpl(connection);
+    }
+
+    @Bean
+    public br.com.faitec.foodcare.port.dao.product.ProductDao productDao(final Connection connection) {
+        return new br.com.faitec.foodcare.implementation.dao.postgres.ProductDaoImpl(connection);
+    }
+
+    @Bean
+    public br.com.faitec.foodcare.port.dao.donation.DonationDao donationDao(final Connection connection) {
+        return new br.com.faitec.foodcare.implementation.dao.postgres.DonationDaoImpl(connection);
+    }
+
+    @Bean
+    public br.com.faitec.foodcare.port.dao.request.RequestDao requestDao(final Connection connection) {
+        return new br.com.faitec.foodcare.implementation.dao.postgres.RequestDaoImpl(connection);
+    }
+
+    @Bean
+    public br.com.faitec.foodcare.port.dao.donationproduct.DonationProductDao donationProductDao(final Connection connection) {
+        return new br.com.faitec.foodcare.implementation.dao.postgres.DonationProductDaoImpl(connection);
+    }
+
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:4200")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
+    }
 
 }
 
