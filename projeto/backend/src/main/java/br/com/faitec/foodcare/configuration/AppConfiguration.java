@@ -29,6 +29,36 @@ public class AppConfiguration {
     }
 
     @Bean
+    public br.com.faitec.foodcare.port.dao.municipality.MunicipalityDao municipalityDao(final Connection connection) {
+        return new br.com.faitec.foodcare.implementation.dao.postgres.MunicipalityDaoImpl(connection);
+    }
+
+    @Bean
+    public br.com.faitec.foodcare.port.dao.category.CategoryDao categoryDao(final Connection connection) {
+        return new br.com.faitec.foodcare.implementation.dao.postgres.CategoryDaoImpl(connection);
+    }
+
+    @Bean
+    public br.com.faitec.foodcare.port.dao.product.ProductDao productDao(final Connection connection) {
+        return new br.com.faitec.foodcare.implementation.dao.postgres.ProductDaoImpl(connection);
+    }
+
+    @Bean
+    public br.com.faitec.foodcare.port.dao.donation.DonationDao donationDao(final Connection connection) {
+        return new br.com.faitec.foodcare.implementation.dao.postgres.DonationDaoImpl(connection);
+    }
+
+    @Bean
+    public br.com.faitec.foodcare.port.dao.request.RequestDao requestDao(final Connection connection) {
+        return new br.com.faitec.foodcare.implementation.dao.postgres.RequestDaoImpl(connection);
+    }
+
+    @Bean
+    public br.com.faitec.foodcare.port.dao.donationproduct.DonationProductDao donationProductDao(final Connection connection) {
+        return new br.com.faitec.foodcare.implementation.dao.postgres.DonationProductDaoImpl(connection);
+    }
+
+    @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
