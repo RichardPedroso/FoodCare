@@ -2,84 +2,234 @@ package br.com.faitec.foodcare.implementation.dao.postgres;
 
 import br.com.faitec.foodcare.domain.Request;
 import br.com.faitec.foodcare.port.dao.request.RequestDao;
-import org.springframework.stereotype.Repository;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
-@Repository
 public class RequestDaoImpl implements RequestDao {
 
-    private final List<Request> requests = new ArrayList<>();
-    private final AtomicInteger idGenerator = new AtomicInteger(1);
+    private final Connection connection;
+
+    public RequestDaoImpl(Connection connection) {
+        this.connection = connection;
+    }
 
     @Override
     public int create(Request entity) {
-        int id = idGenerator.getAndIncrement();
-        entity.setId(id);
-        requests.add(entity);
-        return id;
+        String sql = "INSERT INTO request(request_date, request_type, status, user_id) VALUES (?, ?, ?, ?)";
+        
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, entity.getRequestDate());
+            preparedStatement.setString(2, entity.getRequestType().name());
+            preparedStatement.setString(3, entity.getStatus().name());
+            preparedStatement.setInt(4, entity.getUserId());
+            preparedStatement.execute();
+            
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            int id = 0;
+            if (resultSet.next()) {
+                id = resultSet.getInt(1);
+            }
+            
+            resultSet.close();
+            preparedStatement.close();
+            return id;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void delete(int id) {
-        requests.removeIf(request -> request.getId() == id);
+        String sql = "DELETE FROM request WHERE id = ?";
+        
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public Request findByid(int id) {
-        return requests.stream()
-                .filter(request -> request.getId() == id)
-                .findFirst()
-                .orElse(null);
+        String sql = "SELECT * FROM request WHERE id = ?";
+        
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if (resultSet.next()) {
+                Request request = new Request();
+                request.setId(resultSet.getInt("id"));
+                request.setRequestDate(resultSet.getString("request_date"));
+                request.setRequestType(Request.RequestType.valueOf(resultSet.getString("request_type")));
+                request.setStatus(Request.RequestStatus.valueOf(resultSet.getString("status")));
+                request.setUserId(resultSet.getInt("user_id"));
+                
+                resultSet.close();
+                preparedStatement.close();
+                return request;
+            }
+            
+            resultSet.close();
+            preparedStatement.close();
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public List<Request> findAll() {
-        return new ArrayList<>(requests);
+        String sql = "SELECT * FROM request";
+        List<Request> requests = new ArrayList<>();
+        
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            while (resultSet.next()) {
+                Request request = new Request();
+                request.setId(resultSet.getInt("id"));
+                request.setRequestDate(resultSet.getString("request_date"));
+                request.setRequestType(Request.RequestType.valueOf(resultSet.getString("request_type")));
+                request.setStatus(Request.RequestStatus.valueOf(resultSet.getString("status")));
+                request.setUserId(resultSet.getInt("user_id"));
+                requests.add(request);
+            }
+            
+            resultSet.close();
+            preparedStatement.close();
+            return requests;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public void update(int id, Request entity) {
-        for (int i = 0; i < requests.size(); i++) {
-            if (requests.get(i).getId() == id) {
-                entity.setId(id);
-                requests.set(i, entity);
-                break;
-            }
+        String sql = "UPDATE request SET request_date = ?, request_type = ?, status = ?, user_id = ? WHERE id = ?";
+        
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, entity.getRequestDate());
+            preparedStatement.setString(2, entity.getRequestType().name());
+            preparedStatement.setString(3, entity.getStatus().name());
+            preparedStatement.setInt(4, entity.getUserId());
+            preparedStatement.setInt(5, id);
+            preparedStatement.execute();
+            preparedStatement.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @Override
     public List<Request> findByUserId(int userId) {
-        return requests.stream()
-                .filter(request -> request.getUserId() == userId)
-                .collect(Collectors.toList());
+        String sql = "SELECT * FROM request WHERE user_id = ?";
+        List<Request> requests = new ArrayList<>();
+        
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            while (resultSet.next()) {
+                Request request = new Request();
+                request.setId(resultSet.getInt("id"));
+                request.setRequestDate(resultSet.getString("request_date"));
+                request.setRequestType(Request.RequestType.valueOf(resultSet.getString("request_type")));
+                request.setStatus(Request.RequestStatus.valueOf(resultSet.getString("status")));
+                request.setUserId(resultSet.getInt("user_id"));
+                requests.add(request);
+            }
+            
+            resultSet.close();
+            preparedStatement.close();
+            return requests;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public List<Request> findByStatus(Request.RequestStatus status) {
-        return requests.stream()
-                .filter(request -> request.getStatus() == status)
-                .collect(Collectors.toList());
+        String sql = "SELECT * FROM request WHERE status = ?";
+        List<Request> requests = new ArrayList<>();
+        
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, status.name());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            while (resultSet.next()) {
+                Request request = new Request();
+                request.setId(resultSet.getInt("id"));
+                request.setRequestDate(resultSet.getString("request_date"));
+                request.setRequestType(Request.RequestType.valueOf(resultSet.getString("request_type")));
+                request.setStatus(Request.RequestStatus.valueOf(resultSet.getString("status")));
+                request.setUserId(resultSet.getInt("user_id"));
+                requests.add(request);
+            }
+            
+            resultSet.close();
+            preparedStatement.close();
+            return requests;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public List<Request> findByRequestType(Request.RequestType requestType) {
-        return requests.stream()
-                .filter(request -> request.getRequestType() == requestType)
-                .collect(Collectors.toList());
+        String sql = "SELECT * FROM request WHERE request_type = ?";
+        List<Request> requests = new ArrayList<>();
+        
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, requestType.name());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            while (resultSet.next()) {
+                Request request = new Request();
+                request.setId(resultSet.getInt("id"));
+                request.setRequestDate(resultSet.getString("request_date"));
+                request.setRequestType(Request.RequestType.valueOf(resultSet.getString("request_type")));
+                request.setStatus(Request.RequestStatus.valueOf(resultSet.getString("status")));
+                request.setUserId(resultSet.getInt("user_id"));
+                requests.add(request);
+            }
+            
+            resultSet.close();
+            preparedStatement.close();
+            return requests;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     public boolean updateStatus(int id, Request.RequestStatus newStatus) {
-        Request request = findByid(id);
-        if (request != null) {
-            request.setStatus(newStatus);
-            return true;
+        String sql = "UPDATE request SET status = ? WHERE id = ?";
+        
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, newStatus.name());
+            preparedStatement.setInt(2, id);
+            int rowsAffected = preparedStatement.executeUpdate();
+            preparedStatement.close();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        return false;
     }
 }
