@@ -79,7 +79,9 @@ export class MakeActionComponent implements OnInit {
 
   onProductTypeChange(productType: string): void {
     if (productType) {
-      this.filteredProducts = this.products.filter(product => product.productType === productType);
+      this.filteredProducts = this.products
+        .filter(product => product.productType === productType)
+        .sort((a, b) => a.name.localeCompare(b.name));
     } else {
       this.filteredProducts = [];
     }

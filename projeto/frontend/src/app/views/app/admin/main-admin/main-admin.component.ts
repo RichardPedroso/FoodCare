@@ -25,8 +25,12 @@ export class MainAdminComponent implements OnInit {
   async loadProducts() {
     try {
       const products = await this.productService.findAll();
-      this.basicProducts = products.filter(p => p.productType === 'basic');
-      this.hygieneProducts = products.filter(p => p.productType === 'hygiene');
+      this.basicProducts = products
+        .filter(p => p.productType === 'basic')
+        .sort((a, b) => a.name.localeCompare(b.name));
+      this.hygieneProducts = products
+        .filter(p => p.productType === 'hygiene')
+        .sort((a, b) => a.name.localeCompare(b.name));
       
       const allStocks = products.map(p => p.stock);
       this.maxStock = Math.max(...allStocks);
