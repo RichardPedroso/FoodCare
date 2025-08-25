@@ -54,7 +54,12 @@
                         <mat-option value="">Selecione o produto</mat-option>
                       }
                       @for (product of filteredProducts; track product.id) {
-                        <mat-option [value]="product.id">{{ product.name }}</mat-option>
+                        <mat-option [value]="product.id">
+                          {{ product.name }}
+                          @if (product.stock <= 5) {
+                            - <span style="color: red; font-weight: bold;">Falta em estoque</span> 
+                          }  
+                        </mat-option>
                       }
                     </mat-select>
                     <mat-icon matPrefix>inventory</mat-icon>
