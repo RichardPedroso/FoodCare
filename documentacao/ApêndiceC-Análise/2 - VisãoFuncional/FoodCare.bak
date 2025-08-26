@@ -83,7 +83,7 @@
       </counter>
       <counter>
         <item-type type-id="extend" type="Entend" />
-        <value>21</value>
+        <value>19</value>
       </counter>
       <counter>
         <item-type type-id="include" type="Include" />
@@ -368,7 +368,7 @@ Módulo de Atualização</text>
       </meta>
       <abstract-items />
       <sub-models />
-      <diagram type="uml-usecase" id="pe9ba97b5ceec442aaf3f134985fbda63_407361320" name="DCU_VisaodeFuncao_Geral" order-index="1" uid="" name-style="" auto-routed-paths="false" default-line-style="default" view-location="270,-342" zoom="0.7">
+      <diagram type="uml-usecase" id="pe9ba97b5ceec442aaf3f134985fbda63_407361320" name="DCU_VisaodeFuncao_Geral" order-index="1" uid="" name-style="" auto-routed-paths="false" default-line-style="default" view-location="246,-447" zoom="0.5">
         <style>
           <background-color index="1" color="#FFFFFFFF" />
           <background-color index="2" color="#FFFFFFFF" />
@@ -478,7 +478,7 @@ Módulo de Atualização</text>
               </text>
             </formatted-text>
           </item>
-          <item id="83aef9b3a820475690108731fd9b7808" cid="UC016" type="use-case" name="Acessar Módulo Administração" creation-date="08/26/2025 20:10:36">
+          <item id="83aef9b3a820475690108731fd9b7808" cid="UC016" type="use-case" name="Acessar Módulo Administrar" creation-date="08/26/2025 20:10:36">
             <associated-diagrams>
               <diagram id="p56c2e098c03b42c5b94b4cf0f989b74f_583723041" />
             </associated-diagrams>
@@ -675,7 +675,7 @@ Módulo de Atualização</text>
           </item>
         </layer>
       </diagram>
-      <diagram type="uml-usecase" id="p6b8a728e9bdf4bde9a8c06cedbb0b648_213264784" name="DCU_VisaodeFuncao_Acesso" order-index="2" overview-order-index="0" uid="" name-style="" auto-routed-paths="false" default-line-style="default" view-location="80,-309" zoom="0.4">
+      <diagram type="uml-usecase" id="p6b8a728e9bdf4bde9a8c06cedbb0b648_213264784" name="DCU_VisaodeFuncao_Acesso" order-index="2" overview-order-index="0" uid="" name-style="" auto-routed-paths="false" default-line-style="default" view-location="-48,-84" zoom="0.3">
         <style>
           <background-color index="1" color="#FFFFFFFF" />
           <background-color index="2" color="#FFFFFFFF" />
@@ -768,7 +768,7 @@ Módulo de Atualização</text>
 Módulo Acesso</text>
             </drawing-text>
           </item>
-          <item id="5026e22c90af4c8789bb5053adb19d34" cid="EX018" type="extend" creation-date="08/26/2025 20:38:22" from="4936674833fa4fb292d344b460c112d7" to="f3808610cd8a4c48b8d9e3832c165462" visibility="package">
+          <item id="5026e22c90af4c8789bb5053adb19d34" cid="EX018" type="extend" creation-date="08/26/2025 20:38:22" from="4936674833fa4fb292d344b460c112d7" visibility="package">
             <stereotypes>
               <stereotype name="extend" />
             </stereotypes>
@@ -830,7 +830,7 @@ Módulo Acesso</text>
             <relation from="0662b6d55f0e45449dd7c33e86539f41" from-iid="d4dee6aa4be4486a86d397d56aa91c2d" to="21542b24f0494677856cabdab0c08487" to-iid="3cc9fbf1785e4454bc79efa60b38cb2b" />
           </item>
           <item id="e3e1fe4107d44c798e6c8e0013f99eba" iid="d03dfd0235e44c3190dbc29638f95803" creation-date="05/12/2025 11:11:30" order-index="11" type="entity">
-            <layout ax="1060" ay="-534" awidth="1066" aheight="940" x="1060" y="-534" width="1066" height="940" />
+            <layout ax="1028" ay="-534" awidth="1066" aheight="940" x="1028" y="-534" width="1066" height="940" />
           </item>
           <item id="f3808610cd8a4c48b8d9e3832c165462" iid="ac4a609a12eb4cfb99058670df4d8c0e" creation-date="05/10/2025 09:26:42" order-index="0" type="entity">
             <layout ax="1237" ay="-120.0435" awidth="250" aheight="156" x="1237" y="-120.0435" width="250" height="63" rotation-center="-0.001072,-0.0017258385" />
@@ -945,13 +945,13 @@ Módulo Acesso</text>
             <relation from="0662b6d55f0e45449dd7c33e86539f41" from-iid="d4dee6aa4be4486a86d397d56aa91c2d" to="b4517f70fd564c94a3b4780e367a00f5" to-iid="695d4e24fb5944f3a3e5ba27fbac12ff" />
           </item>
           <item id="5026e22c90af4c8789bb5053adb19d34" iid="3da3a7fc6b6a4d1ebc055732f7eee67e" creation-date="08/26/2025 20:38:22" order-index="24" type="relation">
-            <layout line-style="oblique" lock-start-point="true" lock-end-point="true" lock-to-fields="false" auto-path="" x1="1366" y1="-237" x2="1362" y2="-120" start-border-pos="0.621" end-border-pos="0.125" start-local-pos="129" end-local-pos="125" name-position="0,20">
+            <layout line-style="oblique" lock-start-point="true" lock-to-fields="false" auto-path="" x1="1366" y1="-237" x2="1362" y2="-120.0435" start-border-pos="0.621" end-border-pos="-1" start-local-pos="129" name-position="0,20">
               <points>
                 <point x="1366" y="-237" />
-                <point x="1362" y="-120" />
+                <point x="1362" y="-120.0435" />
               </points>
             </layout>
-            <relation from="4936674833fa4fb292d344b460c112d7" from-iid="9fc3a392017f44bf9d2c373b0a9017a2" to="f3808610cd8a4c48b8d9e3832c165462" to-iid="ac4a609a12eb4cfb99058670df4d8c0e" />
+            <relation from="4936674833fa4fb292d344b460c112d7" from-iid="9fc3a392017f44bf9d2c373b0a9017a2" />
           </item>
         </layer>
       </diagram>
@@ -1085,7 +1085,7 @@ Função Relatório</text>
           </item>
         </layer>
       </diagram>
-      <diagram type="uml-usecase" id="pf90dc5f3549849eeb3660a3bda5fa54c_485938758" name="DCU_VisaodeFuncao_Doação" order-index="7" overview-order-index="5" uid="" name-style="" auto-routed-paths="false" default-line-style="default" view-location="0,-296" zoom="0.4">
+      <diagram type="uml-usecase" id="pf90dc5f3549849eeb3660a3bda5fa54c_485938758" name="DCU_VisaodeFuncao_Doação" order-index="7" overview-order-index="5" uid="" name-style="" auto-routed-paths="false" default-line-style="default" view-location="-2,-291" zoom="0.4">
         <style>
           <background-color index="1" color="#FFFFFFFF" />
           <background-color index="2" color="#FFFFFFFF" />
@@ -1097,7 +1097,7 @@ Função Relatório</text>
           </authors>
           <description />
           <creation-date>05/12/2025 11:07:40</creation-date>
-          <change-date>08/26/2025 20:39:21</change-date>
+          <change-date>08/21/2025 21:30:21</change-date>
           <revision-count>0</revision-count>
           <version />
         </meta>
@@ -1127,7 +1127,7 @@ Módulo Doação</text>
             </use-case>
           </item>
           <item id="7df144ce63ff458396e88318b1bdcfe4" cid="PROP081" type="property" owner="8da122f0ab364a3391149f6b42638ccd" creation-date="05/10/2025 09:37:53" visibility="private" />
-          <item id="e96d6b8ba0084f37a0027a3e88735202" cid="UC012" type="use-case" name="Compartilhar Doação" creator="" creation-date="08/21/2025 21:27:19" visibility="undefined">
+          <item id="e96d6b8ba0084f37a0027a3e88735202" cid="UC012" type="use-case" name="Compartilhar" creator="" creation-date="08/21/2025 21:27:19" visibility="undefined">
             <use-case>
               <stakeholders />
               <special-requirements />
@@ -1140,15 +1140,6 @@ Módulo Doação</text>
             </stereotypes>
             <stereotype-instances>
               <stereotype id="e5c9b0d3cc2d432fbff193c4ae89f020_extend_c" type="extend" creation-date="08/21/2025 21:30:21" ref="" />
-            </stereotype-instances>
-            <extend extension-point="" condition="" />
-          </item>
-          <item id="c5c396a4f45f40bbbc043c9e94eeb787" cid="EX020" type="extend" creation-date="08/26/2025 20:39:21" from="dia0f2807fcce24a20b9f148ad4f065f8a5153" to="e96d6b8ba0084f37a0027a3e88735202" visibility="package">
-            <stereotypes>
-              <stereotype name="extend" />
-            </stereotypes>
-            <stereotype-instances>
-              <stereotype id="c5c396a4f45f40bbbc043c9e94eeb787_extend_c" type="extend" creation-date="08/26/2025 20:39:21" ref="" />
             </stereotype-instances>
             <extend extension-point="" condition="" />
           </item>
@@ -1179,13 +1170,13 @@ Módulo Doação</text>
             <layout ax="716" ay="-651.5435" awidth="1286" aheight="1071" x="716" y="-651.5435" width="1286" height="1066" />
           </item>
           <item id="2d06d8a521e047f6b27a43adf916df28" iid="3b5ba6a2af55405a899caed869a8b029" creation-date="05/10/2025 09:30:01" order-index="3" type="entity">
-            <layout ax="1125" ay="-121" awidth="250" aheight="156" x="1125" y="-121" width="250" height="116" rotation-center="-0.0010717773,8.216271E-05" />
+            <layout ax="1113" ay="-86" awidth="250" aheight="156" x="1113" y="-86" width="250" height="116" rotation-center="-0.0010717772,8.216269E-05" />
             <use-case />
           </item>
           <item id="8da122f0ab364a3391149f6b42638ccd" iid="38545eb6256843168e05e78777be00b4" creation-date="05/10/2025 09:37:53" order-index="4" type="relation">
-            <layout start-role-position="25,15" end-role-position="25,-15" start-multiplicity-position="25,-15" end-multiplicity-position="25,15" line-style="oblique" lock-start-point="true" lock-end-point="true" lock-to-fields="false" auto-path="" x1="1125" y1="-43" x2="479" y2="-8" start-border-pos="0.874721429286859" end-border-pos="0.375" start-local-pos="78.17383" end-local-pos="102" name-position="0,20">
+            <layout start-role-position="25,15" end-role-position="25,-15" start-multiplicity-position="25,-15" end-multiplicity-position="25,15" line-style="oblique" lock-start-point="true" lock-end-point="true" lock-to-fields="false" auto-path="" x1="1113" y1="-8" x2="479" y2="-8" start-border-pos="0.874721429286859" end-border-pos="0.375" start-local-pos="78.17383" end-local-pos="102" name-position="0,20">
               <points>
-                <point x="1125" y="-43" />
+                <point x="1113" y="-8" />
                 <point x="479" y="-8" />
               </points>
             </layout>
@@ -1195,20 +1186,20 @@ Módulo Doação</text>
             <layout ax="1282" ay="-622.5435" awidth="250" aheight="100" x="1282" y="-622.5435" width="250" height="100" />
           </item>
           <item id="dia0f2807fcce24a20b9f148ad4f065f8a5153" iid="83e8e76633f449289ac236aeb39586f3" creation-date="05/10/2025 09:30:01" order-index="3" type="entity">
-            <layout ax="1125" ay="157" awidth="250" aheight="156" x="1125" y="157" width="250" height="116" rotation-center="-0.0010717773,8.216271E-05" />
+            <layout ax="1113" ay="227" awidth="250" aheight="156" x="1103" y="217" width="250" height="116" rotation-center="-0.0010717772,8.216269E-05" />
             <use-case />
           </item>
           <item id="di42da72a944bb4f0a8052ae17aac070c45153" iid="d0e601ffe7054d339455bf0adc2c86d9" creation-date="05/10/2025 09:37:53" order-index="4" type="relation">
-            <layout start-role-position="25,15" end-role-position="25,-15" start-multiplicity-position="25,-15" end-multiplicity-position="25,15" line-style="oblique" lock-start-point="true" lock-end-point="true" lock-to-fields="false" auto-path="" x1="479" y1="-8" x2="1125" y2="235" start-border-pos="0.375" end-border-pos="0.874721429286859" start-local-pos="78.17383" end-local-pos="102" name-position="0,20">
+            <layout start-role-position="25,15" end-role-position="25,-15" start-multiplicity-position="25,-15" end-multiplicity-position="25,15" line-style="oblique" lock-start-point="true" lock-end-point="true" lock-to-fields="false" auto-path="" x1="479" y1="-8" x2="1113" y2="305" start-border-pos="0.375" end-border-pos="0.874721429286859" start-local-pos="78.17383" end-local-pos="102" name-position="0,20">
               <points>
                 <point x="479" y="-8" />
-                <point x="1125" y="235" />
+                <point x="1113" y="305" />
               </points>
             </layout>
             <relation from="deab2de49f3f474eb4bf6d02b1b9a822" from-iid="db30bcd9380e44ab8f70cfaae0e71d54" to="dia0f2807fcce24a20b9f148ad4f065f8a5153" to-iid="83e8e76633f449289ac236aeb39586f3" />
           </item>
           <item id="e96d6b8ba0084f37a0027a3e88735202" iid="82229d9d2f0f4bba9cc948ed5f8c40d1" creation-date="08/21/2025 21:27:19" order-index="8" type="entity">
-            <layout ax="1624" ay="-121" awidth="250" aheight="156" x="1624" y="-121" width="250" height="100" />
+            <layout ax="1592" ay="-395" awidth="250" aheight="156" x="1583" y="-395" width="250" height="100" />
             <use-case />
           </item>
           <item id="6193121446e245a49a31fbc05c1d321e" iid="c03e37249803436597da4ca6a8a60c52" creation-date="08/21/2025 21:29:31" order-index="9" type="entity">
@@ -1225,22 +1216,13 @@ Módulo Doação</text>
             <relation from="6193121446e245a49a31fbc05c1d321e" from-iid="c03e37249803436597da4ca6a8a60c52" to="deab2de49f3f474eb4bf6d02b1b9a822" to-iid="db30bcd9380e44ab8f70cfaae0e71d54" />
           </item>
           <item id="e5c9b0d3cc2d432fbff193c4ae89f020" iid="24a9f8472e0b4d839fc20616c397a8c9" creation-date="08/21/2025 21:30:21" order-index="11" type="relation">
-            <layout line-style="oblique" lock-start-point="true" lock-end-point="true" lock-to-fields="false" auto-path="" x1="1375" y1="-313" x2="1624" y2="-43" start-border-pos="0.375" end-border-pos="0.875" start-local-pos="82" end-local-pos="78" name-position="0,20">
+            <layout line-style="oblique" lock-start-point="true" lock-end-point="true" lock-to-fields="false" auto-path="" x1="1375" y1="-313" x2="1592" y2="-317" start-border-pos="0.375" end-border-pos="0.875" start-local-pos="82" end-local-pos="78" name-position="0,20">
               <points>
                 <point x="1375" y="-313" />
-                <point x="1624" y="-43" />
+                <point x="1592" y="-317" />
               </points>
             </layout>
             <relation from="6193121446e245a49a31fbc05c1d321e" from-iid="c03e37249803436597da4ca6a8a60c52" to="e96d6b8ba0084f37a0027a3e88735202" to-iid="82229d9d2f0f4bba9cc948ed5f8c40d1" />
-          </item>
-          <item id="c5c396a4f45f40bbbc043c9e94eeb787" iid="59d8c353e72b40e59ec306582add119f" creation-date="08/26/2025 20:39:21" order-index="12" type="relation">
-            <layout line-style="oblique" lock-start-point="true" lock-end-point="true" lock-to-fields="false" auto-path="" x1="1375" y1="235" x2="1624" y2="-43" start-border-pos="0.375" end-border-pos="0.875" start-local-pos="78" end-local-pos="78" name-position="0,20">
-              <points>
-                <point x="1375" y="235" />
-                <point x="1624" y="-43" />
-              </points>
-            </layout>
-            <relation from="dia0f2807fcce24a20b9f148ad4f065f8a5153" from-iid="83e8e76633f449289ac236aeb39586f3" to="e96d6b8ba0084f37a0027a3e88735202" to-iid="82229d9d2f0f4bba9cc948ed5f8c40d1" />
           </item>
         </layer>
       </diagram>
@@ -1565,7 +1547,7 @@ Módulo Solicitação</text>
           </item>
         </layer>
       </diagram>
-      <diagram type="uml-usecase" id="p56c2e098c03b42c5b94b4cf0f989b74f_583723041" name="DCU_VisaodeFuncao_Administrar" order-index="10" overview-order-index="8" uid="" name-style="" auto-routed-paths="false" default-line-style="default" view-location="-56,-36" zoom="0.8">
+      <diagram type="uml-usecase" id="p56c2e098c03b42c5b94b4cf0f989b74f_583723041" name="DCU_VisaodeFuncao_Administrar" order-index="10" overview-order-index="8" uid="" name-style="" auto-routed-paths="false" default-line-style="default" view-location="-70,-45" zoom="0.8">
         <style>
           <background-color index="1" color="#FFFFFFFF" />
           <background-color index="2" color="#FFFFFFFF" />
@@ -1603,7 +1585,7 @@ Módulo Solicitação</text>
               <end-role id="umlar-0e5fd2e9-9b8c-4234-ab32-27790a47906b" name="" navigability="" association-type="association" visibility="private" property-ref="7610fab1cd4a465783464b98a61ba271" />
             </relation>
           </item>
-          <item id="b1d196e3c848478387e94a6f9984e7a7" cid="SYS001" type="system-boundary" name="Módulo Administração" creation-date="08/26/2025 20:27:16">
+          <item id="b1d196e3c848478387e94a6f9984e7a7" cid="SYS001" type="system-boundary" name="Módulo Administrar" creation-date="08/26/2025 20:27:16">
             <owned-items />
           </item>
           <item id="cdef8d6d0f0949ed96d644b85be7b773" cid="AC007" type="actor" name="Administrador" creation-date="08/26/2025 20:28:40" />
