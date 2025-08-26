@@ -99,13 +99,11 @@
   "category": [
     {
       "id": "1",
-      "description": "Alimentos Básicos",
-      "is_active": true
+      "description": "Alimentos Básicos"
     },
     {
       "id": "2",
-      "description": "Produtos de Higiene",
-      "is_active": true
+      "description": "Produtos de Higiene"
     }
   ],
   "product": [
@@ -114,8 +112,6 @@
       "name": "Arroz",
       "productType": "basic",
       "stock": 11,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "1",
       "measure_type": "Kg"
     },
@@ -124,8 +120,6 @@
       "name": "Feijão",
       "productType": "basic",
       "stock": 24,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "1",
       "measure_type": "Kg"
     },
@@ -134,8 +128,6 @@
       "name": "Batata-palha",
       "productType": "basic",
       "stock": 11,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "1",
       "measure_type": "Kg"
     },
@@ -144,8 +136,6 @@
       "name": "Papel-toalha",
       "productType": "hygiene",
       "stock": 17,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "2",
       "measure_type": "Un"
     },
@@ -154,8 +144,6 @@
       "name": "Papel-higiênico",
       "productType": "hygiene",
       "stock": 9,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "2",
       "measure_type": "Un"
     },
@@ -164,8 +152,6 @@
       "name": "Sabonete",
       "productType": "hygiene",
       "stock": 9,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "2",
       "measure_type": "Un"
     },
@@ -174,8 +160,6 @@
       "name": "Creme Dental",
       "productType": "hygiene",
       "stock": 9,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "2",
       "measure_type": "Un"
     },
@@ -184,8 +168,6 @@
       "name": "Escova de Dentes",
       "productType": "hygiene",
       "stock": 9,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "2",
       "measure_type": "Un"
     },
@@ -194,8 +176,6 @@
       "name": "Absorvente Higiênico",
       "productType": "hygiene",
       "stock": 9,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "2",
       "measure_type": "Un"
     },
@@ -204,8 +184,6 @@
       "name": "Desodorante",
       "productType": "hygiene",
       "stock": 9,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "2",
       "measure_type": "Un"
     },
@@ -214,8 +192,6 @@
       "name": "Óleo de Soja",
       "productType": "basic",
       "stock": 10,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "1",
       "measure_type": "L"
     },
@@ -224,8 +200,6 @@
       "name": "Carne",
       "productType": "basic",
       "stock": 8,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "1",
       "measure_type": "Kg"
     },
@@ -234,8 +208,6 @@
       "name": "Leite",
       "productType": "basic",
       "stock": 8,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "1",
       "measure_type": "L"
     },
@@ -244,8 +216,6 @@
       "name": "Farinha de Trigo",
       "productType": "basic",
       "stock": 8,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "1",
       "measure_type": "Kg"
     },
@@ -254,8 +224,6 @@
       "name": "Batata",
       "productType": "basic",
       "stock": 8,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "1",
       "measure_type": "Kg"
     },
@@ -264,8 +232,6 @@
       "name": "Tomate",
       "productType": "basic",
       "stock": 8,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "1",
       "measure_type": "Kg"
     },
@@ -274,8 +240,6 @@
       "name": "Pão Francês",
       "productType": "basic",
       "stock": 8,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "1",
       "measure_type": "Un"
     },
@@ -284,8 +248,6 @@
       "name": "Café em Pó",
       "productType": "basic",
       "stock": 8,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "1",
       "measure_type": "Kg"
     },
@@ -294,8 +256,6 @@
       "name": "Banana",
       "productType": "basic",
       "stock": 8,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "1",
       "measure_type": "Kg"
     },
@@ -304,8 +264,6 @@
       "name": "Açúcar",
       "productType": "basic",
       "stock": 8,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "1",
       "measure_type": "Kg"
     },
@@ -314,8 +272,6 @@
       "name": "Manteiga",
       "productType": "basic",
       "stock": 8,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "1",
       "measure_type": "Kg"
     },
@@ -324,8 +280,6 @@
       "name": "Sal",
       "productType": "basic",
       "stock": 8,
-      "isActive": true,
-      "basketQuantity": 0,
       "category_id": "1",
       "measure_type": "Kg"
     }
