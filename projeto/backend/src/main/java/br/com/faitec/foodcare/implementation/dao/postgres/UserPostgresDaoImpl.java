@@ -26,8 +26,8 @@ public class UserPostgresDaoImpl implements UserDao {
     public int create(UserModel entity) {
         logger.log(Level.INFO, "Preparando para adicionar o usuario no banco de dados");
 
-        String sql = "INSERT INTO user_model(password, name, email, user_type, phone, is_admin, family_income, people_quantity, municipality_id) ";
-        sql += " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO user_model(password, name, email, user_type, phone, family_income, people_quantity, municipality_id) ";
+        sql += " VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try {
             logger.log(Level.CONFIG, "Auto commit: OFF");
@@ -40,10 +40,9 @@ public class UserPostgresDaoImpl implements UserDao {
             preparedStatement.setString(3, entity.getEmail());
             preparedStatement.setString(4, entity.getUserType().name());
             preparedStatement.setString(5, entity.getPhone());
-            preparedStatement.setBoolean(6, entity.isAdmin());
-            preparedStatement.setDouble(7, entity.getFamilyIncome());
-            preparedStatement.setInt(8, entity.getPeopleQuantity());
-            preparedStatement.setInt(9, entity.getMunicipalityId());
+            preparedStatement.setDouble(6, entity.getFamilyIncome());
+            preparedStatement.setInt(7, entity.getPeopleQuantity());
+            preparedStatement.setInt(8, entity.getMunicipalityId());
 
             preparedStatement.execute();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -107,7 +106,6 @@ public class UserPostgresDaoImpl implements UserDao {
                 final String phone = resultSet.getString("phone");
                 final String auxUserType = resultSet.getString("user_type");
                 final UserModel.UserType userType = UserModel.UserType.valueOf(auxUserType);
-                final boolean isAdmin = resultSet.getBoolean("is_admin");
                 final double familyIncome = resultSet.getDouble("family_income");
                 final int peopleQuantity = resultSet.getInt("people_quantity");
                 final int municipalityId = resultSet.getInt("municipality_id");
@@ -119,7 +117,6 @@ public class UserPostgresDaoImpl implements UserDao {
                 user.setPassword(password);
                 user.setPhone(phone);
                 user.setUserType(userType);
-                user.setAdmin(isAdmin);
                 user.setFamilyIncome(familyIncome);
                 user.setPeopleQuantity(peopleQuantity);
                 user.setMunicipalityId(municipalityId);
@@ -155,7 +152,6 @@ public class UserPostgresDaoImpl implements UserDao {
                 final String phone = resultSet.getString("phone");
                 final String auxUserType = resultSet.getString("user_type");
                 final UserModel.UserType userType = UserModel.UserType.valueOf(auxUserType);
-                final boolean isAdmin = resultSet.getBoolean("is_admin");
                 final double familyIncome = resultSet.getDouble("family_income");
                 final int peopleQuantity = resultSet.getInt("people_quantity");
                 final int municipalityId = resultSet.getInt("municipality_id");
@@ -167,7 +163,6 @@ public class UserPostgresDaoImpl implements UserDao {
                 user.setPassword(password);
                 user.setPhone(phone);
                 user.setUserType(userType);
-                user.setAdmin(isAdmin);
                 user.setFamilyIncome(familyIncome);
                 user.setPeopleQuantity(peopleQuantity);
                 user.setMunicipalityId(municipalityId);
@@ -207,7 +202,7 @@ public class UserPostgresDaoImpl implements UserDao {
 
     @Override
     public UserModel findByEmail(String email) {
-        String sql = "SELECT id, name, email, password, phone, user_type, is_admin, family_income, people_quantity, municipality_id FROM user_model WHERE email = ?";
+        String sql = "SELECT id, name, email, password, phone, user_type, family_income, people_quantity, municipality_id FROM user_model WHERE email = ?";
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -222,7 +217,6 @@ public class UserPostgresDaoImpl implements UserDao {
                 user.setPassword(resultSet.getString("password"));
                 user.setPhone(resultSet.getString("phone"));
                 user.setUserType(UserModel.UserType.valueOf(resultSet.getString("user_type")));
-                user.setAdmin(resultSet.getBoolean("is_admin"));
                 user.setFamilyIncome(resultSet.getDouble("family_income"));
                 user.setPeopleQuantity(resultSet.getInt("people_quantity"));
                 user.setMunicipalityId(resultSet.getInt("municipality_id"));

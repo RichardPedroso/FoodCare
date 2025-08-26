@@ -70,22 +70,5 @@ public class CategoryServiceImpl implements CategoryService {
         categoryDao.update(id, entity);
     }
 
-    @Override
-    public List<Category> findByActiveStatus(boolean isActive) {
-        return categoryDao.findByActiveStatus(isActive);
-    }
 
-    @Override
-    public boolean updateActiveStatus(int id, boolean isActive) {
-        if (id < 0) {
-            return false;
-        }
-        
-        Category category = findById(id);
-        if (category == null) {
-            return false;
-        }
-        
-        return categoryDao.updateActiveStatus(id, isActive);
-    }
 }

@@ -12,7 +12,5 @@ public class Product {
     private String name;
     private String productType;
     private int stock;
-    private boolean isActive;
-    private int basketQuantity;
     private int categoryId;
 }

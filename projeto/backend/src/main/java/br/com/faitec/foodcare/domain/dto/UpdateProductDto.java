@@ -9,8 +9,6 @@ public class UpdateProductDto {
     private String name;
     private String productType;
     private int stock;
-    private boolean isActive;
-    private int basketQuantity;
     private int categoryId;
 
     public Product toProduct(){
@@ -19,8 +17,6 @@ public class UpdateProductDto {
         entity.setName(name);
         entity.setProductType(productType);
         entity.setStock(stock);
-        entity.setActive(isActive);
-        entity.setBasketQuantity(basketQuantity);
         entity.setCategoryId(categoryId);
 
         return entity;

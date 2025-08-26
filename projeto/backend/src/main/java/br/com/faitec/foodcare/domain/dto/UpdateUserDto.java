@@ -10,7 +10,6 @@ public class UpdateUserDto {
     private String email;
     private String phone;
     private UserModel.UserType userType;
-    private boolean isAdmin;
     private double familyIncome;
     private int peopleQuantity;
     private int municipalityId;
@@ -22,7 +21,6 @@ public class UpdateUserDto {
         entity.setEmail(email);
         entity.setPhone(phone);
         entity.setUserType(userType);
-        entity.setAdmin(isAdmin);
         entity.setFamilyIncome(familyIncome);
         entity.setPeopleQuantity(peopleQuantity);
         entity.setMunicipalityId(municipalityId);
