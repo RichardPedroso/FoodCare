@@ -15,36 +15,36 @@ INSERT INTO category (name) VALUES ('Frutas');
 INSERT INTO category (name) VALUES ('Higiene');
 
 -- Insert users (simple passwords for testing)
-INSERT INTO user_model (name, email, password, user_type, is_admin, municipality_id) 
-VALUES ('Admin FoodCare', 'admin@foodcare.com', 'admin123', 'DONOR', TRUE, 1);
+INSERT INTO user_model (name, email, password, user_type, municipality_id) 
+VALUES ('Admin FoodCare', 'admin@foodcare.com', 'admin123', 'ADMIN', 1);
 
-INSERT INTO user_model (name, email, password, user_type, is_admin, family_income, people_quantity, municipality_id) 
-VALUES ('João Doador', 'joao@doador.com', 'senha123', 'DONOR', FALSE, 5000.0, 3, 1);
+INSERT INTO user_model (name, email, password, user_type, family_income, people_quantity, municipality_id) 
+VALUES ('João Doador', 'joao@doador.com', 'senha123', 'DONOR', 5000.0, 3, 1);
 
-INSERT INTO user_model (name, email, password, user_type, is_admin, family_income, people_quantity, municipality_id) 
-VALUES ('Maria Beneficiária', 'maria@beneficiaria.com', 'senha123', 'BENEFICIARY', FALSE, 800.0, 4, 2);
+INSERT INTO user_model (name, email, password, user_type, family_income, people_quantity, municipality_id) 
+VALUES ('Maria Beneficiária', 'maria@beneficiaria.com', 'senha123', 'BENEFICIARY', 800.0, 4, 2);
 
-INSERT INTO user_model (name, email, password, user_type, is_admin, family_income, people_quantity, municipality_id) 
-VALUES ('Carlos Doador', 'carlos@doador.com', 'senha123', 'DONOR', FALSE, 8000.0, 2, 3);
+INSERT INTO user_model (name, email, password, user_type, family_income, people_quantity, municipality_id) 
+VALUES ('Carlos Doador', 'carlos@doador.com', 'senha123', 'DONOR', 8000.0, 2, 3);
 
-INSERT INTO user_model (name, email, password, user_type, is_admin, family_income, people_quantity, municipality_id) 
-VALUES ('Ana Beneficiária', 'ana@beneficiaria.com', 'senha123', 'BENEFICIARY', FALSE, 600.0, 5, 4);
+INSERT INTO user_model (name, email, password, user_type, family_income, people_quantity, municipality_id) 
+VALUES ('Ana Beneficiária', 'ana@beneficiaria.com', 'senha123', 'BENEFICIARY', 600.0, 5, 4);
 
 -- Insert products
-INSERT INTO product (name, product_type, stock, is_active, basket_quantity, category_id) 
-VALUES ('Arroz 5kg', 'Grão', 100, TRUE, 1, 1);
+INSERT INTO product (name, product_type, stock, category_id) 
+VALUES ('Arroz 5kg', 'Grão', 100, 1);
 
-INSERT INTO product (name, product_type, stock, is_active, basket_quantity, category_id) 
-VALUES ('Feijão 1kg', 'Grão', 80, TRUE, 2, 1);
+INSERT INTO product (name, product_type, stock, category_id) 
+VALUES ('Feijão 1kg', 'Grão', 80, 1);
 
-INSERT INTO product (name, product_type, stock, is_active, basket_quantity, category_id) 
-VALUES ('Leite 1L', 'Laticínio', 50, TRUE, 3, 2);
+INSERT INTO product (name, product_type, stock, category_id) 
+VALUES ('Leite 1L', 'Laticínio', 50, 2);
 
-INSERT INTO product (name, product_type, stock, is_active, basket_quantity, category_id) 
-VALUES ('Frango 1kg', 'Carne', 30, TRUE, 1, 3);
+INSERT INTO product (name, product_type, stock, category_id) 
+VALUES ('Frango 1kg', 'Carne', 30, 3);
 
-INSERT INTO product (name, product_type, stock, is_active, basket_quantity, category_id) 
-VALUES ('Sabonete', 'Higiene', 200, TRUE, 5, 5);
+INSERT INTO product (name, product_type, stock, category_id) 
+VALUES ('Sabonete', 'Higiene', 200, 5);
 
 -- Insert sample donations
 INSERT INTO donation (donation_date, user_id) VALUES ('2024-01-15', 2);

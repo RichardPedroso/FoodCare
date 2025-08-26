@@ -57,17 +57,7 @@ public class CategoryRestController {
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/active")
-    public ResponseEntity<List<Category>> getActiveCategories() {
-        List<Category> entities = categoryService.findByActiveStatus(true);
-        return ResponseEntity.ok(entities);
-    }
 
-    @GetMapping("/inactive")
-    public ResponseEntity<List<Category>> getInactiveCategories() {
-        List<Category> entities = categoryService.findByActiveStatus(false);
-        return ResponseEntity.ok(entities);
-    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable final int id) {
@@ -92,15 +82,5 @@ public class CategoryRestController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping("/{id}/active")
-    public ResponseEntity<Void> updateActiveStatus(@PathVariable final int id, @RequestBody final Map<String, Boolean> statusData) {
-        Boolean isActive = statusData.get("isActive");
-        
-        if (isActive == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        
-        boolean updated = categoryService.updateActiveStatus(id, isActive);
-        return updated ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
-    }
+
 }

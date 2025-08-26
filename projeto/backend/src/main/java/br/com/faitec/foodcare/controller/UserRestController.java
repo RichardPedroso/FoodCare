@@ -9,6 +9,7 @@ import br.com.faitec.foodcare.domain.dto.UpdateUserDto;
 import br.com.faitec.foodcare.port.service.municipality.MunicipalityService;
 import br.com.faitec.foodcare.port.service.request.RequestService;
 import br.com.faitec.foodcare.port.service.user.UserService;
+import br.com.faitec.foodcare.port.service.authorization.AuthorizationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -22,11 +23,13 @@ public class UserRestController {
     private final UserService userService;
     private final MunicipalityService municipalityService;
     private final RequestService requestService;
+    private final AuthorizationService authorizationService;
 
-    public UserRestController(UserService userService, MunicipalityService municipalityService, RequestService requestService){
+    public UserRestController(UserService userService, MunicipalityService municipalityService, RequestService requestService, AuthorizationService authorizationService){
         this.userService = userService;
         this.municipalityService = municipalityService;
         this.requestService = requestService;
+        this.authorizationService = authorizationService;
     }
 
     @GetMapping()
@@ -119,5 +122,17 @@ public class UserRestController {
         
         List<Request> requests = requestService.findByUserId(id);
         return ResponseEntity.ok(requests);
+    }
+    
+    @GetMapping("/{id}/is-admin")
+    public ResponseEntity<Boolean> isUserAdmin(@PathVariable final int id) {
+        UserModel user = userService.findById(id);
+        
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        boolean isAdmin = authorizationService.isAdmin(user);
+        return ResponseEntity.ok(isAdmin);
     }
 }

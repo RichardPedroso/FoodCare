@@ -13,7 +13,7 @@ DROP TYPE IF EXISTS request_type;
 DROP TYPE IF EXISTS request_status;
 
 -- Create enums
-CREATE TYPE user_type AS ENUM ('DONOR', 'BENEFICIARY');
+CREATE TYPE user_type AS ENUM ('DONOR', 'BENEFICIARY', 'ADMIN');
 CREATE TYPE request_type AS ENUM ('BASIC', 'HYGIENE');
 CREATE TYPE request_status AS ENUM ('PENDING', 'APPROVED', 'REJECTED', 'COMPLETED');
 
@@ -40,7 +40,6 @@ CREATE TABLE user_model
     password        VARCHAR(255)   NOT NULL,
     phone           VARCHAR(20),
     user_type       user_type      NOT NULL,
-    is_admin        BOOLEAN        DEFAULT FALSE,
     family_income   DOUBLE PRECISION DEFAULT 0.0,
     people_quantity INTEGER        DEFAULT 1,
     municipality_id INTEGER,
@@ -54,8 +53,6 @@ CREATE TABLE product
     name            VARCHAR(100) NOT NULL,
     product_type    VARCHAR(50),
     stock           INTEGER     DEFAULT 0,
-    is_active       BOOLEAN     DEFAULT TRUE,
-    basket_quantity INTEGER     DEFAULT 0,
     category_id     INTEGER,
     PRIMARY KEY (id),
     FOREIGN KEY (category_id) REFERENCES category(id)

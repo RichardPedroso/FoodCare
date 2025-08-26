@@ -121,13 +121,5 @@ public class CategoryDaoImpl implements CategoryDao {
         }
     }
 
-    @Override
-    public List<Category> findByActiveStatus(boolean isActive) {
-        return findAll();
-    }
 
-    @Override
-    public boolean updateActiveStatus(int id, boolean isActive) {
-        return true;
-    }
 }

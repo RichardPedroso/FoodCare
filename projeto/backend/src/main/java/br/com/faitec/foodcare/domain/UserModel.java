@@ -14,13 +14,13 @@ public class UserModel {
     private String password;
     private String phone;
     private UserType userType;
-    private boolean isAdmin;
     private double familyIncome;
     private int peopleQuantity;
     private int municipalityId;
     
     public enum UserType {
         DONOR,
-        BENEFICIARY
+        BENEFICIARY,
+        ADMIN
     }
 }
