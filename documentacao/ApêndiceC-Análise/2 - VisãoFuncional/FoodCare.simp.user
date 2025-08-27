@@ -1,9 +1,3 @@
 ﻿<user-preferences>
-  <open-windows>
-    <window type="Diagram" resource="pba543d9c79594422ab30d2c4dee3c4a5_846435137" active="false" />
-    <window type="Diagram" resource="p914ae98cc341474b9bd776bea394ba31_384776558" active="false" />
-    <window type="Diagram" resource="pa973c25e991d486c8083c477a3839101_277745550" active="false" />
-    <window type="FolderOverview" resource="p185296955be447df9fa2c51e17c0e103_175928188" active="false" />
-    <window type="Diagram" resource="pe683c6a4e9af46439fc87cf834880cb2_666754741" active="true" />
-  </open-windows>
+  <open-windows />
 </user-preferences>

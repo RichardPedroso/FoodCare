@@ -2005,7 +2005,7 @@ Módulo Solicitação</text>
           </item>
         </layer>
       </diagram>
-      <diagram type="uml-package" id="pba543d9c79594422ab30d2c4dee3c4a5_846435137" name="DP_VisaodePacote_Backend" order-index="11" overview-order-index="9" uid="" name-style="" auto-routed-paths="false" default-line-style="default" view-location="6,-150" zoom="0.6">
+      <diagram type="uml-package" id="pba543d9c79594422ab30d2c4dee3c4a5_846435137" name="DP_VisaodePacote_Backend" order-index="11" overview-order-index="9" uid="" name-style="" auto-routed-paths="false" default-line-style="default" view-location="10,-250" zoom="0.6">
         <style>
           <background-color index="1" color="#FFFFFFFF" />
           <background-color index="2" color="#FFFFFFFF" />
@@ -2253,7 +2253,7 @@ Módulo Solicitação</text>
           </item>
         </layer>
       </diagram>
-      <diagram type="uml-sequence" id="pa973c25e991d486c8083c477a3839101_277745550" name="DS_VisaodeSequencia_FuncaoLogin_CenarioPrincipal" order-index="13" overview-order-index="11" uid="" name-style="" auto-routed-paths="false" default-line-style="default" view-location="-16,0" zoom="0.5">
+      <diagram type="uml-sequence" id="pa973c25e991d486c8083c477a3839101_277745550" name="DS_VisaodeSequencia_FuncaoLogin_CenarioPrincipal" order-index="13" overview-order-index="11" uid="" name-style="" auto-routed-paths="false" default-line-style="default" view-location="-32,0" zoom="0.5">
         <style>
           <background-color index="1" color="#FFFFFFFF" />
           <background-color index="2" color="#FFFFFFFF" />
@@ -2376,7 +2376,7 @@ Módulo Solicitação</text>
           </item>
         </layer>
       </diagram>
-      <diagram type="uml-sequence" id="pe683c6a4e9af46439fc87cf834880cb2_666754741" name="DS_VisaodeSequencia_FuncaoLogin_CenarioAlternativo" order-index="14" overview-order-index="12" uid="" name-style="" auto-routed-paths="false" default-line-style="default" view-location="71,189" zoom="0.6">
+      <diagram type="uml-sequence" id="pe683c6a4e9af46439fc87cf834880cb2_666754741" name="DS_VisaodeSequencia_FuncaoLogin_CenarioAlternativo" order-index="14" overview-order-index="12" uid="" name-style="" auto-routed-paths="false" default-line-style="default" view-location="154,222">
         <style>
           <background-color index="1" color="#FFFFFFFF" />
           <background-color index="2" color="#FFFFFFFF" />
@@ -2388,7 +2388,7 @@ Módulo Solicitação</text>
           </authors>
           <description />
           <creation-date>08/26/2025 22:38:37</creation-date>
-          <change-date>08/27/2025 18:33:33</change-date>
+          <change-date>08/27/2025 18:32:33</change-date>
           <revision-count>0</revision-count>
           <version />
         </meta>
@@ -2422,9 +2422,7 @@ Módulo Solicitação</text>
           </item>
           <item id="e9fba3f1a0714982887a7ca6d7ce7e19" cid="ELEM016" type="text" name="Text7" style-class="Transparent" owner="204924531e3f4339967d368b05df22fd" creation-date="08/27/2025 18:32:33">
             <style class="Transparent" />
-            <drawing-text>
-              <text>Redirecionemento para tela principal</text>
-            </drawing-text>
+            <drawing-text />
           </item>
           <item id="7692cd9ccb124e7d9cae19ae223737d5" cid="SM004" type="sequence-action" name="Message4" owner="3b587af64a9040318f56467d169f65d3" creation-date="08/27/2025 18:27:57" from="0da7ba9b08304f24bf25387a78aa1888" to="0da7ba9b08304f24bf25387a78aa1888" visibility="package">
             <sequence-action type="reply" message="" is-asynchronous="false" return-value="" assign-to-variable="">
@@ -2574,7 +2572,7 @@ Módulo Solicitação</text>
             <sequence-action show-sequence-number="false" />
           </item>
           <item id="e9fba3f1a0714982887a7ca6d7ce7e19" iid="eb57948224304833af03cf80b29c83bb" container="204924531e3f4339967d368b05df22fd" container-iid="9a69ef40e9aa4d1b9f8511f26066e521" creation-date="08/27/2025 18:32:33" order-index="24" type="drawing-text">
-            <layout ax="170" ay="859" awidth="250" aheight="21" x="170" y="859" width="250" height="20" />
+            <layout ax="225" ay="866" awidth="250" aheight="100" x="225" y="866" width="250" height="100" />
           </item>
           <item id="bb050b16fcb148e3b1477f0bcfa290d3" iid="a69620c7b6ee45ec88e88977331f1fb1" container="204924531e3f4339967d368b05df22fd" container-iid="9a69ef40e9aa4d1b9f8511f26066e521" creation-date="08/26/2025 22:23:59" order-index="13" type="relation">
             <layout message-x="345" message-y="370" line-style="oblique" lock-start-point="true" lock-end-point="true" start-absolute-lock="true" end-absolute-lock="true" lock-to-fields="false" auto-path="" x1="183" y1="350" x2="507" y2="350" start-border-pos="0.2703583061889251" end-border-pos="0.9796416938110749" start-local-pos="50" end-local-pos="50" name-position="0,20">
