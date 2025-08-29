@@ -96,6 +96,14 @@ export class MakeActionComponent implements OnInit {
     return new Date().toISOString().split('T')[0];
   }
 
+  getCurrentDateFormatted(): string {
+    const today = new Date();
+    const day = today.getDate().toString().padStart(2, '0');
+    const month = (today.getMonth() + 1).toString().padStart(2, '0');
+    const year = today.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
+
   isDateInvalid(dateValue: any): boolean {
     if (!dateValue) return false;
     
@@ -187,14 +195,9 @@ export class MakeActionComponent implements OnInit {
     }
   }
 
-  async requestBasicBasket(requestDate: string): Promise<void> {
-    if (!this.user || !requestDate) {
-      alert('Por favor, preencha a data da solicitação.');
-      return;
-    }
-
-    if (this.isDateInvalid(requestDate)) {
-      alert('A data da solicitação não pode ser anterior à data atual.');
+  async requestBasicBasket(): Promise<void> {
+    if (!this.user) {
+      alert('Usuário não encontrado.');
       return;
     }
 
@@ -220,7 +223,7 @@ export class MakeActionComponent implements OnInit {
 
       const basketRequest = {
         user_id: this.user.id!,
-        request_date: this.parseRequestDate(requestDate),
+        request_date: new Date(),
         basket_type: 'basic',
         status: 'pending'
       };
@@ -244,14 +247,9 @@ export class MakeActionComponent implements OnInit {
     }
   }
 
-  async requestHygieneBasket(requestDate: string): Promise<void> {
-    if (!this.user || !requestDate) {
-      alert('Por favor, preencha a data da solicitação.');
-      return;
-    }
-
-    if (this.isDateInvalid(requestDate)) {
-      alert('A data da solicitação não pode ser anterior à data atual.');
+  async requestHygieneBasket(): Promise<void> {
+    if (!this.user) {
+      alert('Usuário não encontrado.');
       return;
     }
 
@@ -277,7 +275,7 @@ export class MakeActionComponent implements OnInit {
 
       const basketRequest = {
         user_id: this.user.id!,
-        request_date: this.parseRequestDate(requestDate),
+        request_date: new Date(),
         basket_type: 'hygiene',
         status: 'pending'
       };
