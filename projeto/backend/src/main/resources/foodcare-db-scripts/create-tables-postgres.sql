@@ -54,6 +54,8 @@ CREATE TABLE product
     product_type    VARCHAR(50),
     stock           INTEGER     DEFAULT 0,
     category_id     INTEGER,
+    unit_quantity   DOUBLE PRECISION DEFAULT 1.0,
+    unit_type       VARCHAR(10) DEFAULT 'KG',
     PRIMARY KEY (id),
     FOREIGN KEY (category_id) REFERENCES category(id)
 );

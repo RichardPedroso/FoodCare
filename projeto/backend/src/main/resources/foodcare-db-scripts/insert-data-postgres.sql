@@ -31,20 +31,20 @@ INSERT INTO user_model (name, email, password, user_type, family_income, people_
 VALUES ('Ana Beneficiária', 'ana@beneficiaria.com', 'senha123', 'BENEFICIARY', 600.0, 5, 4);
 
 -- Insert products
-INSERT INTO product (name, product_type, stock, category_id) 
-VALUES ('Arroz 5kg', 'Grão', 100, 1);
+INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
+VALUES ('Arroz 5kg', 'Grão', 100, 1, 5.0, 'KG');
 
-INSERT INTO product (name, product_type, stock, category_id) 
-VALUES ('Feijão 1kg', 'Grão', 80, 1);
+INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
+VALUES ('Feijão 1kg', 'Grão', 80, 1, 1.0, 'KG');
 
-INSERT INTO product (name, product_type, stock, category_id) 
-VALUES ('Leite 1L', 'Laticínio', 50, 2);
+INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
+VALUES ('Leite 1L', 'Laticínio', 50, 2, 1.0, 'L');
 
-INSERT INTO product (name, product_type, stock, category_id) 
-VALUES ('Frango 1kg', 'Carne', 30, 3);
+INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
+VALUES ('Frango 1kg', 'Carne', 30, 3, 1.0, 'KG');
 
-INSERT INTO product (name, product_type, stock, category_id) 
-VALUES ('Sabonete', 'Higiene', 200, 5);
+INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
+VALUES ('Sabonete', 'Higiene', 200, 5, 1.0, 'KG');
 
 -- Insert sample donations
 INSERT INTO donation (donation_date, user_id) VALUES ('2024-01-15', 2);
