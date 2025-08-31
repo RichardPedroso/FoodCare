@@ -21,56 +21,96 @@ public class BasketCalculationServiceImpl implements BasketCalculationService {
 
     @Override
     public List<BasketItem> calculateBasicBasket(UserModel user) {
+        // Calcular quantas cestas básicas são necessárias baseado nas necessidades nutricionais
+        int basketsNeeded = calculateBasketsNeeded(user);
+        
         List<BasketItem> basketItems = new ArrayList<>();
         List<Product> allProducts = productDao.findAll();
         
-        // Necessidades mensais por adulto
-        basketItems.addAll(calculateFoodRequirements(allProducts, user.getPeopleQuantity()));
+        // Composição de cestas básicas
+        basketItems.addAll(getStandardBasketItems(allProducts, basketsNeeded));
         
         // Produtos para crianças (apenas se hasChildren = true)
         if (user.isHasChildren()) {
-            String[] childProducts = {"Gelatina", "Bolacha recheada", "Biscoito de polvilho"};
-            
-            for (String productName : childProducts) {
-                Product product = findProductByName(allProducts, productName);
-                if (product != null) {
-                    basketItems.add(new BasketItem(product.getId(), product.getName(), 
-                                                 2, product.getUnitQuantity(), 
-                                                 product.getUnitType()));
-                }
-            }
+            basketItems.addAll(getChildBasketItems(allProducts, basketsNeeded));
         }
         
         return basketItems;
     }
     
-    private List<BasketItem> calculateFoodRequirements(List<Product> allProducts, int peopleQuantity) {
-        List<BasketItem> items = new ArrayList<>();
+    private int calculateBasketsNeeded(UserModel user) {
+        List<Product> allProducts = productDao.findAll();
+        int maxBasketsNeeded = 0;
         
-        // Necessidades mensais por adulto
-        items.add(calculateProductNeed(allProducts, "Arroz", 3.9, "KG", peopleQuantity));
-        items.add(calculateProductNeed(allProducts, "Feijão", 4.3, "KG", peopleQuantity));
-        items.add(calculateProductNeed(allProducts, "Açúcar", 3.0, "KG", peopleQuantity));
-        items.add(calculateProductNeed(allProducts, "Café", 600.0, "G", peopleQuantity));
-        items.add(calculateProductNeed(allProducts, "Leite", 7.5, "L", peopleQuantity));
-        items.add(calculateProductNeed(allProducts, "Farinha", 1.5, "KG", peopleQuantity));
-        items.add(calculateProductNeed(allProducts, "Macarrão", 500.0, "G", peopleQuantity));
-        items.add(calculateProductNeed(allProducts, "Óleo", 900.0, "ML", peopleQuantity));
+        // Calcular necessidades mensais e determinar quantas cestas são necessárias
+        Object[][] requirements = {
+            {3.9, "KG", "Arroz"},
+            {4.3, "KG", "Feijão"},
+            {3.0, "KG", "Açúcar"},
+            {600.0, "G", "Café"},
+            {7.5, "L", "Leite"},
+            {1.5, "KG", "Farinha"},
+            {500.0, "G", "Macarrão"},
+            {900.0, "ML", "Óleo"}
+        };
         
-        return items.stream().filter(item -> item != null).collect(java.util.stream.Collectors.toList());
+        for (Object[] req : requirements) {
+            double neededQuantity = (Double) req[0] * user.getPeopleQuantity();
+            String unitType = (String) req[1];
+            String productName = (String) req[2];
+            
+            Product product = findProductByName(allProducts, productName);
+            if (product != null) {
+                // Converter para mesma unidade se necessário
+                double convertedNeeded = convertToProductUnit(neededQuantity, unitType, product.getUnitType());
+                int unitsNeeded = (int) Math.ceil(convertedNeeded / product.getUnitQuantity());
+                
+                // Cada cesta contém 2 unidades deste produto
+                int basketsForThisProduct = (int) Math.ceil(unitsNeeded / 2.0);
+                maxBasketsNeeded = Math.max(maxBasketsNeeded, basketsForThisProduct);
+            }
+        }
+        
+        return maxBasketsNeeded;
     }
     
-    private BasketItem calculateProductNeed(List<Product> allProducts, String productName, 
-                                          double monthlyNeedPerPerson, String needUnit, int peopleQuantity) {
-        Product product = findProductByName(allProducts, productName);
-        if (product == null) return null;
+    private List<BasketItem> getStandardBasketItems(List<Product> allProducts, int basketQuantity) {
+        List<BasketItem> items = new ArrayList<>();
         
-        double totalNeeded = monthlyNeedPerPerson * peopleQuantity;
-        double convertedNeeded = convertToProductUnit(totalNeeded, needUnit, product.getUnitType());
-        int unitsNeeded = (int) Math.ceil(convertedNeeded / product.getUnitQuantity());
+        // Produtos básicos de alimentos - 2 unidades de cada por cesta
+        String[] basicFoodProducts = {"Arroz", "Feijão", "Açúcar", "Café", "Leite", 
+                                     "Farinha", "Macarrão", "Óleo"};
         
-        return new BasketItem(product.getId(), product.getName(), unitsNeeded, 
-                            product.getUnitQuantity(), product.getUnitType());
+        for (String productName : basicFoodProducts) {
+            Product product = findProductByName(allProducts, productName);
+            if (product != null) {
+                int quantity = 2 * basketQuantity; // 2 unidades por cesta
+                items.add(new BasketItem(product.getId(), product.getName(), 
+                                       quantity, product.getUnitQuantity(), 
+                                       product.getUnitType()));
+            }
+        }
+        
+        return items;
+    }
+    
+    private List<BasketItem> getChildBasketItems(List<Product> allProducts, int basketQuantity) {
+        List<BasketItem> items = new ArrayList<>();
+        
+        // Produtos infantis - 2 unidades de cada por cesta
+        String[] childProducts = {"Gelatina", "Bolacha recheada", "Biscoito de polvilho"};
+        
+        for (String productName : childProducts) {
+            Product product = findProductByName(allProducts, productName);
+            if (product != null) {
+                int quantity = 2 * basketQuantity; // 2 unidades por cesta
+                items.add(new BasketItem(product.getId(), product.getName(), 
+                                       quantity, product.getUnitQuantity(), 
+                                       product.getUnitType()));
+            }
+        }
+        
+        return items;
     }
     
     private double convertToProductUnit(double quantity, String fromUnit, String toUnit) {
@@ -83,6 +123,8 @@ public class BasketCalculationServiceImpl implements BasketCalculationService {
         
         return quantity;
     }
+    
+
 
     @Override
     public List<BasketItem> calculateHygieneBasket(UserModel user) {

@@ -55,21 +55,14 @@ public class RequestServiceImpl implements RequestService {
     
     private void calculateRequiredBaskets(UserModel user, Request.RequestType requestType) {
         if (requestType == Request.RequestType.BASIC) {
-            List<BasketItem> basicBasket = basketCalculationService.calculateBasicBasket(user);
-            // Log ou armazenar os itens calculados
-            System.out.println("Cesta básica calculada para família de " + user.getPeopleQuantity() + " pessoas:");
-            basicBasket.forEach(item -> 
-                System.out.println("- " + item.getProductName() + ": " + item.getQuantity() + " unidades")
-            );
+            basketCalculationService.calculateBasicBasket(user);
         }
         
         // Sempre incluir cesta de higiene (1 cesta por doação)
-        List<BasketItem> hygieneBasket = basketCalculationService.calculateHygieneBasket(user);
-        System.out.println("Cesta de higiene (1 cesta por doação):");
-        hygieneBasket.forEach(item -> 
-            System.out.println("- " + item.getProductName() + ": " + item.getQuantity() + " unidades")
-        );
+        basketCalculationService.calculateHygieneBasket(user);
     }
+    
+
 
     @Override
     public void delete(int id) {
