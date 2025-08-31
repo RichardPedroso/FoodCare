@@ -8,10 +8,7 @@ INSERT INTO municipality (name) VALUES ('Belo Horizonte');
 INSERT INTO municipality (name) VALUES ('Curitiba');
 
 -- Insert categories
-INSERT INTO category (name) VALUES ('Grãos');
-INSERT INTO category (name) VALUES ('Laticínios');
-INSERT INTO category (name) VALUES ('Carnes');
-INSERT INTO category (name) VALUES ('Frutas');
+INSERT INTO category (name) VALUES ('Alimentos');
 INSERT INTO category (name) VALUES ('Higiene');
 
 -- Insert users (simple passwords for testing)
@@ -32,19 +29,49 @@ VALUES ('Ana Beneficiária', 'ana@beneficiaria.com', 'senha123', 'BENEFICIARY', 
 
 -- Insert products
 INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Arroz 5kg', 'Grão', 100, 1, 5.0, 'KG');
+VALUES ('Arroz', 'Alimento', 100, 1, 5.0, 'KG');
 
 INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Feijão 1kg', 'Grão', 80, 1, 1.0, 'KG');
+VALUES ('Feijão', 'Alimento', 80, 1, 4.0, 'KG');
 
 INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Leite 1L', 'Laticínio', 50, 2, 1.0, 'L');
+VALUES ('Açúcar', 'Alimento', 60, 1, 5.0, 'KG');
 
 INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Frango 1kg', 'Carne', 30, 3, 1.0, 'KG');
+VALUES ('Café', 'Alimento', 40, 1, 500.0, 'G');
 
 INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Sabonete', 'Higiene', 200, 5, 1.0, 'KG');
+VALUES ('Leite', 'Alimento', 50, 1, 1.0, 'L');
+
+INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
+VALUES ('Farinha', 'Alimento', 70, 1, 500.0, 'G');
+
+INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
+VALUES ('Macarrão', 'Alimento', 90, 1, 500.0, 'G');
+
+INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
+VALUES ('Óleo', 'Alimento', 45, 1, 900.0, 'ML');
+
+INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
+VALUES ('Sabão em pó', 'Higiene', 80, 2, 800.0, 'G');
+
+INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
+VALUES ('Amaciante', 'Higiene', 60, 2, 2.0, 'L');
+
+INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
+VALUES ('Detergente', 'Higiene', 100, 2, 500.0, 'ML');
+
+INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
+VALUES ('Água sanitária', 'Higiene', 70, 2, 2.0, 'L');
+
+INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
+VALUES ('Desinfetante', 'Higiene', 55, 2, 1.0, 'L');
+
+INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
+VALUES ('Sabonete', 'Higiene', 200, 2, 90.0, 'G');
+
+INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
+VALUES ('Creme dental', 'Higiene', 150, 2, 90.0, 'G');
 
 -- Insert sample donations
 INSERT INTO donation (donation_date, user_id) VALUES ('2024-01-15', 2);
