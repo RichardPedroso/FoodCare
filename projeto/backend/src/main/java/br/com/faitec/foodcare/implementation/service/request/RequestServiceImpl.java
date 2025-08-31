@@ -1,8 +1,12 @@
 package br.com.faitec.foodcare.implementation.service.request;
 
+import br.com.faitec.foodcare.domain.BasketItem;
 import br.com.faitec.foodcare.domain.Request;
+import br.com.faitec.foodcare.domain.UserModel;
 import br.com.faitec.foodcare.port.dao.request.RequestDao;
+import br.com.faitec.foodcare.port.service.basket.BasketCalculationService;
 import br.com.faitec.foodcare.port.service.request.RequestService;
+import br.com.faitec.foodcare.port.service.user.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,9 +14,13 @@ import java.util.List;
 @Service
 public class RequestServiceImpl implements RequestService {
     private final RequestDao requestDao;
+    private final UserService userService;
+    private final BasketCalculationService basketCalculationService;
 
-    public RequestServiceImpl(RequestDao requestDao) {
+    public RequestServiceImpl(RequestDao requestDao, UserService userService, BasketCalculationService basketCalculationService) {
         this.requestDao = requestDao;
+        this.userService = userService;
+        this.basketCalculationService = basketCalculationService;
     }
 
     @Override
@@ -35,8 +43,32 @@ public class RequestServiceImpl implements RequestService {
             return invalidResponse;
         }
         
+        // Calcular cestas necessárias baseado no usuário
+        UserModel user = userService.findById(entity.getUserId());
+        if (user != null && user.getUserType() == UserModel.UserType.BENEFICIARY) {
+            calculateRequiredBaskets(user, entity.getRequestType());
+        }
+        
         final int id = requestDao.create(entity);
         return id;
+    }
+    
+    private void calculateRequiredBaskets(UserModel user, Request.RequestType requestType) {
+        if (requestType == Request.RequestType.BASIC) {
+            List<BasketItem> basicBasket = basketCalculationService.calculateBasicBasket(user);
+            // Log ou armazenar os itens calculados
+            System.out.println("Cesta básica calculada para família de " + user.getPeopleQuantity() + " pessoas:");
+            basicBasket.forEach(item -> 
+                System.out.println("- " + item.getProductName() + ": " + item.getQuantity() + " unidades")
+            );
+        }
+        
+        // Sempre incluir cesta de higiene (1 cesta por doação)
+        List<BasketItem> hygieneBasket = basketCalculationService.calculateHygieneBasket(user);
+        System.out.println("Cesta de higiene (1 cesta por doação):");
+        hygieneBasket.forEach(item -> 
+            System.out.println("- " + item.getProductName() + ": " + item.getQuantity() + " unidades")
+        );
     }
 
     @Override
