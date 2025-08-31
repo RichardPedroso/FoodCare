@@ -13,6 +13,7 @@ public class UpdateUserDto {
     private double familyIncome;
     private int peopleQuantity;
     private int municipalityId;
+    private boolean hasChildren;
 
     public UserModel toUserModel(){
         final UserModel entity = new UserModel();
@@ -24,6 +25,7 @@ public class UpdateUserDto {
         entity.setFamilyIncome(familyIncome);
         entity.setPeopleQuantity(peopleQuantity);
         entity.setMunicipalityId(municipalityId);
+        entity.setHasChildren(hasChildren);
         return entity;
     }
 

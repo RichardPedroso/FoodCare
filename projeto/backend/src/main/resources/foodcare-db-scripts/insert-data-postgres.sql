@@ -15,17 +15,17 @@ INSERT INTO category (name) VALUES ('Higiene');
 INSERT INTO user_model (name, email, password, user_type, municipality_id) 
 VALUES ('Admin FoodCare', 'admin@foodcare.com', 'admin123', 'ADMIN', 1);
 
-INSERT INTO user_model (name, email, password, user_type, family_income, people_quantity, municipality_id) 
-VALUES ('João Doador', 'joao@doador.com', 'senha123', 'DONOR', 5000.0, 3, 1);
+INSERT INTO user_model (name, email, password, user_type, family_income, people_quantity, municipality_id, has_children) 
+VALUES ('João Doador', 'joao@doador.com', 'senha123', 'DONOR', 5000.0, 3, 1, TRUE);
 
-INSERT INTO user_model (name, email, password, user_type, family_income, people_quantity, municipality_id) 
-VALUES ('Maria Beneficiária', 'maria@beneficiaria.com', 'senha123', 'BENEFICIARY', 800.0, 4, 2);
+INSERT INTO user_model (name, email, password, user_type, family_income, people_quantity, municipality_id, has_children) 
+VALUES ('Maria Beneficiária', 'maria@beneficiaria.com', 'senha123', 'BENEFICIARY', 800.0, 4, 2, TRUE);
 
-INSERT INTO user_model (name, email, password, user_type, family_income, people_quantity, municipality_id) 
-VALUES ('Carlos Doador', 'carlos@doador.com', 'senha123', 'DONOR', 8000.0, 2, 3);
+INSERT INTO user_model (name, email, password, user_type, family_income, people_quantity, municipality_id, has_children) 
+VALUES ('Carlos Doador', 'carlos@doador.com', 'senha123', 'DONOR', 8000.0, 2, 3, FALSE);
 
-INSERT INTO user_model (name, email, password, user_type, family_income, people_quantity, municipality_id) 
-VALUES ('Ana Beneficiária', 'ana@beneficiaria.com', 'senha123', 'BENEFICIARY', 600.0, 5, 4);
+INSERT INTO user_model (name, email, password, user_type, family_income, people_quantity, municipality_id, has_children) 
+VALUES ('Ana Beneficiária', 'ana@beneficiaria.com', 'senha123', 'BENEFICIARY', 600.0, 5, 4, TRUE);
 
 -- Insert products
 INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 

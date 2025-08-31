@@ -43,6 +43,7 @@ CREATE TABLE user_model
     family_income   DOUBLE PRECISION DEFAULT 0.0,
     people_quantity INTEGER        DEFAULT 1,
     municipality_id INTEGER,
+    has_children    BOOLEAN        DEFAULT FALSE,
     PRIMARY KEY (id),
     FOREIGN KEY (municipality_id) REFERENCES municipality(id)
 );
