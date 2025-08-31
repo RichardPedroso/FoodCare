@@ -73,6 +73,15 @@ VALUES ('Sabonete', 'Higiene', 200, 2, 90.0, 'G');
 INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
 VALUES ('Creme dental', 'Higiene', 150, 2, 90.0, 'G');
 
+INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
+VALUES ('Gelatina', 'Alimento', 120, 1, 20.0, 'G');
+
+INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
+VALUES ('Bolacha recheada', 'Alimento', 80, 1, 130.0, 'G');
+
+INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
+VALUES ('Biscoito de polvilho', 'Alimento', 60, 1, 200.0, 'G');
+
 -- Insert sample donations
 INSERT INTO donation (donation_date, user_id) VALUES ('2024-01-15', 2);
 INSERT INTO donation (donation_date, user_id) VALUES ('2024-01-20', 4);
