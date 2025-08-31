@@ -25,7 +25,7 @@ public class AppConfiguration {
 
     @Bean
     public UserDao userDao(final Connection connection) {
-        return new UserPostgresDaoImpl(connection);
+        return new br.com.faitec.foodcare.implementation.dao.postgres.UserPostgresDaoImpl(connection);
     }
 
     @Bean

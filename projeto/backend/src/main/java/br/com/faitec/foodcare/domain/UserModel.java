@@ -17,6 +17,7 @@ public class UserModel {
     private double familyIncome;
     private int peopleQuantity;
     private int municipalityId;
+    private boolean hasChildren;
     
     public enum UserType {
         DONOR,

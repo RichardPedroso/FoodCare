@@ -43,6 +43,7 @@ CREATE TABLE user_model
     family_income   DOUBLE PRECISION DEFAULT 0.0,
     people_quantity INTEGER        DEFAULT 1,
     municipality_id INTEGER,
+    has_children    BOOLEAN        DEFAULT FALSE,
     PRIMARY KEY (id),
     FOREIGN KEY (municipality_id) REFERENCES municipality(id)
 );
@@ -54,6 +55,8 @@ CREATE TABLE product
     product_type    VARCHAR(50),
     stock           INTEGER     DEFAULT 0,
     category_id     INTEGER,
+    unit_quantity   DOUBLE PRECISION DEFAULT 1.0,
+    unit_type       VARCHAR(10) DEFAULT 'KG',
     PRIMARY KEY (id),
     FOREIGN KEY (category_id) REFERENCES category(id)
 );
