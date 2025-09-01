@@ -13,4 +13,13 @@ public class Product {
     private String productType;
     private int stock;
     private int categoryId;
+    private double unitQuantity;
+    private String unitType;
+    
+    public enum UnitType {
+        KG,
+        G,
+        L,
+        ML
+    }
 }

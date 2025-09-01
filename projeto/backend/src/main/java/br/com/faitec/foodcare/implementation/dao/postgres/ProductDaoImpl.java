@@ -20,7 +20,7 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public int create(Product entity) {
-        String sql = "INSERT INTO product(name, product_type, stock, category_id) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO product(name, product_type, stock, category_id, unit_quantity, unit_type) VALUES (?, ?, ?, ?, ?, ?)";
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -28,6 +28,8 @@ public class ProductDaoImpl implements ProductDao {
             preparedStatement.setString(2, entity.getProductType());
             preparedStatement.setInt(3, entity.getStock());
             preparedStatement.setInt(4, entity.getCategoryId());
+            preparedStatement.setDouble(5, entity.getUnitQuantity());
+            preparedStatement.setString(6, entity.getUnitType());
             preparedStatement.execute();
             
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -74,6 +76,8 @@ public class ProductDaoImpl implements ProductDao {
                 product.setProductType(resultSet.getString("product_type"));
                 product.setStock(resultSet.getInt("stock"));
                 product.setCategoryId(resultSet.getInt("category_id"));
+                product.setUnitQuantity(resultSet.getDouble("unit_quantity"));
+                product.setUnitType(resultSet.getString("unit_type"));
                 
                 resultSet.close();
                 preparedStatement.close();
@@ -104,6 +108,8 @@ public class ProductDaoImpl implements ProductDao {
                 product.setProductType(resultSet.getString("product_type"));
                 product.setStock(resultSet.getInt("stock"));
                 product.setCategoryId(resultSet.getInt("category_id"));
+                product.setUnitQuantity(resultSet.getDouble("unit_quantity"));
+                product.setUnitType(resultSet.getString("unit_type"));
                 products.add(product);
             }
             
@@ -117,7 +123,7 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public void update(int id, Product entity) {
-        String sql = "UPDATE product SET name = ?, product_type = ?, stock = ?, category_id = ? WHERE id = ?";
+        String sql = "UPDATE product SET name = ?, product_type = ?, stock = ?, category_id = ?, unit_quantity = ?, unit_type = ? WHERE id = ?";
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -125,7 +131,9 @@ public class ProductDaoImpl implements ProductDao {
             preparedStatement.setString(2, entity.getProductType());
             preparedStatement.setInt(3, entity.getStock());
             preparedStatement.setInt(4, entity.getCategoryId());
-            preparedStatement.setInt(5, id);
+            preparedStatement.setDouble(5, entity.getUnitQuantity());
+            preparedStatement.setString(6, entity.getUnitType());
+            preparedStatement.setInt(7, id);
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
