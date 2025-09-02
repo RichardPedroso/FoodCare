@@ -102,7 +102,8 @@
             </div>
           </div>
 
-          <div class="info-section" *ngIf="user?.user_type === 'beneficiary'">
+          @if (user?.user_type === 'beneficiary') {
+          <div class="info-section">
             <h3 class="section-title">
               <mat-icon>family_restroom</mat-icon>
               Informações Familiares
@@ -124,8 +125,17 @@
                   <mat-icon matPrefix>group</mat-icon>
                 </mat-form-field>
               </div>
+
+              <div class="info-item">
+                <mat-form-field appearance="outline" class="full-width">
+                  <mat-label>Possui Crianças</mat-label>
+                  <input matInput [value]="user?.has_children ? 'Sim' : 'Não'" readonly>
+                  <mat-icon matPrefix>child_care</mat-icon>
+                </mat-form-field>
+              </div>
             </div>
           </div>
+          }
         </div>
 
         <div class="profile-actions">
