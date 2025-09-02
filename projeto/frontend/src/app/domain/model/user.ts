@@ -7,5 +7,6 @@ export interface User {
     user_type: string,
     family_income?: string,
     people_quantity?: string,
-    municipality_id: string
+    municipality_id: string,
+    has_children?: boolean
 }
