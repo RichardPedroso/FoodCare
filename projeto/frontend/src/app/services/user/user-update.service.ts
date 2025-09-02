@@ -4,6 +4,7 @@ import { UserReadService } from './user-read.service';
 import { first, firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { User } from '../../domain/model/user';
+import { UpdateUserDto } from '../../domain/dto/update-user-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -45,6 +46,25 @@ export class UserUpdateService {
     console.log('UserUpdateService: Resultado da atualização:', result);
     
     return result;
+  }
+
+  async updateUser(updateUserDto: UpdateUserDto): Promise<User> {
+    const updateUrl = `${environment.api_endpoint}/user/${updateUserDto.id}`;
+    return firstValueFrom(this.http.put<User>(updateUrl, updateUserDto));
+  }
+
+  async updateUserProfile(id: string, userData: Partial<User>): Promise<User> {
+    const userToUpdate: User | null = await this.userReadService.findById(id);
+    
+    if(!userToUpdate){
+      throw new Error('Usuário não encontrado');  
+    }
+
+    // Atualizar apenas os campos fornecidos
+    Object.assign(userToUpdate, userData);
+    
+    const updateUrl = `${environment.api_endpoint}/user/${id}`;
+    return firstValueFrom(this.http.put<User>(updateUrl, userToUpdate));
   }
 
 }
