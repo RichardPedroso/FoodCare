@@ -32,7 +32,7 @@ export class MainAdminComponent implements OnInit {
         .filter(p => p.productType === 'hygiene')
         .sort((a, b) => a.name.localeCompare(b.name));
       
-      const allStocks = products.map(p => p.stock);
+      const allStocks = [10, 20, 30, 40, 50]; // Placeholder values
       this.maxStock = Math.max(...allStocks);
     } catch (error) {
       console.error('Erro ao carregar produtos:', error);

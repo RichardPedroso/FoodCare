@@ -56,9 +56,6 @@
                       @for (product of filteredProducts; track product.id) {
                         <mat-option [value]="product.id">
                           {{ product.name }}
-                          @if (product.stock <= 5) {
-                            - <span style="color: red; font-weight: bold;">Falta em estoque</span> 
-                          }  
                         </mat-option>
                       }
                     </mat-select>
@@ -86,15 +83,44 @@
                 </div>
 
                 <div class="form-group">
-                  <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Quantidade</mat-label>
-                    <input matInput type="number" min="1" #quantity required>
-                    @if (selectedProduct) {
-                      <span matTextSuffix>{{ selectedProduct.measure_type }}</span>
-                    }
-                    <mat-icon matPrefix>scale</mat-icon>
-                  </mat-form-field>
+                  @if (selectedProduct && selectedProduct.options_donation && selectedProduct.options_donation.length > 0) {
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Quantidade</mat-label>
+                      <mat-select #quantity required>
+                        @if (!quantity.value) {
+                          <mat-option value="">Selecione a quantidade</mat-option>
+                        }
+                        @for (option of selectedProduct.options_donation; track option) {
+                          <mat-option [value]="option">
+                            {{ option }} {{ selectedProduct.measure_type }}
+                          </mat-option>
+                        }
+                      </mat-select>
+                      <mat-icon matPrefix>scale</mat-icon>
+                    </mat-form-field>
+                  } @else {
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Quantidade</mat-label>
+                      <input matInput type="number" min="1" step="1" #quantity required>
+                      <mat-icon matPrefix>scale</mat-icon>
+                      @if (selectedProduct) {
+                        <span matTextSuffix>{{ selectedProduct.measure_type }}</span>
+                      }
+                    </mat-form-field>
+                  }
                 </div>
+
+                @if (selectedProduct && selectedProduct.measure_type !== 'un') {
+                  <div class="form-group">
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Unidades</mat-label>
+                      <input matInput type="number" min="1" step="1" #units 
+                             (input)="onUnitsInput($event)" required>
+                      <mat-icon matPrefix>inventory_2</mat-icon>
+                      <mat-hint>Número de unidades a serem doadas</mat-hint>
+                    </mat-form-field>
+                  </div>
+                }
               </div>
 
               <div class="form-group">
@@ -109,7 +135,7 @@
             <div class="form-actions">
               <button type="button" 
                       class="btn btn-primary btn-large" 
-                      (click)="registerDonation(productId.value, expirationDate.value, quantity.value)">
+                      (click)="onRegisterDonation(productId.value, expirationDate.value)">
                 <mat-icon>save</mat-icon>
                 Registrar Doação
               </button>
@@ -192,6 +218,15 @@
             </div>
 
             <div class="form-actions">
+              @if (basketType.value === 'basicBasket') {
+              <button type="button" 
+                      class="btn btn-outline btn-large"
+                      (click)="previewBasket()">
+                <mat-icon>preview</mat-icon>
+                Ver Prévia da Cesta
+              </button>
+              }
+              
               <button type="button" 
                       class="btn btn-primary btn-large"
                       (click)="basketType.value === 'basicBasket' ? requestBasicBasket() : basketType.value === 'HygienBasket' ? requestHygieneBasket() : null">
@@ -210,3 +245,47 @@
     </div>
   </div>
 </div>
+
+<!-- Modal de Prévia da Cesta -->
+@if (showBasketPreview) {
+<div class="basket-preview-modal" (click)="closeBasketPreview()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Prévia da Sua Cesta Básica</h3>
+      <button class="close-btn" (click)="closeBasketPreview()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    
+    <div class="modal-body">
+      <div class="family-info">
+        <p><strong>Calculado para:</strong> {{ user?.people_quantity }} pessoa(s)</p>
+        @if (user?.has_children) {
+        <p><strong>Inclui itens para crianças:</strong> Sim</p>
+        }
+      </div>
+      
+      <div class="basket-items">
+        @for (item of calculatedBasket; track item.productId) {
+        <div class="item-card">
+          <div class="item-info">
+            <h4>{{ item.productName }}</h4>
+            <p>{{ item.quantity }} {{ item.unitType }}</p>
+            <small>{{ item.unitQuantity }} por pessoa</small>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeBasketPreview()">
+        Fechar
+      </button>
+      <button class="btn btn-primary" (click)="closeBasketPreview(); requestBasicBasket()">
+        Solicitar Esta Cesta
+      </button>
+    </div>
+  </div>
+</div>
+}

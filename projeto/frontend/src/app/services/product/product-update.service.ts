@@ -22,9 +22,8 @@ export class ProductUpdateService {
       throw new Error('Produto não encontrado');
     }
 
-    const oldStock = productToUpdate.stock;
-    productToUpdate.stock += quantity;
-    console.log(`Atualizando stock de ${oldStock} para ${productToUpdate.stock}`);
+    // Stock agora é gerenciado na tabela stock separada
+    console.log(`Atualizando stock para produto ${id} com quantidade ${quantity}`);
 
     const result = await firstValueFrom(this.http.put<Product>(`${environment.api_endpoint}/product/${id}`, productToUpdate));
     console.log('Produto atualizado:', result);

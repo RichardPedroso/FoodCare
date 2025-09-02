@@ -149,6 +149,8 @@ export class SignUpComponent implements OnInit {
         Validators.minLength(this.familyIncomeMinLenght),
       ]],
 
+      hasChildren: [false]
+
     });
 
     // Adicionar listeners para validação em tempo real
@@ -293,12 +295,14 @@ export class SignUpComponent implements OnInit {
         user_type: formDataSignUp.userType,
         family_income: '',
         people_quantity: '',
-        municipality_id: createdMunicipality.id
+        municipality_id: createdMunicipality.id,
+        has_children: false
       };
 
       if (newUser.user_type === 'beneficiary') {
         newUser.family_income = formDataSignUp.familyIncome;
         newUser.people_quantity = formDataSignUp.peopleQuantity;
+        newUser.has_children = formDataSignUp.hasChildren;
       }
 
       const createdUser = await this.userCreateService.create(newUser);

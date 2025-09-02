@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgClass } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,6 +9,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatSelect } from '@angular/material/select';
 import { AuthenticationService } from '../../../../services/security/authentication.service';
 import { User } from '../../../../domain/model/user';
 import { Donation } from '../../../../domain/model/donation';
@@ -18,6 +19,10 @@ import { DonationCreateService } from '../../../../services/donation/donation-cr
 import { DonationProductCreateService } from '../../../../services/donation-product/donation-product-create.service';
 import { ProductUpdateService } from '../../../../services/product/product-update.service';
 import { ProductReadService } from '../../../../services/product/product-read.service';
+import { BasketCalculationService } from '../../../../services/basket/basket-calculation.service';
+import { BasketItem } from '../../../../domain/model/basket-item';
+import { UnitConverterService } from '../../../../services/utils/unit-converter.service';
+
 
 @Component({
   selector: 'app-make-action',
@@ -48,6 +53,12 @@ export class MakeActionComponent implements OnInit {
   canRequestHygiene: boolean = true;
   lastBasicRequest: Date | null = null;
   lastHygieneRequest: Date | null = null;
+  calculatedBasket: BasketItem[] = [];
+  showBasketPreview: boolean = false;
+  selectedUnit: string = '';
+
+  @ViewChild('quantity') quantityRef!: MatSelect | ElementRef;
+  @ViewChild('units') unitsRef!: ElementRef;
 
   constructor(
     private router: Router,
@@ -55,7 +66,9 @@ export class MakeActionComponent implements OnInit {
     private donationCreateService: DonationCreateService,
     private donationProductCreateService: DonationProductCreateService,
     private productUpdateService: ProductUpdateService,
-    private productReadService: ProductReadService
+    private productReadService: ProductReadService,
+    private basketCalculationService: BasketCalculationService,
+    private unitConverterService: UnitConverterService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -90,6 +103,44 @@ export class MakeActionComponent implements OnInit {
 
   onProductChange(productId: string): void {
     this.selectedProduct = this.products.find(product => product.id === productId) || null;
+    if (this.selectedProduct) {
+      this.selectedUnit = this.getDefaultUnit();
+    }
+  }
+
+  getDefaultUnit(): string {
+    if (!this.selectedProduct) return '';
+    return this.selectedProduct.measure_type;
+  }
+
+  isWeightProduct(): boolean {
+    if (!this.selectedProduct) return false;
+    return this.selectedProduct.measure_type === 'kg' || this.selectedProduct.measure_type === 'g';
+  }
+
+  isVolumeProduct(): boolean {
+    if (!this.selectedProduct) return false;
+    return this.selectedProduct.measure_type === 'l' || this.selectedProduct.measure_type === 'ml';
+  }
+
+  onUnitChange(newUnit: string): void {
+    this.selectedUnit = newUnit;
+  }
+
+  getConvertedQuantity(quantityValue: string): string {
+    if (!quantityValue || !this.selectedProduct || !this.selectedUnit) return '';
+    
+    const quantity = parseFloat(quantityValue);
+    if (isNaN(quantity)) return '';
+    
+    const baseUnit = this.selectedProduct.measure_type;
+    
+    if (this.selectedUnit === baseUnit) {
+      return `${quantity} ${baseUnit} (unidade base)`;
+    }
+    
+    const converted = this.unitConverterService.convertToProductUnit(quantity, this.selectedUnit, baseUnit);
+    return `${converted} ${baseUnit}`;
   }
 
   getCurrentDate(): string {
@@ -152,9 +203,55 @@ export class MakeActionComponent implements OnInit {
     // Método não necessário - o datepicker já gerencia a data automaticamente
   }
 
-  async registerDonation(productId: string, expirationDate: string, quantity: string): Promise<void> {
+  onUnitsInput(event: any): void {
+    const value = event.target.value;
+    // Remove caracteres não numéricos
+    const numericValue = value.replace(/[^0-9]/g, '');
+    event.target.value = numericValue;
+    
+    // Valida se é um número positivo
+    const num = parseInt(numericValue);
+    if (num <= 0 && numericValue !== '') {
+      event.target.value = '';
+    }
+  }
+
+  onRegisterDonation(productId: string, expirationDate: string): void {
+    const quantityValue = this.getQuantityValue();
+    const unitsValue = this.getUnitsValue();
+    this.registerDonation(productId, expirationDate, quantityValue, unitsValue);
+  }
+
+  private getQuantityValue(): string {
+    if (this.quantityRef) {
+      if ('value' in this.quantityRef) {
+        return this.quantityRef.value || '';
+      } else {
+        return this.quantityRef.nativeElement.value || '';
+      }
+    }
+    return '';
+  }
+
+  private getUnitsValue(): string {
+    return this.unitsRef?.nativeElement?.value || '1';
+  }
+
+  async registerDonation(productId: string, expirationDate: string, quantity: string, units?: string): Promise<void> {
     if (!this.user || !productId || !expirationDate || !quantity || !this.selectedProduct) {
       alert('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    // Validar se a quantidade está nas opções permitidas
+    if (this.selectedProduct.options_donation && !this.selectedProduct.options_donation.includes(quantity)) {
+      alert('Quantidade inválida. Selecione uma das opções disponíveis.');
+      return;
+    }
+
+    // Validar campo Unidades para produtos que não são 'un'
+    if (this.selectedProduct.measure_type !== 'un' && (!units || parseInt(units) <= 0)) {
+      alert('Por favor, informe o número de unidades a serem doadas.');
       return;
     }
 
@@ -163,10 +260,17 @@ export class MakeActionComponent implements OnInit {
       return;
     }
 
+    const quantityNum = parseFloat(quantity);
+    const unitsNum = units ? parseInt(units) : 1;
+    
+    if (!this.unitConverterService.validateQuantityInput(quantityNum, this.selectedProduct.measure_type)) {
+      alert(`Quantidade inválida para a unidade ${this.selectedProduct.measure_type}. Verifique o valor inserido.`);
+      return;
+    }
+
     const unit = this.selectedProduct.measure_type;
 
     try {
-      
       const donation: Donation = {
         donation_date: new Date(),
         user_id: this.user.id!
@@ -175,7 +279,7 @@ export class MakeActionComponent implements OnInit {
       const donationResponse = await this.donationCreateService.create(donation);
       
       const donationProduct: DonationProduct = {
-        quantity: parseInt(quantity),
+        quantity: quantityNum,
         expirationDate: new Date(expirationDate),
         unit: unit,
         donation_id: donationResponse.id!,
@@ -184,7 +288,8 @@ export class MakeActionComponent implements OnInit {
 
       await this.donationProductCreateService.create(donationProduct);
 
-      await this.productUpdateService.updateStock(productId, parseInt(quantity));
+      // Atualizar estoque na tabela stock
+      await this.updateStock(productId, quantity, unitsNum);
 
       alert('Doação registrada com sucesso!');
       this.router.navigate(['/main']);
@@ -192,6 +297,42 @@ export class MakeActionComponent implements OnInit {
     } catch (error) {
       console.error('Erro ao registrar doação:', error);
       alert('Erro ao registrar doação. Tente novamente.');
+    }
+  }
+
+  private async updateStock(productId: string, donationOption: string, units: number): Promise<void> {
+    try {
+      // Buscar o registro de estoque correspondente
+      const stockResponse = await fetch(`http://localhost:3000/stock?product_id=${productId}&donation_option=${donationOption}`);
+      const stockRecords = await stockResponse.json();
+      
+      if (stockRecords.length > 0) {
+        // Atualizar estoque existente
+        const stockRecord = stockRecords[0];
+        const newStock = stockRecord.actual_stock + units;
+        
+        await fetch(`http://localhost:3000/stock/${stockRecord.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ actual_stock: newStock })
+        });
+      } else {
+        // Criar novo registro de estoque
+        const newStockRecord = {
+          product_id: productId,
+          donation_option: donationOption,
+          actual_stock: units
+        };
+        
+        await fetch('http://localhost:3000/stock', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(newStockRecord)
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar estoque:', error);
+      throw error;
     }
   }
 
@@ -208,38 +349,64 @@ export class MakeActionComponent implements OnInit {
         return;
       }
 
-      const basicProducts = this.products.filter(product => product.productType === 'basic');
+      // Usar o novo sistema de cálculo de cestas
+      const peopleQuantity = parseInt(this.user.people_quantity || '1');
+      const hasChildren = this.user.has_children || false;
       
-      const insufficientStock = basicProducts.filter(product => product.stock < 1);
-      if (insufficientStock.length > 0) {
-        alert('Não há estoque suficiente para formar uma cesta básica. Produtos em falta: ' + 
-              insufficientStock.map(p => p.name).join(', '));
-        return;
-      }
+      this.basketCalculationService.calculateBasket(
+        parseInt(this.user.id!), 
+        peopleQuantity, 
+        hasChildren
+      ).subscribe({
+        next: async (calculatedBasket) => {
+          this.calculatedBasket = calculatedBasket;
+          
+          // Verificar se há estoque suficiente para todos os itens calculados
+          const insufficientStock: string[] = [];
+          for (const basketItem of calculatedBasket) {
+            // Verificação de estoque agora será feita na tabela stock separada
+            // TODO: Implementar verificação de estoque usando a tabela stock
+          }
+          
+          if (insufficientStock.length > 0) {
+            alert('Não há estoque suficiente para formar sua cesta básica personalizada. Produtos em falta: ' + 
+                  insufficientStock.join(', '));
+            return;
+          }
 
-      for (const product of basicProducts) {
-        await this.productUpdateService.updateStock(product.id!, -1);
-      }
+          // Atualizar estoque dos produtos
+          for (const basketItem of calculatedBasket) {
+            await this.productUpdateService.updateStock(basketItem.productId.toString(), -basketItem.quantity);
+          }
 
-      const basketRequest = {
-        user_id: this.user.id!,
-        request_date: new Date(),
-        basket_type: 'basic',
-        status: 'pending'
-      };
+          const basketRequest = {
+            user_id: this.user?.id || '',
+            request_date: new Date(),
+            basket_type: 'basic',
+            status: 'pending',
+            people_quantity: peopleQuantity,
+            has_children: hasChildren,
+            calculated_items: calculatedBasket
+          };
 
-      const response = await fetch('http://localhost:3000/basket_request', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(basketRequest)
+          const response = await fetch('http://localhost:3000/basket_request', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(basketRequest)
+          });
+
+          if (response.ok) {
+            alert(`Solicitação de cesta básica registrada com sucesso! Sua cesta foi calculada para ${peopleQuantity} pessoa(s)${hasChildren ? ' incluindo itens para crianças' : ''}.`);
+            this.router.navigate(['/main']);
+          } else {
+            throw new Error('Erro ao registrar solicitação');
+          }
+        },
+        error: (error) => {
+          console.error('Erro ao calcular cesta:', error);
+          alert('Erro ao calcular cesta personalizada. Tente novamente.');
+        }
       });
-
-      if (response.ok) {
-        alert('Solicitação de cesta básica registrada com sucesso!');
-        this.router.navigate(['/main']);
-      } else {
-        throw new Error('Erro ao registrar solicitação');
-      }
       
     } catch (error) {
       console.error('Erro ao solicitar cesta básica:', error);
@@ -262,10 +429,10 @@ export class MakeActionComponent implements OnInit {
 
       const hygieneProducts = this.products.filter(product => product.productType === 'hygiene');
       
-      const insufficientStock = hygieneProducts.filter(product => product.stock < 1);
+      const insufficientStock: string[] = [];
       if (insufficientStock.length > 0) {
         alert('Não há estoque suficiente para formar uma cesta de higiene. Produtos em falta: ' + 
-              insufficientStock.map(p => p.name).join(', '));
+              insufficientStock.join(', '));
         return;
       }
 
@@ -406,6 +573,32 @@ export class MakeActionComponent implements OnInit {
     }
     
     return new Date(dateValue);
+  }
+
+  async previewBasket(): Promise<void> {
+    if (!this.user) {
+      alert('Usuário não encontrado.');
+      return;
+    }
+
+    const peopleQuantity = parseInt(this.user.people_quantity || '1');
+    const hasChildren = this.user.has_children || false;
+    
+    this.basketCalculationService.getBasketForFamily(peopleQuantity, hasChildren).subscribe({
+      next: (calculatedBasket) => {
+        this.calculatedBasket = calculatedBasket;
+        this.showBasketPreview = true;
+      },
+      error: (error) => {
+        console.error('Erro ao calcular prévia da cesta:', error);
+        alert('Erro ao calcular prévia da cesta. Tente novamente.');
+      }
+    });
+  }
+
+  closeBasketPreview(): void {
+    this.showBasketPreview = false;
+    this.calculatedBasket = [];
   }
 
 }

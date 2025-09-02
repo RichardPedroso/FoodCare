@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { AuthenticationService } from '../../../services/security/authentication.service';
 import { Router } from '@angular/router';
 import { UserReadService } from '../../../services/user/user-read.service';
@@ -7,10 +7,7 @@ import { User } from '../../../domain/model/user';
 
 @Component({
   selector: 'app-home',
-  imports: [
-    RouterOutlet,
-    RouterLink
-  ],
+  imports: [],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
