@@ -8,5 +8,7 @@ export interface User {
     family_income?: string,
     people_quantity?: string,
     municipality_id: string,
-    has_children?: boolean
+    has_children?: boolean,
+    documents?: string[],
+    able?: boolean
 }

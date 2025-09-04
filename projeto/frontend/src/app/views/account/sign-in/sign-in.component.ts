@@ -108,10 +108,21 @@ export class SignInComponent{
           } else {
             if (user.user_type === 'donor') {
               console.log('Usuário identificado como doador');
+              this.router.navigate(['/main']);
             } else if (user.user_type === 'beneficiary') {
               console.log('Usuário identificado como beneficiário');
+              if (user.able === false) {
+                alert('Você não está apto a receber o auxílio.');
+                return;
+              }
+              if (user.able === undefined) {
+                alert('Estamos verificando sua elegibilidade.');
+                return;
+              }
+              this.router.navigate(['/main']);
+            } else {
+              this.router.navigate(['/main']);
             }
-            this.router.navigate(['/main']);
           }
       },
       error: (err) => {

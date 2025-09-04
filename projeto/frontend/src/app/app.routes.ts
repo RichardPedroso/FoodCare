@@ -18,6 +18,7 @@ import { MainComponent } from './views/app/main/main.component';
 import { HelpComponent } from './views/app/help/help.component';
 import { DeleteAccountComponent } from './views/account/delete-account/delete-account.component';
 import { MainAdminComponent } from './views/app/admin/main-admin/main-admin.component';
+import { ManageUsersComponent } from './views/app/admin/manage-users/manage-users.component';
 
 export const routes: Routes = [
 
@@ -82,6 +83,10 @@ export const routes: Routes = [
       {
         path: 'admin/dashboard',
         component: MainAdminComponent
+      },
+      {
+        path: 'admin/manage-users',
+        component: ManageUsersComponent
       },
     ]
   },

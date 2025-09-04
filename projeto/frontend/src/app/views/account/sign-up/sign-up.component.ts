@@ -65,6 +65,8 @@ export class SignUpComponent implements OnInit {
   familyIncomeMinLenght: number = 0;
 
   incomeError: string = '';
+  
+  uploadedDocuments: { name: string, data: string }[] = [];
 
   constructor(
     private formbuilder: FormBuilder,
@@ -163,6 +165,40 @@ export class SignUpComponent implements OnInit {
     });
   }
 
+  onFileSelected(event: any): void {
+    const files = event.target.files;
+    if (files) {
+      for (let file of files) {
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.uploadedDocuments.push({
+            name: file.name,
+            data: e.target.result
+          });
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  }
+
+  removeDocument(index: number): void {
+    this.uploadedDocuments.splice(index, 1);
+  }
+
+  openDocument(document: { name: string, data: string }): void {
+    const newWindow = window.open();
+    if (newWindow) {
+      newWindow.document.write(`
+        <html>
+          <head><title>${document.name}</title></head>
+          <body style="margin:0;display:flex;justify-content:center;align-items:center;min-height:100vh;background:#f5f5f5;">
+            <img src="${document.data}" style="max-width:100%;max-height:100%;object-fit:contain;" alt="${document.name}">
+          </body>
+        </html>
+      `);
+    }
+  }
+
   validateFields(): boolean {
     let isNameValid = this.signUpForm.controls['name'].valid;
     let isEmailValid = this.signUpForm.controls['email'].valid;
@@ -188,6 +224,10 @@ export class SignUpComponent implements OnInit {
 
     if (userTypeValue === 'donor'){
       return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType && addressValid;
+    }
+
+    if (userTypeValue === 'beneficiary' && this.uploadedDocuments.length === 0) {
+      return false;
     }
 
     return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType && addressValid && isPeopleQuantity && isFamilyIncome && this.validateIncomePerCapita();
@@ -303,6 +343,7 @@ export class SignUpComponent implements OnInit {
         newUser.family_income = formDataSignUp.familyIncome;
         newUser.people_quantity = formDataSignUp.peopleQuantity;
         newUser.has_children = formDataSignUp.hasChildren;
+        newUser.documents = this.uploadedDocuments.map(doc => doc.data);
       }
 
       const createdUser = await this.userCreateService.create(newUser);

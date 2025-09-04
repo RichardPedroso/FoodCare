@@ -230,6 +230,58 @@
           {{ incomeError }}
         </div>
         }
+        
+        <div class="form-section">
+          <h3 class="section-title">Comprovantes</h3>
+          <p class="section-subtitle">Adicione documentos que comprovem sua elegibilidade para receber auxílios</p>
+          
+          <div class="document-upload">
+            <input type="file" 
+                   #fileInput 
+                   (change)="onFileSelected($event)" 
+                   accept="image/*,.pdf" 
+                   multiple 
+                   style="display: none;">
+            
+            <button type="button" 
+                    class="btn btn-outline" 
+                    (click)="fileInput.click()">
+              <mat-icon>upload_file</mat-icon>
+              Adicionar Comprovantes *
+            </button>
+            
+            @if (signUpForm.get('userType')?.value === 'beneficiary' && uploadedDocuments.length === 0) {
+            <div class="document-error">
+              <mat-icon>warning</mat-icon>
+              <span>É obrigatório enviar pelo menos 1 documento comprovatório</span>
+            </div>
+            }
+          </div>
+          
+          @if (uploadedDocuments.length > 0) {
+          <div class="documents-grid">
+            @for (document of uploadedDocuments; track $index) {
+            <div class="document-card">
+              <div class="document-preview" (click)="openDocument(document)">
+                @if (document.data.includes('data:image')) {
+                <img [src]="document.data" [alt]="document.name">
+                } @else {
+                <mat-icon>description</mat-icon>
+                }
+              </div>
+              <div class="document-info">
+                <span class="document-name">{{ document.name }}</span>
+                <button type="button" 
+                        class="remove-btn" 
+                        (click)="removeDocument($index)">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </div>
+            }
+          </div>
+          }
+        </div>
       </div>
       }
 
