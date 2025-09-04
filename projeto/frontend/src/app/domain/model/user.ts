@@ -9,5 +9,6 @@ export interface User {
     people_quantity?: string,
     municipality_id: string,
     has_children?: boolean,
-    documents?: string[]
+    documents?: string[],
+    able?: boolean
 }

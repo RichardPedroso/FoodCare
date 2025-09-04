@@ -354,8 +354,28 @@
 
 .document-upload {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
   margin-bottom: var(--spacing-lg);
+}
+
+.document-error {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  color: var(--error-color);
+  font-size: var(--font-size-sm);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: var(--error-light);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--error-color);
+}
+
+.document-error mat-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
 }
 
 .documents-grid {

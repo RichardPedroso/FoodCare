@@ -247,8 +247,15 @@
                     class="btn btn-outline" 
                     (click)="fileInput.click()">
               <mat-icon>upload_file</mat-icon>
-              Adicionar Comprovantes
+              Adicionar Comprovantes *
             </button>
+            
+            @if (signUpForm.get('userType')?.value === 'beneficiary' && uploadedDocuments.length === 0) {
+            <div class="document-error">
+              <mat-icon>warning</mat-icon>
+              <span>É obrigatório enviar pelo menos 1 documento comprovatório</span>
+            </div>
+            }
           </div>
           
           @if (uploadedDocuments.length > 0) {

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { ProductReadService } from '../../../../services/product/product-read.service';
 import { Product } from '../../../../domain/model/product';
 
@@ -18,7 +19,7 @@ export class MainAdminComponent implements OnInit {
   showHygieneChart = false;
   showInfantChart = false;
 
-  constructor(private productService: ProductReadService) {}
+  constructor(private productService: ProductReadService, private router: Router) {}
 
   async ngOnInit() {
     await this.loadProducts();
@@ -74,5 +75,9 @@ export class MainAdminComponent implements OnInit {
       labels.push(i);
     }
     return labels.reverse();
+  }
+
+  navigateToManageUsers() {
+    this.router.navigate(['/main/admin/manage-users']);
   }
 }

@@ -1,0 +1,108 @@
+<div class="container">
+  <div class="header">
+    <h1>Gerenciar Usuários Beneficiários</h1>
+    <p class="text-secondary">Verificar documentos e aprovar beneficiários</p>
+  </div>
+
+  @if (!showDocuments) {
+  <div class="users-list">
+    <div class="filters-section">
+      <div class="filters-row">
+        <mat-form-field appearance="outline" class="filter-select">
+          <mat-label>Filtrar por</mat-label>
+          <mat-select [(value)]="selectedFilter" (selectionChange)="onFilterChange()">
+            <mat-option value="recentes">Recentes</mat-option>
+            <mat-option value="pendentes">Pendentes</mat-option>
+            <mat-option value="aprovados">Aprovados</mat-option>
+            <mat-option value="reprovados">Reprovados</mat-option>
+          </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Pesquisar por nome</mat-label>
+          <input matInput [(ngModel)]="searchTerm" (input)="onSearchChange()" placeholder="Digite o nome...">
+          <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
+    
+    <div class="list-header">
+      <h2>Lista de Beneficiários</h2>
+      <span class="count">{{ beneficiaries.length }} usuários</span>
+    </div>
+    
+    <div class="users-grid">
+      @for (user of beneficiaries; track user.id) {
+      <div class="user-card card" (click)="selectUser(user)">
+        <div class="user-info">
+          <h3>{{ user.name }}</h3>
+          <p>{{ user.email }}</p>
+          <div class="status-badge" [class]="getStatusClass(user)">
+            {{ getStatusText(user) }}
+          </div>
+        </div>
+        <div class="documents-count">
+          <mat-icon>description</mat-icon>
+          <span>{{ user.documents?.length || 0 }} docs</span>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  }
+
+  @if (showDocuments && selectedUser) {
+  <div class="documents-view">
+    <div class="documents-header">
+      <button class="btn btn-secondary" (click)="closeDocuments()">
+        <mat-icon>arrow_back</mat-icon>
+        Voltar
+      </button>
+      <div class="user-details">
+        <h2>{{ selectedUser.name }}</h2>
+        <p>{{ selectedUser.email }}</p>
+      </div>
+    </div>
+
+    @if (selectedUser.documents && selectedUser.documents.length > 0) {
+    <div class="documents-grid">
+      @for (document of selectedUser.documents; track $index) {
+      <div class="document-card" (click)="openDocument(document)">
+        <div class="document-preview">
+          @if (document.includes('data:image')) {
+          <img [src]="document" alt="Documento">
+          } @else {
+          <mat-icon>description</mat-icon>
+          }
+        </div>
+        <p>Documento {{ $index + 1 }}</p>
+      </div>
+      }
+    </div>
+
+    <div class="actions">
+      @if (selectedUser.able === undefined) {
+      <button class="btn btn-success" (click)="confirmUser()">
+        <mat-icon>check</mat-icon>
+        Confirmar
+      </button>
+      <button class="btn btn-danger" (click)="denyUser()">
+        <mat-icon>close</mat-icon>
+        Negar
+      </button>
+      } @else if (selectedUser.able === true) {
+      <button class="btn btn-warning" (click)="revokePermission()">
+        <mat-icon>block</mat-icon>
+        Revogar Permissão
+      </button>
+      } @else if (selectedUser.able === false) {
+      <button class="btn btn-success" (click)="grantPermission()">
+        <mat-icon>check_circle</mat-icon>
+        Conceder Permissão
+      </button>
+      }
+    </div>
+    }
+  </div>
+  }
+</div>

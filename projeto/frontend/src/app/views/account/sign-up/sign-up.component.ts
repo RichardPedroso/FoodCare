@@ -226,6 +226,10 @@ export class SignUpComponent implements OnInit {
       return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType && addressValid;
     }
 
+    if (userTypeValue === 'beneficiary' && this.uploadedDocuments.length === 0) {
+      return false;
+    }
+
     return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType && addressValid && isPeopleQuantity && isFamilyIncome && this.validateIncomePerCapita();
   }
 
