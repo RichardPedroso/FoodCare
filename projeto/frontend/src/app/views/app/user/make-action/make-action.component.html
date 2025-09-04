@@ -41,6 +41,7 @@
                       }
                       <mat-option value="basic">Alimentos Básicos</mat-option>
                       <mat-option value="hygiene">Produtos de Higiene</mat-option>
+                      <mat-option value="infant">Produtos Infantis</mat-option>
                     </mat-select>
                     <mat-icon matPrefix>category</mat-icon>
                   </mat-form-field>
@@ -65,24 +66,26 @@
               </div>
 
               <div class="form-row">
-                <div class="form-group">
-                  <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Data de Validade</mat-label>
-                    <input matInput [matDatepicker]="picker" #expirationDate 
-                           placeholder="dd/mm/aaaa" 
-                           (input)="formatDate($event)"
-                           maxlength="10"
-                           required>
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                    <mat-icon matPrefix>event</mat-icon>
-                  </mat-form-field>
-                  @if (isDateInvalid(expirationDate.value)) {
-                    <div class="error-message">A data de validade não pode ser anterior à data atual.</div>
-                  }
-                </div>
+                @if (!isToyProduct()) {
+                  <div class="form-group">
+                    <mat-form-field appearance="outline" class="full-width">
+                      <mat-label>Data de Validade</mat-label>
+                      <input matInput [matDatepicker]="picker" #expirationDate 
+                             placeholder="dd/mm/aaaa" 
+                             (input)="formatDate($event)"
+                             maxlength="10"
+                             required>
+                      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker #picker></mat-datepicker>
+                      <mat-icon matPrefix>event</mat-icon>
+                    </mat-form-field>
+                    @if (isDateInvalid(expirationDate.value)) {
+                      <div class="error-message">A data de validade não pode ser anterior à data atual.</div>
+                    }
+                  </div>
+                }
 
-                <div class="form-group">
+                <div class="form-group" [ngClass]="{'centered-quantity': isToyProduct()}">
                   @if (selectedProduct && selectedProduct.options_donation && selectedProduct.options_donation.length > 0) {
                     <mat-form-field appearance="outline" class="full-width">
                       <mat-label>Quantidade</mat-label>
@@ -110,17 +113,20 @@
                   }
                 </div>
 
-                @if (selectedProduct && selectedProduct.measure_type !== 'un') {
-                  <div class="form-group">
+              </div>
+
+              @if (selectedProduct && selectedProduct.measure_type !== 'un') {
+                <div class="form-row">
+                  <div class="form-group" style="grid-column: 1 / -1; justify-self: center; max-width: 300px;">
                     <mat-form-field appearance="outline" class="full-width">
                       <mat-label>Unidades</mat-label>
                       <input matInput type="number" min="1" step="1" #units 
                              (input)="onUnitsInput($event)" required>
                       <mat-icon matPrefix>inventory_2</mat-icon>
-                      <mat-hint>Número de unidades a serem doadas</mat-hint>
                     </mat-form-field>
                   </div>
-                }
+                </div>
+              }
               </div>
 
               <div class="form-group">
@@ -130,12 +136,11 @@
                   <mat-radio-button value="no">Não, entregarei pessoalmente</mat-radio-button>
                 </mat-radio-group>
               </div>
-            </div>
 
             <div class="form-actions">
               <button type="button" 
                       class="btn btn-primary btn-large" 
-                      (click)="onRegisterDonation(productId.value, expirationDate.value)">
+                      (click)="onRegisterDonation(productId.value, getExpirationDateValue())">
                 <mat-icon>save</mat-icon>
                 Registrar Doação
               </button>
@@ -199,15 +204,29 @@
             </div>
 
             <div class="request-status">
-              <div class="status-item" [ngClass]="{'available': canRequestBasic, 'unavailable': !canRequestBasic}">
-                <mat-icon>{{ canRequestBasic ? 'check_circle' : 'schedule' }}</mat-icon>
+              @if (canRequestBasic) {
+              <div class="status-item available">
+                <mat-icon>check_circle</mat-icon>
                 <span>{{ getBasicBasketStatus() }}</span>
               </div>
+              } @else {
+              <div class="status-item unavailable">
+                <mat-icon>schedule</mat-icon>
+                <span>{{ getBasicBasketStatus() }}</span>
+              </div>
+              }
               
-              <div class="status-item" [ngClass]="{'available': canRequestHygiene, 'unavailable': !canRequestHygiene}">
-                <mat-icon>{{ canRequestHygiene ? 'check_circle' : 'schedule' }}</mat-icon>
+              @if (canRequestHygiene) {
+              <div class="status-item available">
+                <mat-icon>check_circle</mat-icon>
                 <span>{{ getHygieneBasketStatus() }}</span>
               </div>
+              } @else {
+              <div class="status-item unavailable">
+                <mat-icon>schedule</mat-icon>
+                <span>{{ getHygieneBasketStatus() }}</span>
+              </div>
+              }
             </div>
 
             <div class="info-message-container">

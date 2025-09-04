@@ -59,6 +59,7 @@ export class MakeActionComponent implements OnInit {
 
   @ViewChild('quantity') quantityRef!: MatSelect | ElementRef;
   @ViewChild('units') unitsRef!: ElementRef;
+  @ViewChild('expirationDate') expirationDateRef!: ElementRef;
 
   constructor(
     private router: Router,
@@ -200,16 +201,13 @@ export class MakeActionComponent implements OnInit {
   }
 
   onDateChange(event: any): void {
-    // Método não necessário - o datepicker já gerencia a data automaticamente
   }
 
   onUnitsInput(event: any): void {
     const value = event.target.value;
-    // Remove caracteres não numéricos
     const numericValue = value.replace(/[^0-9]/g, '');
     event.target.value = numericValue;
     
-    // Valida se é um número positivo
     const num = parseInt(numericValue);
     if (num <= 0 && numericValue !== '') {
       event.target.value = '';
@@ -237,25 +235,39 @@ export class MakeActionComponent implements OnInit {
     return this.unitsRef?.nativeElement?.value || '1';
   }
 
+  isToyProduct(): boolean {
+    return this.selectedProduct?.name === 'Brinquedo';
+  }
+
+  getExpirationDateValue(): string {
+    if (this.isToyProduct()) {
+      return '';
+    }
+    return this.expirationDateRef?.nativeElement?.value || '';
+  }
+
   async registerDonation(productId: string, expirationDate: string, quantity: string, units?: string): Promise<void> {
-    if (!this.user || !productId || !expirationDate || !quantity || !this.selectedProduct) {
+    if (!this.user || !productId || !quantity || !this.selectedProduct) {
       alert('Por favor, preencha todos os campos obrigatórios.');
       return;
     }
 
-    // Validar se a quantidade está nas opções permitidas
+    if (!this.isToyProduct() && !expirationDate) {
+      alert('Por favor, preencha a data de validade.');
+      return;
+    }
+
     if (this.selectedProduct.options_donation && !this.selectedProduct.options_donation.includes(quantity)) {
       alert('Quantidade inválida. Selecione uma das opções disponíveis.');
       return;
     }
 
-    // Validar campo Unidades para produtos que não são 'un'
     if (this.selectedProduct.measure_type !== 'un' && (!units || parseInt(units) <= 0)) {
       alert('Por favor, informe o número de unidades a serem doadas.');
       return;
     }
 
-    if (this.isDateInvalid(expirationDate)) {
+    if (!this.isToyProduct() && this.isDateInvalid(expirationDate)) {
       alert('A data de validade não pode ser anterior à data atual.');
       return;
     }
@@ -280,7 +292,7 @@ export class MakeActionComponent implements OnInit {
       
       const donationProduct: DonationProduct = {
         quantity: quantityNum,
-        expirationDate: new Date(expirationDate),
+        expirationDate: this.isToyProduct() ? null : new Date(expirationDate),
         unit: unit,
         donation_id: donationResponse.id!,
         product_id: productId
@@ -288,7 +300,6 @@ export class MakeActionComponent implements OnInit {
 
       await this.donationProductCreateService.create(donationProduct);
 
-      // Atualizar estoque na tabela stock
       await this.updateStock(productId, quantity, unitsNum);
 
       alert('Doação registrada com sucesso!');
@@ -302,8 +313,9 @@ export class MakeActionComponent implements OnInit {
 
   private async updateStock(productId: string, donationOption: string, units: number): Promise<void> {
     try {
-      // Buscar o registro de estoque correspondente
-      const stockResponse = await fetch(`http://localhost:3000/stock?product_id=${productId}&donation_option=${donationOption}`);
+      const effectiveDonationOption = this.selectedProduct?.options_donation ? donationOption : "1";
+      
+      const stockResponse = await fetch(`http://localhost:3000/stock?product_id=${productId}&donation_option=${effectiveDonationOption}`);
       const stockRecords = await stockResponse.json();
       
       if (stockRecords.length > 0) {
@@ -317,10 +329,9 @@ export class MakeActionComponent implements OnInit {
           body: JSON.stringify({ actual_stock: newStock })
         });
       } else {
-        // Criar novo registro de estoque
         const newStockRecord = {
           product_id: productId,
-          donation_option: donationOption,
+          donation_option: effectiveDonationOption,
           actual_stock: units
         };
         
@@ -349,7 +360,6 @@ export class MakeActionComponent implements OnInit {
         return;
       }
 
-      // Usar o novo sistema de cálculo de cestas
       const peopleQuantity = parseInt(this.user.people_quantity || '1');
       const hasChildren = this.user.has_children || false;
       
@@ -361,7 +371,6 @@ export class MakeActionComponent implements OnInit {
         next: async (calculatedBasket) => {
           this.calculatedBasket = calculatedBasket;
           
-          // Verificar se há estoque suficiente para todos os itens calculados
           const insufficientStock: string[] = [];
           for (const basketItem of calculatedBasket) {
             // Verificação de estoque agora será feita na tabela stock separada
@@ -374,7 +383,6 @@ export class MakeActionComponent implements OnInit {
             return;
           }
 
-          // Atualizar estoque dos produtos
           for (const basketItem of calculatedBasket) {
             await this.productUpdateService.updateStock(basketItem.productId.toString(), -basketItem.quantity);
           }

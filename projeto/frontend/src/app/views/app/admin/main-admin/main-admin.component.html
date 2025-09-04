@@ -17,54 +17,103 @@
         <h3>Verificar estoque de "Produtos de Higiene"</h3>
         <p>Visualize o estoque de produtos de higiene</p>
       </div>
+      
+      <div class="action-card card" (click)="showInfantProducts()">
+        <div class="action-icon">🍼</div>
+        <h3>Verificar estoque de "Produtos Infantis"</h3>
+        <p>Visualize o estoque de produtos infantis</p>
+      </div>
     </div>
   </div>
 
-  <div class="charts-container" *ngIf="showBasicChart || showHygieneChart">
+  @if (showBasicChart || showHygieneChart || showInfantChart) {
+  <div class="charts-container">
     <!-- Gráfico Produtos Básicos -->
-    <div class="chart-card card" *ngIf="showBasicChart">
+    @if (showBasicChart) {
+    <div class="chart-card card">
       <h2>Produtos Básicos</h2>
       <div class="chart-container">
         <div class="y-axis">
-          <div *ngFor="let label of getYAxisLabels()" class="y-label">{{label}}</div>
+          @for (label of getYAxisLabels(); track label) {
+          <div class="y-label">{{label}}</div>
+          }
         </div>
         <div class="chart-area">
           <div class="chart">
             <div class="bars-container">
-              <div *ngFor="let product of basicProducts" class="bar-item">
+              @for (product of basicProducts; track product.id) {
+              <div class="bar-item">
                 <div class="bar-wrapper">
                   <div class="bar" [style.height]="'50px'"></div>
                   <span class="stock-value">N/A</span>
                 </div>
                 <span class="product-name">{{product.name}}</span>
               </div>
+              }
             </div>
           </div>
         </div>
       </div>
     </div>
+    }
 
     <!-- Gráfico Produtos de Higiene -->
-    <div class="chart-card card" *ngIf="showHygieneChart">
+    @if (showHygieneChart) {
+    <div class="chart-card card">
       <h2>Produtos de Higiene</h2>
       <div class="chart-container">
         <div class="y-axis">
-          <div *ngFor="let label of getYAxisLabels()" class="y-label">{{label}}</div>
+          @for (label of getYAxisLabels(); track label) {
+          <div class="y-label">{{label}}</div>
+          }
         </div>
         <div class="chart-area">
           <div class="chart">
             <div class="bars-container">
-              <div *ngFor="let product of hygieneProducts" class="bar-item">
+              @for (product of hygieneProducts; track product.id) {
+              <div class="bar-item">
                 <div class="bar-wrapper">
                   <div class="bar" [style.height]="'50px'"></div>
                   <span class="stock-value">N/A</span>
                 </div>
                 <span class="product-name">{{product.name}}</span>
               </div>
+              }
             </div>
           </div>
         </div>
       </div>
     </div>
+    }
+
+    <!-- Gráfico Produtos Infantis -->
+    @if (showInfantChart) {
+    <div class="chart-card card">
+      <h2>Produtos Infantis</h2>
+      <div class="chart-container">
+        <div class="y-axis">
+          @for (label of getYAxisLabels(); track label) {
+          <div class="y-label">{{label}}</div>
+          }
+        </div>
+        <div class="chart-area">
+          <div class="chart">
+            <div class="bars-container">
+              @for (product of infantProducts; track product.id) {
+              <div class="bar-item">
+                <div class="bar-wrapper">
+                  <div class="bar" [style.height]="'50px'"></div>
+                  <span class="stock-value">N/A</span>
+                </div>
+                <span class="product-name">{{product.name}}</span>
+              </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
   </div>
+  }
 </div>

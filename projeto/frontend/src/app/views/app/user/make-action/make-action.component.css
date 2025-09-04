@@ -108,6 +108,12 @@
   flex: 0 0 calc(50% - var(--spacing-lg) / 2);
 }
 
+.form-group.centered-quantity {
+  grid-column: 1 / -1;
+  justify-self: center;
+  max-width: 300px;
+}
+
 .full-width {
   width: 100%;
 }

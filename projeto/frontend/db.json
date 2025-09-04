@@ -104,6 +104,10 @@
     {
       "id": "2",
       "description": "Produtos de Higiene"
+    },
+    {
+      "id": "3",
+      "description": "Produtos Infantis"
     }
   ],
   "product": [
@@ -316,6 +320,46 @@
         "500",
         "1000"
       ]
+    },
+    {
+      "id": "23",
+      "name": "Brinquedo",
+      "productType": "infant",
+      "category_id": "3",
+      "measure_type": "un"
+    },
+    {
+      "id": "24",
+      "name": "Bolacha",
+      "productType": "infant",
+      "category_id": "3",
+      "measure_type": "g",
+      "options_donation": [
+        "200",
+        "400"
+      ]
+    },
+    {
+      "id": "25",
+      "name": "Gelatina",
+      "productType": "infant",
+      "category_id": "3",
+      "measure_type": "g",
+      "options_donation": [
+        "85",
+        "170"
+      ]
+    },
+    {
+      "id": "26",
+      "name": "Biscoitinho",
+      "productType": "infant",
+      "category_id": "3",
+      "measure_type": "g",
+      "options_donation": [
+        "150",
+        "300"
+      ]
     }
   ],
   "donation": [
@@ -402,6 +446,61 @@
     {
       "id": "0e13",
       "donation_date": "2025-09-02T23:22:53.610Z",
+      "user_id": "bc67"
+    },
+    {
+      "id": "d6ca",
+      "donation_date": "2025-09-02T23:52:55.489Z",
+      "user_id": "bc67"
+    },
+    {
+      "id": "c3d5",
+      "donation_date": "2025-09-02T23:53:14.342Z",
+      "user_id": "bc67"
+    },
+    {
+      "id": "ae30",
+      "donation_date": "2025-09-04T18:52:34.279Z",
+      "user_id": "bc67"
+    },
+    {
+      "id": "5cfc",
+      "donation_date": "2025-09-04T18:52:57.644Z",
+      "user_id": "bc67"
+    },
+    {
+      "id": "827b",
+      "donation_date": "2025-09-04T18:53:29.516Z",
+      "user_id": "bc67"
+    },
+    {
+      "id": "6583",
+      "donation_date": "2025-09-04T18:53:54.059Z",
+      "user_id": "bc67"
+    },
+    {
+      "id": "009d",
+      "donation_date": "2025-09-04T18:54:17.514Z",
+      "user_id": "bc67"
+    },
+    {
+      "id": "f994",
+      "donation_date": "2025-09-04T18:54:36.722Z",
+      "user_id": "bc67"
+    },
+    {
+      "id": "8231",
+      "donation_date": "2025-09-04T18:54:56.874Z",
+      "user_id": "bc67"
+    },
+    {
+      "id": "522b",
+      "donation_date": "2025-09-04T18:55:11.968Z",
+      "user_id": "bc67"
+    },
+    {
+      "id": "edce",
+      "donation_date": "2025-09-04T18:57:24.048Z",
       "user_id": "bc67"
     }
   ],
@@ -517,6 +616,70 @@
       "unit": "kg",
       "donation_id": "0e13",
       "product_id": "2"
+    },
+    {
+      "id": "9542",
+      "quantity": 150,
+      "expirationDate": "2025-04-09T03:00:00.000Z",
+      "unit": "g",
+      "donation_id": "ae30",
+      "product_id": "26"
+    },
+    {
+      "id": "72fb",
+      "quantity": 150,
+      "expirationDate": "2025-12-09T03:00:00.000Z",
+      "unit": "g",
+      "donation_id": "5cfc",
+      "product_id": "26"
+    },
+    {
+      "id": "c457",
+      "quantity": 400,
+      "expirationDate": "2025-12-09T03:00:00.000Z",
+      "unit": "g",
+      "donation_id": "827b",
+      "product_id": "24"
+    },
+    {
+      "id": "ba14",
+      "quantity": 200,
+      "expirationDate": "2025-12-09T03:00:00.000Z",
+      "unit": "g",
+      "donation_id": "6583",
+      "product_id": "24"
+    },
+    {
+      "id": "d9fa",
+      "quantity": 170,
+      "expirationDate": "2025-12-09T03:00:00.000Z",
+      "unit": "g",
+      "donation_id": "009d",
+      "product_id": "25"
+    },
+    {
+      "id": "02b8",
+      "quantity": 170,
+      "expirationDate": "2025-12-09T03:00:00.000Z",
+      "unit": "g",
+      "donation_id": "f994",
+      "product_id": "25"
+    },
+    {
+      "id": "3dec",
+      "quantity": 3,
+      "expirationDate": null,
+      "unit": "un",
+      "donation_id": "522b",
+      "product_id": "23"
+    },
+    {
+      "id": "81f3",
+      "quantity": 1,
+      "expirationDate": null,
+      "unit": "un",
+      "donation_id": "edce",
+      "product_id": "23"
     }
   ],
   "basket_request": [
@@ -578,6 +741,48 @@
       "product_id": "16",
       "donation_option": "5",
       "actual_stock": 15
+    },
+    {
+      "id": "7",
+      "product_id": "23",
+      "donation_option": "1",
+      "actual_stock": 4
+    },
+    {
+      "id": "8",
+      "product_id": "24",
+      "donation_option": "200",
+      "actual_stock": 5
+    },
+    {
+      "id": "9",
+      "product_id": "24",
+      "donation_option": "400",
+      "actual_stock": 2
+    },
+    {
+      "id": "10",
+      "product_id": "25",
+      "donation_option": "85",
+      "actual_stock": 1
+    },
+    {
+      "id": "11",
+      "product_id": "25",
+      "donation_option": "170",
+      "actual_stock": 3
+    },
+    {
+      "id": "12",
+      "product_id": "26",
+      "donation_option": "150",
+      "actual_stock": 18
+    },
+    {
+      "id": "13",
+      "product_id": "26",
+      "donation_option": "300",
+      "actual_stock": 0
     }
   ],
   "user": [

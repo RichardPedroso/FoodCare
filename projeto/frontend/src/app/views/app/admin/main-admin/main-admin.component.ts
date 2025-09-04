@@ -12,9 +12,11 @@ import { Product } from '../../../../domain/model/product';
 export class MainAdminComponent implements OnInit {
   basicProducts: Product[] = [];
   hygieneProducts: Product[] = [];
+  infantProducts: Product[] = [];
   maxStock = 0;
   showBasicChart = false;
   showHygieneChart = false;
+  showInfantChart = false;
 
   constructor(private productService: ProductReadService) {}
 
@@ -30,6 +32,9 @@ export class MainAdminComponent implements OnInit {
         .sort((a, b) => a.name.localeCompare(b.name));
       this.hygieneProducts = products
         .filter(p => p.productType === 'hygiene')
+        .sort((a, b) => a.name.localeCompare(b.name));
+      this.infantProducts = products
+        .filter(p => p.productType === 'infant')
         .sort((a, b) => a.name.localeCompare(b.name));
       
       const allStocks = [10, 20, 30, 40, 50]; // Placeholder values
@@ -47,11 +52,19 @@ export class MainAdminComponent implements OnInit {
   showBasicProducts() {
     this.showBasicChart = true;
     this.showHygieneChart = false;
+    this.showInfantChart = false;
+  }
+
+  showInfantProducts() {
+    this.showInfantChart = true;
+    this.showBasicChart = false;
+    this.showHygieneChart = false;
   }
 
   showHygieneProducts() {
     this.showHygieneChart = true;
     this.showBasicChart = false;
+    this.showInfantChart = false;
   }
 
   getYAxisLabels(): number[] {

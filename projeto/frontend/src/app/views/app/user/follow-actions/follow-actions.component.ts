@@ -79,7 +79,7 @@ export class FollowActionsComponent implements OnInit {
       
       this.donations = userDonations.map(donation => {
         const donationProduct = donationProducts.find(dp => dp.donation_id === donation.id);
-        const product = products.find(p => p.id === donationProduct?.product_id?.toString());
+        const product = products.find(p => p.id === donationProduct?.product_id);
         
         return {
           productName: product?.name || 'Produto não encontrado',
