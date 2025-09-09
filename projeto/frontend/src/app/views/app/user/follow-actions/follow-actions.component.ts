@@ -25,6 +25,13 @@ interface BasketRequest {
   request_date: Date;
   basket_type: string;
   status: string;
+  calculated_items?: {
+    productId: number;
+    productName: string;
+    quantity: number;
+    unitQuantity: number;
+    unitType: string;
+  }[];
 }
 
 @Component({
@@ -145,6 +152,22 @@ export class FollowActionsComponent implements OnInit {
     }).length;
     this.availableCount = requests.filter(request => request.status === 'pending').length;
     this.usedCount = requests.filter(request => request.status === 'collected').length;
+  }
+
+  showBasketProducts(request: BasketRequest, event?: Event): void {
+    if (event) {
+      event.preventDefault();
+    }
+    const basketType = request.basket_type === 'basic' ? 'Cesta Básica' : 'Cesta de Higiene';
+    
+    if (request.calculated_items && request.calculated_items.length > 0) {
+      const products = request.calculated_items.map(item => 
+        `${item.productName} - ${item.quantity}${item.unitType}`
+      );
+      alert(`${basketType}:\n\n${products.join('\n')}`);
+    } else {
+      alert(`${basketType}:\n\nProdutos não encontrados para esta cesta.`);
+    }
   }
 
 }
