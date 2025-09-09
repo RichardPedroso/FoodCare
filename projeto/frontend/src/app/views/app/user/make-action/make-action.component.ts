@@ -17,9 +17,10 @@ import { DonationProduct } from '../../../../domain/model/donation_product';
 import { Product } from '../../../../domain/model/product';
 import { DonationCreateService } from '../../../../services/donation/donation-create.service';
 import { DonationProductCreateService } from '../../../../services/donation-product/donation-product-create.service';
+import { DonationValidationService } from '../../../../services/donation-product/donation-validation.service';
 import { ProductUpdateService } from '../../../../services/product/product-update.service';
 import { ProductReadService } from '../../../../services/product/product-read.service';
-import { BasketCalculationService } from '../../../../services/basket/basket-calculation.service';
+
 import { BasketItem } from '../../../../domain/model/basket-item';
 import { UnitConverterService } from '../../../../services/utils/unit-converter.service';
 
@@ -56,6 +57,7 @@ export class MakeActionComponent implements OnInit {
   calculatedBasket: BasketItem[] = [];
   showBasketPreview: boolean = false;
   selectedUnit: string = '';
+  isProcessingRequest: boolean = false;
 
   @ViewChild('quantity') quantityRef!: MatSelect | ElementRef;
   @ViewChild('units') unitsRef!: ElementRef;
@@ -66,9 +68,10 @@ export class MakeActionComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private donationCreateService: DonationCreateService,
     private donationProductCreateService: DonationProductCreateService,
+    private donationValidationService: DonationValidationService,
     private productUpdateService: ProductUpdateService,
     private productReadService: ProductReadService,
-    private basketCalculationService: BasketCalculationService,
+
     private unitConverterService: UnitConverterService
   ) {}
 
@@ -175,11 +178,31 @@ export class MakeActionComponent implements OnInit {
       parsedDate = new Date(dateValue);
     }
     
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    parsedDate.setHours(0, 0, 0, 0);
+    const validation = this.donationValidationService.validateExpirationDate(parsedDate);
+    return !validation.valid;
+  }
+
+  getDateValidationMessage(dateValue: any): string {
+    if (!dateValue) return '';
     
-    return parsedDate < today;
+    let parsedDate: Date;
+    
+    if (typeof dateValue === 'string' && dateValue.includes('/')) {
+      const parts = dateValue.split('/');
+      if (parts.length === 3) {
+        const day = parseInt(parts[0]);
+        const month = parseInt(parts[1]) - 1;
+        const year = parseInt(parts[2]);
+        parsedDate = new Date(year, month, day);
+      } else {
+        parsedDate = new Date(dateValue);
+      }
+    } else {
+      parsedDate = new Date(dateValue);
+    }
+    
+    const validation = this.donationValidationService.validateExpirationDate(parsedDate);
+    return validation.message || '';
   }
 
   onDateFocus(event: any): void {
@@ -348,10 +371,11 @@ export class MakeActionComponent implements OnInit {
   }
 
   async requestBasicBasket(): Promise<void> {
-    if (!this.user) {
-      alert('Usuário não encontrado.');
+    if (this.isProcessingRequest || !this.user) {
       return;
     }
+
+    this.isProcessingRequest = true;
 
     try {
       const hasRequestedThisMonth = await this.checkMonthlyBasketRequest('basic');
@@ -363,62 +387,15 @@ export class MakeActionComponent implements OnInit {
       const peopleQuantity = parseInt(this.user.people_quantity || '1');
       const hasChildren = this.user.has_children || false;
       
-      this.basketCalculationService.calculateBasket(
-        parseInt(this.user.id!), 
-        peopleQuantity, 
-        hasChildren
-      ).subscribe({
-        next: async (calculatedBasket) => {
-          this.calculatedBasket = calculatedBasket;
-          
-          const insufficientStock: string[] = [];
-          for (const basketItem of calculatedBasket) {
-            // Verificação de estoque agora será feita na tabela stock separada
-            // TODO: Implementar verificação de estoque usando a tabela stock
-          }
-          
-          if (insufficientStock.length > 0) {
-            alert('Não há estoque suficiente para formar sua cesta básica personalizada. Produtos em falta: ' + 
-                  insufficientStock.join(', '));
-            return;
-          }
+      const calculatedBasket = this.calculateBasketLocally(peopleQuantity, hasChildren);
+      await this.processBasketRequest(calculatedBasket, peopleQuantity, hasChildren);
 
-          for (const basketItem of calculatedBasket) {
-            await this.productUpdateService.updateStock(basketItem.productId.toString(), -basketItem.quantity);
-          }
-
-          const basketRequest = {
-            user_id: this.user?.id || '',
-            request_date: new Date(),
-            basket_type: 'basic',
-            status: 'pending',
-            people_quantity: peopleQuantity,
-            has_children: hasChildren,
-            calculated_items: calculatedBasket
-          };
-
-          const response = await fetch('http://localhost:3000/basket_request', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(basketRequest)
-          });
-
-          if (response.ok) {
-            alert(`Solicitação de cesta básica registrada com sucesso! Sua cesta foi calculada para ${peopleQuantity} pessoa(s)${hasChildren ? ' incluindo itens para crianças' : ''}.`);
-            this.router.navigate(['/main']);
-          } else {
-            throw new Error('Erro ao registrar solicitação');
-          }
-        },
-        error: (error) => {
-          console.error('Erro ao calcular cesta:', error);
-          alert('Erro ao calcular cesta personalizada. Tente novamente.');
-        }
-      });
       
     } catch (error) {
       console.error('Erro ao solicitar cesta básica:', error);
       alert('Erro ao solicitar cesta básica. Tente novamente.');
+    } finally {
+      this.isProcessingRequest = false;
     }
   }
 
@@ -435,38 +412,8 @@ export class MakeActionComponent implements OnInit {
         return;
       }
 
-      const hygieneProducts = this.products.filter(product => product.productType === 'hygiene');
-      
-      const insufficientStock: string[] = [];
-      if (insufficientStock.length > 0) {
-        alert('Não há estoque suficiente para formar uma cesta de higiene. Produtos em falta: ' + 
-              insufficientStock.join(', '));
-        return;
-      }
-
-      for (const product of hygieneProducts) {
-        await this.productUpdateService.updateStock(product.id!, -1);
-      }
-
-      const basketRequest = {
-        user_id: this.user.id!,
-        request_date: new Date(),
-        basket_type: 'hygiene',
-        status: 'pending'
-      };
-
-      const response = await fetch('http://localhost:3000/basket_request', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(basketRequest)
-      });
-
-      if (response.ok) {
-        alert('Solicitação de cesta de higiene registrada com sucesso!');
-        this.router.navigate(['/main']);
-      } else {
-        throw new Error('Erro ao registrar solicitação');
-      }
+      const hygieneBasket = this.calculateHygieneBasket();
+      await this.processHygieneBasketRequest(hygieneBasket);
       
     } catch (error) {
       console.error('Erro ao solicitar cesta de higiene:', error);
@@ -592,21 +539,169 @@ export class MakeActionComponent implements OnInit {
     const peopleQuantity = parseInt(this.user.people_quantity || '1');
     const hasChildren = this.user.has_children || false;
     
-    this.basketCalculationService.getBasketForFamily(peopleQuantity, hasChildren).subscribe({
-      next: (calculatedBasket) => {
-        this.calculatedBasket = calculatedBasket;
-        this.showBasketPreview = true;
-      },
-      error: (error) => {
-        console.error('Erro ao calcular prévia da cesta:', error);
-        alert('Erro ao calcular prévia da cesta. Tente novamente.');
-      }
-    });
+    this.calculatedBasket = this.calculateBasketLocally(peopleQuantity, hasChildren);
+    this.showBasketPreview = true;
   }
 
   closeBasketPreview(): void {
     this.showBasketPreview = false;
     this.calculatedBasket = [];
+  }
+
+  private calculateBasketLocally(peopleQuantity: number, hasChildren: boolean): BasketItem[] {
+    const basicProducts = this.products.filter(p => p.productType === 'basic');
+    const basket: BasketItem[] = [];
+
+    basicProducts.forEach(product => {
+      const baseQuantity = this.getBaseQuantity(product.name);
+      const totalQuantity = baseQuantity * peopleQuantity;
+      
+      if (baseQuantity > 0) {
+        basket.push({
+          productId: parseInt(product.id!),
+          productName: product.name,
+          quantity: totalQuantity,
+          unitQuantity: baseQuantity,
+          unitType: product.measure_type
+        });
+      }
+    });
+
+    if (hasChildren) {
+      const infantProducts = this.products.filter(p => p.productType === 'infant');
+      infantProducts.forEach(product => {
+        const baseQuantity = this.getInfantQuantity(product.name);
+        if (baseQuantity > 0) {
+          basket.push({
+            productId: parseInt(product.id!),
+            productName: product.name,
+            quantity: baseQuantity,
+            unitQuantity: baseQuantity,
+            unitType: product.measure_type
+          });
+        }
+      });
+    }
+
+    return basket;
+  }
+
+  private getBaseQuantity(productName: string): number {
+    const quantities: { [key: string]: number } = {
+      'Arroz': 2,
+      'Feijão': 1,
+      'Óleo de Soja': 1,
+      'Açúcar': 1,
+      'Sal': 1,
+      'Farinha de Trigo': 1,
+      'Café em Pó': 250,
+      'Leite': 1,
+      'Carne': 500,
+      'Batata': 1,
+      'Tomate': 1,
+      'Banana': 1,
+      'Manteiga': 200
+    };
+    return quantities[productName] || 0;
+  }
+
+  private getInfantQuantity(productName: string): number {
+    const quantities: { [key: string]: number } = {
+      'Bolacha': 200,
+      'Gelatina': 85,
+      'Biscoitinho': 150,
+      'Brinquedo': 1
+    };
+    return quantities[productName] || 0;
+  }
+
+  private calculateHygieneBasket(): BasketItem[] {
+    const hygieneProducts = this.products.filter(p => p.productType === 'hygiene');
+    return hygieneProducts.map(product => ({
+      productId: parseInt(product.id!),
+      productName: product.name,
+      quantity: 1,
+      unitQuantity: 1,
+      unitType: product.measure_type
+    }));
+  }
+
+  private async processHygieneBasketRequest(hygieneBasket: BasketItem[]): Promise<void> {
+    for (const basketItem of hygieneBasket) {
+      await this.updateStockForHygiene(basketItem.productId.toString(), basketItem.quantity);
+    }
+
+    const basketRequest = {
+      user_id: this.user?.id || '',
+      request_date: new Date(),
+      basket_type: 'hygiene',
+      status: 'pending',
+      calculated_items: hygieneBasket
+    };
+
+    const response = await fetch('http://localhost:3000/basket_request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(basketRequest)
+    });
+
+    if (response.ok) {
+      alert('Solicitação de cesta de higiene registrada com sucesso!');
+      this.router.navigate(['/main']);
+    } else {
+      throw new Error('Erro ao registrar solicitação');
+    }
+  }
+
+  private async updateStockForHygiene(productId: string, quantity: number): Promise<void> {
+    try {
+      const stockResponse = await fetch(`http://localhost:3000/stock?product_id=${productId}&donation_option=1`);
+      const stockRecords = await stockResponse.json();
+      
+      if (stockRecords.length > 0) {
+        const stockRecord = stockRecords[0];
+        const newStock = Math.max(0, stockRecord.actual_stock - quantity);
+        
+        await fetch(`http://localhost:3000/stock/${stockRecord.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ actual_stock: newStock })
+        });
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar estoque de higiene:', error);
+    }
+  }
+
+  private async processBasketRequest(calculatedBasket: BasketItem[], peopleQuantity: number, hasChildren: boolean): Promise<void> {
+    this.calculatedBasket = calculatedBasket;
+    
+    for (const basketItem of calculatedBasket) {
+      await this.productUpdateService.updateStock(basketItem.productId.toString(), -basketItem.quantity);
+    }
+
+    const basketRequest = {
+      user_id: this.user?.id || '',
+      request_date: new Date(),
+      basket_type: 'basic',
+      status: 'pending',
+      people_quantity: peopleQuantity,
+      has_children: hasChildren,
+      calculated_items: calculatedBasket
+    };
+
+    const response = await fetch('http://localhost:3000/basket_request', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(basketRequest)
+    });
+
+    if (response.ok) {
+      alert(`Solicitação de cesta básica registrada com sucesso! Sua cesta foi calculada para ${peopleQuantity} pessoa(s)${hasChildren ? ' incluindo itens para crianças' : ''}.`);
+      this.router.navigate(['/main']);
+    } else {
+      throw new Error('Erro ao registrar solicitação');
+    }
   }
 
 }

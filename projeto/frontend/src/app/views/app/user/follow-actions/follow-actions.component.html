@@ -154,7 +154,9 @@
                     <tr>
                       <td>
                         <div class="product-info">
-                          <span class="product-name">{{ request.basket_type === 'basic' ? 'Cesta Básica' : 'Cesta de Higiene' }}</span>
+                          <a href="#" (click)="showBasketProducts(request); $event.preventDefault()" class="basket-link">
+                            <span class="product-name">{{ request.basket_type === 'basic' ? 'Cesta Básica' : 'Cesta de Higiene' }}</span>
+                          </a>
                         </div>
                       </td>
                       <td>

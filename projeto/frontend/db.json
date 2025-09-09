@@ -711,6 +711,166 @@
       "request_date": "2025-08-08T03:00:00.000Z",
       "basket_type": "basic",
       "status": "pending"
+    },
+    {
+      "id": "3fe9",
+      "user_id": "4",
+      "request_date": "2025-09-09T01:18:44.588Z",
+      "basket_type": "basic",
+      "status": "pending",
+      "people_quantity": 4,
+      "has_children": false,
+      "calculated_items": [
+        {
+          "productId": 1,
+          "productName": "Arroz",
+          "quantity": 8,
+          "unitQuantity": 2,
+          "unitType": "kg"
+        },
+        {
+          "productId": 2,
+          "productName": "Feijão",
+          "quantity": 4,
+          "unitQuantity": 1,
+          "unitType": "kg"
+        },
+        {
+          "productId": 7,
+          "productName": "Óleo de Soja",
+          "quantity": 4,
+          "unitQuantity": 1,
+          "unitType": "ml"
+        },
+        {
+          "productId": 8,
+          "productName": "Carne",
+          "quantity": 2000,
+          "unitQuantity": 500,
+          "unitType": "g"
+        },
+        {
+          "productId": 9,
+          "productName": "Leite",
+          "quantity": 4,
+          "unitQuantity": 1,
+          "unitType": "l"
+        },
+        {
+          "productId": 10,
+          "productName": "Farinha de Trigo",
+          "quantity": 4,
+          "unitQuantity": 1,
+          "unitType": "kg"
+        },
+        {
+          "productId": 11,
+          "productName": "Batata",
+          "quantity": 4,
+          "unitQuantity": 1,
+          "unitType": "kg"
+        },
+        {
+          "productId": 12,
+          "productName": "Tomate",
+          "quantity": 4,
+          "unitQuantity": 1,
+          "unitType": "kg"
+        },
+        {
+          "productId": 14,
+          "productName": "Café em Pó",
+          "quantity": 1000,
+          "unitQuantity": 250,
+          "unitType": "g"
+        },
+        {
+          "productId": 15,
+          "productName": "Banana",
+          "quantity": 4,
+          "unitQuantity": 1,
+          "unitType": "kg"
+        },
+        {
+          "productId": 16,
+          "productName": "Açúcar",
+          "quantity": 4,
+          "unitQuantity": 1,
+          "unitType": "kg"
+        },
+        {
+          "productId": 17,
+          "productName": "Manteiga",
+          "quantity": 800,
+          "unitQuantity": 200,
+          "unitType": "g"
+        },
+        {
+          "productId": 18,
+          "productName": "Sal",
+          "quantity": 4,
+          "unitQuantity": 1,
+          "unitType": "g"
+        }
+      ]
+    },
+    {
+      "id": "7f7c",
+      "user_id": "4",
+      "request_date": "2025-09-09T01:19:24.161Z",
+      "basket_type": "hygiene",
+      "status": "pending",
+      "calculated_items": [
+        {
+          "productId": 4,
+          "productName": "Papel-toalha",
+          "quantity": 1,
+          "unitQuantity": 1,
+          "unitType": "un"
+        },
+        {
+          "productId": 5,
+          "productName": "Papel-higiênico",
+          "quantity": 1,
+          "unitQuantity": 1,
+          "unitType": "un"
+        },
+        {
+          "productId": 6,
+          "productName": "Sabonete",
+          "quantity": 1,
+          "unitQuantity": 1,
+          "unitType": "un"
+        },
+        {
+          "productId": 19,
+          "productName": "Creme Dental",
+          "quantity": 1,
+          "unitQuantity": 1,
+          "unitType": "un"
+        },
+        {
+          "productId": 20,
+          "productName": "Escova de Dentes",
+          "quantity": 1,
+          "unitQuantity": 1,
+          "unitType": "un"
+        },
+        {
+          "productId": 21,
+          "productName": "Absorvente Higiênico",
+          "quantity": 1,
+          "unitQuantity": 1,
+          "unitType": "un"
+        },
+        {
+          "productId": 22,
+          "productName": "Desodorante",
+          "quantity": 1,
+          "unitQuantity": 1,
+          "unitType": "un"
+        }
+      ]
     }
   ],
   "stock": [
@@ -742,7 +902,7 @@
       "id": "5",
       "product_id": "16",
       "donation_option": "1",
-      "actual_stock": 0
+      "actual_stock": 5
     },
     {
       "id": "6",
@@ -791,6 +951,48 @@
       "product_id": "26",
       "donation_option": "300",
       "actual_stock": 0
+    },
+    {
+      "id": "14",
+      "product_id": "4",
+      "donation_option": "1",
+      "actual_stock": 98
+    },
+    {
+      "id": "15",
+      "product_id": "5",
+      "donation_option": "1",
+      "actual_stock": 98
+    },
+    {
+      "id": "16",
+      "product_id": "6",
+      "donation_option": "1",
+      "actual_stock": 98
+    },
+    {
+      "id": "17",
+      "product_id": "19",
+      "donation_option": "1",
+      "actual_stock": 98
+    },
+    {
+      "id": "18",
+      "product_id": "20",
+      "donation_option": "1",
+      "actual_stock": 98
+    },
+    {
+      "id": "19",
+      "product_id": "21",
+      "donation_option": "1",
+      "actual_stock": 98
+    },
+    {
+      "id": "20",
+      "product_id": "22",
+      "donation_option": "1",
+      "actual_stock": 98
     }
   ],
   "user": [

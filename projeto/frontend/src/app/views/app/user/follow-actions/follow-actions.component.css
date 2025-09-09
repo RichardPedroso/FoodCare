@@ -352,3 +352,25 @@
     padding: var(--spacing-lg);
   }
 }
+.basket-link {
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.basket-link:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+.basket-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all var(--transition-normal);
+}
+
+.basket-link:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+}

@@ -80,7 +80,7 @@
                       <mat-icon matPrefix>event</mat-icon>
                     </mat-form-field>
                     @if (isDateInvalid(expirationDate.value)) {
-                      <div class="error-message">A data de validade não pode ser anterior à data atual.</div>
+                      <div class="error-message">{{ getDateValidationMessage(expirationDate.value) }}</div>
                     }
                   </div>
                 }
