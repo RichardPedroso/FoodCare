@@ -2,6 +2,8 @@ package br.com.faitec.foodcare.configuration;
 
 import br.com.faitec.foodcare.implementation.dao.postgres.UserPostgresDaoImpl;
 import br.com.faitec.foodcare.port.dao.user.UserDao;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -70,6 +72,11 @@ public class AppConfiguration {
                         .allowCredentials(true);
             }
         };
+    }
+
+    @Bean
+    public OpenAPI customOpenApi(){
+        return new OpenAPI().info(new Info().title("FoodCare API").version("0.0.1").description("API para gerenciamento de doação de alimentos"));
     }
 
 }
