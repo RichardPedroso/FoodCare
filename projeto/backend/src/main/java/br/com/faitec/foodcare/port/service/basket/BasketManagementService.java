@@ -10,4 +10,6 @@ public interface BasketManagementService {
     boolean removeFromBasket(int productId, double quantity);
     List<BasketItem> getBasketItems(int donationId);
     boolean validateBasketItem(int productId, double quantity, String unit);
+    List<BasketItem> calculateBasket(int userId, int peopleQuantity, boolean hasChildren);
+    List<BasketItem> getBasketForFamily(int peopleQuantity, boolean hasChildren);
 }

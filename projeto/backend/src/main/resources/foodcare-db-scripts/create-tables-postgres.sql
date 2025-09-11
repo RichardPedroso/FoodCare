@@ -93,3 +93,13 @@ CREATE TABLE donation_product
     FOREIGN KEY (donation_id) REFERENCES donation(id),
     FOREIGN KEY (product_id) REFERENCES product(id)
 );
+
+CREATE TABLE stock
+(
+    id              SERIAL           NOT NULL,
+    product_id      INTEGER          NOT NULL,
+    donation_option DOUBLE PRECISION NOT NULL,
+    actual_stock    INTEGER          NOT NULL DEFAULT 0,
+    PRIMARY KEY (id),
+    FOREIGN KEY (product_id) REFERENCES product(id)
+);

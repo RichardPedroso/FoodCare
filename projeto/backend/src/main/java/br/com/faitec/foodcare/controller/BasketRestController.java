@@ -53,4 +53,21 @@ public class BasketRestController {
         boolean valid = basketManagementService.validateBasketItem(productId, quantity, unit);
         return ResponseEntity.ok(valid);
     }
+
+    @GetMapping("/calculate")
+    public ResponseEntity<List<BasketItem>> calculateBasket(
+            @RequestParam int userId,
+            @RequestParam int peopleQuantity,
+            @RequestParam boolean hasChildren) {
+        List<BasketItem> basketItems = basketManagementService.calculateBasket(userId, peopleQuantity, hasChildren);
+        return ResponseEntity.ok(basketItems);
+    }
+
+    @GetMapping("/family")
+    public ResponseEntity<List<BasketItem>> getBasketForFamily(
+            @RequestParam int peopleQuantity,
+            @RequestParam boolean hasChildren) {
+        List<BasketItem> basketItems = basketManagementService.getBasketForFamily(peopleQuantity, hasChildren);
+        return ResponseEntity.ok(basketItems);
+    }
 }

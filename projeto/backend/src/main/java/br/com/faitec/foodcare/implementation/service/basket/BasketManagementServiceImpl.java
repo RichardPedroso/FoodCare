@@ -64,4 +64,30 @@ public class BasketManagementServiceImpl implements BasketManagementService {
         
         return unit != null && (unit.equals("KG") || unit.equals("G") || unit.equals("L") || unit.equals("ML"));
     }
+
+    @Override
+    public List<BasketItem> calculateBasket(int userId, int peopleQuantity, boolean hasChildren) {
+        List<Product> products = productDao.findAll();
+        return products.stream()
+                .map(product -> {
+                    double baseQuantity = product.getUnitQuantity();
+                    double adjustedQuantity = baseQuantity * peopleQuantity;
+                    if (hasChildren) {
+                        adjustedQuantity *= 1.2;
+                    }
+                    return new BasketItem(
+                            product.getId(),
+                            product.getName(),
+                            (int) adjustedQuantity,
+                            product.getUnitQuantity(),
+                            product.getUnitType()
+                    );
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BasketItem> getBasketForFamily(int peopleQuantity, boolean hasChildren) {
+        return calculateBasket(0, peopleQuantity, hasChildren);
+    }
 }

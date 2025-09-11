@@ -95,6 +95,14 @@ INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, prod
 INSERT INTO request (request_date, request_type, status, user_id) VALUES ('2024-01-16', 'BASIC', 'PENDING', 3);
 INSERT INTO request (request_date, request_type, status, user_id) VALUES ('2024-01-18', 'HYGIENE', 'APPROVED', 5);
 
+-- Insert stock data (feijão with 1kg and 3kg options)
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (2, 1.0, 50);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (2, 3.0, 20);
+
+-- Insert stock data (arroz with 1kg and 5kg options)
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (1, 1.0, 80);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (1, 5.0, 15);
+
 -- Commented encrypted password versions (uncomment to use encryption):
 -- INSERT INTO user_model (name, email, password, user_type, is_admin, municipality_id) 
 -- VALUES ('Admin FoodCare', 'admin@foodcare.com', crypt('admin123', gen_salt('bf')), 'DONOR', TRUE, 1);

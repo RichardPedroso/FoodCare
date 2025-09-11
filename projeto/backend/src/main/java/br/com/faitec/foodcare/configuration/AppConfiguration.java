@@ -66,6 +66,11 @@ public class AppConfiguration {
     }
 
     @Bean
+    public br.com.faitec.foodcare.port.dao.stock.StockDao stockDao(final Connection connection) {
+        return new br.com.faitec.foodcare.implementation.dao.postgres.StockDaoImpl(connection);
+    }
+
+    @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
