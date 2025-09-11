@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import br.com.faitec.foodcare.domain.Stock;
 
 @RestController
 @RequestMapping("/api/basket")
@@ -69,5 +71,11 @@ public class BasketRestController {
             @RequestParam boolean hasChildren) {
         List<BasketItem> basketItems = basketManagementService.getBasketForFamily(peopleQuantity, hasChildren);
         return ResponseEntity.ok(basketItems);
+    }
+
+    @GetMapping("/stock-options/{productId}")
+    public ResponseEntity<List<Stock>> getStockOptions(@PathVariable int productId) {
+        List<Stock> stockOptions = basketManagementService.getStockOptions(productId);
+        return ResponseEntity.ok(stockOptions);
     }
 }
