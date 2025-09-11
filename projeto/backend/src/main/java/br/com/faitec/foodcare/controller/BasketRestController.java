@@ -78,4 +78,12 @@ public class BasketRestController {
         List<Stock> stockOptions = basketManagementService.getStockOptions(productId);
         return ResponseEntity.ok(stockOptions);
     }
+    
+    @GetMapping("/optimize/{productId}")
+    public ResponseEntity<List<Stock>> optimizeStockSelection(
+            @PathVariable int productId,
+            @RequestParam double requiredQuantity) {
+        List<Stock> optimizedOptions = basketManagementService.optimizeStockSelection(productId, requiredQuantity);
+        return ResponseEntity.ok(optimizedOptions);
+    }
 }

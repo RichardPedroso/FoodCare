@@ -28,59 +28,59 @@ INSERT INTO user_model (name, email, password, user_type, family_income, people_
 VALUES ('Ana Beneficiária', 'ana@beneficiaria.com', 'senha123', 'BENEFICIARY', 600.0, 5, 4, TRUE);
 
 -- Insert products
-INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Arroz', 'Alimento', 100.0, 1, 5.0, 'KG');
+INSERT INTO product (name, product_type, category_id, unit_quantity, unit_type) 
+VALUES ('Arroz', 'Alimento', 1, 5.0, 'KG');
 
-INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Feijão', 'Alimento', 80.0, 1, 4.0, 'KG');
+INSERT INTO product (name, product_type, category_id, unit_quantity, unit_type) 
+VALUES ('Feijão', 'Alimento', 1, 4.0, 'KG');
 
-INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Açúcar', 'Alimento', 60.0, 1, 5.0, 'KG');
+INSERT INTO product (name, product_type, category_id, unit_quantity, unit_type) 
+VALUES ('Açúcar', 'Alimento', 1, 5.0, 'KG');
 
-INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Café', 'Alimento', 40.0, 1, 500.0, 'G');
+INSERT INTO product (name, product_type, category_id, unit_quantity, unit_type) 
+VALUES ('Café', 'Alimento', 1, 500.0, 'G');
 
-INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Leite', 'Alimento', 50.0, 1, 1.0, 'L');
+INSERT INTO product (name, product_type, category_id, unit_quantity, unit_type) 
+VALUES ('Leite', 'Alimento', 1, 1.0, 'L');
 
-INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Farinha', 'Alimento', 70.0, 1, 500.0, 'G');
+INSERT INTO product (name, product_type, category_id, unit_quantity, unit_type) 
+VALUES ('Farinha', 'Alimento', 1, 500.0, 'G');
 
-INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Macarrão', 'Alimento', 90.0, 1, 500.0, 'G');
+INSERT INTO product (name, product_type, category_id, unit_quantity, unit_type) 
+VALUES ('Macarrão', 'Alimento', 1, 500.0, 'G');
 
-INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Óleo', 'Alimento', 45.0, 1, 900.0, 'ML');
+INSERT INTO product (name, product_type, category_id, unit_quantity, unit_type) 
+VALUES ('Óleo', 'Alimento', 1, 900.0, 'ML');
 
-INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Sabão em pó', 'Higiene', 80.0, 2, 800.0, 'G');
+INSERT INTO product (name, product_type, category_id, unit_quantity, unit_type) 
+VALUES ('Sabão em pó', 'Higiene', 2, 800.0, 'G');
 
-INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Amaciante', 'Higiene', 60.0, 2, 2.0, 'L');
+INSERT INTO product (name, product_type, category_id, unit_quantity, unit_type) 
+VALUES ('Amaciante', 'Higiene', 2, 2.0, 'L');
 
-INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Detergente', 'Higiene', 100.0, 2, 500.0, 'ML');
+INSERT INTO product (name, product_type, category_id, unit_quantity, unit_type) 
+VALUES ('Detergente', 'Higiene', 2, 500.0, 'ML');
 
-INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Água sanitária', 'Higiene', 70.0, 2, 2.0, 'L');
+INSERT INTO product (name, product_type, category_id, unit_quantity, unit_type) 
+VALUES ('Água sanitária', 'Higiene', 2, 2.0, 'L');
 
-INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Desinfetante', 'Higiene', 55.0, 2, 1.0, 'L');
+INSERT INTO product (name, product_type, category_id, unit_quantity, unit_type) 
+VALUES ('Desinfetante', 'Higiene', 2, 1.0, 'L');
 
-INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Sabonete', 'Higiene', 200.0, 2, 90.0, 'G');
+INSERT INTO product (name, product_type, category_id, unit_quantity, unit_type) 
+VALUES ('Sabonete', 'Higiene', 2, 90.0, 'G');
 
-INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Creme dental', 'Higiene', 150.0, 2, 90.0, 'G');
+INSERT INTO product (name, product_type, category_id, unit_quantity, unit_type) 
+VALUES ('Creme dental', 'Higiene', 2, 90.0, 'G');
 
-INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Gelatina', 'Alimento', 120.0, 1, 20.0, 'G');
+INSERT INTO product (name, product_type, category_id, unit_quantity, unit_type) 
+VALUES ('Gelatina', 'Alimento', 1, 20.0, 'G');
 
-INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Bolacha recheada', 'Alimento', 80.0, 1, 130.0, 'G');
+INSERT INTO product (name, product_type, category_id, unit_quantity, unit_type) 
+VALUES ('Bolacha recheada', 'Alimento', 1, 130.0, 'G');
 
-INSERT INTO product (name, product_type, stock, category_id, unit_quantity, unit_type) 
-VALUES ('Biscoito de polvilho', 'Alimento', 60.0, 1, 200.0, 'G');
+INSERT INTO product (name, product_type, category_id, unit_quantity, unit_type) 
+VALUES ('Biscoito de polvilho', 'Alimento', 1, 200.0, 'G');
 
 -- Insert sample donations
 INSERT INTO donation (donation_date, user_id) VALUES ('2024-01-15', 2);

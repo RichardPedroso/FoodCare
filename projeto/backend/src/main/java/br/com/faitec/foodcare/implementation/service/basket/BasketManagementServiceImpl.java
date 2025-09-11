@@ -28,21 +28,34 @@ public class BasketManagementServiceImpl implements BasketManagementService {
             return false;
         }
         
+        Product product = productDao.findByid(productId);
+        if (product == null) {
+            return false;
+        }
+        
         List<Stock> stockOptions = stockService.findByProductId(productId);
+        double convertedQuantity = convertToProductUnit(quantity, unit, product.getUnitType());
         double totalAvailable = stockOptions.stream()
                 .mapToDouble(stock -> stock.getActualStock() * stock.getDonationOption())
                 .sum();
         
-        if (totalAvailable < quantity) {
-            return false;
-        }
+        return totalAvailable >= convertedQuantity;
+    }
+    
+    private double convertToProductUnit(double quantity, String fromUnit, String toUnit) {
+        if (fromUnit.equals(toUnit)) return quantity;
         
-        return productDao.updateStock(productId, -quantity);
+        if (fromUnit.equals("KG") && toUnit.equals("G")) return quantity * 1000;
+        if (fromUnit.equals("G") && toUnit.equals("KG")) return quantity / 1000;
+        if (fromUnit.equals("L") && toUnit.equals("ML")) return quantity * 1000;
+        if (fromUnit.equals("ML") && toUnit.equals("L")) return quantity / 1000;
+        
+        return quantity;
     }
 
     @Override
     public boolean removeFromBasket(int productId, double quantity) {
-        return productDao.updateStock(productId, quantity);
+        return true;
     }
 
     @Override
@@ -52,7 +65,7 @@ public class BasketManagementServiceImpl implements BasketManagementService {
                 .map(product -> new BasketItem(
                         product.getId(),
                         product.getName(),
-                        product.getStock(),
+                        1,
                         product.getUnitQuantity(),
                         product.getUnitType()
                 ))
@@ -78,15 +91,23 @@ public class BasketManagementServiceImpl implements BasketManagementService {
         List<Product> products = productDao.findAll();
         return products.stream()
                 .map(product -> {
+                    List<Stock> stockOptions = stockService.findByProductId(product.getId());
+                    double totalAvailable = stockOptions.stream()
+                            .mapToDouble(stock -> stock.getActualStock() * stock.getDonationOption())
+                            .sum();
+                    
                     double baseQuantity = product.getUnitQuantity();
                     double adjustedQuantity = baseQuantity * peopleQuantity;
                     if (hasChildren) {
                         adjustedQuantity *= 1.2;
                     }
+                    
+                    int finalQuantity = (int) Math.min(adjustedQuantity, totalAvailable);
+                    
                     return new BasketItem(
                             product.getId(),
                             product.getName(),
-                            (int) adjustedQuantity,
+                            finalQuantity,
                             product.getUnitQuantity(),
                             product.getUnitType()
                     );
@@ -102,5 +123,37 @@ public class BasketManagementServiceImpl implements BasketManagementService {
     @Override
     public List<Stock> getStockOptions(int productId) {
         return stockService.findByProductId(productId);
+    }
+    
+    @Override
+    public List<Stock> optimizeStockSelection(int productId, double requiredQuantity) {
+        List<Stock> availableOptions = stockService.findByProductId(productId);
+        List<Stock> selectedOptions = new java.util.ArrayList<>();
+        double remainingQuantity = requiredQuantity;
+        
+        // Ordenar por donation_option (maior primeiro para otimizar)
+        availableOptions.sort((a, b) -> Double.compare(b.getDonationOption(), a.getDonationOption()));
+        
+        for (Stock option : availableOptions) {
+            if (remainingQuantity <= 0) break;
+            
+            double optionWeight = option.getDonationOption();
+            int availableUnits = option.getActualStock();
+            int neededUnits = (int) Math.ceil(remainingQuantity / optionWeight);
+            int unitsToUse = Math.min(neededUnits, availableUnits);
+            
+            if (unitsToUse > 0) {
+                Stock selectedOption = new Stock();
+                selectedOption.setId(option.getId());
+                selectedOption.setProductId(option.getProductId());
+                selectedOption.setDonationOption(option.getDonationOption());
+                selectedOption.setActualStock(unitsToUse);
+                selectedOptions.add(selectedOption);
+                
+                remainingQuantity -= unitsToUse * optionWeight;
+            }
+        }
+        
+        return selectedOptions;
     }
 }

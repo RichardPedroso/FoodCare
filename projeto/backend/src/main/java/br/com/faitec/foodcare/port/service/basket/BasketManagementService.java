@@ -14,4 +14,5 @@ public interface BasketManagementService {
     List<BasketItem> calculateBasket(int userId, int peopleQuantity, boolean hasChildren);
     List<BasketItem> getBasketForFamily(int peopleQuantity, boolean hasChildren);
     List<Stock> getStockOptions(int productId);
+    List<Stock> optimizeStockSelection(int productId, double requiredQuantity);
 }

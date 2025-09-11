@@ -53,7 +53,6 @@ CREATE TABLE product
     id              SERIAL           NOT NULL,
     name            VARCHAR(100)     NOT NULL,
     product_type    VARCHAR(50),
-    stock           DOUBLE PRECISION DEFAULT 0.0,
     category_id     INTEGER,
     unit_quantity   DOUBLE PRECISION DEFAULT 1.0,
     unit_type       VARCHAR(10)      DEFAULT 'KG',
