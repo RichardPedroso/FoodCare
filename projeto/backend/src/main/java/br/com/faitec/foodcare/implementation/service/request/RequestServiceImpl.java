@@ -4,7 +4,7 @@ import br.com.faitec.foodcare.domain.BasketItem;
 import br.com.faitec.foodcare.domain.Request;
 import br.com.faitec.foodcare.domain.UserModel;
 import br.com.faitec.foodcare.port.dao.request.RequestDao;
-import br.com.faitec.foodcare.port.service.basket.BasketCalculationService;
+import br.com.faitec.foodcare.port.service.basket.BasketManagementService;
 import br.com.faitec.foodcare.port.service.request.RequestService;
 import br.com.faitec.foodcare.port.service.user.UserService;
 import org.springframework.stereotype.Service;
@@ -15,12 +15,12 @@ import java.util.List;
 public class RequestServiceImpl implements RequestService {
     private final RequestDao requestDao;
     private final UserService userService;
-    private final BasketCalculationService basketCalculationService;
+    private final BasketManagementService basketManagementService;
 
-    public RequestServiceImpl(RequestDao requestDao, UserService userService, BasketCalculationService basketCalculationService) {
+    public RequestServiceImpl(RequestDao requestDao, UserService userService, BasketManagementService basketManagementService) {
         this.requestDao = requestDao;
         this.userService = userService;
-        this.basketCalculationService = basketCalculationService;
+        this.basketManagementService = basketManagementService;
     }
 
     @Override
@@ -55,11 +55,8 @@ public class RequestServiceImpl implements RequestService {
     
     private void calculateRequiredBaskets(UserModel user, Request.RequestType requestType) {
         if (requestType == Request.RequestType.BASIC) {
-            basketCalculationService.calculateBasicBasket(user);
+            basketManagementService.calculateBasket(user.getId(), user.getPeopleQuantity(), user.isHasChildren());
         }
-        
-        // Sempre incluir cesta de higiene (1 cesta por doação)
-        basketCalculationService.calculateHygieneBasket(user);
     }
     
 
