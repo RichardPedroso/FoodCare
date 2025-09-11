@@ -20,13 +20,15 @@ public class DonationProductDaoImpl implements DonationProductDao {
 
     @Override
     public int create(DonationProduct entity) {
-        String sql = "INSERT INTO donation_product(quantity, donation_id, product_id) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO donation_product(quantity, expiration_date, unit, donation_id, product_id) VALUES (?, ?, ?, ?, ?)";
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setDouble(1, entity.getQuantity());
-            preparedStatement.setInt(2, entity.getDonationId());
-            preparedStatement.setInt(3, entity.getProductId());
+            preparedStatement.setString(2, entity.getExpirationDate());
+            preparedStatement.setString(3, entity.getUnit());
+            preparedStatement.setInt(4, entity.getDonationId());
+            preparedStatement.setInt(5, entity.getProductId());
             preparedStatement.execute();
             
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -70,6 +72,8 @@ public class DonationProductDaoImpl implements DonationProductDao {
                 DonationProduct donationProduct = new DonationProduct();
                 donationProduct.setId(resultSet.getInt("id"));
                 donationProduct.setQuantity(resultSet.getDouble("quantity"));
+                donationProduct.setExpirationDate(resultSet.getString("expiration_date"));
+                donationProduct.setUnit(resultSet.getString("unit"));
                 donationProduct.setDonationId(resultSet.getInt("donation_id"));
                 donationProduct.setProductId(resultSet.getInt("product_id"));
                 
@@ -99,6 +103,8 @@ public class DonationProductDaoImpl implements DonationProductDao {
                 DonationProduct donationProduct = new DonationProduct();
                 donationProduct.setId(resultSet.getInt("id"));
                 donationProduct.setQuantity(resultSet.getDouble("quantity"));
+                donationProduct.setExpirationDate(resultSet.getString("expiration_date"));
+                donationProduct.setUnit(resultSet.getString("unit"));
                 donationProduct.setDonationId(resultSet.getInt("donation_id"));
                 donationProduct.setProductId(resultSet.getInt("product_id"));
                 donationProducts.add(donationProduct);
@@ -114,14 +120,16 @@ public class DonationProductDaoImpl implements DonationProductDao {
 
     @Override
     public void update(int id, DonationProduct entity) {
-        String sql = "UPDATE donation_product SET quantity = ?, donation_id = ?, product_id = ? WHERE id = ?";
+        String sql = "UPDATE donation_product SET quantity = ?, expiration_date = ?, unit = ?, donation_id = ?, product_id = ? WHERE id = ?";
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setDouble(1, entity.getQuantity());
-            preparedStatement.setInt(2, entity.getDonationId());
-            preparedStatement.setInt(3, entity.getProductId());
-            preparedStatement.setInt(4, id);
+            preparedStatement.setString(2, entity.getExpirationDate());
+            preparedStatement.setString(3, entity.getUnit());
+            preparedStatement.setInt(4, entity.getDonationId());
+            preparedStatement.setInt(5, entity.getProductId());
+            preparedStatement.setInt(6, id);
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -143,6 +151,8 @@ public class DonationProductDaoImpl implements DonationProductDao {
                 DonationProduct donationProduct = new DonationProduct();
                 donationProduct.setId(resultSet.getInt("id"));
                 donationProduct.setQuantity(resultSet.getDouble("quantity"));
+                donationProduct.setExpirationDate(resultSet.getString("expiration_date"));
+                donationProduct.setUnit(resultSet.getString("unit"));
                 donationProduct.setDonationId(resultSet.getInt("donation_id"));
                 donationProduct.setProductId(resultSet.getInt("product_id"));
                 donationProducts.add(donationProduct);
@@ -170,6 +180,8 @@ public class DonationProductDaoImpl implements DonationProductDao {
                 DonationProduct donationProduct = new DonationProduct();
                 donationProduct.setId(resultSet.getInt("id"));
                 donationProduct.setQuantity(resultSet.getDouble("quantity"));
+                donationProduct.setExpirationDate(resultSet.getString("expiration_date"));
+                donationProduct.setUnit(resultSet.getString("unit"));
                 donationProduct.setDonationId(resultSet.getInt("donation_id"));
                 donationProduct.setProductId(resultSet.getInt("product_id"));
                 donationProducts.add(donationProduct);

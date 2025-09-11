@@ -61,6 +61,11 @@ public class AppConfiguration {
     }
 
     @Bean
+    public br.com.faitec.foodcare.port.service.basket.BasketManagementService basketManagementService(final br.com.faitec.foodcare.port.dao.product.ProductDao productDao) {
+        return new br.com.faitec.foodcare.implementation.service.basket.BasketManagementServiceImpl(productDao);
+    }
+
+    @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override

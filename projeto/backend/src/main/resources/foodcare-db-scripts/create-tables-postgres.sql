@@ -50,13 +50,13 @@ CREATE TABLE user_model
 
 CREATE TABLE product
 (
-    id              SERIAL      NOT NULL,
-    name            VARCHAR(100) NOT NULL,
+    id              SERIAL           NOT NULL,
+    name            VARCHAR(100)     NOT NULL,
     product_type    VARCHAR(50),
-    stock           INTEGER     DEFAULT 0,
+    stock           DOUBLE PRECISION DEFAULT 0.0,
     category_id     INTEGER,
     unit_quantity   DOUBLE PRECISION DEFAULT 1.0,
-    unit_type       VARCHAR(10) DEFAULT 'KG',
+    unit_type       VARCHAR(10)      DEFAULT 'KG',
     PRIMARY KEY (id),
     FOREIGN KEY (category_id) REFERENCES category(id)
 );
@@ -83,10 +83,12 @@ CREATE TABLE request
 
 CREATE TABLE donation_product
 (
-    id          SERIAL  NOT NULL,
-    quantity    INTEGER NOT NULL DEFAULT 1,
-    donation_id INTEGER NOT NULL,
-    product_id  INTEGER NOT NULL,
+    id              SERIAL           NOT NULL,
+    quantity        DOUBLE PRECISION NOT NULL DEFAULT 1.0,
+    expiration_date VARCHAR(20),
+    unit            VARCHAR(10)      NOT NULL DEFAULT 'KG',
+    donation_id     INTEGER          NOT NULL,
+    product_id      INTEGER          NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (donation_id) REFERENCES donation(id),
     FOREIGN KEY (product_id) REFERENCES product(id)

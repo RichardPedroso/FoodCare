@@ -26,7 +26,7 @@ public class ProductDaoImpl implements ProductDao {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getProductType());
-            preparedStatement.setInt(3, entity.getStock());
+            preparedStatement.setDouble(3, entity.getStock());
             preparedStatement.setInt(4, entity.getCategoryId());
             preparedStatement.setDouble(5, entity.getUnitQuantity());
             preparedStatement.setString(6, entity.getUnitType());
@@ -74,7 +74,7 @@ public class ProductDaoImpl implements ProductDao {
                 product.setId(resultSet.getInt("id"));
                 product.setName(resultSet.getString("name"));
                 product.setProductType(resultSet.getString("product_type"));
-                product.setStock(resultSet.getInt("stock"));
+                product.setStock((int) resultSet.getDouble("stock"));
                 product.setCategoryId(resultSet.getInt("category_id"));
                 product.setUnitQuantity(resultSet.getDouble("unit_quantity"));
                 product.setUnitType(resultSet.getString("unit_type"));
@@ -106,7 +106,7 @@ public class ProductDaoImpl implements ProductDao {
                 product.setId(resultSet.getInt("id"));
                 product.setName(resultSet.getString("name"));
                 product.setProductType(resultSet.getString("product_type"));
-                product.setStock(resultSet.getInt("stock"));
+                product.setStock((int) resultSet.getDouble("stock"));
                 product.setCategoryId(resultSet.getInt("category_id"));
                 product.setUnitQuantity(resultSet.getDouble("unit_quantity"));
                 product.setUnitType(resultSet.getString("unit_type"));
@@ -129,7 +129,7 @@ public class ProductDaoImpl implements ProductDao {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, entity.getName());
             preparedStatement.setString(2, entity.getProductType());
-            preparedStatement.setInt(3, entity.getStock());
+            preparedStatement.setDouble(3, entity.getStock());
             preparedStatement.setInt(4, entity.getCategoryId());
             preparedStatement.setDouble(5, entity.getUnitQuantity());
             preparedStatement.setString(6, entity.getUnitType());
@@ -158,16 +158,56 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public boolean updateQuantity(int id, int newStock) {
+    public boolean updateQuantity(int id, double newStock) {
         String sql = "UPDATE product SET stock = ? WHERE id = ?";
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, newStock);
+            preparedStatement.setDouble(1, newStock);
             preparedStatement.setInt(2, id);
             int rowsAffected = preparedStatement.executeUpdate();
             preparedStatement.close();
             return rowsAffected > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean updateStock(int productId, double quantityChange) {
+        String sql = "UPDATE product SET stock = stock + ? WHERE id = ?";
+        
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setDouble(1, quantityChange);
+            preparedStatement.setInt(2, productId);
+            int rowsAffected = preparedStatement.executeUpdate();
+            preparedStatement.close();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public double getAvailableStock(int productId) {
+        String sql = "SELECT stock FROM product WHERE id = ?";
+        
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, productId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            
+            if (resultSet.next()) {
+                double stock = resultSet.getDouble("stock");
+                resultSet.close();
+                preparedStatement.close();
+                return stock;
+            }
+            
+            resultSet.close();
+            preparedStatement.close();
+            return 0.0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
