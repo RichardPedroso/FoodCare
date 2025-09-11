@@ -8,7 +8,6 @@ public class UpdateProductDto {
     private int id;
     private String name;
     private String productType;
-    private int stock;
     private int categoryId;
     private double unitQuantity;
     private String unitType;
@@ -18,7 +17,6 @@ public class UpdateProductDto {
         entity.setId(id);
         entity.setName(name);
         entity.setProductType(productType);
-        entity.setStock(stock);
         entity.setCategoryId(categoryId);
         entity.setUnitQuantity(unitQuantity);
         entity.setUnitType(unitType);
