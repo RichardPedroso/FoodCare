@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,6 +20,9 @@ public class UserModel {
     private int peopleQuantity;
     private int municipalityId;
     private boolean hasChildren;
+    private List<String> documents;
+    private List<String> images;
+    private Boolean able;
     
     public enum UserType {
         DONOR,

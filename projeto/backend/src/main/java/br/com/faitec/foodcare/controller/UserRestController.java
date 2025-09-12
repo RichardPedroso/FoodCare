@@ -10,8 +10,10 @@ import br.com.faitec.foodcare.port.service.municipality.MunicipalityService;
 import br.com.faitec.foodcare.port.service.request.RequestService;
 import br.com.faitec.foodcare.port.service.user.UserService;
 import br.com.faitec.foodcare.port.service.authorization.AuthorizationService;
+import br.com.faitec.foodcare.port.service.file.FileStorageService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -24,12 +26,14 @@ public class UserRestController {
     private final MunicipalityService municipalityService;
     private final RequestService requestService;
     private final AuthorizationService authorizationService;
+    private final FileStorageService fileStorageService;
 
-    public UserRestController(UserService userService, MunicipalityService municipalityService, RequestService requestService, AuthorizationService authorizationService){
+    public UserRestController(UserService userService, MunicipalityService municipalityService, RequestService requestService, AuthorizationService authorizationService, FileStorageService fileStorageService){
         this.userService = userService;
         this.municipalityService = municipalityService;
         this.requestService = requestService;
         this.authorizationService = authorizationService;
+        this.fileStorageService = fileStorageService;
     }
 
     @GetMapping()
@@ -62,6 +66,41 @@ public class UserRestController {
                 .buildAndExpand(id)
                 .toUri();
         return ResponseEntity.created(uri).build();
+    }
+
+    @PostMapping("/beneficiary")
+    public ResponseEntity<UserModel> createBeneficiary(
+            @RequestParam("user") String userJson,
+            @RequestParam(value = "documents", required = false) List<MultipartFile> documents,
+            @RequestParam(value = "images", required = false) List<MultipartFile> images) {
+        
+        try {
+            UserModel user = new com.fasterxml.jackson.databind.ObjectMapper().readValue(userJson, UserModel.class);
+            
+            if (user.getUserType() == UserModel.UserType.BENEFICIARY) {
+                if (documents != null && !documents.isEmpty()) {
+                    List<String> documentPaths = fileStorageService.storeFiles(documents, "documents");
+                    user.setDocuments(documentPaths);
+                }
+                
+                if (images != null && !images.isEmpty()) {
+                    List<String> imagePaths = fileStorageService.storeFiles(images, "images");
+                    user.setImages(imagePaths);
+                }
+            }
+            
+            final int id = userService.create(user);
+            
+            final URI uri = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(id)
+                    .toUri();
+            return ResponseEntity.created(uri).build();
+            
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PutMapping("/{id}")
@@ -134,5 +173,36 @@ public class UserRestController {
         
         boolean isAdmin = authorizationService.isAdmin(user);
         return ResponseEntity.ok(isAdmin);
+    }
+    
+    @GetMapping("/beneficiaries")
+    public ResponseEntity<List<UserModel>> getBeneficiaries() {
+        List<UserModel> beneficiaries = userService.findByUserType(UserModel.UserType.BENEFICIARY);
+        return ResponseEntity.ok(beneficiaries);
+    }
+    
+    @GetMapping("/beneficiaries/status/{status}")
+    public ResponseEntity<List<UserModel>> getBeneficiariesByStatus(@PathVariable String status) {
+        Boolean able = null;
+        if ("approved".equals(status)) {
+            able = true;
+        } else if ("rejected".equals(status)) {
+            able = false;
+        }
+        
+        List<UserModel> beneficiaries = userService.findByAbleStatus(able);
+        return ResponseEntity.ok(beneficiaries);
+    }
+    
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Void> updateUserStatus(@PathVariable int id, @RequestParam Boolean able) {
+        boolean success = userService.updateAbleStatus(id, able);
+        return success ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+    }
+    
+    @GetMapping("/search")
+    public ResponseEntity<List<UserModel>> searchUsers(@RequestParam String name) {
+        List<UserModel> users = userService.searchByName(name);
+        return ResponseEntity.ok(users);
     }
 }

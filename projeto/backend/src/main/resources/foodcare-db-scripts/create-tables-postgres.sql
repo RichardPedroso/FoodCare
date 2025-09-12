@@ -44,6 +44,9 @@ CREATE TABLE user_model
     people_quantity INTEGER        DEFAULT 1,
     municipality_id INTEGER,
     has_children    BOOLEAN        DEFAULT FALSE,
+    documents       TEXT[],
+    images          TEXT[],
+    able            BOOLEAN        DEFAULT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (municipality_id) REFERENCES municipality(id)
 );

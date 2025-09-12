@@ -68,4 +68,35 @@ public class UserDaoImpl implements UserDao {
         }
         return false;
     }
+
+    @Override
+    public List<UserModel> findByUserType(UserModel.UserType userType) {
+        return users.stream()
+                .filter(user -> user.getUserType() == userType)
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
+    public List<UserModel> findByAbleStatus(Boolean able) {
+        return users.stream()
+                .filter(user -> java.util.Objects.equals(user.getAble(), able))
+                .collect(java.util.stream.Collectors.toList());
+    }
+
+    @Override
+    public boolean updateAbleStatus(int userId, Boolean able) {
+        UserModel user = findByid(userId);
+        if (user != null) {
+            user.setAble(able);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public List<UserModel> searchByName(String name) {
+        return users.stream()
+                .filter(user -> user.getName().toLowerCase().contains(name.toLowerCase()))
+                .collect(java.util.stream.Collectors.toList());
+    }
 }

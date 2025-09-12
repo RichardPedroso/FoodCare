@@ -107,4 +107,31 @@ public class UserServiceImpl implements UserService {
         return response;
     }
 
+    @Override
+    public List<UserModel> findByUserType(UserModel.UserType userType) {
+        return userDao.findByUserType(userType);
+    }
+
+    @Override
+    public List<UserModel> findByAbleStatus(Boolean able) {
+        return userDao.findByAbleStatus(able);
+    }
+
+    @Override
+    public boolean updateAbleStatus(int userId, Boolean able) {
+        UserModel user = findById(userId);
+        if (user == null || user.getUserType() != UserModel.UserType.BENEFICIARY) {
+            return false;
+        }
+        return userDao.updateAbleStatus(userId, able);
+    }
+
+    @Override
+    public List<UserModel> searchByName(String name) {
+        if (name == null || name.trim().isEmpty()) {
+            return findAll();
+        }
+        return userDao.searchByName(name.trim());
+    }
+
 }
