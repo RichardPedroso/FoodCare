@@ -20,7 +20,7 @@ public class UserPostgresDaoImpl implements UserDao {
 
     @Override
     public int create(UserModel entity) {
-        String sql = "INSERT INTO user_model(name, email, password, phone, user_type, family_income, people_quantity, municipality_id, has_children, documents, images, able) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO user_model(name, email, password, phone, user_type, family_income, people_quantity, municipality_id, has_children, number_of_children, documents, images, able) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -33,23 +33,24 @@ public class UserPostgresDaoImpl implements UserDao {
             preparedStatement.setInt(7, entity.getPeopleQuantity());
             preparedStatement.setInt(8, entity.getMunicipalityId());
             preparedStatement.setBoolean(9, entity.isHasChildren());
+            preparedStatement.setInt(10, entity.getNumberOfChildren());
             
             if (entity.getDocuments() != null) {
-                preparedStatement.setArray(10, connection.createArrayOf("text", entity.getDocuments().toArray()));
-            } else {
-                preparedStatement.setNull(10, java.sql.Types.ARRAY);
-            }
-            
-            if (entity.getImages() != null) {
-                preparedStatement.setArray(11, connection.createArrayOf("text", entity.getImages().toArray()));
+                preparedStatement.setArray(11, connection.createArrayOf("text", entity.getDocuments().toArray()));
             } else {
                 preparedStatement.setNull(11, java.sql.Types.ARRAY);
             }
             
-            if (entity.getAble() != null) {
-                preparedStatement.setBoolean(12, entity.getAble());
+            if (entity.getImages() != null) {
+                preparedStatement.setArray(12, connection.createArrayOf("text", entity.getImages().toArray()));
             } else {
-                preparedStatement.setNull(12, java.sql.Types.BOOLEAN);
+                preparedStatement.setNull(12, java.sql.Types.ARRAY);
+            }
+            
+            if (entity.getAble() != null) {
+                preparedStatement.setBoolean(13, entity.getAble());
+            } else {
+                preparedStatement.setNull(13, java.sql.Types.BOOLEAN);
             }
             
             preparedStatement.execute();
@@ -130,7 +131,7 @@ public class UserPostgresDaoImpl implements UserDao {
 
     @Override
     public void update(int id, UserModel entity) {
-        String sql = "UPDATE user_model SET name = ?, email = ?, password = ?, phone = ?, user_type = ?, family_income = ?, people_quantity = ?, municipality_id = ?, has_children = ?, documents = ?, images = ?, able = ? WHERE id = ?";
+        String sql = "UPDATE user_model SET name = ?, email = ?, password = ?, phone = ?, user_type = ?, family_income = ?, people_quantity = ?, municipality_id = ?, has_children = ?, number_of_children = ?, documents = ?, images = ?, able = ? WHERE id = ?";
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -143,26 +144,27 @@ public class UserPostgresDaoImpl implements UserDao {
             preparedStatement.setInt(7, entity.getPeopleQuantity());
             preparedStatement.setInt(8, entity.getMunicipalityId());
             preparedStatement.setBoolean(9, entity.isHasChildren());
+            preparedStatement.setInt(10, entity.getNumberOfChildren());
             
             if (entity.getDocuments() != null) {
-                preparedStatement.setArray(10, connection.createArrayOf("text", entity.getDocuments().toArray()));
-            } else {
-                preparedStatement.setNull(10, java.sql.Types.ARRAY);
-            }
-            
-            if (entity.getImages() != null) {
-                preparedStatement.setArray(11, connection.createArrayOf("text", entity.getImages().toArray()));
+                preparedStatement.setArray(11, connection.createArrayOf("text", entity.getDocuments().toArray()));
             } else {
                 preparedStatement.setNull(11, java.sql.Types.ARRAY);
             }
             
-            if (entity.getAble() != null) {
-                preparedStatement.setBoolean(12, entity.getAble());
+            if (entity.getImages() != null) {
+                preparedStatement.setArray(12, connection.createArrayOf("text", entity.getImages().toArray()));
             } else {
-                preparedStatement.setNull(12, java.sql.Types.BOOLEAN);
+                preparedStatement.setNull(12, java.sql.Types.ARRAY);
             }
             
-            preparedStatement.setInt(13, id);
+            if (entity.getAble() != null) {
+                preparedStatement.setBoolean(13, entity.getAble());
+            } else {
+                preparedStatement.setNull(13, java.sql.Types.BOOLEAN);
+            }
+            
+            preparedStatement.setInt(14, id);
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -317,6 +319,7 @@ public class UserPostgresDaoImpl implements UserDao {
         user.setPeopleQuantity(resultSet.getInt("people_quantity"));
         user.setMunicipalityId(resultSet.getInt("municipality_id"));
         user.setHasChildren(resultSet.getBoolean("has_children"));
+        user.setNumberOfChildren(resultSet.getInt("number_of_children"));
         
         // Mapear arrays
         java.sql.Array documentsArray = resultSet.getArray("documents");

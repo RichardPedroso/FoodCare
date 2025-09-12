@@ -12,6 +12,7 @@ public interface BasketManagementService {
     List<BasketItem> getBasketItems(int donationId);
     boolean validateBasketItem(int productId, double quantity, String unit);
     List<BasketItem> calculateBasket(int userId, int peopleQuantity, boolean hasChildren);
+    List<BasketItem> calculateBasket(int userId, int peopleQuantity, boolean hasChildren, int numberOfChildren);
     List<BasketItem> getBasketForFamily(int peopleQuantity, boolean hasChildren);
     List<Stock> getStockOptions(int productId);
     List<Stock> optimizeStockSelection(int productId, double requiredQuantity);

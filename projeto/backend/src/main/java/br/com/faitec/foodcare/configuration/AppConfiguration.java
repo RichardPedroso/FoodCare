@@ -63,8 +63,9 @@ public class AppConfiguration {
     @Bean
     public br.com.faitec.foodcare.port.service.basket.BasketManagementService basketManagementService(
             final br.com.faitec.foodcare.port.dao.product.ProductDao productDao,
-            final br.com.faitec.foodcare.port.service.stock.StockService stockService) {
-        return new br.com.faitec.foodcare.implementation.service.basket.BasketManagementServiceImpl(productDao, stockService);
+            final br.com.faitec.foodcare.port.service.stock.StockService stockService,
+            final br.com.faitec.foodcare.port.dao.donationproduct.DonationProductDao donationProductDao) {
+        return new br.com.faitec.foodcare.implementation.service.basket.BasketManagementServiceImpl(productDao, stockService, donationProductDao);
     }
 
     @Bean

@@ -4,9 +4,14 @@ import br.com.faitec.foodcare.domain.BasketItem;
 import br.com.faitec.foodcare.domain.Product;
 import br.com.faitec.foodcare.domain.Stock;
 import br.com.faitec.foodcare.port.dao.product.ProductDao;
+import br.com.faitec.foodcare.port.dao.donationproduct.DonationProductDao;
 import br.com.faitec.foodcare.port.service.basket.BasketManagementService;
 import br.com.faitec.foodcare.port.service.stock.StockService;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,10 +21,15 @@ public class BasketManagementServiceImpl implements BasketManagementService {
 
     private final ProductDao productDao;
     private final StockService stockService;
+    private final DonationProductDao donationProductDao;
+    private static final int MINIMUM_DAYS = 30;
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public BasketManagementServiceImpl(ProductDao productDao, StockService stockService) {
+    public BasketManagementServiceImpl(ProductDao productDao, StockService stockService, 
+                                     DonationProductDao donationProductDao) {
         this.productDao = productDao;
         this.stockService = stockService;
+        this.donationProductDao = donationProductDao;
     }
 
     @Override
@@ -85,34 +95,35 @@ public class BasketManagementServiceImpl implements BasketManagementService {
         
         return unit != null && (unit.equals("KG") || unit.equals("G") || unit.equals("L") || unit.equals("ML"));
     }
+    
+    private boolean isValidForBasket(String expirationDate) {
+        try {
+            LocalDate expDate = LocalDate.parse(expirationDate, DATE_FORMATTER);
+            LocalDate today = LocalDate.now();
+            return ChronoUnit.DAYS.between(today, expDate) > MINIMUM_DAYS;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
+    private int getDaysUntilExpiration(String expirationDate) {
+        try {
+            LocalDate expDate = LocalDate.parse(expirationDate, DATE_FORMATTER);
+            LocalDate today = LocalDate.now();
+            return (int) ChronoUnit.DAYS.between(today, expDate);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+    
+    private boolean isChildProduct(Product product) {
+        String[] childProducts = {"Gelatina", "Bolacha recheada", "Biscoito de polvilho", "Leite"};
+        return java.util.Arrays.asList(childProducts).contains(product.getName());
+    }
 
     @Override
     public List<BasketItem> calculateBasket(int userId, int peopleQuantity, boolean hasChildren) {
-        List<Product> products = productDao.findAll();
-        return products.stream()
-                .map(product -> {
-                    List<Stock> stockOptions = stockService.findByProductId(product.getId());
-                    double totalAvailable = stockOptions.stream()
-                            .mapToDouble(stock -> stock.getActualStock() * stock.getDonationOption())
-                            .sum();
-                    
-                    double baseQuantity = product.getUnitQuantity();
-                    double adjustedQuantity = baseQuantity * peopleQuantity;
-                    if (hasChildren) {
-                        adjustedQuantity *= 1.2;
-                    }
-                    
-                    int finalQuantity = (int) Math.min(adjustedQuantity, totalAvailable);
-                    
-                    return new BasketItem(
-                            product.getId(),
-                            product.getName(),
-                            finalQuantity,
-                            product.getUnitQuantity(),
-                            product.getUnitType()
-                    );
-                })
-                .collect(Collectors.toList());
+        return calculateBasket(userId, peopleQuantity, hasChildren, 0);
     }
 
     @Override
@@ -155,5 +166,49 @@ public class BasketManagementServiceImpl implements BasketManagementService {
         }
         
         return selectedOptions;
+    }
+    
+    @Override
+    public List<BasketItem> calculateBasket(int userId, int peopleQuantity, boolean hasChildren, int numberOfChildren) {
+        List<Product> products = productDao.findAll();
+        return products.stream()
+                .map(product -> {
+                    List<br.com.faitec.foodcare.domain.DonationProduct> validProducts = 
+                        donationProductDao.findAll().stream()
+                            .filter(dp -> dp.getProductId() == product.getId())
+                            .filter(dp -> isValidForBasket(dp.getExpirationDate()))
+                            .sorted((a, b) -> Integer.compare(
+                                getDaysUntilExpiration(a.getExpirationDate()),
+                                getDaysUntilExpiration(b.getExpirationDate())
+                            ))
+                            .collect(java.util.stream.Collectors.toList());
+                    
+                    double baseQuantity = product.getUnitQuantity();
+                    double adjustedQuantity = baseQuantity * peopleQuantity;
+                    
+                    if (hasChildren) {
+                        if (numberOfChildren > 0 && isChildProduct(product)) {
+                            adjustedQuantity += (baseQuantity * numberOfChildren * 0.5);
+                        } else {
+                            adjustedQuantity *= 1.2;
+                        }
+                    }
+                    
+                    double availableQuantity = validProducts.stream()
+                            .mapToDouble(br.com.faitec.foodcare.domain.DonationProduct::getQuantity)
+                            .sum();
+                    
+                    int finalQuantity = (int) Math.min(adjustedQuantity, availableQuantity);
+                    
+                    return new BasketItem(
+                            product.getId(),
+                            product.getName(),
+                            finalQuantity,
+                            product.getUnitQuantity(),
+                            product.getUnitType()
+                    );
+                })
+                .filter(item -> item.getQuantity() > 0)
+                .collect(java.util.stream.Collectors.toList());
     }
 }

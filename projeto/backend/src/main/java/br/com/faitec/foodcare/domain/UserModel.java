@@ -20,6 +20,7 @@ public class UserModel {
     private int peopleQuantity;
     private int municipalityId;
     private boolean hasChildren;
+    private int numberOfChildren;
     private List<String> documents;
     private List<String> images;
     private Boolean able;

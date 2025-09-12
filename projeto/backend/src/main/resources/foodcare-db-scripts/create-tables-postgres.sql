@@ -44,6 +44,7 @@ CREATE TABLE user_model
     people_quantity INTEGER        DEFAULT 1,
     municipality_id INTEGER,
     has_children    BOOLEAN        DEFAULT FALSE,
+    number_of_children INTEGER     DEFAULT 0,
     documents       TEXT[],
     images          TEXT[],
     able            BOOLEAN        DEFAULT NULL,
@@ -105,3 +106,5 @@ CREATE TABLE stock
     PRIMARY KEY (id),
     FOREIGN KEY (product_id) REFERENCES product(id)
 );
+
+

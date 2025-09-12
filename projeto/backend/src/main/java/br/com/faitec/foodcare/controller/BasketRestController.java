@@ -60,8 +60,9 @@ public class BasketRestController {
     public ResponseEntity<List<BasketItem>> calculateBasket(
             @RequestParam int userId,
             @RequestParam int peopleQuantity,
-            @RequestParam boolean hasChildren) {
-        List<BasketItem> basketItems = basketManagementService.calculateBasket(userId, peopleQuantity, hasChildren);
+            @RequestParam boolean hasChildren,
+            @RequestParam(defaultValue = "0") int numberOfChildren) {
+        List<BasketItem> basketItems = basketManagementService.calculateBasket(userId, peopleQuantity, hasChildren, numberOfChildren);
         return ResponseEntity.ok(basketItems);
     }
 
@@ -86,4 +87,5 @@ public class BasketRestController {
         List<Stock> optimizedOptions = basketManagementService.optimizeStockSelection(productId, requiredQuantity);
         return ResponseEntity.ok(optimizedOptions);
     }
+    
 }
