@@ -60,6 +60,7 @@ CREATE TABLE product
     category_id     INTEGER,
     unit_quantity   DOUBLE PRECISION DEFAULT 1.0,
     unit_type       VARCHAR(10)      DEFAULT 'KG',
+    options_donation DOUBLE PRECISION[],
     PRIMARY KEY (id),
     FOREIGN KEY (category_id) REFERENCES category(id)
 );
