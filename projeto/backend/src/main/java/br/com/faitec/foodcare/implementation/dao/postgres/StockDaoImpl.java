@@ -2,6 +2,7 @@ package br.com.faitec.foodcare.implementation.dao.postgres;
 
 import br.com.faitec.foodcare.domain.Stock;
 import br.com.faitec.foodcare.port.dao.stock.StockDao;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class StockDaoImpl implements StockDao {
 
     private final Connection connection;
