@@ -169,6 +169,29 @@ public class BasketManagementServiceImpl implements BasketManagementService {
     }
     
     @Override
+    public boolean checkStockAvailability(int userId, int peopleQuantity, boolean hasChildren, int numberOfChildren) {
+        try {
+            List<BasketItem> requiredBasket = calculateBasket(userId, peopleQuantity, hasChildren, numberOfChildren);
+            
+            for (BasketItem item : requiredBasket) {
+                List<Stock> availableStocks = stockService.findByProductId(item.getProductId());
+                
+                double totalAvailable = availableStocks.stream()
+                        .mapToDouble(stock -> stock.getActualStock() * stock.getDonationOption())
+                        .sum();
+                
+                if (totalAvailable < item.getQuantity()) {
+                    return false; // Não há estoque suficiente para este produto
+                }
+            }
+            
+            return true; // Há estoque suficiente para toda a cesta
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
+    @Override
     public List<BasketItem> calculateBasket(int userId, int peopleQuantity, boolean hasChildren, int numberOfChildren) {
         List<Product> products = productDao.findAll();
         return products.stream()

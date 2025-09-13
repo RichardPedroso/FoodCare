@@ -3,7 +3,9 @@ package br.com.faitec.foodcare.controller;
 import br.com.faitec.foodcare.domain.Request;
 import br.com.faitec.foodcare.domain.UserModel;
 import br.com.faitec.foodcare.domain.dto.UpdateRequestDto;
+import br.com.faitec.foodcare.port.service.basket.BasketManagementService;
 import br.com.faitec.foodcare.port.service.request.RequestService;
+import br.com.faitec.foodcare.port.service.request.RequestStockIntegrationService;
 import br.com.faitec.foodcare.port.service.user.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,10 +20,17 @@ import java.util.Map;
 public class RequestRestController {
     private final RequestService requestService;
     private final UserService userService;
+    private final RequestStockIntegrationService requestStockIntegrationService;
+    private final BasketManagementService basketManagementService;
 
-    public RequestRestController(RequestService requestService, UserService userService) {
+    public RequestRestController(RequestService requestService, 
+                               UserService userService,
+                               RequestStockIntegrationService requestStockIntegrationService,
+                               BasketManagementService basketManagementService) {
         this.requestService = requestService;
         this.userService = userService;
+        this.requestStockIntegrationService = requestStockIntegrationService;
+        this.basketManagementService = basketManagementService;
     }
 
     @GetMapping
@@ -130,5 +139,62 @@ public class RequestRestController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @PostMapping("/{id}/process-completion")
+    public ResponseEntity<Boolean> processRequestCompletion(@PathVariable final int id) {
+        boolean success = requestStockIntegrationService.processRequestCompletion(id);
+        return ResponseEntity.ok(success);
+    }
+
+    @PostMapping("/{id}/consume-stock")
+    public ResponseEntity<Boolean> consumeStockForRequest(@PathVariable final int id) {
+        Request request = requestService.findById(id);
+        if (request == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        boolean success = requestStockIntegrationService.consumeStockForBasket(request.getUserId(), id);
+        return ResponseEntity.ok(success);
+    }
+
+    @PostMapping("/{id}/complete-and-process")
+    public ResponseEntity<Boolean> completeRequestAndProcessStock(@PathVariable final int id) {
+        try {
+            // 1. Atualizar status para COMPLETED (isso já vai consumir estoque automaticamente)
+            boolean statusUpdated = requestService.updateStatus(id, Request.RequestStatus.COMPLETED);
+            
+            if (!statusUpdated) {
+                return ResponseEntity.badRequest().body(false);
+            }
+            
+            // 2. Verificar se o processamento de estoque foi bem-sucedido
+            // (já foi executado automaticamente no updateStatus)
+            return ResponseEntity.ok(true);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(false);
+        }
+    }
+
+    @GetMapping("/{id}/check-stock-availability")
+    public ResponseEntity<Boolean> checkStockAvailability(@PathVariable final int id) {
+        Request request = requestService.findById(id);
+        if (request == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        UserModel user = userService.findById(request.getUserId());
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        boolean available = basketManagementService.checkStockAvailability(
+            user.getId(), 
+            user.getPeopleQuantity(), 
+            user.isHasChildren(), 
+            user.getNumberOfChildren()
+        );
+        
+        return ResponseEntity.ok(available);
     }
 }
