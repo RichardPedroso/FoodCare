@@ -8,6 +8,7 @@ import br.com.faitec.foodcare.port.service.authorization.AuthorizationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +27,12 @@ public class AdminRestController {
     }
 
     @GetMapping("/requests/pending")
-    public ResponseEntity<List<Request>> getPendingRequests(@RequestHeader("User-Id") int userId) {
+    public ResponseEntity<List<Request>> getPendingRequests(HttpServletRequest request) {
+        Integer userId = (Integer) request.getAttribute("userId");
+        if (userId == null) {
+            return ResponseEntity.status(401).build();
+        }
+        
         UserModel currentUser = userService.findById(userId);
         if (!authorizationService.canManageRequests(currentUser)) {
             return ResponseEntity.status(403).build();
@@ -37,7 +43,12 @@ public class AdminRestController {
     }
 
     @PatchMapping("/requests/{id}/approve")
-    public ResponseEntity<Void> approveRequest(@PathVariable int id, @RequestHeader("User-Id") int userId) {
+    public ResponseEntity<Void> approveRequest(@PathVariable int id, HttpServletRequest request) {
+        Integer userId = (Integer) request.getAttribute("userId");
+        if (userId == null) {
+            return ResponseEntity.status(401).build();
+        }
+        
         UserModel currentUser = userService.findById(userId);
         if (!authorizationService.canManageRequests(currentUser)) {
             return ResponseEntity.status(403).build();
@@ -60,7 +71,12 @@ public class AdminRestController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserModel>> getAllUsers(@RequestHeader("User-Id") int userId) {
+    public ResponseEntity<List<UserModel>> getAllUsers(HttpServletRequest request) {
+        Integer userId = (Integer) request.getAttribute("userId");
+        if (userId == null) {
+            return ResponseEntity.status(401).build();
+        }
+        
         UserModel currentUser = userService.findById(userId);
         if (!authorizationService.canViewAllUsers(currentUser)) {
             return ResponseEntity.status(403).build();

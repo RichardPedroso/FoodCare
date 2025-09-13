@@ -6,7 +6,9 @@ import br.com.faitec.foodcare.domain.UserModel;
 import br.com.faitec.foodcare.port.dao.request.RequestDao;
 import br.com.faitec.foodcare.port.service.basket.BasketManagementService;
 import br.com.faitec.foodcare.port.service.request.RequestService;
+import br.com.faitec.foodcare.port.service.request.RequestStockIntegrationService;
 import br.com.faitec.foodcare.port.service.user.UserService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,11 +18,16 @@ public class RequestServiceImpl implements RequestService {
     private final RequestDao requestDao;
     private final UserService userService;
     private final BasketManagementService basketManagementService;
+    private final RequestStockIntegrationService requestStockIntegrationService;
 
-    public RequestServiceImpl(RequestDao requestDao, UserService userService, BasketManagementService basketManagementService) {
+    public RequestServiceImpl(RequestDao requestDao, 
+                            UserService userService, 
+                            BasketManagementService basketManagementService,
+                            @Lazy RequestStockIntegrationService requestStockIntegrationService) {
         this.requestDao = requestDao;
         this.userService = userService;
         this.basketManagementService = basketManagementService;
+        this.requestStockIntegrationService = requestStockIntegrationService;
     }
 
     @Override
@@ -136,6 +143,15 @@ public class RequestServiceImpl implements RequestService {
             return false;
         }
         
-        return requestDao.updateStatus(id, newStatus);
+        // Atualizar o status primeiro
+        boolean statusUpdated = requestDao.updateStatus(id, newStatus);
+        
+        // Se o status foi atualizado para COMPLETED, consumir estoque
+        if (statusUpdated && newStatus == Request.RequestStatus.COMPLETED) {
+            // Tentar consumir estoque - se falhar, não reverte o status (pode ser tratado manualmente)
+            requestStockIntegrationService.processRequestCompletion(id);
+        }
+        
+        return statusUpdated;
     }
 }
