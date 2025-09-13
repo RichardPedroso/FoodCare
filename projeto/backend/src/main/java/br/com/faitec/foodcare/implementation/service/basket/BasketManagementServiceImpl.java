@@ -14,7 +14,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BasketManagementServiceImpl implements BasketManagementService {
@@ -32,55 +31,7 @@ public class BasketManagementServiceImpl implements BasketManagementService {
         this.donationProductDao = donationProductDao;
     }
 
-    @Override
-    public boolean addToBasket(int productId, double quantity, String unit, String expirationDate) {
-        if (!validateBasketItem(productId, quantity, unit)) {
-            return false;
-        }
-        
-        Product product = productDao.findByid(productId);
-        if (product == null) {
-            return false;
-        }
-        
-        List<Stock> stockOptions = stockService.findByProductId(productId);
-        double convertedQuantity = convertToProductUnit(quantity, unit, product.getUnitType());
-        double totalAvailable = stockOptions.stream()
-                .mapToDouble(stock -> stock.getActualStock() * stock.getDonationOption())
-                .sum();
-        
-        return totalAvailable >= convertedQuantity;
-    }
-    
-    private double convertToProductUnit(double quantity, String fromUnit, String toUnit) {
-        if (fromUnit.equals(toUnit)) return quantity;
-        
-        if (fromUnit.equals("KG") && toUnit.equals("G")) return quantity * 1000;
-        if (fromUnit.equals("G") && toUnit.equals("KG")) return quantity / 1000;
-        if (fromUnit.equals("L") && toUnit.equals("ML")) return quantity * 1000;
-        if (fromUnit.equals("ML") && toUnit.equals("L")) return quantity / 1000;
-        
-        return quantity;
-    }
 
-    @Override
-    public boolean removeFromBasket(int productId, double quantity) {
-        return true;
-    }
-
-    @Override
-    public List<BasketItem> getBasketItems(int donationId) {
-        List<Product> products = productDao.findAll();
-        return products.stream()
-                .map(product -> new BasketItem(
-                        product.getId(),
-                        product.getName(),
-                        1,
-                        product.getUnitQuantity(),
-                        product.getUnitType()
-                ))
-                .collect(Collectors.toList());
-    }
 
     @Override
     public boolean validateBasketItem(int productId, double quantity, String unit) {
