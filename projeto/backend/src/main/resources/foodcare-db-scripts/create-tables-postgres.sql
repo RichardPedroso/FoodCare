@@ -1,5 +1,6 @@
 -- Drop tables in correct order (respecting foreign keys)
 DROP TABLE IF EXISTS donation_product;
+DROP TABLE IF EXISTS stock;
 DROP TABLE IF EXISTS request;
 DROP TABLE IF EXISTS donation;
 DROP TABLE IF EXISTS product;

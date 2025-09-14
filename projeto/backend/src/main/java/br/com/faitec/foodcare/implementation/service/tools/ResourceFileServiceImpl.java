@@ -28,7 +28,7 @@ public class ResourceFileServiceImpl implements ResourceFileService {
 
         while((line = bufferedReader.readLine()) != null) {
             System.out.println(line);
-            content += line;
+            content += line + "\n";
         }
 
         return content;
