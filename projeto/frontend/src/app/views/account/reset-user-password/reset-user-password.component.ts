@@ -97,7 +97,7 @@ export class ResetUserPasswordComponent implements OnInit {
       console.log('Atualizando senha para usuário ID:', this.currentUser.id);
       console.log('Nova senha:', newPassword);
       
-      await this.userUpdateService.updatePassword(this.currentUser.id, newPassword);
+      await this.userUpdateService.updatePassword(this.currentUser.id!.toString(), newPassword);
       
       console.log('Senha atualizada com sucesso!');
       alert('Senha alterada com sucesso!');

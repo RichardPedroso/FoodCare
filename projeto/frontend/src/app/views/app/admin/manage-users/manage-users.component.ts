@@ -84,7 +84,7 @@ export class ManageUsersComponent implements OnInit {
       case 'recentes':
       default:
         // Manter todos, ordenar por ID (mais recentes primeiro)
-        filtered.sort((a, b) => (b.id || '').localeCompare(a.id || ''));
+        filtered.sort((a, b) => (b.id?.toString() || '').localeCompare(a.id?.toString() || ''));
         break;
     }
 

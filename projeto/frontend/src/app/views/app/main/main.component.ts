@@ -17,7 +17,7 @@ import { filter } from 'rxjs/operators';
 export class MainComponent implements OnInit {
   
   user: User | null = null;
-  userType: 'donor' | 'beneficiary' = 'donor';
+  userType: 'DONOR' | 'BENEFICIARY' = 'DONOR';
   userName: string = '';
   isChildRouteActive: boolean = false;
 
@@ -25,7 +25,7 @@ export class MainComponent implements OnInit {
     this.user = this.authenticationService.getCurrentUser();
     if (this.user) {
       this.userName = this.user.name;
-      this.userType = this.user.user_type as 'donor' | 'beneficiary';
+      this.userType = this.user.user_type as 'DONOR' | 'BENEFICIARY';
     }
     
     this.router.events.pipe(

@@ -308,7 +308,7 @@ export class MakeActionComponent implements OnInit {
     try {
       const donation: Donation = {
         donation_date: new Date(),
-        user_id: this.user.id!
+        user_id: this.user.id!.toString()
       };
 
       const donationResponse = await this.donationCreateService.create(donation);
@@ -385,7 +385,7 @@ export class MakeActionComponent implements OnInit {
       }
 
       const peopleQuantity = parseInt(this.user.people_quantity || '1');
-      const hasChildren = this.user.has_children || false;
+      const hasChildren = this.user.hasChildren || false;
       
       const calculatedBasket = this.calculateBasketLocally(peopleQuantity, hasChildren);
       await this.processBasketRequest(calculatedBasket, peopleQuantity, hasChildren);
@@ -537,7 +537,7 @@ export class MakeActionComponent implements OnInit {
     }
 
     const peopleQuantity = parseInt(this.user.people_quantity || '1');
-    const hasChildren = this.user.has_children || false;
+    const hasChildren = this.user.hasChildren || false;
     
     this.calculatedBasket = this.calculateBasketLocally(peopleQuantity, hasChildren);
     this.showBasketPreview = true;

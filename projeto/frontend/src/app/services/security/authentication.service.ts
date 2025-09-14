@@ -12,7 +12,7 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient) {}
 
-  // Autentica o usuário no json-server
+  // Autentica o usuário no backend Spring Boot
   authenticate(credentials: UserCredentialDto): Observable<any> {
     console.log("Autenticando o usuario");
 
@@ -20,13 +20,20 @@ export class AuthenticationService {
       'Content-Type': 'application/json'
     });
 
-    const urlCredentials = `${environment.authentication_api_endpoint}/user?email=${credentials.email}&password=${credentials.password}`;
+    const authData = {
+      email: credentials.email,
+      password: credentials.password
+    };
 
-    return this.http.get<User[]>(urlCredentials, {headers}).pipe(
-      map(users => {
-        if(users.length > 0){
-          return users[0];
-        }else{
+    return this.http.post<any>(`${environment.authentication_api_endpoint}/authenticate`, authData, {headers}).pipe(
+      map(response => {
+        if(response && response.user){
+          // Armazena o token JWT se fornecido
+          if(response.token) {
+            localStorage.setItem('token', response.token);
+          }
+          return response.user;
+        } else {
           throw new Error('Credenciais inválidas')
         }
       })
@@ -49,6 +56,11 @@ export class AuthenticationService {
 
   logout(): void {
     localStorage.removeItem('user');
+    localStorage.removeItem('token');
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
   }
 
 }

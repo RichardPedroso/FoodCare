@@ -48,7 +48,7 @@
 
         <section class="actions-section">
           <div class="actions-grid">
-            @if(userType === 'donor'){
+            @if(userType === 'DONOR'){
             <ng-container >
               <div class="action-card card" routerLink="/main/user/follow-actions">
                 <div class="action-icon">📋</div>
@@ -71,7 +71,7 @@
               </div>
             </ng-container>
           }
-            @if(userType === 'beneficiary'){
+            @if(userType === 'BENEFICIARY'){
             <ng-container>
               <div class="action-card card" routerLink="/main/user/follow-actions">
                 <div class="action-icon">📋</div>

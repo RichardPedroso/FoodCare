@@ -332,17 +332,19 @@ export class SignUpComponent implements OnInit {
         email: formDataSignUp.email,
         password: formDataSignUp.password,
         phone: formDataSignUp.phone,
+        userType: formDataSignUp.userType,
+        municipalityId: createdMunicipality.id,
         user_type: formDataSignUp.userType,
         family_income: '',
         people_quantity: '',
         municipality_id: createdMunicipality.id,
-        has_children: false
+        hasChildren: false
       };
 
       if (newUser.user_type === 'beneficiary') {
         newUser.family_income = formDataSignUp.familyIncome;
         newUser.people_quantity = formDataSignUp.peopleQuantity;
-        newUser.has_children = formDataSignUp.hasChildren;
+        newUser.hasChildren = formDataSignUp.hasChildren;
         newUser.documents = this.uploadedDocuments.map(doc => doc.data);
       }
 

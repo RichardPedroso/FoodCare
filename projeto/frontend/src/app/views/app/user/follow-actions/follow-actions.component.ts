@@ -80,7 +80,7 @@ export class FollowActionsComponent implements OnInit {
     
     this.loading = true;
     try {
-      const userDonations = await this.donationReadService.findByUserId(this.user.id);
+      const userDonations = await this.donationReadService.findByUserId(this.user.id!.toString());
       const donationProducts = await this.donationReadService.findDonationProducts();
       const products = await this.productReadService.findAll();
       

@@ -67,7 +67,8 @@ export class SignInComponent{
     console.log('verificando as credenciais...');
     if (this.authenticationService.isAuthenticated()) {
       const user = this.authenticationService.getCurrentUser();
-      if (user?.user_type === 'admin') {
+      const userType = user?.userType || user?.user_type;
+      if (userType === 'ADMIN' || userType === 'admin') {
         console.log('credenciais validas, navegando para dashboard admin')
         this.router.navigate(['/main/admin/dashboard']);
       } else {
@@ -97,25 +98,26 @@ export class SignInComponent{
     this.authenticationService.authenticate(credentials)
       .subscribe({
         next: (user: User) => {
-          console.log('Resultado da busca no json-server:', user);
-          console.log('Tipo de usuário:', user.user_type);
+          console.log('Resultado da autenticação:', user);
+          const userType = user.userType || user.user_type;
+          console.log('Tipo de usuário:', userType);
 
           this.authenticationService.addDataToLocalStorage(user);
           
-          if (user.user_type === 'admin') {
+          if (userType === 'ADMIN' || userType === 'admin') {
             console.log('Usuário identificado como administrador');
             this.router.navigate(['/main/admin/dashboard']);
           } else {
-            if (user.user_type === 'donor') {
+            if (userType === 'DONOR' || userType === 'donor') {
               console.log('Usuário identificado como doador');
               this.router.navigate(['/main']);
-            } else if (user.user_type === 'beneficiary') {
+            } else if (userType === 'BENEFICIARY' || userType === 'beneficiary') {
               console.log('Usuário identificado como beneficiário');
               if (user.able === false) {
                 alert('Você não está apto a receber o auxílio.');
                 return;
               }
-              if (user.able === undefined) {
+              if (user.able === undefined || user.able === null) {
                 alert('Estamos verificando sua elegibilidade.');
                 return;
               }
