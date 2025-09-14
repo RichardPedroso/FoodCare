@@ -66,7 +66,7 @@ export class FollowActionsComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.user = this.authenticationService.getCurrentUser();
     if (this.user) {
-      this.userType = this.user.user_type as 'donor' | 'beneficiary';
+      this.userType = (this.user.userType || this.user.user_type) as 'donor' | 'beneficiary';
       if (this.userType === 'donor') {
         await this.loadDonations();
       } else {
@@ -80,7 +80,7 @@ export class FollowActionsComponent implements OnInit {
     
     this.loading = true;
     try {
-      const userDonations = await this.donationReadService.findByUserId(this.user.id);
+      const userDonations = await this.donationReadService.findByUserId(this.user.id!.toString());
       const donationProducts = await this.donationReadService.findDonationProducts();
       const products = await this.productReadService.findAll();
       

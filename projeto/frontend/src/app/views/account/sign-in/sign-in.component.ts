@@ -67,7 +67,8 @@ export class SignInComponent{
     console.log('verificando as credenciais...');
     if (this.authenticationService.isAuthenticated()) {
       const user = this.authenticationService.getCurrentUser();
-      if (user?.user_type === 'admin') {
+      const userType = user?.userType;
+      if (userType === 'ADMIN') {
         console.log('credenciais validas, navegando para dashboard admin')
         this.router.navigate(['/main/admin/dashboard']);
       } else {
@@ -97,32 +98,36 @@ export class SignInComponent{
     this.authenticationService.authenticate(credentials)
       .subscribe({
         next: (user: User) => {
-          console.log('Resultado da busca no json-server:', user);
-          console.log('Tipo de usuário:', user.user_type);
+          console.log('Resultado da busca no backend:', user);
+          console.log('user.userType:', user.userType);
+          console.log('user.user_type:', user.user_type);
+          console.log('Tipo de usuário final:', user.userType || user.user_type);
 
           this.authenticationService.addDataToLocalStorage(user);
           
-          if (user.user_type === 'admin') {
+          const userType = user.userType;
+          console.log('UserType processado:', userType);
+          
+          if (userType === 'ADMIN') {
             console.log('Usuário identificado como administrador');
             this.router.navigate(['/main/admin/dashboard']);
-          } else {
-            if (user.user_type === 'donor') {
-              console.log('Usuário identificado como doador');
-              this.router.navigate(['/main']);
-            } else if (user.user_type === 'beneficiary') {
-              console.log('Usuário identificado como beneficiário');
-              if (user.able === false) {
-                alert('Você não está apto a receber o auxílio.');
-                return;
-              }
-              if (user.able === undefined) {
-                alert('Estamos verificando sua elegibilidade.');
-                return;
-              }
-              this.router.navigate(['/main']);
-            } else {
-              this.router.navigate(['/main']);
+          } else if (userType === 'DONOR') {
+            console.log('Usuário identificado como doador');
+            this.router.navigate(['/main']);
+          } else if (userType === 'BENEFICIARY') {
+            console.log('Usuário identificado como beneficiário');
+            if (user.able === false) {
+              alert('Você não está apto a receber o auxílio.');
+              return;
             }
+            if (user.able === undefined) {
+              alert('Estamos verificando sua elegibilidade.');
+              return;
+            }
+            this.router.navigate(['/main']);
+          } else {
+            console.log('Tipo de usuário não reconhecido:', userType);
+            this.router.navigate(['/main']);
           }
       },
       error: (err) => {

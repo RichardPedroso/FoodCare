@@ -25,7 +25,8 @@ export class MainComponent implements OnInit {
     this.user = this.authenticationService.getCurrentUser();
     if (this.user) {
       this.userName = this.user.name;
-      this.userType = this.user.user_type as 'donor' | 'beneficiary';
+      const rawUserType = this.user.userType || this.user.user_type;
+      this.userType = rawUserType?.toLowerCase() as 'donor' | 'beneficiary';
     }
     
     this.router.events.pipe(

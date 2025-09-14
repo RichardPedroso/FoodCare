@@ -332,17 +332,17 @@ export class SignUpComponent implements OnInit {
         email: formDataSignUp.email,
         password: formDataSignUp.password,
         phone: formDataSignUp.phone,
-        user_type: formDataSignUp.userType,
-        family_income: '',
-        people_quantity: '',
-        municipality_id: createdMunicipality.id,
-        has_children: false
+        userType: formDataSignUp.userType,
+        familyIncome: 0,
+        peopleQuantity: 0,
+        municipalityId: createdMunicipality.id,
+        hasChildren: false
       };
 
-      if (newUser.user_type === 'beneficiary') {
-        newUser.family_income = formDataSignUp.familyIncome;
-        newUser.people_quantity = formDataSignUp.peopleQuantity;
-        newUser.has_children = formDataSignUp.hasChildren;
+      if (newUser.userType === 'beneficiary') {
+        newUser.familyIncome = formDataSignUp.familyIncome;
+        newUser.peopleQuantity = formDataSignUp.peopleQuantity;
+        newUser.hasChildren = formDataSignUp.hasChildren;
         newUser.documents = this.uploadedDocuments.map(doc => doc.data);
       }
 
@@ -351,7 +351,7 @@ export class SignUpComponent implements OnInit {
 
       this.authenticationService.addDataToLocalStorage(createdUser);
       
-      if (createdUser.user_type === 'admin') {
+      if (createdUser.userType === 'admin') {
         this.router.navigate(['/main/admin/dashboard']);
       } else {
         this.router.navigate(['/main']);
