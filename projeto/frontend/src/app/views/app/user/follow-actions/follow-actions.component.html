@@ -79,7 +79,7 @@
                         <span class="quantity">{{ donation.quantity }} {{ donation.unit }}</span>
                       </td>
                       <td>
-                        <span class="date">{{ donation.donationDate | date:'dd/MM/yyyy' }}</span>
+                        <span class="date">{{ donation.donationDate ? (donation.donationDate | date:'dd/MM/yyyy') : 'Data não disponível' }}</span>
                       </td>
                       <td>
                         <span class="status status-available">{{ donation.status }}</span>
@@ -160,7 +160,7 @@
                         </div>
                       </td>
                       <td>
-                        <span class="date">{{ request.request_date | date:'dd/MM/yyyy' }}</span>
+                        <span class="date">{{ request.request_date ? (request.request_date | date:'dd/MM/yyyy') : 'Data não disponível' }}</span>
                       </td>
                       <td>
                         <span class="status status-available">{{ request.status === 'pending' ? 'Pendente' : 'Coletada' }}</span>

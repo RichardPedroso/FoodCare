@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { AuthenticationService } from '../../../../services/security/authentication.service';
 import { DonationReadService } from '../../../../services/donation/donation-read.service';
 import { ProductReadService } from '../../../../services/product/product-read.service';
@@ -18,14 +18,14 @@ interface DonationDisplay {
   productName: string;
   quantity: number;
   unit: string;
-  donationDate: Date;
+  donationDate: Date | null;
   status: string;
 }
 
 interface BasketRequest {
   id?: string;
   user_id: string;
-  request_date: Date;
+  request_date: Date | null;
   basket_type: string;
   status: string;
   calculated_items?: {
@@ -43,7 +43,8 @@ interface BasketRequest {
     MatIconModule,
     MatButtonModule,
     RouterModule,
-    CommonModule
+    CommonModule,
+    DatePipe
   ],
   templateUrl: './follow-actions.component.html',
   styleUrl: './follow-actions.component.css'
@@ -88,15 +89,26 @@ export class FollowActionsComponent implements OnInit {
       const donationProducts = await this.donationReadService.findDonationProducts();
       const products = await this.productReadService.findAll();
       
+
+      
       this.donations = userDonations.map(donation => {
-        const donationProduct = donationProducts.find(dp => dp.donation_id === donation.id);
-        const product = products.find(p => p.id === donationProduct?.product_id);
+        const donationProduct = donationProducts.find(dp => {
+          const dpDonationId = dp.donation_id || (dp as any).donationId;
+          return dpDonationId == donation.id;
+        });
         
+        const product = products.find(p => {
+          const productId = donationProduct?.product_id || (donationProduct as any)?.productId;
+          return p.id == productId;
+        });
+        
+        const dateValue = donation.donation_date || (donation as any).donationDate;
+        const donationDate = dateValue ? new Date(dateValue) : null;
         return {
           productName: product?.name || 'Produto não encontrado',
           quantity: donationProduct?.quantity || 0,
           unit: donationProduct?.unit || '',
-          donationDate: new Date(donation.donation_date),
+          donationDate: donationDate && !isNaN(donationDate.getTime()) ? donationDate : null,
           status: 'Disponível'
         };
       });
@@ -117,10 +129,13 @@ export class FollowActionsComponent implements OnInit {
       this.basketRequests = await firstValueFrom(
         this.http.get<BasketRequest[]>(`${environment.api_endpoint}/basket_request?user_id=${this.user.id}`)
       );
-      this.basketRequests = this.basketRequests.map(request => ({
-        ...request,
-        request_date: new Date(request.request_date)
-      }));
+      this.basketRequests = this.basketRequests.map(request => {
+        const requestDate = request.request_date ? new Date(request.request_date) : null;
+        return {
+          ...request,
+          request_date: requestDate && !isNaN(requestDate.getTime()) ? requestDate : null
+        };
+      });
       this.calculateBasketStats(this.basketRequests);
     } catch (error) {
       console.error('Erro ao carregar solicitações de cestas:', error);
@@ -150,6 +165,7 @@ export class FollowActionsComponent implements OnInit {
     
     this.totalCount = requests.length;
     this.thisMonthCount = requests.filter(request => {
+      if (!request.request_date) return false;
       const requestDate = new Date(request.request_date);
       return requestDate.getMonth() === currentMonth && requestDate.getFullYear() === currentYear;
     }).length;
