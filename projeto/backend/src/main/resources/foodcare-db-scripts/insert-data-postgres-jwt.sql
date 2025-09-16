@@ -11,25 +11,25 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 INSERT INTO category (name) VALUES ('Alimentos');
 INSERT INTO category (name) VALUES ('Higiene');
 
--- Insert users (simple passwords for testing)
+-- Insert users (encrypted passwords for JWT profile)
 INSERT INTO user_model (name, email, password, user_type, municipality_id) 
-VALUES ('Admin FoodCare', 'admin@foodcare.com', 'admin123', 'ADMIN', 1);
+VALUES ('Admin FoodCare', 'admin@foodcare.com', crypt('admin123', gen_salt('bf')), 'ADMIN', 1);
 
 INSERT INTO user_model (name, email, password, user_type, family_income, people_quantity, municipality_id, has_children) 
-VALUES ('João Doador', 'joao@doador.com', 'senha123', 'DONOR', 5000.0, 3, 1, TRUE);
+VALUES ('João Doador', 'joao@doador.com', crypt('senha123', gen_salt('bf')), 'DONOR', 5000.0, 3, 1, TRUE);
 
 INSERT INTO user_model (name, email, password, user_type, family_income, people_quantity, municipality_id, has_children, number_of_children, able) 
-VALUES ('Maria Beneficiária', 'maria@beneficiaria.com', 'senha123', 'BENEFICIARY', 800.0, 4, 2, TRUE, 2, TRUE);
+VALUES ('Maria Beneficiária', 'maria@beneficiaria.com', crypt('senha123', gen_salt('bf')), 'BENEFICIARY', 800.0, 4, 2, TRUE, 2, TRUE);
 
 INSERT INTO user_model (name, email, password, user_type, family_income, people_quantity, municipality_id, has_children) 
-VALUES ('Carlos Doador', 'carlos@doador.com', 'senha123', 'DONOR', 8000.0, 2, 3, FALSE);
+VALUES ('Carlos Doador', 'carlos@doador.com', crypt('senha123', gen_salt('bf')), 'DONOR', 8000.0, 2, 3, FALSE);
 
 INSERT INTO user_model (name, email, password, user_type, family_income, people_quantity, municipality_id, has_children, number_of_children, able) 
-VALUES ('Ana Beneficiária', 'ana@beneficiaria.com', 'senha123', 'BENEFICIARY', 600.0, 5, 4, TRUE, 3, TRUE);
+VALUES ('Ana Beneficiária', 'ana@beneficiaria.com', crypt('senha123', gen_salt('bf')), 'BENEFICIARY', 600.0, 5, 4, TRUE, 3, TRUE);
 
 -- Beneficiário pendente de aprovação
 INSERT INTO user_model (name, email, password, user_type, family_income, people_quantity, municipality_id, has_children, number_of_children, able) 
-VALUES ('Pedro Aguardando', 'pedro@aguardando.com', 'senha123', 'BENEFICIARY', 700.0, 3, 1, FALSE, 0, NULL);
+VALUES ('Pedro Aguardando', 'pedro@aguardando.com', crypt('senha123', gen_salt('bf')), 'BENEFICIARY', 700.0, 3, 1, FALSE, 0, NULL);
 
 -- Insert products with options_donation
 INSERT INTO product (name, product_type, category_id, unit_quantity, unit_type, options_donation) 

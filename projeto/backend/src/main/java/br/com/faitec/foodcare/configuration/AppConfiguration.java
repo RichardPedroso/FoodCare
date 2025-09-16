@@ -2,11 +2,16 @@ package br.com.faitec.foodcare.configuration;
 
 import br.com.faitec.foodcare.implementation.dao.postgres.UserPostgresDaoImpl;
 import br.com.faitec.foodcare.port.dao.user.UserDao;
+import br.com.faitec.foodcare.port.service.authentication.AuthenticationService;
+import br.com.faitec.foodcare.port.service.user.UserService;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 import java.sql.Connection;
@@ -78,6 +83,28 @@ public class AppConfiguration {
     }
 
 
+
+    @Bean
+    public br.com.faitec.foodcare.port.service.user.UserService userService(final UserDao userDao) {
+        return new br.com.faitec.foodcare.implementation.service.user.UserServiceImpl(userDao);
+    }
+
+    @Bean
+    @Profile("basic")
+    public AuthenticationService basicAuthenticationService(final UserService userService){
+        return new br.com.faitec.foodcare.implementation.service.authentication.BasicAuthenticationServiceImpl(userService);
+    }
+
+    @Bean
+    @Profile("jwt")
+    public AuthenticationService jwtAuthenticationService(final UserService userService, final PasswordEncoder passwordEncoder){
+        return new br.com.faitec.foodcare.implementation.service.authentication.JWtAuthenticationServiceImpl(userService, passwordEncoder);
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public OpenAPI customOpenApi(){
