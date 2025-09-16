@@ -37,20 +37,30 @@ export class AuthenticationService {
 
   addDataToLocalStorage(user: User): void {
     console.log('Armazenando dados completos do usuário no localStorage...');
-    localStorage.setItem('user', JSON.stringify(user));
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem('user', JSON.stringify(user));
+    }
   }
 
   isAuthenticated(): boolean {
+    if (typeof localStorage === 'undefined') {
+      return false;
+    }
     return localStorage.getItem('user') !== null;
   }
 
   getCurrentUser(): User | null {
+    if (typeof localStorage === 'undefined') {
+      return null;
+    }
     const userJson = localStorage.getItem('user');
     return userJson ? JSON.parse(userJson) as User : null;
   }
 
   logout(): void {
-    localStorage.removeItem('user');
+    if (typeof localStorage !== 'undefined') {
+      localStorage.removeItem('user');
+    }
   }
 
 }

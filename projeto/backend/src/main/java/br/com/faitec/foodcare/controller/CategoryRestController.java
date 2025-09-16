@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/category")
+
 public class CategoryRestController {
     private final CategoryService categoryService;
     private final ProductService productService;

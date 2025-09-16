@@ -1,11 +1,11 @@
 -- Enable pgcrypto extension for password encryption
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
--- Insert municipalities
-INSERT INTO municipality (name) VALUES ('São Paulo');
-INSERT INTO municipality (name) VALUES ('Rio de Janeiro');
-INSERT INTO municipality (name) VALUES ('Belo Horizonte');
-INSERT INTO municipality (name) VALUES ('Curitiba');
+    -- Insert municipalities
+    INSERT INTO municipality (name) VALUES ('São Paulo');
+    INSERT INTO municipality (name) VALUES ('Rio de Janeiro');
+    INSERT INTO municipality (name) VALUES ('Belo Horizonte');
+    INSERT INTO municipality (name) VALUES ('Curitiba');
 
 -- Insert categories
 INSERT INTO category (name) VALUES ('Alimentos');

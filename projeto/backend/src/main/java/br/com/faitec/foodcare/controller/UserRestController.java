@@ -21,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
+
 public class UserRestController {
     private final UserService userService;
     private final MunicipalityService municipalityService;

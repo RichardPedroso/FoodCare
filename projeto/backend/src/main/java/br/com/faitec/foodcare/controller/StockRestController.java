@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/stock")
+
 public class StockRestController {
     private final StockService stockService;
 
