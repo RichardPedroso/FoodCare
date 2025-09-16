@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updateAbleStatus(int userId, Boolean able) {
         UserModel user = findById(userId);
-        if (user == null || user.getUserType() != UserModel.UserType.BENEFICIARY) {
+        if (user == null || user.getUserType() != UserModel.UserType.beneficiary) {
             return false;
         }
         return userDao.updateAbleStatus(userId, able);

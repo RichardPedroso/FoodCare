@@ -9,7 +9,7 @@ public class AuthorizationServiceImpl implements AuthorizationService {
 
     @Override
     public boolean isAdmin(UserModel user) {
-        return user != null && user.getUserType() == UserModel.UserType.ADMIN;
+        return user != null && user.getUserType() == UserModel.UserType.admin;
     }
 
     @Override
