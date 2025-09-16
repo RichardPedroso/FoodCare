@@ -10,7 +10,7 @@ import java.sql.DriverManager;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/basket-request")
+@RequestMapping("/api/basket_request")
 public class BasketRequestRestController {
 
     private final BasketRequestDaoImpl basketRequestDao;
@@ -28,13 +28,28 @@ public class BasketRequestRestController {
         }
     }
 
+    @GetMapping
+    public ResponseEntity<List<BasketRequest>> getBasketRequestsByUserId(
+            @RequestParam final int user_id,
+            @RequestParam(required = false) final String basket_type) {
+        List<BasketRequest> basketRequests = basketRequestDao.findByUserId(user_id);
+        
+        if (basket_type != null && !basket_type.isEmpty()) {
+            basketRequests = basketRequests.stream()
+                    .filter(request -> basket_type.equals(request.getBasketType()))
+                    .collect(java.util.stream.Collectors.toList());
+        }
+        
+        return ResponseEntity.ok(basketRequests);
+    }
+
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<BasketRequest>> getBasketRequestsByUserId(@PathVariable final int userId) {
+    public ResponseEntity<List<BasketRequest>> getBasketRequestsByUserIdPath(@PathVariable final int userId) {
         List<BasketRequest> basketRequests = basketRequestDao.findByUserId(userId);
         return ResponseEntity.ok(basketRequests);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<BasketRequest>> getAllBasketRequests() {
         List<BasketRequest> basketRequests = basketRequestDao.findAll();
         return ResponseEntity.ok(basketRequests);
@@ -47,5 +62,11 @@ public class BasketRequestRestController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(basketRequest);
+    }
+
+    @PostMapping
+    public ResponseEntity<Integer> createBasketRequest(@RequestBody BasketRequest basketRequest) {
+        int id = basketRequestDao.create(basketRequest);
+        return ResponseEntity.ok(id);
     }
 }

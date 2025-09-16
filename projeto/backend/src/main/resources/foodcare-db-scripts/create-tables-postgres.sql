@@ -1,13 +1,13 @@
--- Drop tables in correct order (respecting foreign keys)
-DROP TABLE IF EXISTS donation_product;
-DROP TABLE IF EXISTS stock;
-DROP TABLE IF EXISTS basket_request;
-DROP TABLE IF EXISTS request;
-DROP TABLE IF EXISTS donation;
-DROP TABLE IF EXISTS product;
-DROP TABLE IF EXISTS user_model;
-DROP TABLE IF EXISTS category;
-DROP TABLE IF EXISTS municipality;
+-- Drop tables with CASCADE to handle dependencies
+DROP TABLE IF EXISTS donation_product CASCADE;
+DROP TABLE IF EXISTS stock CASCADE;
+DROP TABLE IF EXISTS basket_request CASCADE;
+DROP TABLE IF EXISTS request CASCADE;
+DROP TABLE IF EXISTS donation CASCADE;
+DROP TABLE IF EXISTS product CASCADE;
+DROP TABLE IF EXISTS user_model CASCADE;
+DROP TABLE IF EXISTS category CASCADE;
+DROP TABLE IF EXISTS municipality CASCADE;
 
 -- Drop types
 DROP TYPE IF EXISTS user_type;

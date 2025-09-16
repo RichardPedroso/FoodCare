@@ -425,15 +425,17 @@ export class MakeActionComponent implements OnInit {
 
     try {
       const requests = await firstValueFrom(
-        this.http.get<any[]>(`${environment.api_endpoint}/basket_request?user_id=${this.user.id}&basket_type=${basketType}`)
+        this.http.get<any[]>(`${environment.api_endpoint}/basket_request?user_id=${this.user.id}`)
       );
       const now = new Date();
       const currentMonth = now.getMonth();
       const currentYear = now.getFullYear();
 
       return requests.some((request: any) => {
-        const requestDate = new Date(request.request_date);
-        return requestDate.getMonth() === currentMonth && requestDate.getFullYear() === currentYear;
+        const requestDate = new Date(request.requestDate || request.request_date);
+        return request.basketType === basketType && 
+               requestDate.getMonth() === currentMonth && 
+               requestDate.getFullYear() === currentYear;
       });
     } catch (error) {
       console.error('Erro ao verificar solicitações mensais:', error);
@@ -449,15 +451,15 @@ export class MakeActionComponent implements OnInit {
         this.http.get<any[]>(`${environment.api_endpoint}/basket_request?user_id=${this.user.id}`)
       );
       
-      const basicRequests = requests.filter((r: any) => r.basket_type === 'basic');
-      const hygieneRequests = requests.filter((r: any) => r.basket_type === 'hygiene');
+      const basicRequests = requests.filter((r: any) => r.basketType === 'basic');
+      const hygieneRequests = requests.filter((r: any) => r.basketType === 'hygiene');
       
       if (basicRequests.length > 0) {
-        this.lastBasicRequest = new Date(Math.max(...basicRequests.map((r: any) => new Date(r.request_date).getTime())));
+        this.lastBasicRequest = new Date(Math.max(...basicRequests.map((r: any) => new Date(r.requestDate || r.request_date).getTime())));
       }
       
       if (hygieneRequests.length > 0) {
-        this.lastHygieneRequest = new Date(Math.max(...hygieneRequests.map((r: any) => new Date(r.request_date).getTime())));
+        this.lastHygieneRequest = new Date(Math.max(...hygieneRequests.map((r: any) => new Date(r.requestDate || r.request_date).getTime())));
       }
       
       this.updateRequestAvailability();
