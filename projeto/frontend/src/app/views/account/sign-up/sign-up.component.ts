@@ -18,6 +18,8 @@ import * as fontawesome from '@fortawesome/free-solid-svg-icons'
 import { AuthenticationService } from '../../../services/security/authentication.service';
 import { User } from '../../../domain/model/user';
 import { UserCreateService } from '../../../services/user/user-create.service';
+import { MunicipalityCreateService } from '../../../services/municipality/municipality-create.service';
+import { environment } from '../../../../environments/environment.development';
 
 
 @Component({
@@ -71,7 +73,7 @@ export class SignUpComponent implements OnInit {
   constructor(
     private formbuilder: FormBuilder,
     private userCreateService: UserCreateService,
-
+    private municipalityCreateService: MunicipalityCreateService,
     private authenticationService: AuthenticationService,
     private router: Router
   ) {}
@@ -315,15 +317,7 @@ export class SignUpComponent implements OnInit {
 
     try{
       // Criar municipality primeiro
-      const municipalityResponse = await fetch('http://localhost:3000/municipality', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newMunicipality)
-      });
-      
-      const createdMunicipality = await municipalityResponse.json();
+      const createdMunicipality = await this.municipalityCreateService.create(newMunicipality);
       console.log("municipality criado com sucesso: ", createdMunicipality);
 
       // Criar usuário com municipality_id

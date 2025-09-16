@@ -10,6 +10,9 @@ import { User } from '../../../../domain/model/user';
 import { Donation } from '../../../../domain/model/donation';
 import { DonationProduct } from '../../../../domain/model/donation_product';
 import { Product } from '../../../../domain/model/product';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment.development';
+import { firstValueFrom } from 'rxjs';
 
 interface DonationDisplay {
   productName: string;
@@ -60,7 +63,8 @@ export class FollowActionsComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private donationReadService: DonationReadService,
-    private productReadService: ProductReadService
+    private productReadService: ProductReadService,
+    private http: HttpClient
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -110,15 +114,14 @@ export class FollowActionsComponent implements OnInit {
     
     this.loading = true;
     try {
-      const response = await fetch(`http://localhost:3000/basket_request?user_id=${this.user.id}`);
-      if (response.ok) {
-        this.basketRequests = await response.json();
-        this.basketRequests = this.basketRequests.map(request => ({
-          ...request,
-          request_date: new Date(request.request_date)
-        }));
-        this.calculateBasketStats(this.basketRequests);
-      }
+      this.basketRequests = await firstValueFrom(
+        this.http.get<BasketRequest[]>(`${environment.api_endpoint}/basket_request?user_id=${this.user.id}`)
+      );
+      this.basketRequests = this.basketRequests.map(request => ({
+        ...request,
+        request_date: new Date(request.request_date)
+      }));
+      this.calculateBasketStats(this.basketRequests);
     } catch (error) {
       console.error('Erro ao carregar solicitações de cestas:', error);
     } finally {

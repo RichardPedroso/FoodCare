@@ -20,9 +20,13 @@ import { DonationProductCreateService } from '../../../../services/donation-prod
 import { DonationValidationService } from '../../../../services/donation-product/donation-validation.service';
 import { ProductUpdateService } from '../../../../services/product/product-update.service';
 import { ProductReadService } from '../../../../services/product/product-read.service';
+import { StockUpdateService } from '../../../../services/stock/stock-update.service';
 
 import { BasketItem } from '../../../../domain/model/basket-item';
 import { UnitConverterService } from '../../../../services/utils/unit-converter.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment.development';
+import { firstValueFrom } from 'rxjs';
 
 
 @Component({
@@ -71,8 +75,9 @@ export class MakeActionComponent implements OnInit {
     private donationValidationService: DonationValidationService,
     private productUpdateService: ProductUpdateService,
     private productReadService: ProductReadService,
-
-    private unitConverterService: UnitConverterService
+    private stockUpdateService: StockUpdateService,
+    private unitConverterService: UnitConverterService,
+    private http: HttpClient
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -337,33 +342,7 @@ export class MakeActionComponent implements OnInit {
   private async updateStock(productId: string, donationOption: string, units: number): Promise<void> {
     try {
       const effectiveDonationOption = this.selectedProduct?.options_donation ? donationOption : "1";
-      
-      const stockResponse = await fetch(`http://localhost:3000/stock?product_id=${productId}&donation_option=${effectiveDonationOption}`);
-      const stockRecords = await stockResponse.json();
-      
-      if (stockRecords.length > 0) {
-        // Atualizar estoque existente
-        const stockRecord = stockRecords[0];
-        const newStock = stockRecord.actual_stock + units;
-        
-        await fetch(`http://localhost:3000/stock/${stockRecord.id}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ actual_stock: newStock })
-        });
-      } else {
-        const newStockRecord = {
-          product_id: productId,
-          donation_option: effectiveDonationOption,
-          actual_stock: units
-        };
-        
-        await fetch('http://localhost:3000/stock', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(newStockRecord)
-        });
-      }
+      await this.stockUpdateService.updateStock(productId, effectiveDonationOption, units);
     } catch (error) {
       console.error('Erro ao atualizar estoque:', error);
       throw error;
@@ -425,19 +404,17 @@ export class MakeActionComponent implements OnInit {
     if (!this.user?.id) return false;
 
     try {
-      const response = await fetch(`http://localhost:3000/basket_request?user_id=${this.user.id}&basket_type=${basketType}`);
-      if (response.ok) {
-        const requests = await response.json();
-        const now = new Date();
-        const currentMonth = now.getMonth();
-        const currentYear = now.getFullYear();
+      const requests = await firstValueFrom(
+        this.http.get<any[]>(`${environment.api_endpoint}/basket_request?user_id=${this.user.id}&basket_type=${basketType}`)
+      );
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      const currentYear = now.getFullYear();
 
-        return requests.some((request: any) => {
-          const requestDate = new Date(request.request_date);
-          return requestDate.getMonth() === currentMonth && requestDate.getFullYear() === currentYear;
-        });
-      }
-      return false;
+      return requests.some((request: any) => {
+        const requestDate = new Date(request.request_date);
+        return requestDate.getMonth() === currentMonth && requestDate.getFullYear() === currentYear;
+      });
     } catch (error) {
       console.error('Erro ao verificar solicitações mensais:', error);
       return false;
@@ -448,23 +425,22 @@ export class MakeActionComponent implements OnInit {
     if (!this.user?.id) return;
 
     try {
-      const response = await fetch(`http://localhost:3000/basket_request?user_id=${this.user.id}`);
-      if (response.ok) {
-        const requests = await response.json();
-        
-        const basicRequests = requests.filter((r: any) => r.basket_type === 'basic');
-        const hygieneRequests = requests.filter((r: any) => r.basket_type === 'hygiene');
-        
-        if (basicRequests.length > 0) {
-          this.lastBasicRequest = new Date(Math.max(...basicRequests.map((r: any) => new Date(r.request_date).getTime())));
-        }
-        
-        if (hygieneRequests.length > 0) {
-          this.lastHygieneRequest = new Date(Math.max(...hygieneRequests.map((r: any) => new Date(r.request_date).getTime())));
-        }
-        
-        this.updateRequestAvailability();
+      const requests = await firstValueFrom(
+        this.http.get<any[]>(`${environment.api_endpoint}/basket_request?user_id=${this.user.id}`)
+      );
+      
+      const basicRequests = requests.filter((r: any) => r.basket_type === 'basic');
+      const hygieneRequests = requests.filter((r: any) => r.basket_type === 'hygiene');
+      
+      if (basicRequests.length > 0) {
+        this.lastBasicRequest = new Date(Math.max(...basicRequests.map((r: any) => new Date(r.request_date).getTime())));
       }
+      
+      if (hygieneRequests.length > 0) {
+        this.lastHygieneRequest = new Date(Math.max(...hygieneRequests.map((r: any) => new Date(r.request_date).getTime())));
+      }
+      
+      this.updateRequestAvailability();
     } catch (error) {
       console.error('Erro ao verificar disponibilidade de solicitações:', error);
     }
@@ -639,35 +615,17 @@ export class MakeActionComponent implements OnInit {
       calculated_items: hygieneBasket
     };
 
-    const response = await fetch('http://localhost:3000/basket_request', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(basketRequest)
-    });
+    await firstValueFrom(
+      this.http.post(`${environment.api_endpoint}/basket_request`, basketRequest)
+    );
 
-    if (response.ok) {
-      alert('Solicitação de cesta de higiene registrada com sucesso!');
-      this.router.navigate(['/main']);
-    } else {
-      throw new Error('Erro ao registrar solicitação');
-    }
+    alert('Solicitação de cesta de higiene registrada com sucesso!');
+    this.router.navigate(['/main']);
   }
 
   private async updateStockForHygiene(productId: string, quantity: number): Promise<void> {
     try {
-      const stockResponse = await fetch(`http://localhost:3000/stock?product_id=${productId}&donation_option=1`);
-      const stockRecords = await stockResponse.json();
-      
-      if (stockRecords.length > 0) {
-        const stockRecord = stockRecords[0];
-        const newStock = Math.max(0, stockRecord.actual_stock - quantity);
-        
-        await fetch(`http://localhost:3000/stock/${stockRecord.id}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ actual_stock: newStock })
-        });
-      }
+      await this.stockUpdateService.updateStock(productId, "1", -quantity);
     } catch (error) {
       console.error('Erro ao atualizar estoque de higiene:', error);
     }
@@ -690,18 +648,12 @@ export class MakeActionComponent implements OnInit {
       calculated_items: calculatedBasket
     };
 
-    const response = await fetch('http://localhost:3000/basket_request', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(basketRequest)
-    });
+    await firstValueFrom(
+      this.http.post(`${environment.api_endpoint}/basket_request`, basketRequest)
+    );
 
-    if (response.ok) {
-      alert(`Solicitação de cesta básica registrada com sucesso! Sua cesta foi calculada para ${peopleQuantity} pessoa(s)${hasChildren ? ' incluindo itens para crianças' : ''}.`);
-      this.router.navigate(['/main']);
-    } else {
-      throw new Error('Erro ao registrar solicitação');
-    }
+    alert(`Solicitação de cesta básica registrada com sucesso! Sua cesta foi calculada para ${peopleQuantity} pessoa(s)${hasChildren ? ' incluindo itens para crianças' : ''}.`);
+    this.router.navigate(['/main']);
   }
 
 }
