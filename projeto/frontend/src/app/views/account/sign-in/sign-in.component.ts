@@ -68,7 +68,7 @@ export class SignInComponent{
     if (this.authenticationService.isAuthenticated()) {
       const user = this.authenticationService.getCurrentUser();
       const userType = user?.userType;
-      if (userType === 'ADMIN') {
+      if (userType === 'admin') {
         console.log('credenciais validas, navegando para dashboard admin')
         this.router.navigate(['/main/admin/dashboard']);
       } else {
@@ -108,13 +108,13 @@ export class SignInComponent{
           const userType = user.userType;
           console.log('UserType processado:', userType);
           
-          if (userType === 'ADMIN') {
+          if (userType === 'admin') {
             console.log('Usuário identificado como administrador');
             this.router.navigate(['/main/admin/dashboard']);
-          } else if (userType === 'DONOR') {
+          } else if (userType === 'donor') {
             console.log('Usuário identificado como doador');
             this.router.navigate(['/main']);
-          } else if (userType === 'BENEFICIARY') {
+          } else if (userType === 'beneficiary') {
             console.log('Usuário identificado como beneficiário');
             if (user.able === false) {
               alert('Você não está apto a receber o auxílio.');
