@@ -4,5 +4,6 @@ export interface Product {
     productType: string;
     category_id: string;
     measure_type: string;
-    options_donation?: string[];
+    unitType?: string;
+    optionsDonation?: number[];
 }

@@ -9,14 +9,14 @@ export class DonationValidationService {
     if (!expirationDate) return { valid: true };
 
     const currentDate = new Date();
-    const minValidDate = new Date(currentDate.getTime() + (30 * 24 * 60 * 60 * 1000));
+    const minValidDate = new Date(currentDate.getTime() + (15 * 24 * 60 * 60 * 1000));
 
     if (expirationDate <= currentDate) {
       return { valid: false, message: 'Data de validade não pode ser retroativa' };
     }
 
     if (expirationDate < minValidDate) {
-      return { valid: false, message: 'Data de validade deve ser superior a 30 dias da data atual' };
+      return { valid: false, message: 'Data de validade deve ser superior a 15 dias da data atual' };
     }
 
     return { valid: true };

@@ -86,36 +86,37 @@
                 }
 
                 <div class="form-group" [ngClass]="{'centered-quantity': isToyProduct()}">
-                  @if (selectedProduct && selectedProduct.options_donation && selectedProduct.options_donation.length > 0) {
+                  @if (selectedProduct && selectedProduct.unitType !== 'un') {
                     <mat-form-field appearance="outline" class="full-width">
                       <mat-label>Quantidade</mat-label>
                       <mat-select #quantity required>
                         @if (!quantity.value) {
                           <mat-option value="">Selecione a quantidade</mat-option>
                         }
-                        @for (option of selectedProduct.options_donation; track option) {
-                          <mat-option [value]="option">
-                            {{ option }} {{ selectedProduct.measure_type }}
-                          </mat-option>
+                        @if (selectedProduct.optionsDonation && selectedProduct.optionsDonation.length > 0) {
+                          @for (option of selectedProduct.optionsDonation; track option) {
+                            <mat-option [value]="option">
+                              {{ option }} {{ selectedProduct.unitType }}
+                            </mat-option>
+                          }
+                        } @else {
+                          <mat-option [value]="1">1 {{ selectedProduct.unitType }}</mat-option>
                         }
                       </mat-select>
                       <mat-icon matPrefix>scale</mat-icon>
                     </mat-form-field>
-                  } @else {
+                  } @else if (selectedProduct && selectedProduct.unitType === 'un') {
                     <mat-form-field appearance="outline" class="full-width">
-                      <mat-label>Quantidade</mat-label>
+                      <mat-label>Unidades</mat-label>
                       <input matInput type="number" min="1" step="1" #quantity required>
-                      <mat-icon matPrefix>scale</mat-icon>
-                      @if (selectedProduct) {
-                        <span matTextSuffix>{{ selectedProduct.measure_type }}</span>
-                      }
+                      <mat-icon matPrefix>inventory_2</mat-icon>
                     </mat-form-field>
                   }
                 </div>
 
               </div>
 
-              @if (selectedProduct && selectedProduct.measure_type !== 'un') {
+              @if (selectedProduct && selectedProduct.unitType !== 'un') {
                 <div class="form-row">
                   <div class="form-group" style="grid-column: 1 / -1; justify-self: center; max-width: 300px;">
                     <mat-form-field appearance="outline" class="full-width">

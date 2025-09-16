@@ -113,6 +113,9 @@ export class MakeActionComponent implements OnInit {
   onProductChange(productId: string): void {
     this.selectedProduct = this.products.find(product => product.id === productId) || null;
     if (this.selectedProduct) {
+      console.log('Selected product:', this.selectedProduct);
+      console.log('Options donation:', this.selectedProduct.optionsDonation);
+      console.log('Measure type:', this.selectedProduct.unitType);
       this.selectedUnit = this.getDefaultUnit();
     }
   }
@@ -285,7 +288,7 @@ export class MakeActionComponent implements OnInit {
       return;
     }
 
-    if (this.selectedProduct.options_donation && !this.selectedProduct.options_donation.includes(quantity)) {
+    if (this.selectedProduct.optionsDonation && !this.selectedProduct.optionsDonation.includes(parseFloat(quantity))) {
       alert('Quantidade inválida. Selecione uma das opções disponíveis.');
       return;
     }
@@ -341,7 +344,7 @@ export class MakeActionComponent implements OnInit {
 
   private async updateStock(productId: string, donationOption: string, units: number): Promise<void> {
     try {
-      const effectiveDonationOption = this.selectedProduct?.options_donation ? donationOption : "1";
+      const effectiveDonationOption = this.selectedProduct?.optionsDonation ? donationOption : "1";
       await this.stockUpdateService.updateStock(productId, effectiveDonationOption, units);
     } catch (error) {
       console.error('Erro ao atualizar estoque:', error);
