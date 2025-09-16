@@ -127,10 +127,11 @@ export class FollowActionsComponent implements OnInit {
     this.loading = true;
     try {
       this.basketRequests = await firstValueFrom(
-        this.http.get<BasketRequest[]>(`${environment.api_endpoint}/basket_request?user_id=${this.user.id}`)
+        this.http.get<BasketRequest[]>(`${environment.api_endpoint}/basket-request/user/${this.user.id}`)
       );
       this.basketRequests = this.basketRequests.map(request => {
-        const requestDate = request.request_date ? new Date(request.request_date) : null;
+        const dateValue = request.request_date || (request as any).requestDate;
+        const requestDate = dateValue ? new Date(dateValue) : null;
         return {
           ...request,
           request_date: requestDate && !isNaN(requestDate.getTime()) ? requestDate : null

@@ -17,7 +17,7 @@ export class DonationReadService {
   }
 
   findByUserId(userId: string): Promise<Donation[]> {
-    return firstValueFrom(this.http.get<Donation[]>(`${environment.api_endpoint}/donation?user_id=${userId}`));
+    return firstValueFrom(this.http.get<Donation[]>(`${environment.api_endpoint}/donation/user/${userId}`));
   }
 
   findDonationProducts(): Promise<DonationProduct[]> {
