@@ -329,7 +329,7 @@ export class SignUpComponent implements OnInit {
         userType: formDataSignUp.userType,
         familyIncome: 0,
         peopleQuantity: 0,
-        municipalityId: createdMunicipality.id,
+        municipalityId: createdMunicipality.id ? parseInt(createdMunicipality.id) : 0,
         hasChildren: false
       };
 

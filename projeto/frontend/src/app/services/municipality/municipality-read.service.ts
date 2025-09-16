@@ -12,6 +12,6 @@ export class MunicipalityReadService {
   constructor(private http: HttpClient) { }
 
   getById(id: string): Observable<Municipality> {
-    return this.http.get<Municipality>(`${environment.authentication_api_endpoint}/municipality/${id}`);
+    return this.http.get<Municipality>(`${environment.api_endpoint}/municipality/${id}`);
   }
 }

@@ -29,10 +29,10 @@ INSERT INTO user_model (name, email, password, phone, user_type, municipality_id
 VALUES ('aroldus', 'aroldus@gmail.com', '1234567', '3', 'donor', 2);
 
 INSERT INTO user_model (name, email, password, phone, user_type, family_income, people_quantity, municipality_id, documents, able) 
-VALUES ('tiburgas', 'tiburgas@gmail.com', '12345678', '3', 'beneficiary', 2222.0, 4, 3, '{"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="}', FALSE);
+VALUES ('tiburgas', 'tiburgas@gmail.com', '12345678', '3', 'beneficiary', 2222.0, 4, 3, ARRAY['data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k='], FALSE);
 
 INSERT INTO user_model (name, email, password, phone, user_type, family_income, people_quantity, municipality_id, documents, able) 
-VALUES ('tiburgos', 'tiburgos@gmail.com', 'pinto123', '3', 'beneficiary', 1234.0, 4, 4, '{"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="}', TRUE);
+VALUES ('tiburgos', 'tiburgos@gmail.com', 'pinto123', '3', 'beneficiary', 1234.0, 4, 4, ARRAY['data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k='], TRUE);
 
 INSERT INTO user_model (name, email, password, phone, user_type, municipality_id) 
 VALUES ('Edu du', 'edu@gmail.com', '123456', '12345678902', 'donor', 2);
@@ -41,16 +41,16 @@ INSERT INTO user_model (name, email, password, phone, user_type, municipality_id
 VALUES ('babu a', 'babu@gmail.com', 'asdzxc', '11111111111', 'donor', 5);
 
 INSERT INTO user_model (name, email, password, phone, user_type, family_income, people_quantity, municipality_id, documents, able) 
-VALUES ('zezao', 'zezao@gmail.com', '123asd', '12312312312', 'beneficiary', 2000.0, 5, 6, '{"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="}', FALSE);
+VALUES ('zezao', 'zezao@gmail.com', '123asd', '12312312312', 'beneficiary', 2000.0, 5, 6, ARRAY['data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k='], FALSE);
 
 INSERT INTO user_model (name, email, password, phone, user_type, family_income, people_quantity, municipality_id, documents, able) 
-VALUES ('pintao', 'pintao@123.mail', 'pintao', '66666666666', 'beneficiary', 1000000.0, 10, 7, '{}', FALSE);
+VALUES ('pintao', 'pintao@123.mail', 'pintao', '66666666666', 'beneficiary', 1000000.0, 10, 7, ARRAY[]::TEXT[], FALSE);
 
 INSERT INTO user_model (name, email, password, phone, user_type, municipality_id) 
 VALUES ('Richard', 'richard123@gmail.com', '24242424', '24924242424', 'donor', 8);
 
 INSERT INTO user_model (name, email, password, phone, user_type, family_income, people_quantity, municipality_id, has_children, documents) 
-VALUES ('jubileu', 'jubileu@gmail.com', '123456', '(35) 99988-8888', 'beneficiary', 1200.0, 3, 9, FALSE, '{}');
+VALUES ('jubileu', 'jubileu@gmail.com', '123456', '(35) 99988-8888', 'beneficiary', 1200.0, 3, 9, FALSE, ARRAY[]::TEXT[]);
 
 -- Insert products from db.json
 INSERT INTO product (name, product_type, category_id, measure_type, options_donation) 

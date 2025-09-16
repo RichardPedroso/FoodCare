@@ -36,8 +36,9 @@ export class MyProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.authenticationService.getCurrentUser();
-    if (this.user?.municipality_id) {
-      this.municipalityReadService.getById(this.user.municipality_id).subscribe({
+    const municipalityId = this.user?.municipalityId || this.user?.municipality_id;
+    if (municipalityId) {
+      this.municipalityReadService.getById(municipalityId.toString()).subscribe({
         next: (municipality) => {
           this.municipality = municipality;
         },

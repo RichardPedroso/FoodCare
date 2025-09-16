@@ -13,15 +13,31 @@ export class UserUpdateService {
 
   constructor(private http: HttpClient, private userReadService: UserReadService) { }
 
-  async update(id: string, name: string): Promise<any>{
-    let userToUpdate: User = await this.userReadService.findById(id);
-    if(userToUpdate == null){
-      throw new Error('Usuário não encontrado');
+  async update(id: string, nameOrUser: string | User): Promise<any>{
+    if (typeof nameOrUser === 'string') {
+      // Comportamento original - atualizar apenas o nome
+      let userToUpdate: User = await this.userReadService.findById(id);
+      if(userToUpdate == null){
+        throw new Error('Usuário não encontrado');
+      }
+      userToUpdate.name = nameOrUser;
+      return firstValueFrom(this.http.put<any>(`${environment.api_endpoint}/user/${id}`, userToUpdate));
+    } else {
+      // Novo comportamento - atualizar com objeto User completo
+      const updateUserDto = {
+        id: parseInt(id),
+        name: nameOrUser.name,
+        email: nameOrUser.email,
+        phone: nameOrUser.phone,
+        userType: nameOrUser.userType,
+        familyIncome: nameOrUser.familyIncome || 0,
+        peopleQuantity: nameOrUser.peopleQuantity || 1,
+        municipalityId: nameOrUser.municipalityId || 0,
+        hasChildren: nameOrUser.hasChildren || false,
+        able: nameOrUser.able
+      };
+      return firstValueFrom(this.http.put<any>(`${environment.api_endpoint}/user/${id}`, updateUserDto));
     }
-
-    userToUpdate.name = name;
-
-    return firstValueFrom(this.http.put<any>(`${environment.api_endpoint}/user/${id}`, userToUpdate));
   }
 
   async updatePassword(id: string, newPassword: string): Promise<any>{

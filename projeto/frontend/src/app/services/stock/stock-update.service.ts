@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, forkJoin, switchMap } from 'rxjs';
+import { Observable, forkJoin, switchMap, firstValueFrom } from 'rxjs';
 import { Stock } from '../../domain/model/stock';
 import { OptimizedProduct } from './stock-optimization.service';
 import { environment } from '../../../environments/environment';
@@ -40,5 +40,37 @@ export class StockUpdateService {
     });
 
     return forkJoin(updateRequests);
+  }
+
+  async updateStock(productId: string, donationOption: string, quantityChange: number): Promise<void> {
+    try {
+      const stocks = await firstValueFrom(
+        this.http.get<Stock[]>(`${this.apiUrl}/stock?product_id=${productId}&donation_option=${donationOption}`)
+      );
+      
+      if (stocks.length > 0) {
+        // Atualizar estoque existente
+        const stockRecord = stocks[0];
+        const newStock = stockRecord.actual_stock + quantityChange;
+        
+        await firstValueFrom(
+          this.http.patch(`${this.apiUrl}/stock/${stockRecord.id}`, { actual_stock: newStock })
+        );
+      } else {
+        // Criar novo registro de estoque
+        const newStockRecord = {
+          product_id: productId,
+          donation_option: donationOption,
+          actual_stock: Math.max(0, quantityChange)
+        };
+        
+        await firstValueFrom(
+          this.http.post(`${this.apiUrl}/stock`, newStockRecord)
+        );
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar estoque:', error);
+      throw error;
+    }
   }
 }

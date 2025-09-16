@@ -363,7 +363,7 @@ export class MakeActionComponent implements OnInit {
         return;
       }
 
-      const peopleQuantity = this.user.peopleQuantity || this.user.people_quantity ? parseInt((this.user.peopleQuantity || this.user.people_quantity)!.toString()) : 1;
+      const peopleQuantity = this.user.peopleQuantity || (this.user.people_quantity ? parseInt(this.user.people_quantity.toString()) : 1);
       const hasChildren = this.user.hasChildren || this.user.has_children || false;
       
       const calculatedBasket = this.calculateBasketLocally(peopleQuantity, hasChildren);
@@ -512,7 +512,7 @@ export class MakeActionComponent implements OnInit {
       return;
     }
 
-    const peopleQuantity = this.user.peopleQuantity || this.user.people_quantity ? parseInt((this.user.peopleQuantity || this.user.people_quantity)!.toString()) : 1;
+    const peopleQuantity = this.user.peopleQuantity || (this.user.people_quantity ? parseInt(this.user.people_quantity.toString()) : 1);
     const hasChildren = this.user.hasChildren || this.user.has_children || false;
     
     this.calculatedBasket = this.calculateBasketLocally(peopleQuantity, hasChildren);
