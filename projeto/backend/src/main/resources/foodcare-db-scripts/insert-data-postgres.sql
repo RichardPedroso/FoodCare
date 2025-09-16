@@ -186,55 +186,55 @@ INSERT INTO basket_request (user_id, request_date, basket_type, status) VALUES (
 INSERT INTO basket_request (user_id, request_date, basket_type, status, people_quantity, has_children, calculated_items) VALUES (5, '2025-09-09T01:18:44.588Z', 'basic', 'pending', 4, FALSE, '[{"productId": 1, "productName": "Arroz", "quantity": 8, "unitQuantity": 2, "unitType": "kg"}, {"productId": 2, "productName": "Feijão", "quantity": 4, "unitQuantity": 1, "unitType": "kg"}]');
 INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (5, '2025-09-09T01:19:24.161Z', 'hygiene', 'pending', '[{"productId": 4, "productName": "Papel-toalha", "quantity": 1, "unitQuantity": 1, "unitType": "un"}, {"productId": 5, "productName": "Papel-higiênico", "quantity": 1, "unitQuantity": 1, "unitType": "un"}]');
 
--- Insert stock data with 1000 units for all products and all donation options
+-- Insert stock data with 10001000 units for all products and all donation options
 -- Basic products
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (1, 1, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (1, 5, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (2, 1, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (2, 5, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (3, 100, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (3, 500, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (7, 500, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (7, 900, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (8, 500, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (8, 1000, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (9, 1, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (9, 2, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (10, 1, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (10, 5, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (11, 1, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (11, 3, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (12, 1, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (12, 2, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (13, 1, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (14, 250, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (14, 500, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (15, 1, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (15, 2, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (16, 1, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (16, 5, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (17, 200, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (17, 500, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (18, 500, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (18, 1000, 1000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (1, 1, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (1, 5, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (2, 1, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (2, 5, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (3, 100, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (3, 500, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (7, 500, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (7, 900, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (8, 500, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (8, 1000, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (9, 1, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (9, 2, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (10, 1, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (10, 5, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (11, 1, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (11, 3, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (12, 1, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (12, 2, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (13, 1, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (14, 250, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (14, 500, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (15, 1, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (15, 2, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (16, 1, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (16, 5, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (17, 200, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (17, 500, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (18, 500, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (18, 1000, 10001000);
 
 -- Hygiene products
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (4, 1, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (5, 1, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (6, 1, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (19, 1, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (20, 1, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (21, 1, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (22, 1, 1000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (4, 1, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (5, 1, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (6, 1, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (19, 1, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (20, 1, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (21, 1, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (22, 1, 10001000);
 
 -- Infant products
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (23, 1, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (24, 200, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (24, 400, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (25, 85, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (25, 170, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (26, 150, 1000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (26, 300, 1000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (23, 1, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (24, 200, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (24, 400, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (25, 85, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (25, 170, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (26, 150, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (26, 300, 10001000);
 
 -- Commented encrypted password versions (uncomment to use encryption):
 -- INSERT INTO user_model (name, email, password, user_type, is_admin, municipality_id) 

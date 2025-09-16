@@ -22,19 +22,22 @@ interface DonationDisplay {
   status: string;
 }
 
+interface BasketItem {
+  productId: number;
+  productName: string;
+  quantity: number;
+  unitQuantity: number;
+  unitType: string;
+}
+
 interface BasketRequest {
   id?: string;
   user_id: string;
   request_date: Date | null;
   basket_type: string;
   status: string;
-  calculated_items?: {
-    productId: number;
-    productName: string;
-    quantity: number;
-    unitQuantity: number;
-    unitType: string;
-  }[];
+  calculated_items?: string;
+  parsedItems?: BasketItem[];
 }
 
 @Component({
@@ -125,14 +128,25 @@ export class FollowActionsComponent implements OnInit {
     this.loading = true;
     try {
       this.basketRequests = await firstValueFrom(
-        this.http.get<BasketRequest[]>(`${environment.api_endpoint}/basket-request/user/${this.user.id}`)
+        this.http.get<BasketRequest[]>(`${environment.api_endpoint}/basket_request/user/${this.user.id}`)
       );
       this.basketRequests = this.basketRequests.map(request => {
         const dateValue = request.request_date || (request as any).requestDate;
         const requestDate = dateValue ? new Date(dateValue) : null;
+        
+        let parsedItems: BasketItem[] = [];
+        if (request.calculated_items && typeof request.calculated_items === 'string') {
+          try {
+            parsedItems = JSON.parse(request.calculated_items);
+          } catch (e) {
+            console.error('Erro ao parsear calculated_items:', e);
+          }
+        }
+        
         return {
           ...request,
-          request_date: requestDate && !isNaN(requestDate.getTime()) ? requestDate : null
+          request_date: requestDate && !isNaN(requestDate.getTime()) ? requestDate : null,
+          parsedItems
         };
       });
       this.calculateBasketStats(this.basketRequests);
@@ -180,8 +194,8 @@ export class FollowActionsComponent implements OnInit {
     }
     const basketType = request.basket_type === 'basic' ? 'Cesta Básica' : 'Cesta de Higiene';
     
-    if (request.calculated_items && request.calculated_items.length > 0) {
-      const products = request.calculated_items.map(item => 
+    if (request.parsedItems && request.parsedItems.length > 0) {
+      const products = request.parsedItems.map((item: BasketItem) => 
         `${item.productName} - ${item.quantity}${item.unitType}`
       );
       alert(`${basketType}:\n\n${products.join('\n')}`);
