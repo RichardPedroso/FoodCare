@@ -317,7 +317,7 @@ export class MakeActionComponent implements OnInit {
       // Criar doação
       const donation: Donation = {
         donation_date: new Date(),
-        user_id: this.user.id!.toString()
+        user_id: parseInt(this.user.id!.toString())
       };
 
       await this.donationCreateService.create(donation);
