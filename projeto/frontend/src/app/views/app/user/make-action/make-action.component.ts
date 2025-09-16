@@ -314,26 +314,51 @@ export class MakeActionComponent implements OnInit {
     const unit = this.selectedProduct.measure_type;
 
     try {
+      // Criar doação
       const donation: Donation = {
         donation_date: new Date(),
         user_id: this.user.id!.toString()
       };
 
-      const donationResponse = await this.donationCreateService.create(donation);
+      await this.donationCreateService.create(donation);
       
-      const donationProduct: DonationProduct = {
-        quantity: quantityNum,
-        expirationDate: this.isToyProduct() ? null : new Date(expirationDate),
-        unit: unit,
-        donation_id: donationResponse.id!,
-        product_id: productId
+      // Buscar a doação recém-criada para obter o ID
+      const donations = await firstValueFrom(
+        this.http.get<any[]>(`${environment.api_endpoint}/donation/user/${this.user.id}`)
+      );
+      const latestDonation = donations[donations.length - 1]; // Última doação
+      
+      // Formatar data de expiração para string (yyyy-mm-dd)
+      let formattedExpirationDate: string | null = null;
+      if (!this.isToyProduct() && expirationDate) {
+        const parts = expirationDate.split('/');
+        if (parts.length === 3) {
+          formattedExpirationDate = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+        }
+      }
+      
+      // Validar e garantir que unit não seja null
+      const validUnit = unit || this.selectedProduct?.measure_type || 'un';
+      
+      // Criar produto da doação
+      const donationProduct = {
+        quantity: quantityNum, // donation_option (ex: 5kg)
+        expirationDate: formattedExpirationDate,
+        unit: validUnit,
+        donationId: latestDonation.id,
+        productId: parseInt(productId)
       };
-
+      
       await this.donationProductCreateService.create(donationProduct);
 
-      await this.updateStock(productId, quantity, unitsNum);
+      // Processar para estoque com o número de unidades
+      await firstValueFrom(
+        this.http.post<boolean>(`${environment.api_endpoint}/donation/${latestDonation.id}/process-to-stock`, {
+          units: unitsNum
+        })
+      );
 
-      alert('Doação registrada com sucesso!');
+      alert('Doação registrada e processada para o estoque com sucesso!');
       this.router.navigate(['/main']);
       
     } catch (error) {
@@ -342,15 +367,7 @@ export class MakeActionComponent implements OnInit {
     }
   }
 
-  private async updateStock(productId: string, donationOption: string, units: number): Promise<void> {
-    try {
-      const effectiveDonationOption = this.selectedProduct?.optionsDonation ? donationOption : "1";
-      await this.stockUpdateService.updateStock(productId, effectiveDonationOption, units);
-    } catch (error) {
-      console.error('Erro ao atualizar estoque:', error);
-      throw error;
-    }
-  }
+
 
   async requestBasicBasket(): Promise<void> {
     if (this.isProcessingRequest || !this.user) {

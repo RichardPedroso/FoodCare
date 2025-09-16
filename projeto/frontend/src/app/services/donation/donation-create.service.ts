@@ -15,4 +15,16 @@ export class DonationCreateService {
   async create(donation: Donation): Promise<Donation>{
     return await firstValueFrom(this.http.post<Donation>(`${environment.api_endpoint}/donation`, donation));
   }
+
+  async createComplete(donation: any): Promise<boolean>{
+    try {
+      return await firstValueFrom(this.http.post<boolean>(`${environment.api_endpoint}/donation/complete`, donation));
+    } catch (error: any) {
+      console.error('Erro detalhado:', error);
+      if (error.error) {
+        console.error('Resposta do servidor:', error.error);
+      }
+      throw error;
+    }
+  }
 }

@@ -95,8 +95,12 @@ public class DonationRestController {
     }
 
     @PostMapping("/{id}/process-to-stock")
-    public ResponseEntity<Boolean> processDonationToStock(@PathVariable final int id) {
-        boolean success = donationStockIntegrationService.processDonationToStock(id);
+    public ResponseEntity<Boolean> processDonationToStock(@PathVariable final int id, @RequestBody(required = false) java.util.Map<String, Object> body) {
+        int units = 1; // padrão
+        if (body != null && body.containsKey("units")) {
+            units = (Integer) body.get("units");
+        }
+        boolean success = donationStockIntegrationService.processDonationToStockWithUnits(id, units);
         return ResponseEntity.ok(success);
     }
 

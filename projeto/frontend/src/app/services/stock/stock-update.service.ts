@@ -54,7 +54,7 @@ export class StockUpdateService {
         const newStock = stockRecord.actual_stock + quantityChange;
         
         await firstValueFrom(
-          this.http.patch(`${this.apiUrl}/stock/${stockRecord.id}`, { actual_stock: newStock })
+          this.http.put(`${this.apiUrl}/stock/${stockRecord.id}`, { ...stockRecord, actual_stock: newStock })
         );
       } else {
         // Criar novo registro de estoque
