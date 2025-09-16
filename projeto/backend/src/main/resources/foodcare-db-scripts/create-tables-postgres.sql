@@ -15,7 +15,7 @@ DROP TYPE IF EXISTS request_type;
 DROP TYPE IF EXISTS request_status;
 
 -- Create enums
-CREATE TYPE user_type AS ENUM ('DONOR', 'BENEFICIARY', 'ADMIN');
+CREATE TYPE user_type AS ENUM ('donor', 'beneficiary', 'admin');
 CREATE TYPE request_type AS ENUM ('BASIC', 'HYGIENE');
 CREATE TYPE request_status AS ENUM ('PENDING', 'APPROVED', 'REJECTED', 'COMPLETED');
 
