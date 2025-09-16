@@ -114,7 +114,7 @@ public class BasketRequestDaoImpl implements BasketRequestDao {
 
     @Override
     public int create(BasketRequest entity) {
-        String sql = "INSERT INTO basket_request(user_id, request_date, basket_type, status, people_quantity, has_children, calculated_items) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO basket_request(user_id, request_date, basket_type, status, people_quantity, has_children, calculated_items) VALUES (?, ?, ?, ?, ?, ?, ?::jsonb)";
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);

@@ -433,7 +433,8 @@ export class MakeActionComponent implements OnInit {
 
       return requests.some((request: any) => {
         const requestDate = new Date(request.requestDate || request.request_date);
-        return request.basketType === basketType && 
+        const basketTypeField = request.basketType || request.basket_type;
+        return basketTypeField === basketType && 
                requestDate.getMonth() === currentMonth && 
                requestDate.getFullYear() === currentYear;
       });
@@ -451,8 +452,8 @@ export class MakeActionComponent implements OnInit {
         this.http.get<any[]>(`${environment.api_endpoint}/basket_request?user_id=${this.user.id}`)
       );
       
-      const basicRequests = requests.filter((r: any) => r.basketType === 'basic');
-      const hygieneRequests = requests.filter((r: any) => r.basketType === 'hygiene');
+      const basicRequests = requests.filter((r: any) => (r.basketType || r.basket_type) === 'basic');
+      const hygieneRequests = requests.filter((r: any) => (r.basketType || r.basket_type) === 'hygiene');
       
       if (basicRequests.length > 0) {
         this.lastBasicRequest = new Date(Math.max(...basicRequests.map((r: any) => new Date(r.requestDate || r.request_date).getTime())));
@@ -625,54 +626,150 @@ export class MakeActionComponent implements OnInit {
   }
 
   private async processHygieneBasketRequest(hygieneBasket: BasketItem[]): Promise<void> {
+    // Check stock availability first
+    for (const basketItem of hygieneBasket) {
+      const hasStock = await this.checkStockAvailability(basketItem.productId.toString(), basketItem.quantity);
+      if (!hasStock) {
+        alert(`Estoque insuficiente para ${basketItem.productName}. Solicitação cancelada.`);
+        return;
+      }
+    }
+
+    // Update stock
     for (const basketItem of hygieneBasket) {
       await this.updateStockForHygiene(basketItem.productId.toString(), basketItem.quantity);
     }
 
     const basketRequest = {
       user_id: this.user?.id || '',
-      request_date: new Date(),
+      request_date: new Date().toISOString(),
       basket_type: 'hygiene',
       status: 'pending',
-      calculated_items: hygieneBasket
+      calculated_items: JSON.stringify(hygieneBasket)
     };
 
     await firstValueFrom(
       this.http.post(`${environment.api_endpoint}/basket_request`, basketRequest)
     );
 
+    // Update availability after successful request
+    this.lastHygieneRequest = new Date();
+    this.updateRequestAvailability();
+
     alert('Solicitação de cesta de higiene registrada com sucesso!');
     this.router.navigate(['/main']);
   }
 
+  private async checkStockAvailability(productId: string, requiredQuantity: number): Promise<boolean> {
+    try {
+      const stock = await firstValueFrom(
+        this.http.get<any[]>(`${environment.api_endpoint}/stock`)
+      );
+      console.log('All stock:', stock);
+      const productStock = stock.filter(item => {
+        const itemProductId = item.product_id || item.productId;
+        console.log(`Comparing ${itemProductId} with ${productId}`);
+        return itemProductId == productId;
+      });
+      console.log(`Filtered stock for product ${productId}:`, productStock);
+      const totalStock = productStock.reduce((sum, item) => {
+        const actualStock = item.actual_stock || item.actualStock || 0;
+        return sum + actualStock;
+      }, 0);
+      console.log(`Product ${productId}: Required ${requiredQuantity}, Available ${totalStock}`);
+      return totalStock >= requiredQuantity;
+    } catch (error) {
+      console.error('Erro ao verificar estoque:', error);
+      return false;
+    }
+  }
+
   private async updateStockForHygiene(productId: string, quantity: number): Promise<void> {
     try {
-      await this.stockUpdateService.updateStock(productId, "1", -quantity);
+      const stocks = await firstValueFrom(
+        this.http.get<any[]>(`${environment.api_endpoint}/stock/product/${productId}`)
+      );
+      
+      if (stocks.length > 0) {
+        const stock = stocks[0];
+        const updatedStock = {
+          ...stock,
+          actualStock: stock.actualStock - quantity
+        };
+        
+        await firstValueFrom(
+          this.http.put(`${environment.api_endpoint}/stock/${stock.id}`, updatedStock)
+        );
+      }
     } catch (error) {
       console.error('Erro ao atualizar estoque de higiene:', error);
+    }
+  }
+
+  private async updateStockForBasket(productId: string, quantity: number): Promise<void> {
+    try {
+      const stocks = await firstValueFrom(
+        this.http.get<any[]>(`${environment.api_endpoint}/stock/product/${productId}`)
+      );
+      
+      if (stocks.length > 0) {
+        // Find the best matching donation option for the required quantity
+        const product = this.products.find(p => p.id == productId);
+        let targetStock = stocks[0];
+        
+        if (product && product.optionsDonation && product.optionsDonation.length > 0) {
+          const donationOption = product.optionsDonation.find(option => option >= quantity) || product.optionsDonation[0];
+          targetStock = stocks.find(s => s.donationOption === donationOption) || stocks[0];
+        }
+        
+        const updatedStock = {
+          ...targetStock,
+          actualStock: targetStock.actualStock - quantity
+        };
+        
+        await firstValueFrom(
+          this.http.put(`${environment.api_endpoint}/stock/${targetStock.id}`, updatedStock)
+        );
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar estoque:', error);
     }
   }
 
   private async processBasketRequest(calculatedBasket: BasketItem[], peopleQuantity: number, hasChildren: boolean): Promise<void> {
     this.calculatedBasket = calculatedBasket;
     
+    // Check stock availability first
     for (const basketItem of calculatedBasket) {
-      await this.productUpdateService.updateStock(basketItem.productId.toString(), -basketItem.quantity);
+      const hasStock = await this.checkStockAvailability(basketItem.productId.toString(), basketItem.quantity);
+      if (!hasStock) {
+        alert(`Estoque insuficiente para ${basketItem.productName}. Solicitação cancelada.`);
+        return;
+      }
+    }
+    
+    // Update stock
+    for (const basketItem of calculatedBasket) {
+      await this.updateStockForBasket(basketItem.productId.toString(), basketItem.quantity);
     }
 
     const basketRequest = {
       user_id: this.user?.id || '',
-      request_date: new Date(),
+      request_date: new Date().toISOString(),
       basket_type: 'basic',
       status: 'pending',
       people_quantity: peopleQuantity,
       has_children: hasChildren,
-      calculated_items: calculatedBasket
+      calculated_items: JSON.stringify(calculatedBasket)
     };
 
     await firstValueFrom(
       this.http.post(`${environment.api_endpoint}/basket_request`, basketRequest)
     );
+
+    // Update availability after successful request
+    this.lastBasicRequest = new Date();
+    this.updateRequestAvailability();
 
     alert(`Solicitação de cesta básica registrada com sucesso! Sua cesta foi calculada para ${peopleQuantity} pessoa(s)${hasChildren ? ' incluindo itens para crianças' : ''}.`);
     this.router.navigate(['/main']);
