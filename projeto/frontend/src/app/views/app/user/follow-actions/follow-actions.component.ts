@@ -89,8 +89,6 @@ export class FollowActionsComponent implements OnInit {
       const donationProducts = await this.donationReadService.findDonationProducts();
       const products = await this.productReadService.findAll();
       
-
-      
       this.donations = userDonations.map(donation => {
         const donationProduct = donationProducts.find(dp => {
           const dpDonationId = dp.donation_id || (dp as any).donationId;
@@ -152,11 +150,13 @@ export class FollowActionsComponent implements OnInit {
     
     this.totalCount = donations.length;
     this.thisMonthCount = donations.filter(donation => {
-      const donationDate = new Date(donation.donation_date);
+      const dateValue = donation.donation_date || (donation as any).donationDate;
+      if (!dateValue) return false;
+      const donationDate = new Date(dateValue);
       return donationDate.getMonth() === currentMonth && donationDate.getFullYear() === currentYear;
     }).length;
-    this.availableCount = donations.length; // Todas as doações são consideradas disponíveis
-    this.usedCount = 0; // Nenhuma doação foi utilizada ainda
+    this.availableCount = donations.length;
+    this.usedCount = 0;
   }
 
   private calculateBasketStats(requests: BasketRequest[]): void {
