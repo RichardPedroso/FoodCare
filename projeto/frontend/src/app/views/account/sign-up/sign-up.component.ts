@@ -320,6 +320,9 @@ export class SignUpComponent implements OnInit {
       const createdMunicipality = await this.municipalityCreateService.create(newMunicipality);
       console.log("municipality criado com sucesso: ", createdMunicipality);
 
+      // Como o backend não retorna o objeto criado, usar municipalityId = 1 como padrão
+      const municipalityId = createdMunicipality?.id ? parseInt(createdMunicipality.id.toString()) : 1;
+
       // Criar usuário com municipality_id
       const newUser: User = {
         name: formDataSignUp.name,
@@ -329,7 +332,7 @@ export class SignUpComponent implements OnInit {
         userType: formDataSignUp.userType,
         familyIncome: 0,
         peopleQuantity: 0,
-        municipalityId: createdMunicipality.id ? parseInt(createdMunicipality.id) : 0,
+        municipalityId: municipalityId,
         hasChildren: false
       };
 

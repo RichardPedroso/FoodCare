@@ -63,14 +63,24 @@ public class UserRestController {
 
     @PostMapping
     public ResponseEntity<UserModel> create(@RequestBody final UserModel data) {
-        final int id = userService.create(data);
-
-        final URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(id)
-                .toUri();
-        return ResponseEntity.created(uri).build();
+        try {
+            final int id = userService.create(data);
+            
+            if (id == -1) {
+                return ResponseEntity.badRequest().build();
+            }
+            
+            data.setId(id);
+            final URI uri = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(id)
+                    .toUri();
+            return ResponseEntity.created(uri).body(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @PostMapping("/beneficiary")
