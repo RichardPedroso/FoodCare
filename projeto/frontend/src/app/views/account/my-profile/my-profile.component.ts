@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthenticationService } from '../../../services/security/authentication.service';
 import { MunicipalityReadService } from '../../../services/municipality/municipality-read.service';
+import { UserReadService } from '../../../services/user/user-read.service';
 import { Municipality } from '../../../domain/model/municipality';
 
 
@@ -31,21 +32,35 @@ export class MyProfileComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
-    private municipalityReadService: MunicipalityReadService
+    private municipalityReadService: MunicipalityReadService,
+    private userReadService: UserReadService
   ) {}
 
-  ngOnInit(): void {
-    this.user = this.authenticationService.getCurrentUser();
-    const municipalityId = this.user?.municipalityId || this.user?.municipality_id;
-    if (municipalityId) {
-      this.municipalityReadService.getById(municipalityId.toString()).subscribe({
-        next: (municipality) => {
-          this.municipality = municipality;
-        },
-        error: (error) => {
-          console.error('Erro ao buscar municipality:', error);
+  async ngOnInit(): Promise<void> {
+    const currentUser = this.authenticationService.getCurrentUser();
+    if (currentUser?.id) {
+      try {
+        // Fetch fresh user data from server
+        this.user = await this.userReadService.findById(currentUser.id.toString());
+        // Update localStorage with fresh data
+        this.authenticationService.addDataToLocalStorage(this.user);
+        
+        const municipalityId = this.user?.municipalityId || this.user?.municipality_id;
+        if (municipalityId) {
+          this.municipalityReadService.getById(municipalityId.toString()).subscribe({
+            next: (municipality) => {
+              this.municipality = municipality;
+            },
+            error: (error) => {
+              console.error('Erro ao buscar municipality:', error);
+            }
+          });
         }
-      });
+      } catch (error) {
+        console.error('Erro ao buscar dados do usuário:', error);
+        // Fallback to localStorage data if server request fails
+        this.user = currentUser;
+      }
     }
   }
 
