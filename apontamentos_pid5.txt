@@ -1,0 +1,3 @@
+Melhorias que devem compor a entrega 6 do PID:
+- Decrever o capítulo 5 do relatório 
+- Diagrama de Sequencia verificar a nomenclatura das entidades e eventos dos diagramas
