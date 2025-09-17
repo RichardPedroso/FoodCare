@@ -346,12 +346,16 @@ export class SignUpComponent implements OnInit {
       const createdUser = await this.userCreateService.create(newUser);
       console.log("usuario criado com sucesso: ", createdUser);
 
-      this.authenticationService.addDataToLocalStorage(createdUser);
-      
-      if (createdUser.userType === 'admin') {
-        this.router.navigate(['/main/admin/dashboard']);
+      if (createdUser.userType === 'beneficiary') {
+        alert('Conta criada com sucesso! Sua aptidão será validada por um administrador. Você poderá fazer login após a aprovação.');
+        this.router.navigate(['/account/sign-in']);
       } else {
-        this.router.navigate(['/main']);
+        this.authenticationService.addDataToLocalStorage(createdUser);
+        if (createdUser.userType === 'admin') {
+          this.router.navigate(['/main/admin/dashboard']);
+        } else {
+          this.router.navigate(['/main']);
+        }
       }
     }catch(error){
       console.error("erro ao criar usuario ou municipality:", error);

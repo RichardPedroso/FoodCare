@@ -25,6 +25,12 @@ public class UserServiceImpl implements UserService {
         if (entity.getName().isEmpty() || entity.getEmail().isEmpty() || isPassWordInvalid(entity.getPassword())) {
             return invalidResponse;
         }
+        
+        // Definir able = false como padrão para beneficiários
+        if (entity.getUserType() == UserModel.UserType.beneficiary && entity.getAble() == null) {
+            entity.setAble(false);
+        }
+        
         final int id = userDao.create(entity);
         return id;
     }

@@ -28,6 +28,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         if(user.getPassword().equals(password)) {
+            // Verificar se beneficiário está aprovado
+            if(user.getUserType() == UserModel.UserType.beneficiary) {
+                if(user.getAble() == null || !user.getAble()) {
+                    return null; // Beneficiário não aprovado
+                }
+            }
             return user;
         }
 
