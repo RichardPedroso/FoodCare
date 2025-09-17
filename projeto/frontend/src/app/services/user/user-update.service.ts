@@ -76,4 +76,9 @@ export class UserUpdateService {
     return firstValueFrom(this.http.put<User>(updateUrl, userToUpdate));
   }
 
+  async updateUserStatus(id: string, able: boolean): Promise<any> {
+    const updateUrl = `${environment.api_endpoint}/user/${id}/status?able=${able}`;
+    return firstValueFrom(this.http.put<any>(updateUrl, {}));
+  }
+
 }

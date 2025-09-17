@@ -56,8 +56,7 @@ export class ManageUsersComponent implements OnInit {
     if (!this.selectedUser) return;
 
     try {
-      const updatedUser = { ...this.selectedUser, able };
-      await this.userUpdateService.update(this.selectedUser.id!.toString(), updatedUser);
+      await this.userUpdateService.updateUserStatus(this.selectedUser.id!.toString(), able);
       this.selectedUser.able = able;
       await this.loadBeneficiaries();
       this.closeDocuments();
