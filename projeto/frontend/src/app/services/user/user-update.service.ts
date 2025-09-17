@@ -41,27 +41,20 @@ export class UserUpdateService {
   }
 
   async updatePassword(id: string, newPassword: string): Promise<any>{
-    console.log('UserUpdateService: Buscando usuário com ID:', id);
     const userToUpdate: User | null = await this.userReadService.findById(id);
     
-    console.log('UserUpdateService: Usuário encontrado:', userToUpdate);
-
     if(!userToUpdate){
       throw new Error('Usuário não encontrado');  
     }
 
-    console.log('UserUpdateService: Senha atual:', userToUpdate.password);
-    userToUpdate.password = newPassword;
-    console.log('UserUpdateService: Nova senha:', userToUpdate.password);
+    const updatePasswordDto = {
+      id: parseInt(id),
+      oldPassword: userToUpdate.password,
+      newPassword: newPassword
+    };
     
-    const updateUrl = `${environment.api_endpoint}/user/${id}`;
-    console.log('UserUpdateService: URL de atualização:', updateUrl);
-    console.log('UserUpdateService: Dados a serem enviados:', userToUpdate);
-
-    const result = await firstValueFrom(this.http.put<User>(updateUrl, userToUpdate));
-    console.log('UserUpdateService: Resultado da atualização:', result);
-    
-    return result;
+    const updateUrl = `${environment.api_endpoint}/user/update-password`;
+    return firstValueFrom(this.http.put<any>(updateUrl, updatePasswordDto));
   }
 
   async updateUser(updateUserDto: UpdateUserDto): Promise<User> {
