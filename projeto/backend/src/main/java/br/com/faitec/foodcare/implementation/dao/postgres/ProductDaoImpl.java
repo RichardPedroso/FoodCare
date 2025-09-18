@@ -7,7 +7,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ProductDaoImpl implements ProductDao {
@@ -75,7 +77,13 @@ public class ProductDaoImpl implements ProductDao {
                 product.setProductType(resultSet.getString("product_type"));
                 product.setCategoryId(resultSet.getInt("category_id"));
                 product.setUnitQuantity(resultSet.getDouble("unit_quantity"));
-                product.setUnitType(resultSet.getString("unit_type"));
+                product.setUnitType(resultSet.getString("measure_type"));
+                
+                Array optionsArray = resultSet.getArray("options_donation");
+                if (optionsArray != null) {
+                    Double[] options = (Double[]) optionsArray.getArray();
+                    product.setOptionsDonation(Arrays.asList(options));
+                }
                 
                 resultSet.close();
                 preparedStatement.close();
@@ -106,7 +114,13 @@ public class ProductDaoImpl implements ProductDao {
                 product.setProductType(resultSet.getString("product_type"));
                 product.setCategoryId(resultSet.getInt("category_id"));
                 product.setUnitQuantity(resultSet.getDouble("unit_quantity"));
-                product.setUnitType(resultSet.getString("unit_type"));
+                product.setUnitType(resultSet.getString("measure_type"));
+                
+                Array optionsArray = resultSet.getArray("options_donation");
+                if (optionsArray != null) {
+                    Double[] options = (Double[]) optionsArray.getArray();
+                    product.setOptionsDonation(Arrays.asList(options));
+                }
                 products.add(product);
             }
             

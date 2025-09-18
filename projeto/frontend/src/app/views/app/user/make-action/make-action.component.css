@@ -27,6 +27,101 @@
   margin: 0 auto;
 }
 
+.low-stock-warning {
+  max-width: 700px;
+  margin: 0 auto var(--spacing-xl) auto;
+  background: rgba(255, 152, 0, 0.1);
+  border: 1px solid rgba(255, 152, 0, 0.3);
+  border-radius: var(--radius-lg);
+  border-left: 4px solid #ff9800;
+  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.1);
+}
+
+.warning-content {
+  padding: var(--spacing-lg);
+}
+
+.warning-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.warning-header mat-icon {
+  color: #ff9800;
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+}
+
+.warning-header h3 {
+  color: #e65100;
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  margin: 0;
+  flex: 1;
+}
+
+.close-warning {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  border-radius: 50%;
+  color: #ff9800;
+  transition: all var(--transition-fast);
+}
+
+.close-warning:hover {
+  background: rgba(255, 152, 0, 0.2);
+}
+
+.warning-body p {
+  color: #e65100;
+  font-size: var(--font-size-base);
+  font-weight: 500;
+  margin: 0 0 var(--spacing-sm) 0;
+}
+
+.low-stock-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.low-stock-list li {
+  color: #bf360c;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  background: rgba(255, 152, 0, 0.15);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid #ff9800;
+}
+
+/* Estilos para opções de produto com estoque baixo */
+::ng-deep .low-stock-option {
+  background-color: rgba(244, 67, 54, 0.05) !important;
+  border-left: 3px solid #f44336 !important;
+}
+
+::ng-deep .low-stock-option:hover {
+  background-color: rgba(244, 67, 54, 0.1) !important;
+}
+
+.warning-icon-inline {
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  color: #f44336 !important;
+  margin-left: 8px !important;
+  vertical-align: middle !important;
+}
+
 .action-card {
   padding: var(--spacing-2xl);
 }

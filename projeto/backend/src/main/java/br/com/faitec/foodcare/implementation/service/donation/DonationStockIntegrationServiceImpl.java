@@ -68,6 +68,32 @@ public class DonationStockIntegrationServiceImpl implements DonationStockIntegra
     public boolean confirmDonationReceipt(int donationId) {
         return processDonationToStock(donationId);
     }
+    
+    public boolean processDonationToStockWithUnits(int donationId, int units) {
+        try {
+            Donation donation = donationService.findById(donationId);
+            if (donation == null) {
+                return false;
+            }
+
+            List<DonationProduct> donationProducts = donationProductService.findByDonationId(donationId);
+            
+            if (donationProducts.isEmpty()) {
+                return false;
+            }
+
+            for (DonationProduct donationProduct : donationProducts) {
+                if (!isValidForStock(donationProduct.getExpirationDate())) {
+                    continue;
+                }
+                addToStockWithUnits(donationProduct, units);
+            }
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
     private boolean isValidForStock(String expirationDate) {
         try {
@@ -84,19 +110,23 @@ public class DonationStockIntegrationServiceImpl implements DonationStockIntegra
     }
 
     private void addToStock(DonationProduct donationProduct) {
+        // Por enquanto, assumir 1 unidade. Isso precisa vir do frontend.
+        addToStockWithUnits(donationProduct, 1);
+    }
+    
+    public void addToStockWithUnits(DonationProduct donationProduct, int unitsToAdd) {
         int productId = donationProduct.getProductId();
-        double quantity = donationProduct.getQuantity();
+        double donationOption = donationProduct.getQuantity();
 
-        // Buscar se já existe estoque para este produto com esta quantidade
+        // Buscar estoque existente para este produto e donation_option
         List<Stock> existingStocks = stockService.findByProductId(productId);
         
         boolean stockUpdated = false;
         
-        // Tentar encontrar um estoque existente com a mesma donation_option
         for (Stock existingStock : existingStocks) {
-            if (existingStock.getDonationOption() == quantity) {
-                // Incrementar o estoque existente
-                existingStock.setActualStock(existingStock.getActualStock() + 1);
+            if (existingStock.getDonationOption() == donationOption) {
+                // Incrementar o estoque com o número de unidades doadas
+                existingStock.setActualStock(existingStock.getActualStock() + unitsToAdd);
                 stockService.update(existingStock.getId(), existingStock);
                 stockUpdated = true;
                 break;
@@ -107,8 +137,8 @@ public class DonationStockIntegrationServiceImpl implements DonationStockIntegra
         if (!stockUpdated) {
             Stock newStock = new Stock();
             newStock.setProductId(productId);
-            newStock.setDonationOption(quantity);
-            newStock.setActualStock(1);
+            newStock.setDonationOption(donationOption);
+            newStock.setActualStock(unitsToAdd);
             stockService.create(newStock);
         }
     }

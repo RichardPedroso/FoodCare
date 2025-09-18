@@ -12,6 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { UserUpdateService } from '../../../services/user/user-update.service';
 import { AuthenticationService } from '../../../services/security/authentication.service';
 import { User } from '../../../domain/model/user';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -44,7 +45,7 @@ export class ResetUserPasswordComponent implements OnInit {
     private router: Router,
     private userUpdateService: UserUpdateService,
     private authenticationService: AuthenticationService,
-
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -100,12 +101,12 @@ export class ResetUserPasswordComponent implements OnInit {
       await this.userUpdateService.updatePassword(this.currentUser.id!.toString(), newPassword);
       
       console.log('Senha atualizada com sucesso!');
-      alert('Senha alterada com sucesso!');
+      this.toastr.success('Senha alterada com sucesso!');
       this.authenticationService.logout();
       this.router.navigate(['/account/sign-in']);
     } catch (error: any) {
       console.error('Erro ao atualizar a senha:', error);
-      alert('Erro ao atualizar a senha. Tente novamente.');
+      this.toastr.error('Erro ao atualizar a senha. Tente novamente.');
     }
   }
 }

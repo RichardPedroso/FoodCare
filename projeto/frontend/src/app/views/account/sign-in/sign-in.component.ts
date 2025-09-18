@@ -16,6 +16,7 @@ import * as fontawesome from '@fortawesome/free-solid-svg-icons'
 import { AuthenticationService } from '../../../services/security/authentication.service';
 import { UserCredentialDto } from '../../../domain/dto/user-credential-dto';
 import { User } from '../../../domain/model/user';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sign-in',
@@ -52,6 +53,7 @@ export class SignInComponent{
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
+    private toastr: ToastrService
   ) {
     console.log('sign-in constructor');
   }
@@ -68,7 +70,7 @@ export class SignInComponent{
     if (this.authenticationService.isAuthenticated()) {
       const user = this.authenticationService.getCurrentUser();
       const userType = user?.userType;
-      if (userType === 'ADMIN') {
+      if (userType === 'admin') {
         console.log('credenciais validas, navegando para dashboard admin')
         this.router.navigate(['/main/admin/dashboard']);
       } else {
@@ -108,20 +110,20 @@ export class SignInComponent{
           const userType = user.userType;
           console.log('UserType processado:', userType);
           
-          if (userType === 'ADMIN') {
+          if (userType === 'admin') {
             console.log('Usuário identificado como administrador');
             this.router.navigate(['/main/admin/dashboard']);
-          } else if (userType === 'DONOR') {
+          } else if (userType === 'donor') {
             console.log('Usuário identificado como doador');
             this.router.navigate(['/main']);
-          } else if (userType === 'BENEFICIARY') {
+          } else if (userType === 'beneficiary') {
             console.log('Usuário identificado como beneficiário');
             if (user.able === false) {
-              alert('Você não está apto a receber o auxílio.');
+              this.toastr.warning('Você não está apto a receber o auxílio.');
               return;
             }
             if (user.able === undefined) {
-              alert('Estamos verificando sua elegibilidade.');
+              this.toastr.info('Estamos verificando sua elegibilidade.');
               return;
             }
             this.router.navigate(['/main']);
@@ -132,6 +134,14 @@ export class SignInComponent{
       },
       error: (err) => {
         console.error('Erro ao tentar autenticar no servidor:', err);
+        console.log('Detalhes do erro:', err.error);
+        
+        if (err.status === 401) {
+          // Para usuários não aptos, mostrar mensagem específica
+          this.toastr.warning('Credenciais inválidas ou usuário não autorizado.');
+          return;
+        }
+        
         this.isLoginIncorrect = true;
       }
     });

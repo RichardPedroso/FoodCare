@@ -17,10 +17,10 @@ export class DonationReadService {
   }
 
   findByUserId(userId: string): Promise<Donation[]> {
-    return firstValueFrom(this.http.get<Donation[]>(`${environment.api_endpoint}/donation?user_id=${userId}`));
+    return firstValueFrom(this.http.get<Donation[]>(`${environment.api_endpoint}/donation/user/${userId}`));
   }
 
   findDonationProducts(): Promise<DonationProduct[]> {
-    return firstValueFrom(this.http.get<DonationProduct[]>(`${environment.api_endpoint}/donation_product`));
+    return firstValueFrom(this.http.get<DonationProduct[]>(`${environment.api_endpoint}/donation-product`));
   }
 }

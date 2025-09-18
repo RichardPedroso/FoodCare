@@ -20,9 +20,14 @@ import { DonationProductCreateService } from '../../../../services/donation-prod
 import { DonationValidationService } from '../../../../services/donation-product/donation-validation.service';
 import { ProductUpdateService } from '../../../../services/product/product-update.service';
 import { ProductReadService } from '../../../../services/product/product-read.service';
+import { StockUpdateService } from '../../../../services/stock/stock-update.service';
 
 import { BasketItem } from '../../../../domain/model/basket-item';
 import { UnitConverterService } from '../../../../services/utils/unit-converter.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../../environments/environment.development';
+import { firstValueFrom } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -58,6 +63,8 @@ export class MakeActionComponent implements OnInit {
   showBasketPreview: boolean = false;
   selectedUnit: string = '';
   isProcessingRequest: boolean = false;
+  lowStockProducts: string[] = [];
+  showLowStockWarning: boolean = false;
 
   @ViewChild('quantity') quantityRef!: MatSelect | ElementRef;
   @ViewChild('units') unitsRef!: ElementRef;
@@ -71,8 +78,10 @@ export class MakeActionComponent implements OnInit {
     private donationValidationService: DonationValidationService,
     private productUpdateService: ProductUpdateService,
     private productReadService: ProductReadService,
-
-    private unitConverterService: UnitConverterService
+    private stockUpdateService: StockUpdateService,
+    private unitConverterService: UnitConverterService,
+    private http: HttpClient,
+    private toastr: ToastrService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -84,6 +93,7 @@ export class MakeActionComponent implements OnInit {
       }
     }
     await this.loadProducts();
+    await this.checkLowStockProducts();
   }
 
   async loadProducts(): Promise<void> {
@@ -108,6 +118,9 @@ export class MakeActionComponent implements OnInit {
   onProductChange(productId: string): void {
     this.selectedProduct = this.products.find(product => product.id === productId) || null;
     if (this.selectedProduct) {
+      console.log('Selected product:', this.selectedProduct);
+      console.log('Options donation:', this.selectedProduct.optionsDonation);
+      console.log('Measure type:', this.selectedProduct.unitType);
       this.selectedUnit = this.getDefaultUnit();
     }
   }
@@ -271,27 +284,27 @@ export class MakeActionComponent implements OnInit {
 
   async registerDonation(productId: string, expirationDate: string, quantity: string, units?: string): Promise<void> {
     if (!this.user || !productId || !quantity || !this.selectedProduct) {
-      alert('Por favor, preencha todos os campos obrigatórios.');
+      this.toastr.error('Por favor, preencha todos os campos obrigatórios.');
       return;
     }
 
     if (!this.isToyProduct() && !expirationDate) {
-      alert('Por favor, preencha a data de validade.');
+      this.toastr.error('Por favor, preencha a data de validade.');
       return;
     }
 
-    if (this.selectedProduct.options_donation && !this.selectedProduct.options_donation.includes(quantity)) {
-      alert('Quantidade inválida. Selecione uma das opções disponíveis.');
+    if (this.selectedProduct.optionsDonation && !this.selectedProduct.optionsDonation.includes(parseFloat(quantity))) {
+      this.toastr.error('Quantidade inválida. Selecione uma das opções disponíveis.');
       return;
     }
 
     if (this.selectedProduct.measure_type !== 'un' && (!units || parseInt(units) <= 0)) {
-      alert('Por favor, informe o número de unidades a serem doadas.');
+      this.toastr.error('Por favor, informe o número de unidades a serem doadas.');
       return;
     }
 
     if (!this.isToyProduct() && this.isDateInvalid(expirationDate)) {
-      alert('A data de validade não pode ser anterior à data atual.');
+      this.toastr.error('A data de validade não pode ser anterior à data atual.');
       return;
     }
 
@@ -299,76 +312,67 @@ export class MakeActionComponent implements OnInit {
     const unitsNum = units ? parseInt(units) : 1;
     
     if (!this.unitConverterService.validateQuantityInput(quantityNum, this.selectedProduct.measure_type)) {
-      alert(`Quantidade inválida para a unidade ${this.selectedProduct.measure_type}. Verifique o valor inserido.`);
+      this.toastr.error(`Quantidade inválida para a unidade ${this.selectedProduct.measure_type}. Verifique o valor inserido.`);
       return;
     }
 
     const unit = this.selectedProduct.measure_type;
 
     try {
+      // Criar doação
       const donation: Donation = {
         donation_date: new Date(),
-        user_id: this.user.id!.toString()
+        user_id: parseInt(this.user.id!.toString())
       };
 
-      const donationResponse = await this.donationCreateService.create(donation);
+      await this.donationCreateService.create(donation);
       
-      const donationProduct: DonationProduct = {
-        quantity: quantityNum,
-        expirationDate: this.isToyProduct() ? null : new Date(expirationDate),
-        unit: unit,
-        donation_id: donationResponse.id!,
-        product_id: productId
+      // Buscar a doação recém-criada para obter o ID
+      const donations = await firstValueFrom(
+        this.http.get<any[]>(`${environment.api_endpoint}/donation/user/${this.user.id}`)
+      );
+      const latestDonation = donations[donations.length - 1]; // Última doação
+      
+      // Formatar data de expiração para string (yyyy-mm-dd)
+      let formattedExpirationDate: string | null = null;
+      if (!this.isToyProduct() && expirationDate) {
+        const parts = expirationDate.split('/');
+        if (parts.length === 3) {
+          formattedExpirationDate = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+        }
+      }
+      
+      // Validar e garantir que unit não seja null
+      const validUnit = unit || this.selectedProduct?.measure_type || 'un';
+      
+      // Criar produto da doação
+      const donationProduct = {
+        quantity: quantityNum, // donation_option (ex: 5kg)
+        expirationDate: formattedExpirationDate,
+        unit: validUnit,
+        donationId: latestDonation.id,
+        productId: parseInt(productId)
       };
-
+      
       await this.donationProductCreateService.create(donationProduct);
 
-      await this.updateStock(productId, quantity, unitsNum);
+      // Processar para estoque com o número de unidades
+      await firstValueFrom(
+        this.http.post<boolean>(`${environment.api_endpoint}/donation/${latestDonation.id}/process-to-stock`, {
+          units: unitsNum
+        })
+      );
 
-      alert('Doação registrada com sucesso!');
+      this.toastr.success('Doação registrada e processada para o estoque com sucesso!');
       this.router.navigate(['/main']);
       
     } catch (error) {
       console.error('Erro ao registrar doação:', error);
-      alert('Erro ao registrar doação. Tente novamente.');
+      this.toastr.error('Erro ao registrar doação. Tente novamente.');
     }
   }
 
-  private async updateStock(productId: string, donationOption: string, units: number): Promise<void> {
-    try {
-      const effectiveDonationOption = this.selectedProduct?.options_donation ? donationOption : "1";
-      
-      const stockResponse = await fetch(`http://localhost:3000/stock?product_id=${productId}&donation_option=${effectiveDonationOption}`);
-      const stockRecords = await stockResponse.json();
-      
-      if (stockRecords.length > 0) {
-        // Atualizar estoque existente
-        const stockRecord = stockRecords[0];
-        const newStock = stockRecord.actual_stock + units;
-        
-        await fetch(`http://localhost:3000/stock/${stockRecord.id}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ actual_stock: newStock })
-        });
-      } else {
-        const newStockRecord = {
-          product_id: productId,
-          donation_option: effectiveDonationOption,
-          actual_stock: units
-        };
-        
-        await fetch('http://localhost:3000/stock', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(newStockRecord)
-        });
-      }
-    } catch (error) {
-      console.error('Erro ao atualizar estoque:', error);
-      throw error;
-    }
-  }
+
 
   async requestBasicBasket(): Promise<void> {
     if (this.isProcessingRequest || !this.user) {
@@ -380,11 +384,11 @@ export class MakeActionComponent implements OnInit {
     try {
       const hasRequestedThisMonth = await this.checkMonthlyBasketRequest('basic');
       if (hasRequestedThisMonth) {
-        alert('Você já solicitou uma cesta básica neste mês. Aguarde o próximo mês para fazer uma nova solicitação.');
+        this.toastr.warning('Você já solicitou uma cesta básica neste mês. Aguarde o próximo mês para fazer uma nova solicitação.');
         return;
       }
 
-      const peopleQuantity = this.user.peopleQuantity || this.user.people_quantity ? parseInt((this.user.peopleQuantity || this.user.people_quantity)!.toString()) : 1;
+      const peopleQuantity = this.user.peopleQuantity || (this.user.people_quantity ? parseInt(this.user.people_quantity.toString()) : 1);
       const hasChildren = this.user.hasChildren || this.user.has_children || false;
       
       const calculatedBasket = this.calculateBasketLocally(peopleQuantity, hasChildren);
@@ -393,7 +397,7 @@ export class MakeActionComponent implements OnInit {
       
     } catch (error) {
       console.error('Erro ao solicitar cesta básica:', error);
-      alert('Erro ao solicitar cesta básica. Tente novamente.');
+      this.toastr.error('Erro ao solicitar cesta básica. Tente novamente.');
     } finally {
       this.isProcessingRequest = false;
     }
@@ -401,14 +405,14 @@ export class MakeActionComponent implements OnInit {
 
   async requestHygieneBasket(): Promise<void> {
     if (!this.user) {
-      alert('Usuário não encontrado.');
+      this.toastr.error('Usuário não encontrado.');
       return;
     }
 
     try {
       const hasRequestedThisMonth = await this.checkMonthlyBasketRequest('hygiene');
       if (hasRequestedThisMonth) {
-        alert('Você já solicitou uma cesta de higiene neste mês. Aguarde o próximo mês para fazer uma nova solicitação.');
+        this.toastr.warning('Você já solicitou uma cesta de higiene neste mês. Aguarde o próximo mês para fazer uma nova solicitação.');
         return;
       }
 
@@ -417,7 +421,7 @@ export class MakeActionComponent implements OnInit {
       
     } catch (error) {
       console.error('Erro ao solicitar cesta de higiene:', error);
-      alert('Erro ao solicitar cesta de higiene. Tente novamente.');
+      this.toastr.error('Erro ao solicitar cesta de higiene. Tente novamente.');
     }
   }
 
@@ -425,19 +429,20 @@ export class MakeActionComponent implements OnInit {
     if (!this.user?.id) return false;
 
     try {
-      const response = await fetch(`http://localhost:3000/basket_request?user_id=${this.user.id}&basket_type=${basketType}`);
-      if (response.ok) {
-        const requests = await response.json();
-        const now = new Date();
-        const currentMonth = now.getMonth();
-        const currentYear = now.getFullYear();
+      const requests = await firstValueFrom(
+        this.http.get<any[]>(`${environment.api_endpoint}/basket_request?user_id=${this.user.id}`)
+      );
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      const currentYear = now.getFullYear();
 
-        return requests.some((request: any) => {
-          const requestDate = new Date(request.request_date);
-          return requestDate.getMonth() === currentMonth && requestDate.getFullYear() === currentYear;
-        });
-      }
-      return false;
+      return requests.some((request: any) => {
+        const requestDate = new Date(request.requestDate || request.request_date);
+        const basketTypeField = request.basketType || request.basket_type;
+        return basketTypeField === basketType && 
+               requestDate.getMonth() === currentMonth && 
+               requestDate.getFullYear() === currentYear;
+      });
     } catch (error) {
       console.error('Erro ao verificar solicitações mensais:', error);
       return false;
@@ -448,23 +453,22 @@ export class MakeActionComponent implements OnInit {
     if (!this.user?.id) return;
 
     try {
-      const response = await fetch(`http://localhost:3000/basket_request?user_id=${this.user.id}`);
-      if (response.ok) {
-        const requests = await response.json();
-        
-        const basicRequests = requests.filter((r: any) => r.basket_type === 'basic');
-        const hygieneRequests = requests.filter((r: any) => r.basket_type === 'hygiene');
-        
-        if (basicRequests.length > 0) {
-          this.lastBasicRequest = new Date(Math.max(...basicRequests.map((r: any) => new Date(r.request_date).getTime())));
-        }
-        
-        if (hygieneRequests.length > 0) {
-          this.lastHygieneRequest = new Date(Math.max(...hygieneRequests.map((r: any) => new Date(r.request_date).getTime())));
-        }
-        
-        this.updateRequestAvailability();
+      const requests = await firstValueFrom(
+        this.http.get<any[]>(`${environment.api_endpoint}/basket_request?user_id=${this.user.id}`)
+      );
+      
+      const basicRequests = requests.filter((r: any) => (r.basketType || r.basket_type) === 'basic');
+      const hygieneRequests = requests.filter((r: any) => (r.basketType || r.basket_type) === 'hygiene');
+      
+      if (basicRequests.length > 0) {
+        this.lastBasicRequest = new Date(Math.max(...basicRequests.map((r: any) => new Date(r.requestDate || r.request_date).getTime())));
       }
+      
+      if (hygieneRequests.length > 0) {
+        this.lastHygieneRequest = new Date(Math.max(...hygieneRequests.map((r: any) => new Date(r.requestDate || r.request_date).getTime())));
+      }
+      
+      this.updateRequestAvailability();
     } catch (error) {
       console.error('Erro ao verificar disponibilidade de solicitações:', error);
     }
@@ -532,11 +536,11 @@ export class MakeActionComponent implements OnInit {
 
   async previewBasket(): Promise<void> {
     if (!this.user) {
-      alert('Usuário não encontrado.');
+      this.toastr.error('Usuário não encontrado.');
       return;
     }
 
-    const peopleQuantity = this.user.peopleQuantity || this.user.people_quantity ? parseInt((this.user.peopleQuantity || this.user.people_quantity)!.toString()) : 1;
+    const peopleQuantity = this.user.peopleQuantity || (this.user.people_quantity ? parseInt(this.user.people_quantity.toString()) : 1);
     const hasChildren = this.user.hasChildren || this.user.has_children || false;
     
     this.calculatedBasket = this.calculateBasketLocally(peopleQuantity, hasChildren);
@@ -627,81 +631,214 @@ export class MakeActionComponent implements OnInit {
   }
 
   private async processHygieneBasketRequest(hygieneBasket: BasketItem[]): Promise<void> {
+    // Check stock availability first
+    for (const basketItem of hygieneBasket) {
+      const hasStock = await this.checkStockAvailability(basketItem.productId.toString(), basketItem.quantity);
+      if (!hasStock) {
+        this.toastr.error(`Estoque insuficiente para ${basketItem.productName}. Solicitação cancelada.`);
+        return;
+      }
+    }
+
+    // Update stock
     for (const basketItem of hygieneBasket) {
       await this.updateStockForHygiene(basketItem.productId.toString(), basketItem.quantity);
     }
 
     const basketRequest = {
       user_id: this.user?.id || '',
-      request_date: new Date(),
+      request_date: new Date().toISOString(),
       basket_type: 'hygiene',
       status: 'pending',
-      calculated_items: hygieneBasket
+      calculated_items: JSON.stringify(hygieneBasket)
     };
 
-    const response = await fetch('http://localhost:3000/basket_request', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(basketRequest)
-    });
+    await firstValueFrom(
+      this.http.post(`${environment.api_endpoint}/basket_request`, basketRequest)
+    );
 
-    if (response.ok) {
-      alert('Solicitação de cesta de higiene registrada com sucesso!');
-      this.router.navigate(['/main']);
-    } else {
-      throw new Error('Erro ao registrar solicitação');
+    // Update availability after successful request
+    this.lastHygieneRequest = new Date();
+    this.updateRequestAvailability();
+
+    this.toastr.success('Solicitação de cesta de higiene registrada com sucesso!');
+    this.router.navigate(['/main']);
+  }
+
+  private async checkStockAvailability(productId: string, requiredQuantity: number): Promise<boolean> {
+    try {
+      const stock = await firstValueFrom(
+        this.http.get<any[]>(`${environment.api_endpoint}/stock`)
+      );
+      console.log('All stock:', stock);
+      const productStock = stock.filter(item => {
+        const itemProductId = item.product_id || item.productId;
+        console.log(`Comparing ${itemProductId} with ${productId}`);
+        return itemProductId == productId;
+      });
+      console.log(`Filtered stock for product ${productId}:`, productStock);
+      const totalStock = productStock.reduce((sum, item) => {
+        const actualStock = item.actual_stock || item.actualStock || 0;
+        return sum + actualStock;
+      }, 0);
+      console.log(`Product ${productId}: Required ${requiredQuantity}, Available ${totalStock}`);
+      return totalStock >= requiredQuantity;
+    } catch (error) {
+      console.error('Erro ao verificar estoque:', error);
+      return false;
     }
   }
 
   private async updateStockForHygiene(productId: string, quantity: number): Promise<void> {
     try {
-      const stockResponse = await fetch(`http://localhost:3000/stock?product_id=${productId}&donation_option=1`);
-      const stockRecords = await stockResponse.json();
+      const stocks = await firstValueFrom(
+        this.http.get<any[]>(`${environment.api_endpoint}/stock/product/${productId}`)
+      );
       
-      if (stockRecords.length > 0) {
-        const stockRecord = stockRecords[0];
-        const newStock = Math.max(0, stockRecord.actual_stock - quantity);
+      if (stocks.length > 0) {
+        const stock = stocks[0];
+        const updatedStock = {
+          ...stock,
+          actualStock: stock.actualStock - quantity
+        };
         
-        await fetch(`http://localhost:3000/stock/${stockRecord.id}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ actual_stock: newStock })
-        });
+        await firstValueFrom(
+          this.http.put(`${environment.api_endpoint}/stock/${stock.id}`, updatedStock)
+        );
       }
     } catch (error) {
       console.error('Erro ao atualizar estoque de higiene:', error);
     }
   }
 
+  private async updateStockForBasket(productId: string, quantity: number): Promise<void> {
+    try {
+      const stocks = await firstValueFrom(
+        this.http.get<any[]>(`${environment.api_endpoint}/stock/product/${productId}`)
+      );
+      
+      if (stocks.length > 0) {
+        // Find the best matching donation option for the required quantity
+        const product = this.products.find(p => p.id == productId);
+        let targetStock = stocks[0];
+        
+        if (product && product.optionsDonation && product.optionsDonation.length > 0) {
+          const donationOption = product.optionsDonation.find(option => option >= quantity) || product.optionsDonation[0];
+          targetStock = stocks.find(s => s.donationOption === donationOption) || stocks[0];
+        }
+        
+        const updatedStock = {
+          ...targetStock,
+          actualStock: targetStock.actualStock - quantity
+        };
+        
+        await firstValueFrom(
+          this.http.put(`${environment.api_endpoint}/stock/${targetStock.id}`, updatedStock)
+        );
+      }
+    } catch (error) {
+      console.error('Erro ao atualizar estoque:', error);
+    }
+  }
+
   private async processBasketRequest(calculatedBasket: BasketItem[], peopleQuantity: number, hasChildren: boolean): Promise<void> {
     this.calculatedBasket = calculatedBasket;
     
+    // Check stock availability first
     for (const basketItem of calculatedBasket) {
-      await this.productUpdateService.updateStock(basketItem.productId.toString(), -basketItem.quantity);
+      const hasStock = await this.checkStockAvailability(basketItem.productId.toString(), basketItem.quantity);
+      if (!hasStock) {
+        this.toastr.error(`Estoque insuficiente para ${basketItem.productName}. Solicitação cancelada.`);
+        return;
+      }
+    }
+    
+    // Update stock
+    for (const basketItem of calculatedBasket) {
+      await this.updateStockForBasket(basketItem.productId.toString(), basketItem.quantity);
     }
 
     const basketRequest = {
       user_id: this.user?.id || '',
-      request_date: new Date(),
+      request_date: new Date().toISOString(),
       basket_type: 'basic',
       status: 'pending',
       people_quantity: peopleQuantity,
       has_children: hasChildren,
-      calculated_items: calculatedBasket
+      calculated_items: JSON.stringify(calculatedBasket)
     };
 
-    const response = await fetch('http://localhost:3000/basket_request', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(basketRequest)
-    });
+    await firstValueFrom(
+      this.http.post(`${environment.api_endpoint}/basket_request`, basketRequest)
+    );
 
-    if (response.ok) {
-      alert(`Solicitação de cesta básica registrada com sucesso! Sua cesta foi calculada para ${peopleQuantity} pessoa(s)${hasChildren ? ' incluindo itens para crianças' : ''}.`);
-      this.router.navigate(['/main']);
-    } else {
-      throw new Error('Erro ao registrar solicitação');
+    // Update availability after successful request
+    this.lastBasicRequest = new Date();
+    this.updateRequestAvailability();
+
+    this.toastr.success(`Solicitação de cesta básica registrada com sucesso! Sua cesta foi calculada para ${peopleQuantity} pessoa(s)${hasChildren ? ' incluindo itens para crianças' : ''}.`);
+    this.router.navigate(['/main']);
+  }
+
+  async checkLowStockProducts(): Promise<void> {
+    try {
+      const stocks = await firstValueFrom(
+        this.http.get<any[]>(`${environment.api_endpoint}/stock`)
+      );
+      
+      const lowStockItems: string[] = [];
+      const stockThreshold = 5; // Limite para considerar estoque baixo
+      
+      // Agrupar estoque por produto
+      const productStocks = new Map<number, number>();
+      
+      stocks.forEach(stock => {
+        const productId = stock.productId || stock.product_id;
+        const actualStock = stock.actualStock || stock.actual_stock || 0;
+        const currentTotal = productStocks.get(productId) || 0;
+        productStocks.set(productId, currentTotal + actualStock);
+      });
+      
+      // Verificar quais produtos estão com estoque baixo
+      productStocks.forEach((totalStock, productId) => {
+        if (totalStock <= stockThreshold) {
+          const product = this.products.find(p => parseInt(p.id!) === productId);
+          if (product) {
+            lowStockItems.push(`${product.name} (${totalStock} unidades)`);
+          }
+        }
+      });
+      
+      this.lowStockProducts = lowStockItems;
+      this.showLowStockWarning = lowStockItems.length > 0;
+      
+      console.log('Produtos com estoque baixo:', this.lowStockProducts);
+    } catch (error) {
+      console.error('Erro ao verificar estoque baixo:', error);
     }
   }
+
+  dismissLowStockWarning(): void {
+    this.showLowStockWarning = false;
+  }
+
+  isProductLowStock(productId: string): boolean {
+    const productIdNum = parseInt(productId);
+    return this.lowStockProducts.some(item => {
+      const product = this.products.find(p => parseInt(p.id!) === productIdNum);
+      return product && item.includes(product.name);
+    });
+  }
+
+  getProductStockInfo(productId: string): string {
+    const productIdNum = parseInt(productId);
+    const stockItem = this.lowStockProducts.find(item => {
+      const product = this.products.find(p => parseInt(p.id!) === productIdNum);
+      return product && item.includes(product.name);
+    });
+    return stockItem ? stockItem.match(/\((\d+) unidades\)/)?.[1] || '0' : '';
+  }
+
+
 
 }

@@ -72,10 +72,11 @@ public class MunicipalityRestController {
     @PostMapping
     public ResponseEntity<Municipality> create(@RequestBody final Municipality data) {
         final int id = municipalityService.create(data);
+        data.setId(id);
 
         final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
 
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(data);
     }
 
     @PutMapping("/{id}")

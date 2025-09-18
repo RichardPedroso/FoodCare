@@ -28,9 +28,7 @@ public class MunicipalityServiceImpl implements MunicipalityService {
         if (entity.getCity() == null || entity.getCity().isEmpty()) {
             return invalidResponse;
         }
-        if (entity.getZipCode() == null || entity.getZipCode().isEmpty()) {
-            return invalidResponse;
-        }
+
         
         final int id = municipalityDao.create(entity);
         return id;

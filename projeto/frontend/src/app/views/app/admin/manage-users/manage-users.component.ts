@@ -7,6 +7,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { User } from '../../../../domain/model/user';
+import { UserReadService } from '../../../../services/user/user-read.service';
+import { UserUpdateService } from '../../../../services/user/user-update.service';
 
 @Component({
   selector: 'app-manage-users',
@@ -22,16 +24,20 @@ export class ManageUsersComponent implements OnInit {
   searchTerm = '';
   selectedFilter = 'recentes';
 
+  constructor(
+    private userReadService: UserReadService,
+    private userUpdateService: UserUpdateService
+  ) {}
+
   async ngOnInit() {
     await this.loadBeneficiaries();
   }
 
   async loadBeneficiaries() {
     try {
-      const response = await fetch('http://localhost:3000/user');
-      const users = await response.json();
+      const users = await this.userReadService.findAll();
       this.allBeneficiaries = users.filter((user: User) => 
-        user.user_type === 'beneficiary' && 
+        (user.userType === 'beneficiary' || user.user_type === 'beneficiary') && 
         user.documents && 
         user.documents.length > 0
       );
@@ -50,18 +56,10 @@ export class ManageUsersComponent implements OnInit {
     if (!this.selectedUser) return;
 
     try {
-      const updatedUser = { ...this.selectedUser, able };
-      const response = await fetch(`http://localhost:3000/user/${this.selectedUser.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedUser)
-      });
-
-      if (response.ok) {
-        this.selectedUser.able = able;
-        await this.loadBeneficiaries();
-        this.closeDocuments();
-      }
+      await this.userUpdateService.updateUserStatus(this.selectedUser.id!.toString(), able);
+      this.selectedUser.able = able;
+      await this.loadBeneficiaries();
+      this.closeDocuments();
     } catch (error) {
       console.error('Erro ao atualizar usuário:', error);
     }

@@ -1,5 +1,8 @@
 /* FoodCare Global Styles - Sistema de Design Clean */
 
+/* Toastr Styles */
+@import 'ngx-toastr/toastr';
+
 :root {
   /* Paleta de Cores Principal */
   --primary-bg: #f3decc;

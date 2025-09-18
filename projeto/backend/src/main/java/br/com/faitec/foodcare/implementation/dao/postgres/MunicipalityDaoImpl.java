@@ -20,11 +20,15 @@ public class MunicipalityDaoImpl implements MunicipalityDao {
 
     @Override
     public int create(Municipality entity) {
-        String sql = "INSERT INTO municipality(name) VALUES (?)";
+        String sql = "INSERT INTO municipality(street, number, neighborhood, city, zip_code) VALUES (?, ?, ?, ?, ?)";
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, entity.getCity());
+            preparedStatement.setString(1, entity.getStreet());
+            preparedStatement.setString(2, entity.getNumber());
+            preparedStatement.setString(3, entity.getNeighborhood());
+            preparedStatement.setString(4, entity.getCity());
+            preparedStatement.setString(5, entity.getZipCode());
             preparedStatement.execute();
             
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -67,7 +71,11 @@ public class MunicipalityDaoImpl implements MunicipalityDao {
             if (resultSet.next()) {
                 Municipality municipality = new Municipality();
                 municipality.setId(resultSet.getInt("id"));
-                municipality.setCity(resultSet.getString("name"));
+                municipality.setStreet(resultSet.getString("street"));
+                municipality.setNumber(resultSet.getString("number"));
+                municipality.setNeighborhood(resultSet.getString("neighborhood"));
+                municipality.setCity(resultSet.getString("city"));
+                municipality.setZipCode(resultSet.getString("zip_code"));
                 
                 resultSet.close();
                 preparedStatement.close();
@@ -94,7 +102,11 @@ public class MunicipalityDaoImpl implements MunicipalityDao {
             while (resultSet.next()) {
                 Municipality municipality = new Municipality();
                 municipality.setId(resultSet.getInt("id"));
-                municipality.setCity(resultSet.getString("name"));
+                municipality.setStreet(resultSet.getString("street"));
+                municipality.setNumber(resultSet.getString("number"));
+                municipality.setNeighborhood(resultSet.getString("neighborhood"));
+                municipality.setCity(resultSet.getString("city"));
+                municipality.setZipCode(resultSet.getString("zip_code"));
                 municipalities.add(municipality);
             }
             
@@ -108,12 +120,16 @@ public class MunicipalityDaoImpl implements MunicipalityDao {
 
     @Override
     public void update(int id, Municipality entity) {
-        String sql = "UPDATE municipality SET name = ? WHERE id = ?";
+        String sql = "UPDATE municipality SET street = ?, number = ?, neighborhood = ?, city = ?, zip_code = ? WHERE id = ?";
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, entity.getCity());
-            preparedStatement.setInt(2, id);
+            preparedStatement.setString(1, entity.getStreet());
+            preparedStatement.setString(2, entity.getNumber());
+            preparedStatement.setString(3, entity.getNeighborhood());
+            preparedStatement.setString(4, entity.getCity());
+            preparedStatement.setString(5, entity.getZipCode());
+            preparedStatement.setInt(6, id);
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -123,7 +139,7 @@ public class MunicipalityDaoImpl implements MunicipalityDao {
 
     @Override
     public List<Municipality> findByCity(String city) {
-        String sql = "SELECT * FROM municipality WHERE LOWER(name) LIKE LOWER(?)";
+        String sql = "SELECT * FROM municipality WHERE LOWER(city) LIKE LOWER(?)";
         List<Municipality> municipalities = new ArrayList<>();
         
         try {
@@ -134,7 +150,11 @@ public class MunicipalityDaoImpl implements MunicipalityDao {
             while (resultSet.next()) {
                 Municipality municipality = new Municipality();
                 municipality.setId(resultSet.getInt("id"));
-                municipality.setCity(resultSet.getString("name"));
+                municipality.setStreet(resultSet.getString("street"));
+                municipality.setNumber(resultSet.getString("number"));
+                municipality.setNeighborhood(resultSet.getString("neighborhood"));
+                municipality.setCity(resultSet.getString("city"));
+                municipality.setZipCode(resultSet.getString("zip_code"));
                 municipalities.add(municipality);
             }
             

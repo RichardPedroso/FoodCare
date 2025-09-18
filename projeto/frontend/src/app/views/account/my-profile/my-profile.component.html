@@ -14,7 +14,7 @@
           <div class="profile-info">
             <h2>{{user?.name}}</h2>
             <span class="user-type-badge" [class]="user?.user_type">
-              {{user?.user_type === 'donor' ? 'Doador' : 'Beneficiário'}}
+              {{user?.user_type === 'donor' ? 'Doador' : user?.user_type === 'admin' ? 'Administrador' : 'Beneficiário'}}
             </span>
           </div>
         </div>

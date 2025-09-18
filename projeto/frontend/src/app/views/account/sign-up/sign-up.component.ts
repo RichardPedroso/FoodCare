@@ -18,6 +18,9 @@ import * as fontawesome from '@fortawesome/free-solid-svg-icons'
 import { AuthenticationService } from '../../../services/security/authentication.service';
 import { User } from '../../../domain/model/user';
 import { UserCreateService } from '../../../services/user/user-create.service';
+import { MunicipalityCreateService } from '../../../services/municipality/municipality-create.service';
+import { environment } from '../../../../environments/environment.development';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -71,9 +74,10 @@ export class SignUpComponent implements OnInit {
   constructor(
     private formbuilder: FormBuilder,
     private userCreateService: UserCreateService,
-
+    private municipalityCreateService: MunicipalityCreateService,
     private authenticationService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -293,6 +297,18 @@ export class SignUpComponent implements OnInit {
     this.signUpForm.get('zipCode')?.setValue(formattedValue, { emitEvent: false });
   }
 
+  formatFamilyIncome(event: any): void {
+    let value = event.target.value.replace(/\D/g, '');
+    let numericValue = parseFloat(value) / 100;
+    let formattedValue = '';
+    
+    if (value.length > 0) {
+      formattedValue = `R$ ${numericValue.toFixed(2).replace('.', ',')}`;
+    }
+    
+    this.signUpForm.get('familyIncome')?.setValue(formattedValue, { emitEvent: false });
+  }
+
   arePasswordsValid() {
     return this.signUpForm.controls['password'].value === this.signUpForm.controls['repeatPassword'].value;
   }
@@ -315,16 +331,11 @@ export class SignUpComponent implements OnInit {
 
     try{
       // Criar municipality primeiro
-      const municipalityResponse = await fetch('http://localhost:3000/municipality', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newMunicipality)
-      });
-      
-      const createdMunicipality = await municipalityResponse.json();
+      const createdMunicipality = await this.municipalityCreateService.create(newMunicipality);
       console.log("municipality criado com sucesso: ", createdMunicipality);
+
+      // Como o backend não retorna o objeto criado, usar municipalityId = 1 como padrão
+      const municipalityId = createdMunicipality?.id ? parseInt(createdMunicipality.id.toString()) : 1;
 
       // Criar usuário com municipality_id
       const newUser: User = {
@@ -335,7 +346,7 @@ export class SignUpComponent implements OnInit {
         userType: formDataSignUp.userType,
         familyIncome: 0,
         peopleQuantity: 0,
-        municipalityId: createdMunicipality.id,
+        municipalityId: municipalityId,
         hasChildren: false
       };
 
@@ -349,12 +360,16 @@ export class SignUpComponent implements OnInit {
       const createdUser = await this.userCreateService.create(newUser);
       console.log("usuario criado com sucesso: ", createdUser);
 
-      this.authenticationService.addDataToLocalStorage(createdUser);
-      
-      if (createdUser.userType === 'admin') {
-        this.router.navigate(['/main/admin/dashboard']);
+      if (createdUser.userType === 'beneficiary') {
+        this.toastr.success('Conta criada com sucesso! Sua aptidão será validada por um administrador. Você poderá fazer login após a aprovação.');
+        this.router.navigate(['/account/sign-in']);
       } else {
-        this.router.navigate(['/main']);
+        this.authenticationService.addDataToLocalStorage(createdUser);
+        if (createdUser.userType === 'admin') {
+          this.router.navigate(['/main/admin/dashboard']);
+        } else {
+          this.router.navigate(['/main']);
+        }
       }
     }catch(error){
       console.error("erro ao criar usuario ou municipality:", error);

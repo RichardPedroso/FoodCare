@@ -13,39 +13,48 @@ export class UserUpdateService {
 
   constructor(private http: HttpClient, private userReadService: UserReadService) { }
 
-  async update(id: string, name: string): Promise<any>{
-    let userToUpdate: User = await this.userReadService.findById(id);
-    if(userToUpdate == null){
-      throw new Error('Usuário não encontrado');
+  async update(id: string, nameOrUser: string | User): Promise<any>{
+    if (typeof nameOrUser === 'string') {
+      // Comportamento original - atualizar apenas o nome
+      let userToUpdate: User = await this.userReadService.findById(id);
+      if(userToUpdate == null){
+        throw new Error('Usuário não encontrado');
+      }
+      userToUpdate.name = nameOrUser;
+      return firstValueFrom(this.http.put<any>(`${environment.api_endpoint}/user/${id}`, userToUpdate));
+    } else {
+      // Novo comportamento - atualizar com objeto User completo
+      const updateUserDto = {
+        id: parseInt(id),
+        name: nameOrUser.name,
+        email: nameOrUser.email,
+        phone: nameOrUser.phone,
+        userType: nameOrUser.userType,
+        familyIncome: nameOrUser.familyIncome || 0,
+        peopleQuantity: nameOrUser.peopleQuantity || 1,
+        municipalityId: nameOrUser.municipalityId || 0,
+        hasChildren: nameOrUser.hasChildren || false,
+        able: nameOrUser.able
+      };
+      return firstValueFrom(this.http.put<any>(`${environment.api_endpoint}/user/${id}`, updateUserDto));
     }
-
-    userToUpdate.name = name;
-
-    return firstValueFrom(this.http.put<any>(`${environment.api_endpoint}/user/${id}`, userToUpdate));
   }
 
   async updatePassword(id: string, newPassword: string): Promise<any>{
-    console.log('UserUpdateService: Buscando usuário com ID:', id);
     const userToUpdate: User | null = await this.userReadService.findById(id);
     
-    console.log('UserUpdateService: Usuário encontrado:', userToUpdate);
-
     if(!userToUpdate){
       throw new Error('Usuário não encontrado');  
     }
 
-    console.log('UserUpdateService: Senha atual:', userToUpdate.password);
-    userToUpdate.password = newPassword;
-    console.log('UserUpdateService: Nova senha:', userToUpdate.password);
+    const updatePasswordDto = {
+      id: parseInt(id),
+      oldPassword: userToUpdate.password,
+      newPassword: newPassword
+    };
     
-    const updateUrl = `${environment.api_endpoint}/user/${id}`;
-    console.log('UserUpdateService: URL de atualização:', updateUrl);
-    console.log('UserUpdateService: Dados a serem enviados:', userToUpdate);
-
-    const result = await firstValueFrom(this.http.put<User>(updateUrl, userToUpdate));
-    console.log('UserUpdateService: Resultado da atualização:', result);
-    
-    return result;
+    const updateUrl = `${environment.api_endpoint}/user/update-password`;
+    return firstValueFrom(this.http.put<any>(updateUrl, updatePasswordDto));
   }
 
   async updateUser(updateUserDto: UpdateUserDto): Promise<User> {
@@ -65,6 +74,11 @@ export class UserUpdateService {
     
     const updateUrl = `${environment.api_endpoint}/user/${id}`;
     return firstValueFrom(this.http.put<User>(updateUrl, userToUpdate));
+  }
+
+  async updateUserStatus(id: string, able: boolean): Promise<any> {
+    const updateUrl = `${environment.api_endpoint}/user/${id}/status?able=${able}`;
+    return firstValueFrom(this.http.put<any>(updateUrl, {}));
   }
 
 }

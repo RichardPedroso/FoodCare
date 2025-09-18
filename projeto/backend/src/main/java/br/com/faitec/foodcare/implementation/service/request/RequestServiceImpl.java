@@ -52,7 +52,7 @@ public class RequestServiceImpl implements RequestService {
         
         // Calcular cestas necessárias baseado no usuário
         UserModel user = userService.findById(entity.getUserId());
-        if (user != null && user.getUserType() == UserModel.UserType.BENEFICIARY) {
+        if (user != null && user.getUserType() == UserModel.UserType.beneficiary) {
             calculateRequiredBaskets(user, entity.getRequestType());
         }
         

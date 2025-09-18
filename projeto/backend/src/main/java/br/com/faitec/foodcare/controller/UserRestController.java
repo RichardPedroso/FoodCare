@@ -6,6 +6,7 @@ import br.com.faitec.foodcare.domain.Request;
 import br.com.faitec.foodcare.domain.UserModel;
 import br.com.faitec.foodcare.domain.dto.UpdatePasswordDto;
 import br.com.faitec.foodcare.domain.dto.UpdateUserDto;
+import br.com.faitec.foodcare.domain.dto.UserResponseDto;
 import br.com.faitec.foodcare.port.service.municipality.MunicipalityService;
 import br.com.faitec.foodcare.port.service.request.RequestService;
 import br.com.faitec.foodcare.port.service.user.UserService;
@@ -38,17 +39,20 @@ public class UserRestController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<UserModel>> getEntities() {
+    public ResponseEntity<List<UserResponseDto>> getEntities() {
         List<UserModel> entities = userService.findAll();
-
-        return ResponseEntity.ok(entities);
+        List<UserResponseDto> response = entities.stream()
+                .map(UserResponseDto::fromUserModel)
+                .toList();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserModel> getEntityById(@PathVariable final int id) {
+    public ResponseEntity<UserResponseDto> getEntityById(@PathVariable final int id) {
         UserModel entity = userService.findById(id);
 
-        return entity == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(entity);
+        return entity == null ? ResponseEntity.notFound().build() : 
+               ResponseEntity.ok(UserResponseDto.fromUserModel(entity));
     }
 
     @DeleteMapping("/{id}")
@@ -59,14 +63,24 @@ public class UserRestController {
 
     @PostMapping
     public ResponseEntity<UserModel> create(@RequestBody final UserModel data) {
-        final int id = userService.create(data);
-
-        final URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(id)
-                .toUri();
-        return ResponseEntity.created(uri).build();
+        try {
+            final int id = userService.create(data);
+            
+            if (id == -1) {
+                return ResponseEntity.badRequest().build();
+            }
+            
+            data.setId(id);
+            final URI uri = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{id}")
+                    .buildAndExpand(id)
+                    .toUri();
+            return ResponseEntity.created(uri).body(data);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @PostMapping("/beneficiary")
@@ -78,7 +92,7 @@ public class UserRestController {
         try {
             UserModel user = new com.fasterxml.jackson.databind.ObjectMapper().readValue(userJson, UserModel.class);
             
-            if (user.getUserType() == UserModel.UserType.BENEFICIARY) {
+            if (user.getUserType() == UserModel.UserType.beneficiary) {
                 if (documents != null && !documents.isEmpty()) {
                     List<String> documentPaths = fileStorageService.storeFiles(documents, "documents");
                     user.setDocuments(documentPaths);
@@ -124,7 +138,7 @@ public class UserRestController {
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<UserModel> getEntityByEmail(@PathVariable final String email) {
+    public ResponseEntity<UserResponseDto> getEntityByEmail(@PathVariable final String email) {
 
         final UserModel entity = userService.findByEmail(email);
 
@@ -132,7 +146,7 @@ public class UserRestController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(entity);
+        return ResponseEntity.ok(UserResponseDto.fromUserModel(entity));
     }
 
     @GetMapping("/{id}/municipality")
@@ -177,13 +191,16 @@ public class UserRestController {
     }
     
     @GetMapping("/beneficiaries")
-    public ResponseEntity<List<UserModel>> getBeneficiaries() {
-        List<UserModel> beneficiaries = userService.findByUserType(UserModel.UserType.BENEFICIARY);
-        return ResponseEntity.ok(beneficiaries);
+    public ResponseEntity<List<UserResponseDto>> getBeneficiaries() {
+        List<UserModel> beneficiaries = userService.findByUserType(UserModel.UserType.beneficiary);
+        List<UserResponseDto> response = beneficiaries.stream()
+                .map(UserResponseDto::fromUserModel)
+                .toList();
+        return ResponseEntity.ok(response);
     }
     
     @GetMapping("/beneficiaries/status/{status}")
-    public ResponseEntity<List<UserModel>> getBeneficiariesByStatus(@PathVariable String status) {
+    public ResponseEntity<List<UserResponseDto>> getBeneficiariesByStatus(@PathVariable String status) {
         Boolean able = null;
         if ("approved".equals(status)) {
             able = true;
@@ -192,7 +209,10 @@ public class UserRestController {
         }
         
         List<UserModel> beneficiaries = userService.findByAbleStatus(able);
-        return ResponseEntity.ok(beneficiaries);
+        List<UserResponseDto> response = beneficiaries.stream()
+                .map(UserResponseDto::fromUserModel)
+                .toList();
+        return ResponseEntity.ok(response);
     }
     
     @PutMapping("/{id}/status")
@@ -202,8 +222,11 @@ public class UserRestController {
     }
     
     @GetMapping("/search")
-    public ResponseEntity<List<UserModel>> searchUsers(@RequestParam String name) {
+    public ResponseEntity<List<UserResponseDto>> searchUsers(@RequestParam String name) {
         List<UserModel> users = userService.searchByName(name);
-        return ResponseEntity.ok(users);
+        List<UserResponseDto> response = users.stream()
+                .map(UserResponseDto::fromUserModel)
+                .toList();
+        return ResponseEntity.ok(response);
     }
 }

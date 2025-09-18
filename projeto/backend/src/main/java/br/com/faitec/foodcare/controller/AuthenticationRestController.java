@@ -2,6 +2,7 @@ package br.com.faitec.foodcare.controller;
 
 import br.com.faitec.foodcare.domain.UserModel;
 import br.com.faitec.foodcare.domain.dto.AuthenticationDto;
+import br.com.faitec.foodcare.domain.dto.UserResponseDto;
 import br.com.faitec.foodcare.port.service.authentication.AuthenticationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +34,7 @@ public class AuthenticationRestController {
         }
 
         Map<String, Object> response = new HashMap<>();
-        response.put("user", authenticatedUser);
+        response.put("user", UserResponseDto.fromUserModel(authenticatedUser));
         
         return ResponseEntity.ok(response);
     }

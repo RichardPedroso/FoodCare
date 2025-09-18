@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {MatCardModule} from '@angular/material/card'; 
 import { UserUpdateService } from '../../../services/user/user-update.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -47,7 +48,8 @@ export class ResetPasswordComponent implements OnInit{
     private formBuilder: FormBuilder,
     private http: HttpClient,
     private router: Router,
-    private userUpdateService: UserUpdateService
+    private userUpdateService: UserUpdateService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -112,11 +114,11 @@ export class ResetPasswordComponent implements OnInit{
 
     try {
       await this.userUpdateService.updatePassword(this.userIdToUpdate, newPassword);
-      alert('Senha alterada com sucesso!');
+      this.toastr.success('Senha alterada com sucesso!');
       this.router.navigate(['account/sign-in']);
     } catch (error: any) {
       console.error('Erro ao atualizar a senha:', error);
-      alert('Ocorreu um erro ao atualizar a senha. Tente novamente.');
+      this.toastr.error('Ocorreu um erro ao atualizar a senha. Tente novamente.');
     }
   }
 
