@@ -27,6 +27,7 @@ import { UnitConverterService } from '../../../../services/utils/unit-converter.
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment.development';
 import { firstValueFrom } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -79,7 +80,8 @@ export class MakeActionComponent implements OnInit {
     private productReadService: ProductReadService,
     private stockUpdateService: StockUpdateService,
     private unitConverterService: UnitConverterService,
-    private http: HttpClient
+    private http: HttpClient,
+    private toastr: ToastrService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -282,27 +284,27 @@ export class MakeActionComponent implements OnInit {
 
   async registerDonation(productId: string, expirationDate: string, quantity: string, units?: string): Promise<void> {
     if (!this.user || !productId || !quantity || !this.selectedProduct) {
-      alert('Por favor, preencha todos os campos obrigatórios.');
+      this.toastr.error('Por favor, preencha todos os campos obrigatórios.');
       return;
     }
 
     if (!this.isToyProduct() && !expirationDate) {
-      alert('Por favor, preencha a data de validade.');
+      this.toastr.error('Por favor, preencha a data de validade.');
       return;
     }
 
     if (this.selectedProduct.optionsDonation && !this.selectedProduct.optionsDonation.includes(parseFloat(quantity))) {
-      alert('Quantidade inválida. Selecione uma das opções disponíveis.');
+      this.toastr.error('Quantidade inválida. Selecione uma das opções disponíveis.');
       return;
     }
 
     if (this.selectedProduct.measure_type !== 'un' && (!units || parseInt(units) <= 0)) {
-      alert('Por favor, informe o número de unidades a serem doadas.');
+      this.toastr.error('Por favor, informe o número de unidades a serem doadas.');
       return;
     }
 
     if (!this.isToyProduct() && this.isDateInvalid(expirationDate)) {
-      alert('A data de validade não pode ser anterior à data atual.');
+      this.toastr.error('A data de validade não pode ser anterior à data atual.');
       return;
     }
 
@@ -310,7 +312,7 @@ export class MakeActionComponent implements OnInit {
     const unitsNum = units ? parseInt(units) : 1;
     
     if (!this.unitConverterService.validateQuantityInput(quantityNum, this.selectedProduct.measure_type)) {
-      alert(`Quantidade inválida para a unidade ${this.selectedProduct.measure_type}. Verifique o valor inserido.`);
+      this.toastr.error(`Quantidade inválida para a unidade ${this.selectedProduct.measure_type}. Verifique o valor inserido.`);
       return;
     }
 
@@ -361,12 +363,12 @@ export class MakeActionComponent implements OnInit {
         })
       );
 
-      alert('Doação registrada e processada para o estoque com sucesso!');
+      this.toastr.success('Doação registrada e processada para o estoque com sucesso!');
       this.router.navigate(['/main']);
       
     } catch (error) {
       console.error('Erro ao registrar doação:', error);
-      alert('Erro ao registrar doação. Tente novamente.');
+      this.toastr.error('Erro ao registrar doação. Tente novamente.');
     }
   }
 
@@ -382,7 +384,7 @@ export class MakeActionComponent implements OnInit {
     try {
       const hasRequestedThisMonth = await this.checkMonthlyBasketRequest('basic');
       if (hasRequestedThisMonth) {
-        alert('Você já solicitou uma cesta básica neste mês. Aguarde o próximo mês para fazer uma nova solicitação.');
+        this.toastr.warning('Você já solicitou uma cesta básica neste mês. Aguarde o próximo mês para fazer uma nova solicitação.');
         return;
       }
 
@@ -395,7 +397,7 @@ export class MakeActionComponent implements OnInit {
       
     } catch (error) {
       console.error('Erro ao solicitar cesta básica:', error);
-      alert('Erro ao solicitar cesta básica. Tente novamente.');
+      this.toastr.error('Erro ao solicitar cesta básica. Tente novamente.');
     } finally {
       this.isProcessingRequest = false;
     }
@@ -403,14 +405,14 @@ export class MakeActionComponent implements OnInit {
 
   async requestHygieneBasket(): Promise<void> {
     if (!this.user) {
-      alert('Usuário não encontrado.');
+      this.toastr.error('Usuário não encontrado.');
       return;
     }
 
     try {
       const hasRequestedThisMonth = await this.checkMonthlyBasketRequest('hygiene');
       if (hasRequestedThisMonth) {
-        alert('Você já solicitou uma cesta de higiene neste mês. Aguarde o próximo mês para fazer uma nova solicitação.');
+        this.toastr.warning('Você já solicitou uma cesta de higiene neste mês. Aguarde o próximo mês para fazer uma nova solicitação.');
         return;
       }
 
@@ -419,7 +421,7 @@ export class MakeActionComponent implements OnInit {
       
     } catch (error) {
       console.error('Erro ao solicitar cesta de higiene:', error);
-      alert('Erro ao solicitar cesta de higiene. Tente novamente.');
+      this.toastr.error('Erro ao solicitar cesta de higiene. Tente novamente.');
     }
   }
 
@@ -534,7 +536,7 @@ export class MakeActionComponent implements OnInit {
 
   async previewBasket(): Promise<void> {
     if (!this.user) {
-      alert('Usuário não encontrado.');
+      this.toastr.error('Usuário não encontrado.');
       return;
     }
 
@@ -633,7 +635,7 @@ export class MakeActionComponent implements OnInit {
     for (const basketItem of hygieneBasket) {
       const hasStock = await this.checkStockAvailability(basketItem.productId.toString(), basketItem.quantity);
       if (!hasStock) {
-        alert(`Estoque insuficiente para ${basketItem.productName}. Solicitação cancelada.`);
+        this.toastr.error(`Estoque insuficiente para ${basketItem.productName}. Solicitação cancelada.`);
         return;
       }
     }
@@ -659,7 +661,7 @@ export class MakeActionComponent implements OnInit {
     this.lastHygieneRequest = new Date();
     this.updateRequestAvailability();
 
-    alert('Solicitação de cesta de higiene registrada com sucesso!');
+    this.toastr.success('Solicitação de cesta de higiene registrada com sucesso!');
     this.router.navigate(['/main']);
   }
 
@@ -746,7 +748,7 @@ export class MakeActionComponent implements OnInit {
     for (const basketItem of calculatedBasket) {
       const hasStock = await this.checkStockAvailability(basketItem.productId.toString(), basketItem.quantity);
       if (!hasStock) {
-        alert(`Estoque insuficiente para ${basketItem.productName}. Solicitação cancelada.`);
+        this.toastr.error(`Estoque insuficiente para ${basketItem.productName}. Solicitação cancelada.`);
         return;
       }
     }
@@ -774,7 +776,7 @@ export class MakeActionComponent implements OnInit {
     this.lastBasicRequest = new Date();
     this.updateRequestAvailability();
 
-    alert(`Solicitação de cesta básica registrada com sucesso! Sua cesta foi calculada para ${peopleQuantity} pessoa(s)${hasChildren ? ' incluindo itens para crianças' : ''}.`);
+    this.toastr.success(`Solicitação de cesta básica registrada com sucesso! Sua cesta foi calculada para ${peopleQuantity} pessoa(s)${hasChildren ? ' incluindo itens para crianças' : ''}.`);
     this.router.navigate(['/main']);
   }
 

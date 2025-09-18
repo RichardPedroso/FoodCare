@@ -13,6 +13,7 @@ import { Product } from '../../../../domain/model/product';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment.development';
 import { firstValueFrom } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 interface DonationDisplay {
   productName: string;
@@ -71,7 +72,8 @@ export class FollowActionsComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private donationReadService: DonationReadService,
     private productReadService: ProductReadService,
-    private http: HttpClient
+    private http: HttpClient,
+    private toastr: ToastrService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -234,9 +236,9 @@ export class FollowActionsComponent implements OnInit {
         const measureType = (product as any)?.unitType || product?.measure_type || (product as any)?.measureType || '';
         return `${item.productName} - ${item.quantity}${measureType}`;
       });
-      alert(`${basketType}:\n\n${basketProducts.join('\n')}`);
+      this.toastr.info(`${basketType}:\n\n${basketProducts.join('\n')}`, basketType);
     } else {
-      alert(`${basketType}:\n\nProdutos não encontrados para esta cesta.`);
+      this.toastr.warning(`Produtos não encontrados para esta cesta.`, basketType);
     }
   }
 

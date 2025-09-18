@@ -20,6 +20,7 @@ import { User } from '../../../domain/model/user';
 import { UserCreateService } from '../../../services/user/user-create.service';
 import { MunicipalityCreateService } from '../../../services/municipality/municipality-create.service';
 import { environment } from '../../../../environments/environment.development';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
@@ -75,7 +76,8 @@ export class SignUpComponent implements OnInit {
     private userCreateService: UserCreateService,
     private municipalityCreateService: MunicipalityCreateService,
     private authenticationService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -347,7 +349,7 @@ export class SignUpComponent implements OnInit {
       console.log("usuario criado com sucesso: ", createdUser);
 
       if (createdUser.userType === 'beneficiary') {
-        alert('Conta criada com sucesso! Sua aptidão será validada por um administrador. Você poderá fazer login após a aprovação.');
+        this.toastr.success('Conta criada com sucesso! Sua aptidão será validada por um administrador. Você poderá fazer login após a aprovação.');
         this.router.navigate(['/account/sign-in']);
       } else {
         this.authenticationService.addDataToLocalStorage(createdUser);
