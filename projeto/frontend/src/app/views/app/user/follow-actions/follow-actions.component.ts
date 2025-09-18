@@ -57,7 +57,7 @@ interface BasketRequest {
 export class FollowActionsComponent implements OnInit {
 
   user: User | null = null;
-  userType: 'donor' | 'beneficiary' = 'donor';
+  userType: 'donor' | 'beneficiary' | 'admin' = 'donor';
   donations: DonationDisplay[] = [];
   basketRequests: BasketRequest[] = [];
   loading = false;
@@ -77,10 +77,11 @@ export class FollowActionsComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.user = this.authenticationService.getCurrentUser();
     if (this.user) {
-      this.userType = (this.user.userType || this.user.user_type) as 'donor' | 'beneficiary';
-      if (this.userType === 'donor') {
+      this.userType = (this.user.userType || this.user.user_type) as 'donor' | 'beneficiary' | 'admin';
+      if (this.userType === 'donor' || this.userType === 'admin') {
         await this.loadDonations();
-      } else {
+      }
+      if (this.userType === 'beneficiary' || this.userType === 'admin') {
         await this.loadBasketRequests();
       }
     }

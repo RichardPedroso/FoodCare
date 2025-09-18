@@ -88,6 +88,11 @@
   color: white;
 }
 
+.user-type-badge.admin {
+  background: linear-gradient(135deg, #4CAF50, #66BB6A);
+  color: white;
+}
+
 .profile-sections {
   display: flex;
   flex-direction: column;
