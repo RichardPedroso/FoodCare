@@ -36,37 +36,14 @@
         <h2 class="section-title">Perguntas Frequentes</h2>
         
         <div class="faq-grid">
+          @for (faq of isAdmin ? adminFaqs : userFaqs; track $index) {
           <div class="faq-item card">
             <div class="faq-question">
-              
-              <h3>Como criar uma conta?</h3>
+              <h3>{{ faq.question }}</h3>
             </div>
-            <p>Clique em "Criar Conta" na página inicial, preencha seus dados e escolha se você é doador ou beneficiário.</p>
+            <p>{{ faq.answer }}</p>
           </div>
-
-          <div class="faq-item card">
-            <div class="faq-question">
-              
-              <h3>Como fazer uma doação?</h3>
-            </div>
-            <p>Acesse "Fazer Doação" no seu painel, cadastre os alimentos disponíveis e aguarde o contato de beneficiários.</p>
-          </div>
-
-          <div class="faq-item card">
-            <div class="faq-question">
-              
-              <h3>Como solicitar doações?</h3>
-            </div>
-            <p>Use a opção "Solicitar Doação" para registrar suas necessidades. Lembre-se: apenas uma solicitação por mês.</p>
-          </div>
-
-          <div class="faq-item card">
-            <div class="faq-question">
-             
-              <h3>Meus dados estão seguros?</h3>
-            </div>
-            <p>Sim! Utilizamos protocolos de segurança para proteger suas informações pessoais e garantir sua privacidade.</p>
-          </div>
+          }
         </div>
       </div>
 
