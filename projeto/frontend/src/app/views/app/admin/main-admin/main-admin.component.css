@@ -80,15 +80,18 @@
 .charts-container {
   display: flex;
   justify-content: center;
-  gap: var(--spacing-xl);
+  align-items: center;
+  gap: var(--spacing-2xl);
+  padding: var(--spacing-xl);
 }
 
 .chart-card {
   background: var(--card-bg);
   border-radius: var(--radius-lg);
-  padding: var(--spacing-xl);
+  padding: var(--spacing-2xl);
   box-shadow: 0 4px 6px var(--shadow-light);
   transition: box-shadow var(--transition-normal);
+  margin: var(--spacing-lg);
 }
 
 .chart-card:hover {
@@ -98,14 +101,14 @@
 .chart-card h2 {
   font-size: var(--font-size-xl);
   color: var(--primary-color);
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-2xl);
   text-align: center;
   font-weight: 600;
 }
 
 .chart-container {
   display: flex;
-  gap: var(--spacing-md);
+  gap: 0px;
   height: 450px;
 }
 
@@ -114,9 +117,9 @@
   flex-direction: column;
   justify-content: space-between;
   width: 50px;
-  padding-right: var(--spacing-sm);
-  height: 400px;
-  padding-bottom: 80px;
+  padding-right: 0px;
+  height: 340px;
+  margin-top: 0;
 }
 
 .y-label {
@@ -134,7 +137,7 @@
 }
 
 .chart {
-  height: 400px;
+  height: 340px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -145,10 +148,11 @@
 .bars-container {
   display: flex;
   align-items: flex-end;
-  gap: var(--spacing-sm);
+  gap: 2px;
   height: 100%;
   width: 100%;
-  justify-content: space-around;
+  justify-content: center;
+  padding: 0 var(--spacing-lg);
 }
 
 .bar-item {
@@ -156,15 +160,16 @@
   flex-direction: column;
   align-items: center;
   height: 100%;
-  min-width: 60px;
+  min-width: 80px;
   position: relative;
+  padding: 4px;
 }
 
 .bar-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 80%;
+  height: 340px;
   position: relative;
 }
 
@@ -185,27 +190,29 @@
 
 .stock-value {
   position: absolute;
-  top: -35px;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: var(--font-size-sm);
   font-weight: 600;
   color: var(--primary-color);
   background: var(--card-bg);
-  padding: 2px 6px;
+  padding: 4px 8px;
   border-radius: var(--radius-sm);
   box-shadow: 0 2px 4px var(--shadow-light);
+  white-space: nowrap;
 }
 
 .product-name {
   font-size: var(--font-size-xs);
   color: var(--text-secondary);
   text-align: center;
-  margin-top: var(--spacing-md);
+  margin-top: 5px;
   font-weight: 500;
   max-width: 80px;
-  word-wrap: break-word;
+  word-break: break-all;
+  hyphens: auto;
   line-height: 1.2;
-  position: absolute;
-  bottom: 10px;
 }
 
 @media (max-width: 768px) {
