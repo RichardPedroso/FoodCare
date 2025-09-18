@@ -62,6 +62,8 @@ export class MakeActionComponent implements OnInit {
   showBasketPreview: boolean = false;
   selectedUnit: string = '';
   isProcessingRequest: boolean = false;
+  lowStockProducts: string[] = [];
+  showLowStockWarning: boolean = false;
 
   @ViewChild('quantity') quantityRef!: MatSelect | ElementRef;
   @ViewChild('units') unitsRef!: ElementRef;
@@ -89,6 +91,7 @@ export class MakeActionComponent implements OnInit {
       }
     }
     await this.loadProducts();
+    await this.checkLowStockProducts();
   }
 
   async loadProducts(): Promise<void> {
@@ -774,5 +777,66 @@ export class MakeActionComponent implements OnInit {
     alert(`Solicitação de cesta básica registrada com sucesso! Sua cesta foi calculada para ${peopleQuantity} pessoa(s)${hasChildren ? ' incluindo itens para crianças' : ''}.`);
     this.router.navigate(['/main']);
   }
+
+  async checkLowStockProducts(): Promise<void> {
+    try {
+      const stocks = await firstValueFrom(
+        this.http.get<any[]>(`${environment.api_endpoint}/stock`)
+      );
+      
+      const lowStockItems: string[] = [];
+      const stockThreshold = 5; // Limite para considerar estoque baixo
+      
+      // Agrupar estoque por produto
+      const productStocks = new Map<number, number>();
+      
+      stocks.forEach(stock => {
+        const productId = stock.productId || stock.product_id;
+        const actualStock = stock.actualStock || stock.actual_stock || 0;
+        const currentTotal = productStocks.get(productId) || 0;
+        productStocks.set(productId, currentTotal + actualStock);
+      });
+      
+      // Verificar quais produtos estão com estoque baixo
+      productStocks.forEach((totalStock, productId) => {
+        if (totalStock <= stockThreshold) {
+          const product = this.products.find(p => parseInt(p.id!) === productId);
+          if (product) {
+            lowStockItems.push(`${product.name} (${totalStock} unidades)`);
+          }
+        }
+      });
+      
+      this.lowStockProducts = lowStockItems;
+      this.showLowStockWarning = lowStockItems.length > 0;
+      
+      console.log('Produtos com estoque baixo:', this.lowStockProducts);
+    } catch (error) {
+      console.error('Erro ao verificar estoque baixo:', error);
+    }
+  }
+
+  dismissLowStockWarning(): void {
+    this.showLowStockWarning = false;
+  }
+
+  isProductLowStock(productId: string): boolean {
+    const productIdNum = parseInt(productId);
+    return this.lowStockProducts.some(item => {
+      const product = this.products.find(p => parseInt(p.id!) === productIdNum);
+      return product && item.includes(product.name);
+    });
+  }
+
+  getProductStockInfo(productId: string): string {
+    const productIdNum = parseInt(productId);
+    const stockItem = this.lowStockProducts.find(item => {
+      const product = this.products.find(p => parseInt(p.id!) === productIdNum);
+      return product && item.includes(product.name);
+    });
+    return stockItem ? stockItem.match(/\((\d+) unidades\)/)?.[1] || '0' : '';
+  }
+
+
 
 }

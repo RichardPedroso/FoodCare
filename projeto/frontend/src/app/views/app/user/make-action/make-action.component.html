@@ -55,8 +55,12 @@
                         <mat-option value="">Selecione o produto</mat-option>
                       }
                       @for (product of filteredProducts; track product.id) {
-                        <mat-option [value]="product.id">
+                        <mat-option [value]="product.id" [ngClass]="{'low-stock-option': isProductLowStock(product.id!)}">
                           {{ product.name }}
+                          @if(isProductLowStock(product.id!)) {
+                            <mat-icon class="warning-icon-inline">warning</mat-icon>         
+                            <p>(Estoque esgotando)</p>
+                          }
                         </mat-option>
                       }
                     </mat-select>
