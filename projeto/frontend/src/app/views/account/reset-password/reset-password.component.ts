@@ -81,15 +81,21 @@ export class ResetPasswordComponent implements OnInit{
   checkEmail(): void {
     const email = this.resetPasswordForm.controls['email'].value;
 
-    this.http.get<any[]>(`${environment.authentication_api_endpoint}/user?email=${email}`)
-      .subscribe(users => {
-        if (users.length > 0) {
+    this.http.get<any>(`${environment.api_endpoint}/user/email/${email}`)
+      .subscribe({
+        next: (user) => {
           this.isEmailInvalid = false;
           this.showPasswordFields = true;
-          this.userIdToUpdate = users[0].id;
-        } else {
-          this.isEmailInvalid = true;
-          this.showPasswordFields = false;
+          this.userIdToUpdate = user.id;
+        },
+        error: (error) => {
+          if (error.status === 404) {
+            this.isEmailInvalid = true;
+            this.showPasswordFields = false;
+          } else {
+            console.error('Erro ao verificar email:', error);
+            this.toastr.error('Erro ao verificar email. Tente novamente.');
+          }
         }
       });
   }
