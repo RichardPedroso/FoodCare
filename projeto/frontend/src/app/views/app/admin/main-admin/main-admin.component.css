@@ -4,6 +4,12 @@
   padding: var(--spacing-xl);
 }
 
+.loading-container {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  color: var(--text-secondary);
+}
+
 .admin-header {
   text-align: center;
   margin-bottom: var(--spacing-2xl);
@@ -20,9 +26,18 @@
   margin-bottom: var(--spacing-2xl);
 }
 
-.actions-grid {
+.manage-users-section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.manage-users-card {
+  width: 100%;
+  max-width: none;
+}
+
+.stock-actions-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: var(--spacing-xl);
 }
 
@@ -101,7 +116,7 @@
   width: 50px;
   padding-right: var(--spacing-sm);
   height: 400px;
-  padding-bottom: 50px;
+  padding-bottom: 80px;
 }
 
 .y-label {
@@ -124,6 +139,7 @@
   align-items: flex-end;
   justify-content: center;
   position: relative;
+  padding-bottom: 60px;
 }
 
 .bars-container {
@@ -141,6 +157,7 @@
   align-items: center;
   height: 100%;
   min-width: 60px;
+  position: relative;
 }
 
 .bar-wrapper {
@@ -182,15 +199,17 @@
   font-size: var(--font-size-xs);
   color: var(--text-secondary);
   text-align: center;
-  margin-top: var(--spacing-sm);
+  margin-top: var(--spacing-md);
   font-weight: 500;
   max-width: 80px;
   word-wrap: break-word;
   line-height: 1.2;
+  position: absolute;
+  bottom: 10px;
 }
 
 @media (max-width: 768px) {
-  .actions-grid {
+  .stock-actions-grid {
     grid-template-columns: 1fr;
     gap: var(--spacing-lg);
   }

@@ -4,8 +4,21 @@
     <p class="text-secondary">Controle de estoque de produtos</p>
   </div>
 
+  @if(loading) {
+  <div class="loading-container">
+    <p>Carregando dados...</p>
+  </div>
+  } @else {
   <div class="actions-section">
-    <div class="actions-grid">
+    <div class="manage-users-section">
+      <div class="action-card card manage-users-card" (click)="navigateToManageUsers()">
+        <div class="action-icon">👥</div>
+        <h3>Gerenciar Usuários</h3>
+        <p>Verificar e aprovar beneficiários</p>
+      </div>
+    </div>
+    
+    <div class="stock-actions-grid">
       <div class="action-card card" (click)="showBasicProducts()">
         <div class="action-icon">📦</div>
         <h3>Verificar estoque de "Produtos Básicos"</h3>
@@ -23,14 +36,9 @@
         <h3>Verificar estoque de "Produtos Infantis"</h3>
         <p>Visualize o estoque de produtos infantis</p>
       </div>
-      
-      <div class="action-card card" (click)="navigateToManageUsers()">
-        <div class="action-icon">👥</div>
-        <h3>Gerenciar Usuários</h3>
-        <p>Verificar e aprovar beneficiários</p>
-      </div>
     </div>
   </div>
+  }
 
   @if (showBasicChart || showHygieneChart || showInfantChart) {
   <div class="charts-container">
@@ -50,8 +58,8 @@
               @for (product of basicProducts; track product.id) {
               <div class="bar-item">
                 <div class="bar-wrapper">
-                  <div class="bar" [style.height]="'50px'"></div>
-                  <span class="stock-value">N/A</span>
+                  <div class="bar" [style.height]="getBarHeight(product.totalStock)"></div>
+                  <span class="stock-value">{{product.totalStock}}</span>
                 </div>
                 <span class="product-name">{{product.name}}</span>
               </div>
@@ -79,8 +87,8 @@
               @for (product of hygieneProducts; track product.id) {
               <div class="bar-item">
                 <div class="bar-wrapper">
-                  <div class="bar" [style.height]="'50px'"></div>
-                  <span class="stock-value">N/A</span>
+                  <div class="bar" [style.height]="getBarHeight(product.totalStock)"></div>
+                  <span class="stock-value">{{product.totalStock}}</span>
                 </div>
                 <span class="product-name">{{product.name}}</span>
               </div>
@@ -108,8 +116,8 @@
               @for (product of infantProducts; track product.id) {
               <div class="bar-item">
                 <div class="bar-wrapper">
-                  <div class="bar" [style.height]="'50px'"></div>
-                  <span class="stock-value">N/A</span>
+                  <div class="bar" [style.height]="getBarHeight(product.totalStock)"></div>
+                  <span class="stock-value">{{product.totalStock}}</span>
                 </div>
                 <span class="product-name">{{product.name}}</span>
               </div>
