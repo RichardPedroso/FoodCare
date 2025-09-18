@@ -76,7 +76,7 @@
                         </div>
                       </td>
                       <td>
-                        <span class="quantity">{{ donation.quantity }} {{ donation.unit }}</span>
+                        <span class="quantity">{{ donation.calculatedWeight }}{{ donation.measureType }}</span>
                       </td>
                       <td>
                         <span class="date">{{ donation.donationDate ? (donation.donationDate | date:'dd/MM/yyyy') : 'Data não disponível' }}</span>

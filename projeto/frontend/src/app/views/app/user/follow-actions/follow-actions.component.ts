@@ -20,6 +20,8 @@ interface DonationDisplay {
   unit: string;
   donationDate: Date | null;
   status: string;
+  calculatedWeight: number;
+  measureType: string;
 }
 
 interface BasketItem {
@@ -63,6 +65,7 @@ export class FollowActionsComponent implements OnInit {
   totalCount = 0;
   availableCount = 0;
   usedCount = 0;
+  totalDonatedWeight = 0;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -105,15 +108,27 @@ export class FollowActionsComponent implements OnInit {
         
         const dateValue = donation.donation_date || (donation as any).donationDate;
         const donationDate = dateValue ? new Date(dateValue) : null;
+        
+        const quantity = donationProduct?.quantity || 0;
+        const selectedOption = (donationProduct as any)?.selectedOption || (donationProduct as any)?.selected_option || 1;
+        const optionValue = product?.optionsDonation?.[selectedOption] || product?.optionsDonation?.[0] || 1;
+        const calculatedWeight = quantity * optionValue;
+        const measureType = (product as any)?.unitType || product?.measure_type || (product as any)?.measureType || '';
+        
+
+        
         return {
           productName: product?.name || 'Produto não encontrado',
-          quantity: donationProduct?.quantity || 0,
+          quantity,
           unit: donationProduct?.unit || '',
           donationDate: donationDate && !isNaN(donationDate.getTime()) ? donationDate : null,
-          status: 'Disponível'
+          status: 'Disponível',
+          calculatedWeight,
+          measureType
         };
       });
       
+      this.calculateTotalDonatedWeight(donationProducts, products);
       this.calculateStats(userDonations);
     } catch (error) {
       console.error('Erro ao carregar doações:', error);
@@ -186,6 +201,25 @@ export class FollowActionsComponent implements OnInit {
     }).length;
     this.availableCount = requests.filter(request => request.status === 'pending').length;
     this.usedCount = requests.filter(request => request.status === 'collected').length;
+  }
+
+  private calculateTotalDonatedWeight(donationProducts: DonationProduct[], products: Product[]): void {
+    this.totalDonatedWeight = donationProducts.reduce((total, donationProduct) => {
+      const product = products.find(p => {
+        const productId = donationProduct.product_id || (donationProduct as any).productId;
+        return p.id == productId;
+      });
+      
+      if (product && product.optionsDonation) {
+        const quantity = donationProduct.quantity || 0;
+        const optionsDonation = Array.isArray(product.optionsDonation) 
+          ? product.optionsDonation[0] 
+          : product.optionsDonation;
+        return total + (quantity * optionsDonation);
+      }
+      
+      return total;
+    }, 0);
   }
 
   showBasketProducts(request: BasketRequest, event?: Event): void {
