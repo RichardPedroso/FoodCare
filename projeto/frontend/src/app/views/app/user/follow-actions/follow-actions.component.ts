@@ -115,8 +115,6 @@ export class FollowActionsComponent implements OnInit {
         const calculatedWeight = quantity * optionValue;
         const measureType = (product as any)?.unitType || product?.measure_type || (product as any)?.measureType || '';
         
-
-        
         return {
           productName: product?.name || 'Produto não encontrado',
           quantity,
@@ -222,17 +220,20 @@ export class FollowActionsComponent implements OnInit {
     }, 0);
   }
 
-  showBasketProducts(request: BasketRequest, event?: Event): void {
+  async showBasketProducts(request: BasketRequest, event?: Event): Promise<void> {
     if (event) {
       event.preventDefault();
     }
     const basketType = request.basket_type === 'basic' ? 'Cesta Básica' : 'Cesta de Higiene';
     
     if (request.parsedItems && request.parsedItems.length > 0) {
-      const products = request.parsedItems.map((item: BasketItem) => 
-        `${item.productName} - ${item.quantity}${item.unitType}`
-      );
-      alert(`${basketType}:\n\n${products.join('\n')}`);
+      const products = await this.productReadService.findAll();
+      const basketProducts = request.parsedItems.map((item: BasketItem) => {
+        const product = products.find(p => p.id == item.productId.toString());
+        const measureType = (product as any)?.unitType || product?.measure_type || (product as any)?.measureType || '';
+        return `${item.productName} - ${item.quantity}${measureType}`;
+      });
+      alert(`${basketType}:\n\n${basketProducts.join('\n')}`);
     } else {
       alert(`${basketType}:\n\nProdutos não encontrados para esta cesta.`);
     }
