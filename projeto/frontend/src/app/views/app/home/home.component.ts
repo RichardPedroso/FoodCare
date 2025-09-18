@@ -20,11 +20,17 @@ export class HomeComponent implements OnInit{
 
   constructor(
     private authenticationService: AuthenticationService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.user = this.authenticationService.getCurrentUser();
     this.userName = this.user?.name;
+    
+    // Redirecionar admin para dashboard
+    if (this.user?.user_type === 'admin') {
+      this.router.navigate(['/main/admin/dashboard']);
+    }
   }
 
   alternate(type: 'donor' | 'beneficiary'): void {
