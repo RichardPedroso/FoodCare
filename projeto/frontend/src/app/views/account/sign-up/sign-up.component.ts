@@ -297,6 +297,18 @@ export class SignUpComponent implements OnInit {
     this.signUpForm.get('zipCode')?.setValue(formattedValue, { emitEvent: false });
   }
 
+  formatFamilyIncome(event: any): void {
+    let value = event.target.value.replace(/\D/g, '');
+    let numericValue = parseFloat(value) / 100;
+    let formattedValue = '';
+    
+    if (value.length > 0) {
+      formattedValue = `R$ ${numericValue.toFixed(2).replace('.', ',')}`;
+    }
+    
+    this.signUpForm.get('familyIncome')?.setValue(formattedValue, { emitEvent: false });
+  }
+
   arePasswordsValid() {
     return this.signUpForm.controls['password'].value === this.signUpForm.controls['repeatPassword'].value;
   }
