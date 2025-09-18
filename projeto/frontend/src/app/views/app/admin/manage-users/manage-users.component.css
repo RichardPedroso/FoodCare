@@ -55,6 +55,15 @@
   background-color: white !important;
 }
 
+/* Centralizar texto no mat-select */
+::ng-deep .filter-select .mat-mdc-select-value {
+  text-align: center !important;
+}
+
+::ng-deep .filter-select .mdc-select__selected-text {
+  text-align: center !important;
+}
+
 .list-header {
   display: flex;
   justify-content: space-between;
