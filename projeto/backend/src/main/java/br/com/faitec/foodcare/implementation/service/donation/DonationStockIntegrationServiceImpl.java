@@ -34,23 +34,38 @@ public class DonationStockIntegrationServiceImpl implements DonationStockIntegra
     @Override
     public boolean processDonationToStock(int donationId) {
         try {
+            System.out.println("=== PROCESSANDO DOAÇÃO PARA ESTOQUE ===");
+            System.out.println("DonationId: " + donationId);
+            
             // Verificar se a doação existe
             Donation donation = donationService.findById(donationId);
             if (donation == null) {
+                System.out.println("ERRO: Doação não encontrada!");
                 return false;
             }
+            System.out.println("Doação encontrada: " + donation.getId());
 
             // Buscar todos os produtos da doação
             List<DonationProduct> donationProducts = donationProductService.findByDonationId(donationId);
+            System.out.println("Produtos da doação encontrados: " + donationProducts.size());
             
             if (donationProducts.isEmpty()) {
+                System.out.println("ERRO: Nenhum produto encontrado para a doação!");
                 return false;
             }
 
             // Processar cada produto da doação
             for (DonationProduct donationProduct : donationProducts) {
+                System.out.println("Processando produto: " + donationProduct.getProductId() + 
+                                 ", Quantidade: " + donationProduct.getQuantity() + 
+                                 ", Validade: " + donationProduct.getExpirationDate());
+                
                 // Validar se o produto tem validade mínima
-                if (!isValidForStock(donationProduct.getExpirationDate())) {
+                boolean isValid = isValidForStock(donationProduct.getExpirationDate());
+                System.out.println("Produto válido para estoque: " + isValid);
+                
+                if (!isValid) {
+                    System.out.println("Pulando produto com validade insuficiente");
                     continue; // Pula produtos com validade insuficiente
                 }
 
@@ -58,8 +73,11 @@ public class DonationStockIntegrationServiceImpl implements DonationStockIntegra
                 addToStock(donationProduct);
             }
 
+            System.out.println("=== PROCESSAMENTO CONCLUÍDO ===");
             return true;
         } catch (Exception e) {
+            System.out.println("ERRO no processamento: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
@@ -97,14 +115,25 @@ public class DonationStockIntegrationServiceImpl implements DonationStockIntegra
 
     private boolean isValidForStock(String expirationDate) {
         try {
-            if (expirationDate == null || expirationDate.isEmpty()) {
+            System.out.println("Validando data de validade: " + expirationDate);
+            
+            if (expirationDate == null || expirationDate.isEmpty() || "null".equals(expirationDate)) {
+                System.out.println("Produto sem data de validade - ACEITO");
                 return true; // Produtos sem validade são aceitos
             }
             
             LocalDate expDate = LocalDate.parse(expirationDate, DATE_FORMATTER);
             LocalDate today = LocalDate.now();
-            return ChronoUnit.DAYS.between(today, expDate) >= MINIMUM_DAYS;
+            long daysBetween = ChronoUnit.DAYS.between(today, expDate);
+            
+            System.out.println("Dias até vencimento: " + daysBetween + " (mínimo: " + MINIMUM_DAYS + ")");
+            
+            boolean isValid = daysBetween >= MINIMUM_DAYS;
+            System.out.println("Resultado da validação: " + isValid);
+            
+            return isValid;
         } catch (Exception e) {
+            System.out.println("Erro ao validar data, aceitando produto: " + e.getMessage());
             return true; // Em caso de erro na data, aceita o produto
         }
     }
@@ -117,17 +146,29 @@ public class DonationStockIntegrationServiceImpl implements DonationStockIntegra
     public void addToStockWithUnits(DonationProduct donationProduct, int unitsToAdd) {
         int productId = donationProduct.getProductId();
         double donationOption = donationProduct.getQuantity();
+        
+        System.out.println("=== ADICIONANDO AO ESTOQUE ===");
+        System.out.println("ProductId: " + productId);
+        System.out.println("DonationOption: " + donationOption);
+        System.out.println("UnitsToAdd: " + unitsToAdd);
 
         // Buscar estoque existente para este produto e donation_option
         List<Stock> existingStocks = stockService.findByProductId(productId);
+        System.out.println("Estoques existentes encontrados: " + existingStocks.size());
         
         boolean stockUpdated = false;
         
         for (Stock existingStock : existingStocks) {
+            System.out.println("Verificando estoque - ID: " + existingStock.getId() + 
+                             ", DonationOption: " + existingStock.getDonationOption() + 
+                             ", ActualStock: " + existingStock.getActualStock());
             if (existingStock.getDonationOption() == donationOption) {
+                System.out.println("Encontrou estoque existente! Atualizando...");
                 // Incrementar o estoque com o número de unidades doadas
-                existingStock.setActualStock(existingStock.getActualStock() + unitsToAdd);
+                int newStock = existingStock.getActualStock() + unitsToAdd;
+                existingStock.setActualStock(newStock);
                 stockService.update(existingStock.getId(), existingStock);
+                System.out.println("Estoque atualizado para: " + newStock);
                 stockUpdated = true;
                 break;
             }
@@ -135,11 +176,15 @@ public class DonationStockIntegrationServiceImpl implements DonationStockIntegra
 
         // Se não encontrou estoque existente, criar novo
         if (!stockUpdated) {
+            System.out.println("Criando novo estoque...");
             Stock newStock = new Stock();
             newStock.setProductId(productId);
             newStock.setDonationOption(donationOption);
             newStock.setActualStock(unitsToAdd);
-            stockService.create(newStock);
+            int createdId = stockService.create(newStock);
+            System.out.println("Novo estoque criado com ID: " + createdId);
         }
+        
+        System.out.println("=== FIM ADICÃO AO ESTOQUE ===");
     }
 }

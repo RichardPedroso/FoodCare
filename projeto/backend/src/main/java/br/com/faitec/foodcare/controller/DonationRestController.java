@@ -74,10 +74,17 @@ public class DonationRestController {
     @PostMapping
     public ResponseEntity<Donation> create(@RequestBody final Donation data) {
         final int id = donationService.create(data);
-
+        
+        if (id <= 0) {
+            return ResponseEntity.badRequest().build();
+        }
+        
+        // Buscar a doação criada para retornar com o ID
+        Donation createdDonation = donationService.findById(id);
+        
         final URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
 
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(createdDonation);
     }
 
     @PutMapping("/{id}")

@@ -319,19 +319,26 @@ export class MakeActionComponent implements OnInit {
     const unit = this.selectedProduct.measure_type;
 
     try {
+      console.log('=== INICIANDO REGISTRO DE DOAÇÃO ===');
+      console.log('ProductId:', productId);
+      console.log('Quantity:', quantity);
+      console.log('Units:', units);
+      console.log('ExpirationDate:', expirationDate);
+      
       // Criar doação
       const donation: Donation = {
         donation_date: new Date(),
         user_id: parseInt(this.user.id!.toString())
       };
-
-      await this.donationCreateService.create(donation);
       
-      // Buscar a doação recém-criada para obter o ID
-      const donations = await firstValueFrom(
-        this.http.get<any[]>(`${environment.api_endpoint}/donation/user/${this.user.id}`)
-      );
-      const latestDonation = donations[donations.length - 1]; // Última doação
+      console.log('Criando doação:', donation);
+      const createdDonation = await this.donationCreateService.create(donation);
+      console.log('Doação criada:', createdDonation);
+      
+      if (!createdDonation || !createdDonation.id) {
+        console.error('Erro: Doação não foi criada corretamente');
+        throw new Error('Erro ao criar doação');
+      }
       
       // Formatar data de expiração para string (yyyy-mm-dd)
       let formattedExpirationDate: string | null = null;
@@ -350,24 +357,30 @@ export class MakeActionComponent implements OnInit {
         quantity: quantityNum, // donation_option (ex: 5kg)
         expirationDate: formattedExpirationDate,
         unit: validUnit,
-        donationId: latestDonation.id,
+        donationId: createdDonation.id,
         productId: parseInt(productId)
       };
       
-      await this.donationProductCreateService.create(donationProduct);
+      console.log('Criando produto da doação:', donationProduct);
+      const createdDonationProduct = await this.donationProductCreateService.create(donationProduct);
+      console.log('Produto da doação criado:', createdDonationProduct);
 
       // Processar para estoque com o número de unidades
-      await firstValueFrom(
-        this.http.post<boolean>(`${environment.api_endpoint}/donation/${latestDonation.id}/process-to-stock`, {
+      console.log('Processando para estoque com unidades:', unitsNum);
+      const stockResult = await firstValueFrom(
+        this.http.post<boolean>(`${environment.api_endpoint}/donation/${createdDonation.id}/process-to-stock`, {
           units: unitsNum
         })
       );
+      console.log('Resultado do processamento para estoque:', stockResult);
 
       this.toastr.success('Doação registrada e processada para o estoque com sucesso!');
       this.router.navigate(['/main']);
       
+      console.log('=== DOAÇÃO REGISTRADA COM SUCESSO ===');
     } catch (error) {
-      console.error('Erro ao registrar doação:', error);
+      console.error('=== ERRO AO REGISTRAR DOAÇÃO ===');
+      console.error('Erro completo:', error);
       this.toastr.error('Erro ao registrar doação. Tente novamente.');
     }
   }
