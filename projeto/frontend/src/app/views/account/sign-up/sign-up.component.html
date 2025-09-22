@@ -231,6 +231,33 @@
         </div>
         }
         
+        <div class="form-group">
+          <div class="terms-checkbox-group">
+            <label class="terms-checkbox-label">
+              <input type="checkbox" formControlName="termsAccepted">
+              <span class="checkmark"></span>
+              Li e concordo com os termos de uso
+              <div class="info-icon" 
+                   (mouseenter)="showTooltip = true" 
+                   (mouseleave)="showTooltip = false">
+                <span class="info-text">i</span>
+                <div class="tooltip" [class.show]="showTooltip">
+                  📌 Aviso de Privacidade – LGPD<br><br>
+                  Conforme a Lei Geral de Proteção de Dados (LGPD – Lei 13.709/2018), os dados pessoais e documentos fornecidos neste cadastro serão usados somente para o projeto de doação de alimentos.<br><br>
+                  Seus dados serão tratados com confidencialidade e segurança e poderão ser acessados, corrigidos ou excluídos mediante solicitação.<br><br>
+                  Ao prosseguir, você autoriza o uso dessas informações para fins do projeto.
+                </div>
+              </div>
+            </label>
+            @if (signUpForm.get('userType')?.value === 'beneficiary' && !signUpForm.get('termsAccepted')?.value && signUpForm.get('termsAccepted')?.touched) {
+            <div class="terms-error">
+              <mat-icon>warning</mat-icon>
+              <span>É obrigatório aceitar os termos de uso para finalizar o cadastro</span>
+            </div>
+            }
+          </div>
+        </div>
+        
         <div class="form-section">
           <h3 class="section-title">Comprovantes</h3>
           <p class="section-subtitle">Adicione documentos que comprovem sua elegibilidade para receber auxílios</p>
