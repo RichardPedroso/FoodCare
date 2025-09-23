@@ -1,0 +1,7 @@
+Precisa ser feito:
+- Melhorar o diagrama de sequencia(mostrar todos os eventos de ponta a ponta, incluindo todas as entidades envolvidas)
+- Adicionar um sumario do que sera doado, exemplo, 5 unidades, 5kg = 25kg
+- LGPD, colocaram algo a respeito? visto que a pessoa eh obrigada a enviar os documentos reais
+- Sobre a doaçao, um fluxo interessante é de o cara registrar que quer doar, e quem registra que a doaçao foi feita, eh feita pelos admins ao receber o produto
+- Melhorar o caso de uso que esta um pouco confuso
+- Botão editar, excluir  talvez seja melhor trocar a posição (borões que remetem a exclusão ou sair manter sempre a esquerda)
