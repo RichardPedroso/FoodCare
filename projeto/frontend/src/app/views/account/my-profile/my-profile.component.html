@@ -95,7 +95,7 @@
               <div class="info-item">
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>CEP</mat-label>
-                  <input matInput [value]="municipality?.zip_code" readonly>
+                  <input matInput [value]="formatZipCode(municipality?.zip_code)" readonly>
                   <mat-icon matPrefix>mail</mat-icon>
                 </mat-form-field>
               </div>

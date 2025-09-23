@@ -73,5 +73,12 @@ export class MyProfileComponent implements OnInit {
     return phone;
   }
 
+  formatZipCode(zipCode: string | undefined): string {
+    if (!zipCode || zipCode === 'undefined' || zipCode === 'null') {
+      return 'Não informado';
+    }
+    return zipCode;
+  }
+
 
 }
