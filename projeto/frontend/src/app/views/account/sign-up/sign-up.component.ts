@@ -265,14 +265,16 @@ export class SignUpComponent implements OnInit {
       return true;
     }
 
-    const familyIncome = this.signUpForm.controls['familyIncome'].value;
+    const familyIncomeStr = this.signUpForm.controls['familyIncome'].value;
     const peopleQuantity = this.signUpForm.controls['peopleQuantity'].value;
 
-    if (!familyIncome || !peopleQuantity || peopleQuantity <= 0) {
+    if (!familyIncomeStr || !peopleQuantity || peopleQuantity <= 0) {
       this.incomeError = '';
       return true;
     }
 
+    // Converter string formatada para número
+    const familyIncome = parseFloat(familyIncomeStr.toString().replace(/[R$\s,]/g, '').replace(',', '.')) || 0;
     const incomePerCapita = familyIncome / peopleQuantity;
     
     if (incomePerCapita > 1518) {
@@ -372,8 +374,11 @@ export class SignUpComponent implements OnInit {
       };
 
       if (newUser.userType === 'beneficiary') {
-        newUser.familyIncome = formDataSignUp.familyIncome;
-        newUser.peopleQuantity = formDataSignUp.peopleQuantity;
+        // Converter familyIncome de string formatada para número
+        const familyIncomeStr = formDataSignUp.familyIncome.toString();
+        const numericIncome = parseFloat(familyIncomeStr.replace(/[R$\s,]/g, '').replace(',', '.'));
+        newUser.familyIncome = numericIncome || 0;
+        newUser.peopleQuantity = parseInt(formDataSignUp.peopleQuantity) || 0;
         newUser.hasChildren = formDataSignUp.hasChildren;
         newUser.documents = this.uploadedDocuments.map(doc => doc.data);
       }
