@@ -107,13 +107,15 @@ export class ManageDonationsComponent implements OnInit {
             }
           }
           
+          const productUnit = firstProduct ? await this.getProductUnitType(firstProduct.productId || (firstProduct as any).product_id) : 'un';
+          
           return {
             ...donation,
             donorName: user.name || `Usuário ${userId}`,
             donorEmail: user.email || `usuario${userId}@email.com`,
             productName: productName,
-            quantity: firstProduct ? `${firstProduct.unit} unidades de ${firstProduct.quantity}kg` : '0',
-            unit: firstProduct ? this.getProductUnit(firstProduct.productId || (firstProduct as any).product_id) : 'un',
+            quantity: firstProduct ? this.formatQuantityDisplay(firstProduct, productUnit) : '0',
+            unit: productUnit,
             expiration_date: firstProduct ? firstProduct.expirationDate : null
           };
         } catch (error) {
@@ -229,11 +231,23 @@ export class ManageDonationsComponent implements OnInit {
     return this.formatDate(date);
   }
 
-  private getProductUnit(productId: number): string {
-    // Mapear unidades baseado no produto - simplificado
-    const unitMap: {[key: number]: string} = {
-      1: 'kg', 2: 'kg', 3: 'g', 4: 'un', 5: 'un', 6: 'un', 7: 'ml'
-    };
-    return unitMap[productId] || 'un';
+  private async getProductUnitType(productId: number): Promise<string> {
+    try {
+      const product = await this.productReadService.findById(productId.toString());
+      return product.measure_type || 'un';
+    } catch (error) {
+      return 'un';
+    }
+  }
+
+  private formatQuantityDisplay(donationProduct: any, unitType: string): string {
+    const units = parseInt(donationProduct.unit || '1');
+    const quantity = donationProduct.quantity || 1;
+    
+    if (unitType === 'un') {
+      return `${units} unidades`;
+    } else {
+      return `${units} unidades de ${quantity}${unitType}`;
+    }
   }
 }

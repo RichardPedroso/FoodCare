@@ -269,15 +269,17 @@ export class MakeActionComponent implements OnInit {
 
   private getUnitsValue(): string {
     // Para produtos com measure_type 'un', usar o valor do campo quantity como unidades
-    if (this.selectedProduct?.measure_type === 'un') {
+    const measureType = this.selectedProduct?.measure_type || this.selectedProduct?.unitType;
+    if (measureType === 'un') {
       const quantityValue = this.getQuantityValue();
+      console.log('Produto unitário - measureType:', measureType);
       console.log('Produto unitário - usando quantity como units:', quantityValue);
       return quantityValue || '1';
     }
     
     // Para outros produtos, usar o campo units separado
     const value = this.unitsRef?.nativeElement?.value || '1';
-    console.log('getUnitsValue() - unitsRef:', this.unitsRef);
+    console.log('Produto não unitário - measureType:', measureType);
     console.log('getUnitsValue() - value:', value);
     return value;
   }
@@ -310,6 +312,13 @@ export class MakeActionComponent implements OnInit {
     }
 
     if (this.selectedProduct.measure_type !== 'un' && (!units || parseInt(units) <= 0)) {
+      this.toastr.error('Por favor, informe o número de unidades a serem doadas.');
+      return;
+    }
+    
+    // Para produtos unitários, validar se quantity é um número válido
+    const measureType = this.selectedProduct.measure_type || this.selectedProduct.unitType;
+    if (measureType === 'un' && (!quantity || parseInt(quantity) <= 0)) {
       this.toastr.error('Por favor, informe o número de unidades a serem doadas.');
       return;
     }
@@ -364,14 +373,33 @@ export class MakeActionComponent implements OnInit {
       // Validar e garantir que unit não seja null
       const validUnit = unit || this.selectedProduct?.measure_type || 'un';
       
+      // Para produtos unitários, usar quantity como unidades e definir donation_option como 1
+      const measureType = this.selectedProduct.measure_type || this.selectedProduct.unitType;
+      let finalQuantity, finalUnit;
+      if (measureType === 'un') {
+        finalQuantity = 1; // donation_option padrão
+        finalUnit = quantityNum.toString(); // usar quantity como número de unidades
+      } else {
+        finalQuantity = quantityNum; // donation_option
+        finalUnit = unitsNum.toString(); // número de unidades
+      }
+      
       // Criar produto da doação
       const donationProduct = {
-        quantity: quantityNum, // donation_option (ex: 5kg)
+        quantity: finalQuantity,
         expirationDate: formattedExpirationDate,
-        unit: unitsNum.toString(), // número de unidades doadas
+        unit: finalUnit,
         donationId: createdDonation.id,
         productId: parseInt(productId)
       };
+      
+      console.log('Produto final a ser salvo:', {
+        measure_type: measureType,
+        quantity: finalQuantity,
+        unit: finalUnit,
+        originalQuantity: quantityNum,
+        originalUnits: unitsNum
+      });
       
       console.log('Criando produto da doação:', donationProduct);
       const createdDonationProduct = await this.donationProductCreateService.create(donationProduct);

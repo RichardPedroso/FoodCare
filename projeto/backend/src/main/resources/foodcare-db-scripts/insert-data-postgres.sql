@@ -151,6 +151,7 @@ INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-
 INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-04T18:55:11.968Z', 6, TRUE);
 INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-04T18:57:24.048Z', 6, TRUE);
 INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-23T03:45:00.000Z', 6, FALSE);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-23T04:00:00.000Z', 6, FALSE);
 
 -- Insert donation products para todas as doações (pendentes e confirmadas)
 -- quantity = donation_option, unit = número de unidades doadas
@@ -178,6 +179,7 @@ INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, prod
 INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (500, NULL, '1', 17, 8);
 INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '1', 18, 4);
 INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, '2025-10-24', '50', 19, 22);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '10', 20, 23);
 
 -- Insert basket requests from db.json
 INSERT INTO basket_request (user_id, request_date, basket_type, status) VALUES (4, '2025-08-08T03:00:00.000Z', 'basic', 'pending');
