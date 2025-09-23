@@ -10,11 +10,16 @@
   </div>
   } @else {
   <div class="actions-section">
-    <div class="manage-users-section">
-      <div class="action-card card manage-users-card" (click)="navigateToManageUsers()">
+    <div class="manage-section">
+      <div class="action-card card manage-card" (click)="navigateToManageUsers()">
         <div class="action-icon">👥</div>
         <h3>Gerenciar Usuários</h3>
         <p>Verificar e aprovar beneficiários</p>
+      </div>
+      <div class="action-card card manage-card" (click)="navigateToManageDonations()">
+        <div class="action-icon">📋</div>
+        <h3>Gerenciar Doações</h3>
+        <p>Verificar e aprovar doações</p>
       </div>
     </div>
     

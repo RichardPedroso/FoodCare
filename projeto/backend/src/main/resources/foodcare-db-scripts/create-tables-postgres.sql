@@ -79,6 +79,7 @@ CREATE TABLE donation
     id            SERIAL      NOT NULL,
     donation_date VARCHAR(50) NOT NULL,
     user_id       INTEGER     NOT NULL,
+    donation_status BOOLEAN   NOT NULL DEFAULT FALSE,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user_model(id)
 );

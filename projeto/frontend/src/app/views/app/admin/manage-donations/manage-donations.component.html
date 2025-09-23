@@ -1,0 +1,102 @@
+<div class="container">
+  <div class="header">
+    <h1>Gerenciar Doações</h1>
+    <p class="text-secondary">Verificar e aprovar doações pendentes</p>
+  </div>
+
+  @if (!showDonationDetails) {
+  <div class="donations-list">
+    <div class="filters-section">
+      <div class="filters-row">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Pesquisar por doador</mat-label>
+          <input matInput [(ngModel)]="searchTerm" (input)="onSearchChange()" placeholder="Digite o nome...">
+          <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
+    
+    <div class="list-header">
+      <h2>Doações Pendentes</h2>
+      <span class="count">{{ donations.length }} doações</span>
+    </div>
+    
+    @if (donations.length === 0) {
+    <div class="no-donations">
+      <p>Nenhuma doação pendente encontrada.</p>
+      <p><small>Total de doações carregadas: {{ allDonations.length }}</small></p>
+    </div>
+    }
+    
+    <div class="donations-grid">
+      @for (donation of donations; track donation.id) {
+      <div class="donation-card card" (click)="selectDonation(donation)">
+        <div class="donation-info">
+          <h3>{{ donation.donorName }}</h3>
+          <p>{{ donation.donorEmail }}</p>
+          <div class="donation-date">
+            <mat-icon>schedule</mat-icon>
+            <span>{{ getDonationDate(donation) }}</span>
+          </div>
+        </div>
+        <div class="product-info">
+          <mat-icon>inventory</mat-icon>
+          <span>{{ donation.productName || 'Produto' }}</span>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  }
+
+  @if (showDonationDetails && selectedDonation) {
+  <div class="donation-details-view">
+    <div class="details-header">
+      <button class="btn btn-secondary" (click)="closeDonationDetails()">
+        <mat-icon>arrow_back</mat-icon>
+        Voltar
+      </button>
+      <div class="donation-details">
+        <h2>Doação de {{ selectedDonation.donorName }}</h2>
+        <p>{{ selectedDonation.donorEmail }}</p>
+        <p>Data: {{ getDonationDate(selectedDonation) }}</p>
+      </div>
+    </div>
+
+    @if (selectedDonation.productName) {
+    <div class="product-details">
+      <h3>Detalhes da Doação</h3>
+      <table class="product-table">
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Unidade</th>
+            <th>Validade</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ selectedDonation.productName }}</td>
+            <td>{{ selectedDonation.quantity }}</td>
+            <td>{{ selectedDonation.unit }}</td>
+            <td>{{ selectedDonation.expiration_date ? formatDate(selectedDonation.expiration_date) : 'Não informada' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-success" (click)="confirmDonation()">
+        <mat-icon>check</mat-icon>
+        Confirmar Doação
+      </button>
+      <button class="btn btn-danger" (click)="rejectDonation()">
+        <mat-icon>close</mat-icon>
+        Rejeitar Doação
+      </button>
+    </div>
+    }
+  </div>
+  }
+</div>

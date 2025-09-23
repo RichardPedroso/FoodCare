@@ -140,6 +140,11 @@
   color: #059669;
 }
 
+.status-pending {
+  background: rgba(251, 191, 36, 0.1);
+  color: #d97706;
+}
+
 .text-center {
   text-align: center;
 }

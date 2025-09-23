@@ -82,7 +82,10 @@
                         <span class="date">{{ donation.donationDate ? (donation.donationDate | date:'dd/MM/yyyy') : 'Data não disponível' }}</span>
                       </td>
                       <td>
-                        <span class="status status-available">{{ donation.status }}</span>
+                        <span class="status" [ngClass]="{
+                          'status-available': donation.status === 'Disponível',
+                          'status-pending': donation.status === 'Pendente'
+                        }">{{ donation.status }}</span>
                       </td>
                     </tr>
                   }
@@ -212,7 +215,7 @@
           </div>
           <div class="stat-content">
             <div class="stat-number">{{ availableCount }}</div>
-            <div class="stat-label">{{ userType === 'beneficiary' ? 'Pendente' : 'Disponíveis' }}</div>
+            <div class="stat-label">{{ userType === 'beneficiary' ? 'Pendente' : 'Confirmadas' }}</div>
           </div>
         </div>
 
@@ -222,7 +225,7 @@
           </div>
           <div class="stat-content">
             <div class="stat-number">{{ usedCount }}</div>
-            <div class="stat-label">{{ userType === 'beneficiary' ? 'Coletada' : 'Utilizadas' }}</div>
+            <div class="stat-label">{{ userType === 'beneficiary' ? 'Coletada' : 'Pendentes' }}</div>
           </div>
         </div>
       </div>

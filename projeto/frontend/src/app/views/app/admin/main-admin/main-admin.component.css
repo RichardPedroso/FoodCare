@@ -26,11 +26,14 @@
   margin-bottom: var(--spacing-2xl);
 }
 
-.manage-users-section {
+.manage-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
   margin-bottom: var(--spacing-xl);
 }
 
-.manage-users-card {
+.manage-card {
   width: 100%;
   max-width: none;
 }
@@ -216,6 +219,11 @@
 }
 
 @media (max-width: 768px) {
+  .manage-section {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+  
   .stock-actions-grid {
     grid-template-columns: 1fr;
     gap: var(--spacing-lg);
