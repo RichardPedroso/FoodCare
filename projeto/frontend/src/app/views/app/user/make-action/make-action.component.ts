@@ -910,10 +910,12 @@ export class MakeActionComponent implements OnInit {
     const measureType = this.selectedProduct.measure_type || this.selectedProduct.unitType;
     
     if (measureType === 'un') {
-      return `Total: ${quantity} unidades`;
+      const unitText = quantity === 1 ? 'unidade' : 'unidades';
+      return `Total: ${quantity} ${unitText}`;
     } else {
       const total = quantity * units;
-      return `Total: ${units} unidades de ${quantity}${measureType} = ${total}${measureType}`;
+      const unitText = units === 1 ? 'unidade' : 'unidades';
+      return `Total: ${units} ${unitText} de ${quantity}${measureType} = ${total}${measureType}`;
     }
   }
 
