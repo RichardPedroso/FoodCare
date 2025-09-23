@@ -82,13 +82,13 @@
 
     <div class="actions">
       @if (selectedUser.able === undefined) {
-      <button class="btn btn-success" (click)="confirmUser()">
-        <mat-icon>check</mat-icon>
-        Confirmar
-      </button>
       <button class="btn btn-danger" (click)="denyUser()">
         <mat-icon>close</mat-icon>
         Negar
+      </button>
+      <button class="btn btn-success" (click)="confirmUser()">
+        <mat-icon>check</mat-icon>
+        Confirmar
       </button>
       } @else if (selectedUser.able === true) {
       <button class="btn btn-warning" (click)="revokePermission()">
