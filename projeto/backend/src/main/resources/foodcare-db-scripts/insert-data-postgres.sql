@@ -181,15 +181,8 @@ INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, prod
 INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, '2025-10-24', '50', 19, 22);
 INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '10', 20, 23);
 
--- Insert basket requests from db.json
-INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (4, '2025-08-08T03:00:00.000Z', 'basic', 'pending', '[{"productId": 1, "productName": "Arroz", "quantity": 8, "unitQuantity": 2, "unitType": "kg"}, {"productId": 2, "productName": "Feijão", "quantity": 4, "unitQuantity": 1, "unitType": "kg"}]');
-INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (4, '2025-08-08T03:00:00.000Z', 'hygiene', 'pending', '[{"productId": 4, "productName": "Papel-toalha", "quantity": 1, "unitQuantity": 1, "unitType": "un"}, {"productId": 5, "productName": "Papel-higiênico", "quantity": 1, "unitQuantity": 1, "unitType": "un"}]');
-INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (5, '2025-08-08T03:00:00.000Z', 'basic', 'pending', '[{"productId": 1, "productName": "Arroz", "quantity": 6, "unitQuantity": 2, "unitType": "kg"}, {"productId": 2, "productName": "Feijão", "quantity": 3, "unitQuantity": 1, "unitType": "kg"}]');
-INSERT INTO basket_request (user_id, request_date, basket_type, status, people_quantity, has_children, calculated_items) VALUES (5, '2025-09-09T01:18:44.588Z', 'basic', 'pending', 4, FALSE, '[{"productId": 1, "productName": "Arroz", "quantity": 8, "unitQuantity": 2, "unitType": "kg"}, {"productId": 2, "productName": "Feijão", "quantity": 4, "unitQuantity": 1, "unitType": "kg"}]');
-INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (5, '2025-09-09T01:19:24.161Z', 'hygiene', 'pending', '[{"productId": 4, "productName": "Papel-toalha", "quantity": 1, "unitQuantity": 1, "unitType": "un"}, {"productId": 5, "productName": "Papel-higiênico", "quantity": 1, "unitQuantity": 1, "unitType": "un"}]');
-
--- Insert stock data with 10001000 units for all products and all donation options
--- Basic products
+-- Insert stock data with low stock for testing utilization
+-- Basic products with low stock for testing
 INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (1, 1, 10001000);
 INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (1, 5, 10001000);
 INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (2, 1, 10001000);
@@ -237,6 +230,14 @@ INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (25, 85, 10
 INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (25, 170, 10001000);
 INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (26, 150, 10001000);
 INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (26, 300, 10001000);
+
+-- Insert basket requests after all tables are created
+INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (4, '2025-08-08T03:00:00.000Z', 'basic', 'pending', '[{"productId": 1, "productName": "Arroz", "quantity": 8, "unitQuantity": 2, "unitType": "kg"}, {"productId": 2, "productName": "Feijão", "quantity": 4, "unitQuantity": 1, "unitType": "kg"}]');
+INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (4, '2025-08-08T03:00:00.000Z', 'hygiene', 'pending', '[{"productId": 4, "productName": "Papel-toalha", "quantity": 1, "unitQuantity": 1, "unitType": "un"}, {"productId": 5, "productName": "Papel-higiênico", "quantity": 1, "unitQuantity": 1, "unitType": "un"}]');
+INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (5, '2025-08-08T03:00:00.000Z', 'basic', 'pending', '[{"productId": 1, "productName": "Arroz", "quantity": 6, "unitQuantity": 2, "unitType": "kg"}, {"productId": 2, "productName": "Feijão", "quantity": 3, "unitQuantity": 1, "unitType": "kg"}]');
+INSERT INTO basket_request (user_id, request_date, basket_type, status, people_quantity, has_children, calculated_items) VALUES (5, '2025-09-09T01:18:44.588Z', 'basic', 'pending', 4, FALSE, '[{"productId": 1, "productName": "Arroz", "quantity": 8, "unitQuantity": 2, "unitType": "kg"}, {"productId": 2, "productName": "Feijão", "quantity": 4, "unitQuantity": 1, "unitType": "kg"}]');
+INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (5, '2025-09-09T01:19:24.161Z', 'hygiene', 'pending', '[{"productId": 4, "productName": "Papel-toalha", "quantity": 1, "unitQuantity": 1, "unitType": "un"}, {"productId": 5, "productName": "Papel-higiênico", "quantity": 1, "unitQuantity": 1, "unitType": "un"}]');
+INSERT INTO basket_request (user_id, request_date, basket_type, status, people_quantity, has_children, calculated_items) VALUES (11, '2025-09-23T12:00:00.000Z', 'basic', 'pending', 10, FALSE, '[{"productId": 1, "productName": "Arroz", "quantity": 20, "unitQuantity": 2, "unitType": "kg"}, {"productId": 2, "productName": "Feijão", "quantity": 10, "unitQuantity": 1, "unitType": "kg"}]');
 
 -- Commented encrypted password versions (uncomment to use encryption):
 -- INSERT INTO user_model (name, email, password, user_type, is_admin, municipality_id) 

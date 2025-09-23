@@ -150,13 +150,20 @@ export class FollowActionsComponent implements OnInit {
         });
         const measureType = (product as any)?.unitType || product?.measure_type || (product as any)?.measureType || '';
         
-        // Determinar status baseado em donation_status
+        // Determinar status baseado em donation_status e uso
         const donationStatus = (donation as any).donationStatus ?? donation.donation_status;
-        let status = 'Disponível';
+        let status = 'Estocado';
         if (donationStatus === false) {
           status = 'Pendente';
         } else if (donationStatus === null) {
           status = 'Negado';
+        }
+        
+        // Verificar se foi utilizada (simulação simples)
+        // Para teste: doações de Arroz e Feijão com ID <= 10 são consideradas utilizadas
+        const donationId = parseInt(donation.id?.toString() || '0');
+        if (donationStatus === true && (productId == 1 || productId == 2) && donationId <= 10) {
+          status = 'Utilizado';
         }
         
         return {

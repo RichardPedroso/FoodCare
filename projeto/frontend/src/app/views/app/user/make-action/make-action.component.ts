@@ -748,7 +748,8 @@ export class MakeActionComponent implements OnInit {
         const stock = stocks[0];
         const updatedStock = {
           ...stock,
-          actualStock: stock.actualStock - quantity
+          actualStock: stock.actualStock - quantity,
+          usedStock: (stock.usedStock || 0) + quantity
         };
         
         await firstValueFrom(
@@ -778,7 +779,8 @@ export class MakeActionComponent implements OnInit {
         
         const updatedStock = {
           ...targetStock,
-          actualStock: targetStock.actualStock - quantity
+          actualStock: targetStock.actualStock - quantity,
+          usedStock: (targetStock.usedStock || 0) + quantity
         };
         
         await firstValueFrom(

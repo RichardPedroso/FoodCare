@@ -1,4 +1,5 @@
 -- Drop tables with CASCADE to handle dependencies
+DROP TABLE IF EXISTS donation_usage CASCADE;
 DROP TABLE IF EXISTS donation_product CASCADE;
 DROP TABLE IF EXISTS stock CASCADE;
 DROP TABLE IF EXISTS basket_request CASCADE;
@@ -114,6 +115,7 @@ CREATE TABLE stock
     product_id      INTEGER          NOT NULL,
     donation_option DOUBLE PRECISION NOT NULL,
     actual_stock    INTEGER          NOT NULL DEFAULT 0,
+    used_stock      INTEGER          NOT NULL DEFAULT 0,
     PRIMARY KEY (id),
     FOREIGN KEY (product_id) REFERENCES product(id)
 );
@@ -130,6 +132,18 @@ CREATE TABLE basket_request
     calculated_items JSONB,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user_model(id)
+);
+
+CREATE TABLE donation_usage
+(
+    id              SERIAL           NOT NULL,
+    donation_id     INTEGER          NOT NULL,
+    basket_request_id INTEGER        NOT NULL,
+    quantity_used   INTEGER          NOT NULL,
+    usage_date      TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (donation_id) REFERENCES donation(id),
+    FOREIGN KEY (basket_request_id) REFERENCES basket_request(id)
 );
 
 

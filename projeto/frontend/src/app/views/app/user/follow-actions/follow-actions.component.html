@@ -83,8 +83,9 @@
                       </td>
                       <td>
                         <span class="status" [ngClass]="{
-                          'status-available': donation.status === 'Disponível',
-                          'status-pending': donation.status === 'Pendente'
+                          'status-available': donation.status === 'Estocado',
+                          'status-pending': donation.status === 'Pendente',
+                          'status-used': donation.status === 'Utilizado'
                         }">{{ donation.status }}</span>
                       </td>
                     </tr>
