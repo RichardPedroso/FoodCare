@@ -166,7 +166,11 @@
                         <span class="date">{{ request.request_date ? (request.request_date | date:'dd/MM/yyyy') : 'Data não disponível' }}</span>
                       </td>
                       <td>
-                        <span class="status status-available">{{ request.status === 'pending' ? 'Pendente' : 'Coletada' }}</span>
+                        <span class="status" [ngClass]="{
+                          'status-pending': request.status === 'pending',
+                          'status-collected': request.status === 'approved',
+                          'status-cancelled': request.status === 'cancelled'
+                        }">{{ getBasketStatus(request.status) }}</span>
                       </td>
                     </tr>
                   }

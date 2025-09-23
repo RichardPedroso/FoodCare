@@ -143,7 +143,7 @@ public class BasketRequestDaoImpl implements BasketRequestDao {
 
     @Override
     public void update(int id, BasketRequest entity) {
-        String sql = "UPDATE basket_request SET user_id = ?, request_date = ?, basket_type = ?, status = ?, people_quantity = ?, has_children = ?, calculated_items = ? WHERE id = ?";
+        String sql = "UPDATE basket_request SET user_id = ?, request_date = ?, basket_type = ?, status = ?, people_quantity = ?, has_children = ?, calculated_items = ?::jsonb WHERE id = ?";
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);

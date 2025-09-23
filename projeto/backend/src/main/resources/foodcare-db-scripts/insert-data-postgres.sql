@@ -182,9 +182,9 @@ INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, prod
 INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '10', 20, 23);
 
 -- Insert basket requests from db.json
-INSERT INTO basket_request (user_id, request_date, basket_type, status) VALUES (4, '2025-08-08T03:00:00.000Z', 'basic', 'pending');
-INSERT INTO basket_request (user_id, request_date, basket_type, status) VALUES (4, '2025-08-08T03:00:00.000Z', 'hygiene', 'pending');
-INSERT INTO basket_request (user_id, request_date, basket_type, status) VALUES (5, '2025-08-08T03:00:00.000Z', 'basic', 'pending');
+INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (4, '2025-08-08T03:00:00.000Z', 'basic', 'pending', '[{"productId": 1, "productName": "Arroz", "quantity": 8, "unitQuantity": 2, "unitType": "kg"}, {"productId": 2, "productName": "Feijão", "quantity": 4, "unitQuantity": 1, "unitType": "kg"}]');
+INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (4, '2025-08-08T03:00:00.000Z', 'hygiene', 'pending', '[{"productId": 4, "productName": "Papel-toalha", "quantity": 1, "unitQuantity": 1, "unitType": "un"}, {"productId": 5, "productName": "Papel-higiênico", "quantity": 1, "unitQuantity": 1, "unitType": "un"}]');
+INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (5, '2025-08-08T03:00:00.000Z', 'basic', 'pending', '[{"productId": 1, "productName": "Arroz", "quantity": 6, "unitQuantity": 2, "unitType": "kg"}, {"productId": 2, "productName": "Feijão", "quantity": 3, "unitQuantity": 1, "unitType": "kg"}]');
 INSERT INTO basket_request (user_id, request_date, basket_type, status, people_quantity, has_children, calculated_items) VALUES (5, '2025-09-09T01:18:44.588Z', 'basic', 'pending', 4, FALSE, '[{"productId": 1, "productName": "Arroz", "quantity": 8, "unitQuantity": 2, "unitType": "kg"}, {"productId": 2, "productName": "Feijão", "quantity": 4, "unitQuantity": 1, "unitType": "kg"}]');
 INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (5, '2025-09-09T01:19:24.161Z', 'hygiene', 'pending', '[{"productId": 4, "productName": "Papel-toalha", "quantity": 1, "unitQuantity": 1, "unitType": "un"}, {"productId": 5, "productName": "Papel-higiênico", "quantity": 1, "unitQuantity": 1, "unitType": "un"}]');
 

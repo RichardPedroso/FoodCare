@@ -147,4 +147,8 @@ export class MainAdminComponent implements OnInit {
   navigateToManageDonations() {
     this.router.navigate(['/main/admin/manage-donations']);
   }
+
+  navigateToManageRequests() {
+    this.router.navigate(['/main/admin/manage-requests']);
+  }
 }

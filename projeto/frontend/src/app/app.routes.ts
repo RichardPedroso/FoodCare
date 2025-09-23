@@ -20,6 +20,7 @@ import { DeleteAccountComponent } from './views/account/delete-account/delete-ac
 import { MainAdminComponent } from './views/app/admin/main-admin/main-admin.component';
 import { ManageUsersComponent } from './views/app/admin/manage-users/manage-users.component';
 import { ManageDonationsComponent } from './views/app/admin/manage-donations/manage-donations.component';
+import { ManageRequestsComponent } from './views/app/admin/manage-requests/manage-requests.component';
 
 export const routes: Routes = [
 
@@ -92,6 +93,10 @@ export const routes: Routes = [
       {
         path: 'admin/manage-donations',
         component: ManageDonationsComponent
+      },
+      {
+        path: 'admin/manage-requests',
+        component: ManageRequestsComponent
       },
     ]
   },

@@ -55,14 +55,13 @@ public class BasketRequestRestController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<BasketRequest>> getAllBasketRequests() {
+    public List<BasketRequest> getAllBasketRequests() {
         try (Connection connection = getConnection()) {
             BasketRequestDaoImpl basketRequestDao = new BasketRequestDaoImpl(connection);
-            List<BasketRequest> basketRequests = basketRequestDao.findAll();
-            return ResponseEntity.ok(basketRequests);
+            return basketRequestDao.findAll();
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError().build();
+            return new java.util.ArrayList<>();
         }
     }
 
@@ -88,6 +87,81 @@ public class BasketRequestRestController {
             basketRequest.setId(0);
             int id = basketRequestDao.create(basketRequest);
             return ResponseEntity.ok(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PostMapping("/approve/{id}")
+    public ResponseEntity<Void> approveBasketRequest(@PathVariable final int id) {
+        try (Connection connection = getConnection()) {
+            BasketRequestDaoImpl basketRequestDao = new BasketRequestDaoImpl(connection);
+            BasketRequest basketRequest = basketRequestDao.findByid(id);
+            if (basketRequest != null) {
+                basketRequest.setStatus("approved");
+                basketRequestDao.update(id, basketRequest);
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PostMapping("/reject/{id}")
+    public ResponseEntity<Void> rejectBasketRequest(@PathVariable final int id) {
+        try (Connection connection = getConnection()) {
+            BasketRequestDaoImpl basketRequestDao = new BasketRequestDaoImpl(connection);
+            BasketRequest basketRequest = basketRequestDao.findByid(id);
+            if (basketRequest != null) {
+                basketRequest.setStatus("cancelled");
+                basketRequestDao.update(id, basketRequest);
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateBasketRequest(@PathVariable final int id, @RequestBody BasketRequest basketRequest) {
+        try (Connection connection = getConnection()) {
+            BasketRequestDaoImpl basketRequestDao = new BasketRequestDaoImpl(connection);
+            basketRequestDao.update(id, basketRequest);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<Void> updateBasketRequestStatus(@PathVariable final int id, @RequestParam final String status) {
+        try (Connection connection = getConnection()) {
+            BasketRequestDaoImpl basketRequestDao = new BasketRequestDaoImpl(connection);
+            BasketRequest basketRequest = basketRequestDao.findByid(id);
+            if (basketRequest != null) {
+                basketRequest.setStatus(status);
+                basketRequestDao.update(id, basketRequest);
+                return ResponseEntity.ok().build();
+            }
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBasketRequest(@PathVariable final int id) {
+        try (Connection connection = getConnection()) {
+            BasketRequestDaoImpl basketRequestDao = new BasketRequestDaoImpl(connection);
+            basketRequestDao.delete(id);
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.internalServerError().build();

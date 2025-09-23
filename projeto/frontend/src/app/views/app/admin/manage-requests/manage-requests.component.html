@@ -1,0 +1,102 @@
+<div class="container">
+  <div class="header">
+    <h1>Gerenciar Solicitações</h1>
+    <p class="text-secondary">Verificar e aprovar solicitações de cestas pendentes</p>
+  </div>
+
+  @if (!showRequestDetails) {
+  <div class="requests-list">
+    <div class="filters-section">
+      <div class="filters-row">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Pesquisar por beneficiário</mat-label>
+          <input matInput [(ngModel)]="searchTerm" (input)="onSearchChange()" placeholder="Digite o nome...">
+          <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
+    
+    <div class="list-header">
+      <h2>Solicitações Pendentes</h2>
+      <span class="count">{{ requests.length }} solicitações</span>
+    </div>
+    
+    @if (requests.length === 0) {
+    <div class="no-requests">
+      <p>Nenhuma solicitação pendente encontrada.</p>
+    </div>
+    }
+    
+    <div class="requests-grid">
+      @for (request of requests; track request.id) {
+      <div class="request-card card" (click)="selectRequest(request)">
+        <div class="request-info">
+          <h3>{{ request.userName }}</h3>
+          <p>{{ request.userEmail }}</p>
+          <div class="request-date">
+            <mat-icon>schedule</mat-icon>
+            <span>{{ formatDate(request.request_date) }}</span>
+          </div>
+        </div>
+        <div class="basket-info">
+          <mat-icon>shopping_basket</mat-icon>
+          <span>{{ getBasketTypeName(request.basket_type) }}</span>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+  }
+
+  @if (showRequestDetails && selectedRequest) {
+  <div class="request-details-view">
+    <div class="details-header">
+      <button class="btn btn-secondary" (click)="closeRequestDetails()">
+        <mat-icon>arrow_back</mat-icon>
+        Voltar
+      </button>
+      <div class="request-details">
+        <h2>Solicitação de {{ selectedRequest.userName }}</h2>
+        <p>{{ selectedRequest.userEmail }}</p>
+        <p>Data: {{ formatDate(selectedRequest.request_date) }}</p>
+        <p>Tipo: {{ getBasketTypeName(selectedRequest.basket_type) }}</p>
+      </div>
+    </div>
+
+    @if (getCalculatedItems().length > 0) {
+    <div class="items-details">
+      <h3>Itens da Cesta</h3>
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Unidade</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of getCalculatedItems(); track item.productId) {
+          <tr>
+            <td>{{ item.productName }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.unitType }}</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    }
+
+    <div class="actions">
+      <button class="btn btn-success" (click)="confirmRequest()">
+        <mat-icon>check</mat-icon>
+        Confirmar Solicitação
+      </button>
+      <button class="btn btn-danger" (click)="rejectRequest()">
+        <mat-icon>close</mat-icon>
+        Cancelar Solicitação
+      </button>
+    </div>
+  </div>
+  }
+</div>

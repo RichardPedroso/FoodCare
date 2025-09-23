@@ -253,7 +253,7 @@ export class FollowActionsComponent implements OnInit {
       return requestDate.getMonth() === currentMonth && requestDate.getFullYear() === currentYear;
     }).length;
     this.availableCount = requests.filter(request => request.status === 'pending').length;
-    this.usedCount = requests.filter(request => request.status === 'collected').length;
+    this.usedCount = requests.filter(request => request.status === 'approved').length;
   }
 
   private calculateTotalDonatedWeight(donationProducts: DonationProduct[], products: Product[]): void {
@@ -275,6 +275,15 @@ export class FollowActionsComponent implements OnInit {
     }, 0);
   }
 
+  getBasketStatus(status: string): string {
+    switch (status) {
+      case 'pending': return 'Pendente';
+      case 'approved': return 'Coletada';
+      case 'cancelled': return 'Cancelada';
+      default: return status;
+    }
+  }
+
   async showBasketProducts(request: BasketRequest, event?: Event): Promise<void> {
     if (event) {
       event.preventDefault();
@@ -286,9 +295,25 @@ export class FollowActionsComponent implements OnInit {
       const basketProducts = request.parsedItems.map((item: BasketItem) => {
         const product = products.find(p => p.id == item.productId.toString());
         const measureType = (product as any)?.unitType || product?.measure_type || (product as any)?.measureType || '';
-        return `${item.productName} - ${item.quantity}${measureType}`;
+        return `<div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eee;"><span style="font-weight: 500;">${item.productName} - ${item.quantity}${measureType}</span></div>`;
       });
-      this.toastr.info(`${basketType}:\n\n${basketProducts.join('\n')}`, basketType);
+      
+      const htmlContent = `
+        <div style="max-height: 300px; overflow-y: auto;">
+          <div style="margin-bottom: 12px; font-weight: 600; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 8px;">${basketType}</div>
+          <div style="font-size: 14px;">
+            ${basketProducts.join('')}
+          </div>
+        </div>
+      `;
+      
+      this.toastr.info(htmlContent, '', {
+        enableHtml: true,
+        timeOut: 8000,
+        extendedTimeOut: 3000,
+        closeButton: true,
+        progressBar: true
+      });
     } else {
       this.toastr.warning(`Produtos não encontrados para esta cesta.`, basketType);
     }

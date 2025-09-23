@@ -486,9 +486,11 @@ export class MakeActionComponent implements OnInit {
       return requests.some((request: any) => {
         const requestDate = new Date(request.requestDate || request.request_date);
         const basketTypeField = request.basketType || request.basket_type;
+        const status = request.status;
         return basketTypeField === basketType && 
                requestDate.getMonth() === currentMonth && 
-               requestDate.getFullYear() === currentYear;
+               requestDate.getFullYear() === currentYear &&
+               status !== 'cancelled';
       });
     } catch (error) {
       console.error('Erro ao verificar solicitações mensais:', error);
@@ -504,8 +506,8 @@ export class MakeActionComponent implements OnInit {
         this.http.get<any[]>(`${environment.api_endpoint}/basket_request?user_id=${this.user.id}`)
       );
       
-      const basicRequests = requests.filter((r: any) => (r.basketType || r.basket_type) === 'basic');
-      const hygieneRequests = requests.filter((r: any) => (r.basketType || r.basket_type) === 'hygiene');
+      const basicRequests = requests.filter((r: any) => (r.basketType || r.basket_type) === 'basic' && r.status !== 'cancelled');
+      const hygieneRequests = requests.filter((r: any) => (r.basketType || r.basket_type) === 'hygiene' && r.status !== 'cancelled');
       
       if (basicRequests.length > 0) {
         this.lastBasicRequest = new Date(Math.max(...basicRequests.map((r: any) => new Date(r.requestDate || r.request_date).getTime())));
@@ -613,7 +615,7 @@ export class MakeActionComponent implements OnInit {
           productName: product.name,
           quantity: totalQuantity,
           unitQuantity: baseQuantity,
-          unitType: product.measure_type
+          unitType: product.measure_type || product.unitType || 'un'
         });
       }
     });
@@ -628,7 +630,7 @@ export class MakeActionComponent implements OnInit {
             productName: product.name,
             quantity: baseQuantity,
             unitQuantity: baseQuantity,
-            unitType: product.measure_type
+            unitType: product.measure_type || product.unitType || 'un'
           });
         }
       });
@@ -673,7 +675,7 @@ export class MakeActionComponent implements OnInit {
       productName: product.name,
       quantity: 1,
       unitQuantity: 1,
-      unitType: product.measure_type
+      unitType: product.measure_type || product.unitType || 'un'
     }));
   }
 

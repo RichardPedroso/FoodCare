@@ -11,15 +11,20 @@
   } @else {
   <div class="actions-section">
     <div class="manage-section">
+      <div class="action-card card manage-card" (click)="navigateToManageDonations()">
+        <div class="action-icon">📋</div>
+        <h3>Gerenciar Doações</h3>
+        <p>Verificar e aprovar doações</p>
+      </div>
       <div class="action-card card manage-card" (click)="navigateToManageUsers()">
         <div class="action-icon">👥</div>
         <h3>Gerenciar Usuários</h3>
         <p>Verificar e aprovar beneficiários</p>
       </div>
-      <div class="action-card card manage-card" (click)="navigateToManageDonations()">
-        <div class="action-icon">📋</div>
-        <h3>Gerenciar Doações</h3>
-        <p>Verificar e aprovar doações</p>
+      <div class="action-card card manage-card" (click)="navigateToManageRequests()">
+        <div class="action-icon">🛒</div>
+        <h3>Gerenciar Solicitações</h3>
+        <p>Verificar e aprovar solicitações de cestas</p>
       </div>
     </div>
     
