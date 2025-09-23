@@ -890,6 +890,33 @@ export class MakeActionComponent implements OnInit {
     return stockItem ? stockItem.match(/\((\d+) unidades\)/)?.[1] || '0' : '';
   }
 
+  updateDonationSummary(): void {
+    // This method is called when quantity or units change to trigger summary update
+  }
+
+  getDonationSummary(): string {
+    if (!this.selectedProduct) return '';
+    
+    const quantityValue = this.getQuantityValue();
+    const unitsValue = this.getUnitsValue();
+    
+    if (!quantityValue || !unitsValue) return '';
+    
+    const quantity = parseFloat(quantityValue);
+    const units = parseInt(unitsValue);
+    
+    if (isNaN(quantity) || isNaN(units) || quantity <= 0 || units <= 0) return '';
+    
+    const measureType = this.selectedProduct.measure_type || this.selectedProduct.unitType;
+    
+    if (measureType === 'un') {
+      return `Total: ${quantity} unidades`;
+    } else {
+      const total = quantity * units;
+      return `Total: ${units} unidades de ${quantity}${measureType} = ${total}${measureType}`;
+    }
+  }
+
 
 
 }

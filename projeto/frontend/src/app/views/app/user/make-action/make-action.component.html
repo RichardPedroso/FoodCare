@@ -95,7 +95,7 @@
                   @if (selectedProduct && selectedProduct.unitType !== 'un') {
                     <mat-form-field appearance="outline" class="full-width">
                       <mat-label>Quantidade</mat-label>
-                      <mat-select #quantity required>
+                      <mat-select #quantity required (selectionChange)="updateDonationSummary()">
                         @if (!quantity.value) {
                           <mat-option value="">Selecione a quantidade</mat-option>
                         }
@@ -114,7 +114,7 @@
                   } @else if (selectedProduct && selectedProduct.unitType === 'un') {
                     <mat-form-field appearance="outline" class="full-width">
                       <mat-label>Unidades</mat-label>
-                      <input matInput type="number" min="1" step="1" #quantity required>
+                      <input matInput type="number" min="1" step="1" #quantity required (input)="updateDonationSummary()">
                       <mat-icon matPrefix>inventory_2</mat-icon>
                     </mat-form-field>
                   }
@@ -128,12 +128,22 @@
                     <mat-form-field appearance="outline" class="full-width">
                       <mat-label>Unidades</mat-label>
                       <input matInput type="number" min="1" step="1" #units 
-                             (input)="onUnitsInput($event)" required>
+                             (input)="onUnitsInput($event); updateDonationSummary()" required>
                       <mat-icon matPrefix>inventory_2</mat-icon>
                     </mat-form-field>
                   </div>
                 </div>
               }
+
+              @if (getDonationSummary()) {
+                <div class="donation-summary">
+                  <div class="summary-content">
+                    <mat-icon>calculate</mat-icon>
+                    <span>{{ getDonationSummary() }}</span>
+                  </div>
+                </div>
+              }
+
               </div>
 
             <div class="info-message-container">
