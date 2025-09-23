@@ -268,7 +268,18 @@ export class MakeActionComponent implements OnInit {
   }
 
   private getUnitsValue(): string {
-    return this.unitsRef?.nativeElement?.value || '1';
+    // Para produtos com measure_type 'un', usar o valor do campo quantity como unidades
+    if (this.selectedProduct?.measure_type === 'un') {
+      const quantityValue = this.getQuantityValue();
+      console.log('Produto unitário - usando quantity como units:', quantityValue);
+      return quantityValue || '1';
+    }
+    
+    // Para outros produtos, usar o campo units separado
+    const value = this.unitsRef?.nativeElement?.value || '1';
+    console.log('getUnitsValue() - unitsRef:', this.unitsRef);
+    console.log('getUnitsValue() - value:', value);
+    return value;
   }
 
   isToyProduct(): boolean {
@@ -325,10 +336,11 @@ export class MakeActionComponent implements OnInit {
       console.log('Units:', units);
       console.log('ExpirationDate:', expirationDate);
       
-      // Criar doação
+      // Criar doação com status false (pendente de aprovação)
       const donation: Donation = {
         donation_date: new Date(),
-        user_id: parseInt(this.user.id!.toString())
+        user_id: parseInt(this.user.id!.toString()),
+        donation_status: false
       };
       
       console.log('Criando doação:', donation);
@@ -356,7 +368,7 @@ export class MakeActionComponent implements OnInit {
       const donationProduct = {
         quantity: quantityNum, // donation_option (ex: 5kg)
         expirationDate: formattedExpirationDate,
-        unit: validUnit,
+        unit: unitsNum.toString(), // número de unidades doadas
         donationId: createdDonation.id,
         productId: parseInt(productId)
       };
@@ -365,16 +377,10 @@ export class MakeActionComponent implements OnInit {
       const createdDonationProduct = await this.donationProductCreateService.create(donationProduct);
       console.log('Produto da doação criado:', createdDonationProduct);
 
-      // Processar para estoque com o número de unidades
-      console.log('Processando para estoque com unidades:', unitsNum);
-      const stockResult = await firstValueFrom(
-        this.http.post<boolean>(`${environment.api_endpoint}/donation/${createdDonation.id}/process-to-stock`, {
-          units: unitsNum
-        })
-      );
-      console.log('Resultado do processamento para estoque:', stockResult);
+      // NÃO processar para estoque - aguardar aprovação do admin
+      console.log('Doação criada com status pendente - aguardando aprovação');
 
-      this.toastr.success('Doação registrada e processada para o estoque com sucesso!');
+      this.toastr.success('Doação registrada com sucesso! Aguarde a aprovação de um administrador.');
       this.router.navigate(['/main']);
       
       console.log('=== DOAÇÃO REGISTRADA COM SUCESSO ===');

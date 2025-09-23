@@ -70,6 +70,8 @@ export class SignUpComponent implements OnInit {
   incomeError: string = '';
   
   uploadedDocuments: { name: string, data: string }[] = [];
+  
+  showTooltip: boolean = false;
 
   constructor(
     private formbuilder: FormBuilder,
@@ -155,7 +157,9 @@ export class SignUpComponent implements OnInit {
         Validators.minLength(this.familyIncomeMinLenght),
       ]],
 
-      hasChildren: [false]
+      hasChildren: [false],
+
+      termsAccepted: [false]
 
     });
 
@@ -166,6 +170,17 @@ export class SignUpComponent implements OnInit {
     
     this.signUpForm.get('peopleQuantity')?.valueChanges.subscribe(() => {
       this.validateIncomePerCapita();
+    });
+    
+    // Listener para adicionar validação required nos termos quando beneficiário for selecionado
+    this.signUpForm.get('userType')?.valueChanges.subscribe((userType) => {
+      const termsControl = this.signUpForm.get('termsAccepted');
+      if (userType === 'beneficiary') {
+        termsControl?.setValidators([Validators.requiredTrue]);
+      } else {
+        termsControl?.clearValidators();
+      }
+      termsControl?.updateValueAndValidity();
     });
   }
 
@@ -234,7 +249,13 @@ export class SignUpComponent implements OnInit {
       return false;
     }
 
-    return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType && addressValid && isPeopleQuantity && isFamilyIncome && this.validateIncomePerCapita();
+    let isTermsAccepted = this.signUpForm.controls['termsAccepted'].valid;
+
+    if (userTypeValue === 'beneficiary') {
+      return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType && addressValid && isPeopleQuantity && isFamilyIncome && this.validateIncomePerCapita() && isTermsAccepted;
+    }
+    
+    return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType && addressValid;
   }
 
   validateIncomePerCapita(): boolean {

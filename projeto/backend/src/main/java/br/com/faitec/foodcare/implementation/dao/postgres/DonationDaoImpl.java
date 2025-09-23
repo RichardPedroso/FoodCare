@@ -20,13 +20,14 @@ public class DonationDaoImpl implements DonationDao {
 
     @Override
     public int create(Donation entity) {
-        String sql = "INSERT INTO donation(donation_date, user_id) VALUES (?, ?)";
+        String sql = "INSERT INTO donation(donation_date, user_id, donation_status) VALUES (?, ?, ?)";
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, entity.getDonationDate());
             preparedStatement.setInt(2, entity.getUserId());
-            preparedStatement.execute();
+            preparedStatement.setBoolean(3, entity.isDonationStatus());
+            preparedStatement.execute();    
             
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             int id = 0;
@@ -44,13 +45,20 @@ public class DonationDaoImpl implements DonationDao {
 
     @Override
     public void delete(int id) {
-        String sql = "DELETE FROM donation WHERE id = ?";
-        
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1, id);
-            preparedStatement.execute();
-            preparedStatement.close();
+            // Primeiro deletar donation_products relacionados
+            String deleteDonationProductsSql = "DELETE FROM donation_product WHERE donation_id = ?";
+            PreparedStatement deleteProductsStmt = connection.prepareStatement(deleteDonationProductsSql);
+            deleteProductsStmt.setInt(1, id);
+            deleteProductsStmt.execute();
+            deleteProductsStmt.close();
+            
+            // Depois deletar a donation
+            String deleteDonationSql = "DELETE FROM donation WHERE id = ?";
+            PreparedStatement deleteDonationStmt = connection.prepareStatement(deleteDonationSql);
+            deleteDonationStmt.setInt(1, id);
+            deleteDonationStmt.execute();
+            deleteDonationStmt.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -70,6 +78,7 @@ public class DonationDaoImpl implements DonationDao {
                 donation.setId(resultSet.getInt("id"));
                 donation.setDonationDate(resultSet.getString("donation_date"));
                 donation.setUserId(resultSet.getInt("user_id"));
+                donation.setDonationStatus(resultSet.getBoolean("donation_status"));
                 
                 resultSet.close();
                 preparedStatement.close();
@@ -98,6 +107,7 @@ public class DonationDaoImpl implements DonationDao {
                 donation.setId(resultSet.getInt("id"));
                 donation.setDonationDate(resultSet.getString("donation_date"));
                 donation.setUserId(resultSet.getInt("user_id"));
+                donation.setDonationStatus(resultSet.getBoolean("donation_status"));
                 donations.add(donation);
             }
             
@@ -111,13 +121,14 @@ public class DonationDaoImpl implements DonationDao {
 
     @Override
     public void update(int id, Donation entity) {
-        String sql = "UPDATE donation SET donation_date = ?, user_id = ? WHERE id = ?";
+        String sql = "UPDATE donation SET donation_date = ?, user_id = ?, donation_status = ? WHERE id = ?";
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, entity.getDonationDate());
             preparedStatement.setInt(2, entity.getUserId());
-            preparedStatement.setInt(3, id);
+            preparedStatement.setBoolean(3, entity.isDonationStatus());
+            preparedStatement.setInt(4, id);
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -140,6 +151,7 @@ public class DonationDaoImpl implements DonationDao {
                 donation.setId(resultSet.getInt("id"));
                 donation.setDonationDate(resultSet.getString("donation_date"));
                 donation.setUserId(resultSet.getInt("user_id"));
+                donation.setDonationStatus(resultSet.getBoolean("donation_status"));
                 donations.add(donation);
             }
             

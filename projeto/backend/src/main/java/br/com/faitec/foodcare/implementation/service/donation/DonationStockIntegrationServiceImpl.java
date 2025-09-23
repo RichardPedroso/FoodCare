@@ -20,7 +20,7 @@ public class DonationStockIntegrationServiceImpl implements DonationStockIntegra
     private final DonationService donationService;
     private final DonationProductService donationProductService;
     private final StockService stockService;
-    private static final int MINIMUM_DAYS = 30;
+    private static final int MINIMUM_DAYS = 15;
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public DonationStockIntegrationServiceImpl(DonationService donationService, 
@@ -139,50 +139,46 @@ public class DonationStockIntegrationServiceImpl implements DonationStockIntegra
     }
 
     private void addToStock(DonationProduct donationProduct) {
-        // Por enquanto, assumir 1 unidade. Isso precisa vir do frontend.
-        addToStockWithUnits(donationProduct, 1);
+        int actualUnits;
+        try {
+            actualUnits = Integer.parseInt(donationProduct.getUnit());
+        } catch (NumberFormatException e) {
+            actualUnits = 1;
+        }
+        addToStockWithUnits(donationProduct, actualUnits);
     }
     
     public void addToStockWithUnits(DonationProduct donationProduct, int unitsToAdd) {
         int productId = donationProduct.getProductId();
-        double donationOption = donationProduct.getQuantity();
+        
+        // Usar diretamente o campo unit como número de unidades a adicionar
+        int actualUnitsToAdd;
+        try {
+            actualUnitsToAdd = Integer.parseInt(donationProduct.getUnit());
+        } catch (NumberFormatException e) {
+            actualUnitsToAdd = 1;
+        }
         
         System.out.println("=== ADICIONANDO AO ESTOQUE ===");
         System.out.println("ProductId: " + productId);
-        System.out.println("DonationOption: " + donationOption);
-        System.out.println("UnitsToAdd: " + unitsToAdd);
+        System.out.println("Unidades a adicionar: " + actualUnitsToAdd);
 
-        // Buscar estoque existente para este produto e donation_option
+        // Buscar estoque existente para este produto
         List<Stock> existingStocks = stockService.findByProductId(productId);
-        System.out.println("Estoques existentes encontrados: " + existingStocks.size());
         
-        boolean stockUpdated = false;
-        
-        for (Stock existingStock : existingStocks) {
-            System.out.println("Verificando estoque - ID: " + existingStock.getId() + 
-                             ", DonationOption: " + existingStock.getDonationOption() + 
-                             ", ActualStock: " + existingStock.getActualStock());
-            if (existingStock.getDonationOption() == donationOption) {
-                System.out.println("Encontrou estoque existente! Atualizando...");
-                // Incrementar o estoque com o número de unidades doadas
-                int newStock = existingStock.getActualStock() + unitsToAdd;
-                existingStock.setActualStock(newStock);
-                stockService.update(existingStock.getId(), existingStock);
-                System.out.println("Estoque atualizado para: " + newStock);
-                stockUpdated = true;
-                break;
-            }
-        }
-
-        // Se não encontrou estoque existente, criar novo
-        if (!stockUpdated) {
-            System.out.println("Criando novo estoque...");
+        if (!existingStocks.isEmpty()) {
+            Stock existingStock = existingStocks.get(0);
+            int newStock = existingStock.getActualStock() + actualUnitsToAdd;
+            existingStock.setActualStock(newStock);
+            stockService.update(existingStock.getId(), existingStock);
+            System.out.println("Estoque atualizado de " + existingStock.getActualStock() + " para " + newStock);
+        } else {
             Stock newStock = new Stock();
             newStock.setProductId(productId);
-            newStock.setDonationOption(donationOption);
-            newStock.setActualStock(unitsToAdd);
-            int createdId = stockService.create(newStock);
-            System.out.println("Novo estoque criado com ID: " + createdId);
+            newStock.setDonationOption(1.0);
+            newStock.setActualStock(actualUnitsToAdd);
+            stockService.create(newStock);
+            System.out.println("Novo estoque criado com " + actualUnitsToAdd + " unidades");
         }
         
         System.out.println("=== FIM ADICÃO AO ESTOQUE ===");

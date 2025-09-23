@@ -56,11 +56,13 @@
                       }
                       @for (product of filteredProducts; track product.id) {
                         <mat-option [value]="product.id" [ngClass]="{'low-stock-option': isProductLowStock(product.id!)}">
-                          {{ product.name }}
-                          @if(isProductLowStock(product.id!)) {
-                            <mat-icon class="warning-icon-inline">warning</mat-icon>         
-                            <p>(Estoque esgotando)</p>
-                          }
+                          <ng-container>
+                            {{ product.name }}
+                            @if(isProductLowStock(product.id!)) {
+                              <mat-icon class="warning-icon-inline">warning</mat-icon>         
+                              <span>(Estoque esgotando)</span>
+                            }
+                          </ng-container>
                         </mat-option>
                       }
                     </mat-select>

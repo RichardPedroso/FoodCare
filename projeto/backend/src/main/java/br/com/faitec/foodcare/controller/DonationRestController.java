@@ -149,4 +149,36 @@ public class DonationRestController {
             return ResponseEntity.badRequest().body(false);
         }
     }
+
+    @PutMapping("/{id}/confirm")
+    public ResponseEntity<Void> confirmDonation(@PathVariable final int id) {
+        try {
+            // Atualizar donation_status para true
+            Donation donation = donationService.findById(id);
+            if (donation == null) {
+                return ResponseEntity.notFound().build();
+            }
+            
+            donation.setDonationStatus(true);
+            donationService.update(id, donation);
+            
+            // Processar para estoque
+            donationStockIntegrationService.processDonationToStock(id);
+            
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @PutMapping("/{id}/reject")
+    public ResponseEntity<Void> rejectDonation(@PathVariable final int id) {
+        try {
+            // Deletar a doação e seus produtos
+            donationService.delete(id);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }

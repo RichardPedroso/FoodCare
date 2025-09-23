@@ -98,36 +98,79 @@ export class FollowActionsComponent implements OnInit {
       const donationProducts = await this.donationReadService.findDonationProducts();
       const products = await this.productReadService.findAll();
       
-      this.donations = userDonations.map(donation => {
+      const validDonations = userDonations.map(donation => {
         const donationProduct = donationProducts.find(dp => {
           const dpDonationId = dp.donation_id || (dp as any).donationId;
           return dpDonationId == donation.id;
         });
         
+        // Se não há donation_product, pular esta doação
+        if (!donationProduct) {
+          console.log(`Doação ${donation.id} não tem produtos associados - pulando`);
+          return null;
+        }
+        
+        console.log(`Doação ${donation.id}:`, {
+          donation,
+          donationProduct,
+          donationStatus: (donation as any).donationStatus || donation.donation_status
+        });
+        
+        const productId = donationProduct?.product_id || (donationProduct as any)?.productId;
+        console.log(`Debug follow-actions - doação ${donation.id}:`, {
+          donationProduct,
+          productId,
+          availableProducts: products.slice(0, 3).map(p => ({ id: p.id, name: p.name }))
+        });
+        
         const product = products.find(p => {
-          const productId = donationProduct?.product_id || (donationProduct as any)?.productId;
           return p.id == productId;
         });
+        
+        if (!product && donationProduct) {
+          console.warn(`Produto não encontrado para donation_product:`, {
+            donationProduct,
+            productId,
+            availableProducts: products.slice(0, 5).map(p => ({ id: p.id, name: p.name }))
+          });
+        }
         
         const dateValue = donation.donation_date || (donation as any).donationDate;
         const donationDate = dateValue ? new Date(dateValue) : null;
         
-        const quantity = donationProduct?.quantity || 0;
-        const selectedOption = (donationProduct as any)?.selectedOption || (donationProduct as any)?.selected_option || 1;
-        const optionValue = product?.optionsDonation?.[selectedOption] || product?.optionsDonation?.[0] || 1;
-        const calculatedWeight = quantity * optionValue;
+        const unitsCount = Number(donationProduct?.unit) || 0; // Número de unidades doadas
+        const donationOption = Number(donationProduct?.quantity) || 1; // Peso por unidade (kg)
+        const calculatedWeight = unitsCount * donationOption; // Peso total
+        
+        console.log(`Cálculo peso doação ${donation.id}:`, {
+          unitsCount,
+          donationOption,
+          calculatedWeight,
+          donationProduct
+        });
         const measureType = (product as any)?.unitType || product?.measure_type || (product as any)?.measureType || '';
+        
+        // Determinar status baseado em donation_status
+        const donationStatus = (donation as any).donationStatus ?? donation.donation_status;
+        let status = 'Disponível';
+        if (donationStatus === false) {
+          status = 'Pendente';
+        } else if (donationStatus === null) {
+          status = 'Negado';
+        }
         
         return {
           productName: product?.name || 'Produto não encontrado',
-          quantity,
+          quantity: unitsCount,
           unit: donationProduct?.unit || '',
           donationDate: donationDate && !isNaN(donationDate.getTime()) ? donationDate : null,
-          status: 'Disponível',
+          status,
           calculatedWeight,
           measureType
         };
-      });
+      }).filter(donation => donation !== null);
+      
+      this.donations = validDonations;
       
       this.calculateTotalDonatedWeight(donationProducts, products);
       this.calculateStats(userDonations);
@@ -185,8 +228,17 @@ export class FollowActionsComponent implements OnInit {
       const donationDate = new Date(dateValue);
       return donationDate.getMonth() === currentMonth && donationDate.getFullYear() === currentYear;
     }).length;
-    this.availableCount = donations.length;
-    this.usedCount = 0;
+    
+    // Contar doações disponíveis (donation_status = true) e pendentes (donation_status = false)
+    this.availableCount = donations.filter(donation => {
+      const donationStatus = (donation as any).donationStatus ?? donation.donation_status;
+      return donationStatus === true;
+    }).length;
+    
+    this.usedCount = donations.filter(donation => {
+      const donationStatus = (donation as any).donationStatus ?? donation.donation_status;
+      return donationStatus === false;
+    }).length;
   }
 
   private calculateBasketStats(requests: BasketRequest[]): void {

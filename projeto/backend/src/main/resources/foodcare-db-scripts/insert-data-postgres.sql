@@ -132,52 +132,52 @@ INSERT INTO product (name, product_type, category_id, measure_type, options_dona
 VALUES ('Biscoitinho', 'infant', 3, 'g', '{150, 300}');
 
 -- Insert donations from db.json
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-07-14T18:29:00.381Z', 3);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-07-14T18:29:46.162Z', 3);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-07-14T18:31:43.431Z', 3);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-07-14T18:33:02.826Z', 3);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-07-14T18:37:05.754Z', 3);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-08-05T23:26:25.802Z', 6);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-08-05T23:31:35.112Z', 6);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-09-02T01:36:06.653Z', 6);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-09-02T21:08:55.000Z', 6);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-09-02T21:09:25.419Z', 6);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-09-02T21:09:51.746Z', 6);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-09-02T21:10:59.385Z', 6);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-09-02T21:11:40.133Z', 6);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-09-02T23:22:53.610Z', 6);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-09-04T18:52:34.279Z', 6);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-09-04T18:52:57.644Z', 6);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-09-04T18:53:29.516Z', 6);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-09-04T18:53:54.059Z', 6);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-09-04T18:54:17.514Z', 6);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-09-04T18:54:36.722Z', 6);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-09-04T18:55:11.968Z', 6);
-INSERT INTO donation (donation_date, user_id) VALUES ('2025-09-04T18:57:24.048Z', 6);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-01-15T10:30:00.000Z', 3, FALSE);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-01-14T14:20:00.000Z', 6, FALSE);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-01-13T16:45:00.000Z', 7, FALSE);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-07-14T18:29:00.381Z', 3, TRUE);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-02T21:08:55.000Z', 6, TRUE);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-02T21:09:25.419Z', 6, TRUE);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-02T21:09:51.746Z', 6, TRUE);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-02T21:10:59.385Z', 6, TRUE);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-02T21:11:40.133Z', 6, TRUE);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-02T23:22:53.610Z', 6, TRUE);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-04T18:52:34.279Z', 6, TRUE);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-04T18:52:57.644Z', 6, TRUE);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-04T18:53:29.516Z', 6, TRUE);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-04T18:53:54.059Z', 6, TRUE);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-04T18:54:17.514Z', 6, TRUE);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-04T18:54:36.722Z', 6, TRUE);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-04T18:55:11.968Z', 6, TRUE);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-04T18:57:24.048Z', 6, TRUE);
+INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-23T03:45:00.000Z', 6, FALSE);
 
--- Insert donation products from db.json
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (5, '2056-03-22T00:00:00.000Z', 'Kg', 1, 2);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (3, '2054-05-23T00:00:00.000Z', 'Kg', 2, 1);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (3, '2032-05-22T00:00:00.000Z', 'Kg', 3, 2);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (3, '2026-10-03T00:00:00.000Z', 'Kg', 4, 3);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (8, '2045-04-03T00:00:00.000Z', 'Kg', 5, 2);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (2, NULL, 'L', 6, 7);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (8, NULL, 'Un', 7, 4);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (5, '2025-02-09T03:00:00.000Z', 'Kg', 8, 1);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (500, NULL, 'g', 9, 3);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (5, NULL, 'kg', 10, 1);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (5, NULL, 'kg', 11, 1);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (15, NULL, 'kg', 12, 16);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (800, '2025-11-09T03:00:00.000Z', 'g', 13, 14);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (5, '2025-04-09T03:00:00.000Z', 'kg', 14, 2);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (150, '2025-04-09T03:00:00.000Z', 'g', 15, 26);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (150, '2025-12-09T03:00:00.000Z', 'g', 16, 26);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (400, '2025-12-09T03:00:00.000Z', 'g', 17, 24);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (200, '2025-12-09T03:00:00.000Z', 'g', 18, 24);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (170, '2025-12-09T03:00:00.000Z', 'g', 19, 25);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (170, '2025-12-09T03:00:00.000Z', 'g', 20, 25);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (3, NULL, 'un', 21, 23);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, 'un', 22, 23);
+-- Insert donation products para todas as doações (pendentes e confirmadas)
+-- quantity = donation_option, unit = número de unidades doadas
+-- Doações pendentes (donation_status = FALSE)
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, '2025-12-31T00:00:00.000Z', '3', 1, 1);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '2', 2, 2);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '1', 3, 4);
+
+-- Doações confirmadas (donation_status = TRUE)
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (5, '2025-12-31T00:00:00.000Z', '1', 4, 1);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (500, NULL, '2', 5, 7);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '1', 6, 2);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (5, '2025-11-30T00:00:00.000Z', '1', 7, 1);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '1', 8, 4);
+
+-- Adicionando donation_products para doações 9-18 que estavam sem produtos
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '1', 9, 1);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '2', 10, 2);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (500, NULL, '1', 11, 7);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '1', 12, 4);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, '2025-12-31T00:00:00.000Z', '1', 13, 1);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '1', 14, 5);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '2', 15, 2);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '1', 16, 6);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (500, NULL, '1', 17, 8);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '1', 18, 4);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, '2025-10-24', '50', 19, 22);
 
 -- Insert basket requests from db.json
 INSERT INTO basket_request (user_id, request_date, basket_type, status) VALUES (4, '2025-08-08T03:00:00.000Z', 'basic', 'pending');
