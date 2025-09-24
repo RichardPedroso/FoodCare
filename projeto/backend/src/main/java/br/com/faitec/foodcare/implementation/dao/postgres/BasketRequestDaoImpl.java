@@ -10,14 +10,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementação PostgreSQL do DAO para solicitações de cestas.
+ * Gerencia operações CRUD na tabela basket_request.
+ */
 public class BasketRequestDaoImpl implements BasketRequestDao {
 
     private final Connection connection;
 
+    /** Construtor que recebe a conexão com o banco PostgreSQL */
     public BasketRequestDaoImpl(Connection connection) {
         this.connection = connection;
     }
 
+    /** Busca todas as solicitações de cesta cadastradas */
     @Override
     public List<BasketRequest> findAll() {
         String sql = "SELECT * FROM basket_request";
@@ -27,6 +33,7 @@ public class BasketRequestDaoImpl implements BasketRequestDao {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             
+            // Mapeia cada linha do resultado para um objeto BasketRequest
             while (resultSet.next()) {
                 BasketRequest basketRequest = new BasketRequest();
                 basketRequest.setId(resultSet.getInt("id"));
@@ -48,6 +55,7 @@ public class BasketRequestDaoImpl implements BasketRequestDao {
         }
     }
 
+    /** Busca uma solicitação de cesta pelo ID */
     @Override
     public BasketRequest findByid(int id) {
         String sql = "SELECT * FROM basket_request WHERE id = ?";
@@ -75,12 +83,13 @@ public class BasketRequestDaoImpl implements BasketRequestDao {
             
             resultSet.close();
             preparedStatement.close();
-            return null;
+            return null;  // Retorna null se não encontrar
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /** Busca todas as solicitações de cesta de um usuário específico */
     @Override
     public List<BasketRequest> findByUserId(int userId) {
         String sql = "SELECT * FROM basket_request WHERE user_id = ?";
@@ -112,6 +121,10 @@ public class BasketRequestDaoImpl implements BasketRequestDao {
         }
     }
 
+    /** 
+     * Cria uma nova solicitação de cesta no banco.
+     * Retorna o ID gerado automaticamente.
+     */
     @Override
     public int create(BasketRequest entity) {
         String sql = "INSERT INTO basket_request(user_id, request_date, basket_type, status, people_quantity, has_children, calculated_items) VALUES (?, ?, ?, ?, ?, ?, ?::jsonb)";
@@ -124,9 +137,10 @@ public class BasketRequestDaoImpl implements BasketRequestDao {
             preparedStatement.setString(4, entity.getStatus());
             preparedStatement.setObject(5, entity.getPeopleQuantity());
             preparedStatement.setObject(6, entity.getHasChildren());
-            preparedStatement.setString(7, entity.getCalculatedItems());
+            preparedStatement.setString(7, entity.getCalculatedItems());  // JSON dos itens calculados
             preparedStatement.execute();
             
+            // Recupera o ID gerado automaticamente
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             int id = 0;
             if (resultSet.next()) {

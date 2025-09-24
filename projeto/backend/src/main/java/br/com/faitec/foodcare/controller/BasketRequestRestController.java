@@ -9,10 +9,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.List;
 
+/**
+ * Controller REST para gerenciamento de solicitações de cestas.
+ * Permite criar, consultar, aprovar e rejeitar solicitações de cestas básicas.
+ */
 @RestController
 @RequestMapping("/api/basket_request")
 public class BasketRequestRestController {
 
+    /** Método auxiliar para obter conexão com o banco PostgreSQL */
     private Connection getConnection() throws Exception {
         return DriverManager.getConnection(
             "jdbc:postgresql://localhost:5432/FoodCare",
@@ -21,6 +26,10 @@ public class BasketRequestRestController {
         );
     }
 
+    /** 
+     * Busca solicitações de cesta por ID do usuário.
+     * Permite filtrar por tipo de cesta opcionalmente.
+     */
     @GetMapping
     public ResponseEntity<List<BasketRequest>> getBasketRequestsByUserId(
             @RequestParam final int user_id,
@@ -29,6 +38,7 @@ public class BasketRequestRestController {
             BasketRequestDaoImpl basketRequestDao = new BasketRequestDaoImpl(connection);
             List<BasketRequest> basketRequests = basketRequestDao.findByUserId(user_id);
             
+            // Filtra por tipo de cesta se especificado
             if (basket_type != null && !basket_type.isEmpty()) {
                 basketRequests = basketRequests.stream()
                         .filter(request -> basket_type.equals(request.getBasketType()))
@@ -80,11 +90,12 @@ public class BasketRequestRestController {
         }
     }
 
+    /** Cria uma nova solicitação de cesta e retorna o ID gerado */
     @PostMapping
     public ResponseEntity<Integer> createBasketRequest(@RequestBody BasketRequest basketRequest) {
         try (Connection connection = getConnection()) {
             BasketRequestDaoImpl basketRequestDao = new BasketRequestDaoImpl(connection);
-            basketRequest.setId(0);
+            basketRequest.setId(0);  // Garante que será um novo registro
             int id = basketRequestDao.create(basketRequest);
             return ResponseEntity.ok(id);
         } catch (Exception e) {
@@ -93,6 +104,7 @@ public class BasketRequestRestController {
         }
     }
 
+    /** Aprova uma solicitação de cesta alterando seu status para "approved" */
     @PostMapping("/approve/{id}")
     public ResponseEntity<Void> approveBasketRequest(@PathVariable final int id) {
         try (Connection connection = getConnection()) {
@@ -110,6 +122,7 @@ public class BasketRequestRestController {
         }
     }
 
+    /** Rejeita uma solicitação de cesta alterando seu status para "cancelled" */
     @PostMapping("/reject/{id}")
     public ResponseEntity<Void> rejectBasketRequest(@PathVariable final int id) {
         try (Connection connection = getConnection()) {

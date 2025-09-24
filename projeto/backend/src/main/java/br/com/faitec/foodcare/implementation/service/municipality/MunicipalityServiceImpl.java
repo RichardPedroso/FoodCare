@@ -7,18 +7,28 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementação do serviço de municípios.
+ * Gerencia informações de localização e endereços com validações de negócio.
+ */
 @Service
 public class MunicipalityServiceImpl implements MunicipalityService {
     private final MunicipalityDao municipalityDao;
 
+    /** Construtor com injeção do DAO de municípios */
     public MunicipalityServiceImpl(MunicipalityDao municipalityDao) {
         this.municipalityDao = municipalityDao;
     }
 
+    /** 
+     * Cria um novo município com validações de endereço.
+     * Verifica campos obrigatórios como rua e cidade.
+     */
     @Override
     public int create(Municipality entity) {
         int invalidResponse = -1;
 
+        // Validações de negócio
         if (entity == null) {
             return invalidResponse;
         }
@@ -29,7 +39,6 @@ public class MunicipalityServiceImpl implements MunicipalityService {
             return invalidResponse;
         }
 
-        
         final int id = municipalityDao.create(entity);
         return id;
     }
@@ -74,6 +83,7 @@ public class MunicipalityServiceImpl implements MunicipalityService {
         municipalityDao.update(id, entity);
     }
 
+    /** Busca municípios por nome da cidade (busca parcial) */
     @Override
     public List<Municipality> findByCity(String city) {
         if (city == null || city.isEmpty()) {

@@ -7,18 +7,28 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementação do serviço de doações.
+ * Aplica regras de negócio e validações para gerenciamento de doações.
+ */
 @Service
 public class DonationServiceImpl implements DonationService {
     private final DonationDao donationDao;
 
+    /** Construtor com injeção do DAO de doações */
     public DonationServiceImpl(DonationDao donationDao) {
         this.donationDao = donationDao;
     }
 
+    /** 
+     * Cria uma nova doação com validações de negócio.
+     * Verifica data, usuário válido e dados obrigatórios.
+     */
     @Override
     public int create(Donation entity) {
         int invalidResponse = -1;
 
+        // Validações de negócio
         if (entity == null) {
             return invalidResponse;
         }
@@ -73,6 +83,7 @@ public class DonationServiceImpl implements DonationService {
         donationDao.update(id, entity);
     }
 
+    /** Busca todas as doações de um usuário específico */
     @Override
     public List<Donation> findByUserId(int userId) {
         if (userId < 0) {

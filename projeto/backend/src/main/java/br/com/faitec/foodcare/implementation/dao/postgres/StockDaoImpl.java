@@ -11,15 +11,24 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementação PostgreSQL do DAO para estoque.
+ * Gerencia quantidades disponíveis de produtos com diferentes opções de doação.
+ */
 @Repository
 public class StockDaoImpl implements StockDao {
 
     private final Connection connection;
 
+    /** Construtor que recebe a conexão com o banco PostgreSQL */
     public StockDaoImpl(Connection connection) {
         this.connection = connection;
     }
 
+    /** 
+     * Cria um novo item de estoque.
+     * Associa produto com opção de doação e quantidade atual.
+     */
     @Override
     public int create(Stock entity) {
         String sql = "INSERT INTO stock(product_id, donation_option, actual_stock) VALUES (?, ?, ?)";
@@ -27,10 +36,11 @@ public class StockDaoImpl implements StockDao {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, entity.getProductId());
-            preparedStatement.setDouble(2, entity.getDonationOption());
-            preparedStatement.setInt(3, entity.getActualStock());
+            preparedStatement.setDouble(2, entity.getDonationOption());  // Tamanho da porção
+            preparedStatement.setInt(3, entity.getActualStock());         // Quantidade atual
             preparedStatement.execute();
             
+            // Recupera o ID gerado automaticamente
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             int id = 0;
             if (resultSet.next()) {
@@ -131,6 +141,10 @@ public class StockDaoImpl implements StockDao {
         }
     }
 
+    /** 
+     * Busca todos os itens de estoque de um produto específico.
+     * Um produto pode ter múltiplas entradas com diferentes opções de doação.
+     */
     @Override
     public List<Stock> findByProductId(int productId) {
         String sql = "SELECT * FROM stock WHERE product_id = ?";

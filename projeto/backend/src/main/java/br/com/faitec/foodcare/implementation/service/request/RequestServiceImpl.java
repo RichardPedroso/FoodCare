@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementação do serviço de solicitações.
+ * Gerencia solicitações de cestas com integração automática ao estoque.
+ */
 @Service
 public class RequestServiceImpl implements RequestService {
     private final RequestDao requestDao;
@@ -20,6 +24,10 @@ public class RequestServiceImpl implements RequestService {
     private final BasketManagementService basketManagementService;
     private final RequestStockIntegrationService requestStockIntegrationService;
 
+    /** 
+     * Construtor com injeção dos serviços necessários.
+     * Usa @Lazy para evitar dependência circular com RequestStockIntegrationService.
+     */
     public RequestServiceImpl(RequestDao requestDao, 
                             UserService userService, 
                             BasketManagementService basketManagementService,
@@ -60,6 +68,10 @@ public class RequestServiceImpl implements RequestService {
         return id;
     }
     
+    /** 
+     * Calcula cestas necessárias baseado no perfil do usuário.
+     * Considera tipo de solicitação e características familiares.
+     */
     private void calculateRequiredBaskets(UserModel user, Request.RequestType requestType) {
         if (requestType == Request.RequestType.BASIC) {
             basketManagementService.calculateBasket(user.getId(), user.getPeopleQuantity(), user.isHasChildren());
@@ -132,6 +144,10 @@ public class RequestServiceImpl implements RequestService {
         return requestDao.findByRequestType(requestType);
     }
 
+    /** 
+     * Atualiza status de uma solicitação com integração automática.
+     * Quando marcada como COMPLETED, automaticamente consome estoque.
+     */
     @Override
     public boolean updateStatus(int id, Request.RequestStatus newStatus) {
         if (id < 0 || newStatus == null) {
@@ -146,7 +162,7 @@ public class RequestServiceImpl implements RequestService {
         // Atualizar o status primeiro
         boolean statusUpdated = requestDao.updateStatus(id, newStatus);
         
-        // Se o status foi atualizado para COMPLETED, consumir estoque
+        // Se o status foi atualizado para COMPLETED, consumir estoque automaticamente
         if (statusUpdated && newStatus == Request.RequestStatus.COMPLETED) {
             // Tentar consumir estoque - se falhar, não reverte o status (pode ser tratado manualmente)
             requestStockIntegrationService.processRequestCompletion(id);

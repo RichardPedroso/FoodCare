@@ -7,18 +7,28 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementação do serviço de produtos de doação.
+ * Gerencia a associação entre doações e produtos com validações de negócio.
+ */
 @Service
 public class DonationProductServiceImpl implements DonationProductService {
     private final DonationProductDao donationProductDao;
 
+    /** Construtor com injeção do DAO de produtos de doação */
     public DonationProductServiceImpl(DonationProductDao donationProductDao) {
         this.donationProductDao = donationProductDao;
     }
 
+    /** 
+     * Cria uma nova associação produto-doação com validações.
+     * Verifica quantidade positiva e IDs válidos de produto e doação.
+     */
     @Override
     public int create(DonationProduct entity) {
         int invalidResponse = -1;
 
+        // Validações de negócio
         if (entity == null) {
             return invalidResponse;
         }
@@ -73,6 +83,7 @@ public class DonationProductServiceImpl implements DonationProductService {
         donationProductDao.update(id, entity);
     }
 
+    /** Busca todos os produtos associados a uma doação específica */
     @Override
     public List<DonationProduct> findByDonationId(int donationId) {
         if (donationId < 0) {
@@ -81,6 +92,7 @@ public class DonationProductServiceImpl implements DonationProductService {
         return donationProductDao.findByDonationId(donationId);
     }
 
+    /** Busca todas as doações que contêm um produto específico */
     @Override
     public List<DonationProduct> findByProductId(int productId) {
         if (productId < 0) {

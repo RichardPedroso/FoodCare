@@ -12,24 +12,30 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Controller REST para gerenciamento de produtos.
+ * Permite CRUD completo de produtos e atualizações específicas de nome e quantidade.
+ */
 @RestController
 @RequestMapping("/api/product")
-
 public class ProductRestController {
     private final ProductService productService;
     private final CategoryService categoryService;
 
+    /** Construtor com injeção dos serviços de produto e categoria */
     public ProductRestController(ProductService productService, CategoryService categoryService){
         this.productService = productService;
         this.categoryService = categoryService;
     }
 
+    /** Lista todos os produtos cadastrados */
     @GetMapping
     public ResponseEntity<List<Product>> getEntites(){
         List<Product> entities = productService.findAll();
         return ResponseEntity.ok(entities);
     }
 
+    /** Busca um produto específico pelo ID */
     @GetMapping("/{id}")
     public ResponseEntity<Product> getEntityById(@PathVariable final int id){
         Product entity = productService.findById(id);
@@ -64,18 +70,21 @@ public class ProductRestController {
         return ResponseEntity.noContent().build();
     }
 
+    /** Atualiza apenas o nome de um produto */
     @PutMapping("/{id}/name")
     public ResponseEntity<Void> updateName(@PathVariable final int id, @RequestBody final String newName){
         boolean updated = productService.updateName(id, newName);
         return updated ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
+    /** Atualiza apenas a quantidade em estoque de um produto */
     @PutMapping("/{id}/quantity")
     public ResponseEntity<Void> updateQuantity(@PathVariable final int id, @RequestBody final Integer newStock){
         boolean updated = productService.updateQuantity(id, newStock);
         return updated ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
+    /** Busca a categoria de um produto específico */
     @GetMapping("/{id}/category")
     public ResponseEntity<Category> getProductCategory(@PathVariable final int id) {
         Product product = productService.findById(id);

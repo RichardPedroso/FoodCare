@@ -10,10 +10,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementação PostgreSQL do DAO para usuários.
+ * Gerencia dados completos de usuários incluindo documentos, imagens e status de aprovação.
+ */
 public class UserPostgresDaoImpl implements UserDao {
 
     private final Connection connection;
 
+    /** Construtor que recebe a conexão com o banco PostgreSQL */
     public UserPostgresDaoImpl(Connection connection) {
         this.connection = connection;
     }
@@ -235,6 +240,10 @@ public class UserPostgresDaoImpl implements UserDao {
         }
     }
 
+    /** 
+     * Filtra usuários por status de aprovação.
+     * true = aprovado, false = rejeitado, null = pendente
+     */
     @Override
     public List<UserModel> findByAbleStatus(Boolean able) {
         String sql = "SELECT * FROM user_model WHERE able = ? OR (able IS NULL AND ? IS NULL)";
@@ -284,6 +293,10 @@ public class UserPostgresDaoImpl implements UserDao {
         }
     }
 
+    /** 
+     * Busca usuários por nome (busca parcial, case-insensitive).
+     * Permite encontrar usuários mesmo com digitação parcial.
+     */
     @Override
     public List<UserModel> searchByName(String name) {
         String sql = "SELECT * FROM user_model WHERE LOWER(name) LIKE LOWER(?)";
@@ -291,7 +304,7 @@ public class UserPostgresDaoImpl implements UserDao {
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, "%" + name + "%");
+            preparedStatement.setString(1, "%" + name + "%");  // Busca parcial
             ResultSet resultSet = preparedStatement.executeQuery();
             
             while (resultSet.next()) {
@@ -307,6 +320,10 @@ public class UserPostgresDaoImpl implements UserDao {
         }
     }
 
+    /** 
+     * Método auxiliar para mapear ResultSet para objeto UserModel.
+     * Trata arrays do PostgreSQL e valores nulos adequadamente.
+     */
     private UserModel mapResultSetToUser(ResultSet resultSet) throws SQLException {
         UserModel user = new UserModel();
         user.setId(resultSet.getInt("id"));
@@ -321,7 +338,7 @@ public class UserPostgresDaoImpl implements UserDao {
         user.setHasChildren(resultSet.getBoolean("has_children"));
         user.setNumberOfChildren(resultSet.getInt("number_of_children"));
         
-        // Mapear arrays
+        // Mapear arrays do PostgreSQL para listas Java
         java.sql.Array documentsArray = resultSet.getArray("documents");
         if (documentsArray != null) {
             String[] docs = (String[]) documentsArray.getArray();
@@ -334,6 +351,7 @@ public class UserPostgresDaoImpl implements UserDao {
             user.setImages(java.util.Arrays.asList(imgs));
         }
         
+        // Trata valor Boolean que pode ser null
         Boolean able = resultSet.getObject("able", Boolean.class);
         user.setAble(able);
         

@@ -10,10 +10,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementação PostgreSQL do DAO para doações.
+ * Gerencia operações CRUD na tabela donation.
+ */
 public class DonationDaoImpl implements DonationDao {
 
     private final Connection connection;
 
+    /** Construtor que recebe a conexão com o banco PostgreSQL */
     public DonationDaoImpl(Connection connection) {
         this.connection = connection;
     }
@@ -43,6 +48,10 @@ public class DonationDaoImpl implements DonationDao {
         }
     }
 
+    /** 
+     * Remove uma doação e todos os produtos associados.
+     * Executa deleção em cascata para manter integridade referencial.
+     */
     @Override
     public void delete(int id) {
         try {
@@ -136,6 +145,7 @@ public class DonationDaoImpl implements DonationDao {
         }
     }
 
+    /** Busca todas as doações de um usuário específico */
     @Override
     public List<Donation> findByUserId(int userId) {
         String sql = "SELECT * FROM donation WHERE user_id = ?";

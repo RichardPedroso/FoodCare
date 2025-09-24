@@ -10,14 +10,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementação PostgreSQL do DAO para municípios.
+ * Gerencia informações de endereço e localização na tabela municipality.
+ */
 public class MunicipalityDaoImpl implements MunicipalityDao {
 
     private final Connection connection;
 
+    /** Construtor que recebe a conexão com o banco PostgreSQL */
     public MunicipalityDaoImpl(Connection connection) {
         this.connection = connection;
     }
 
+    /** 
+     * Cria um novo município com informações completas de endereço.
+     * Inclui rua, número, bairro, cidade e CEP.
+     */
     @Override
     public int create(Municipality entity) {
         String sql = "INSERT INTO municipality(street, number, neighborhood, city, zip_code) VALUES (?, ?, ?, ?, ?)";
@@ -31,6 +40,7 @@ public class MunicipalityDaoImpl implements MunicipalityDao {
             preparedStatement.setString(5, entity.getZipCode());
             preparedStatement.execute();
             
+            // Recupera o ID gerado automaticamente
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             int id = 0;
             if (resultSet.next()) {
@@ -137,6 +147,10 @@ public class MunicipalityDaoImpl implements MunicipalityDao {
         }
     }
 
+    /** 
+     * Busca municípios por nome da cidade (busca parcial, case-insensitive).
+     * Permite encontrar cidades mesmo com digitação parcial.
+     */
     @Override
     public List<Municipality> findByCity(String city) {
         String sql = "SELECT * FROM municipality WHERE LOWER(city) LIKE LOWER(?)";
@@ -144,7 +158,7 @@ public class MunicipalityDaoImpl implements MunicipalityDao {
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, "%" + city + "%");
+            preparedStatement.setString(1, "%" + city + "%");  // Busca parcial
             ResultSet resultSet = preparedStatement.executeQuery();
             
             while (resultSet.next()) {

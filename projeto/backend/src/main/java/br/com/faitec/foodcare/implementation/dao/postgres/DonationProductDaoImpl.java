@@ -10,14 +10,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementação PostgreSQL do DAO para produtos de doação.
+ * Gerencia a associação entre doações e produtos na tabela donation_product.
+ */
 public class DonationProductDaoImpl implements DonationProductDao {
 
     private final Connection connection;
 
+    /** Construtor que recebe a conexão com o banco PostgreSQL */
     public DonationProductDaoImpl(Connection connection) {
         this.connection = connection;
     }
 
+    /** 
+     * Cria uma nova associação produto-doação.
+     * Inclui quantidade, data de vencimento e unidade de medida.
+     */
     @Override
     public int create(DonationProduct entity) {
         String sql = "INSERT INTO donation_product(quantity, expiration_date, unit, donation_id, product_id) VALUES (?, ?, ?, ?, ?)";
@@ -31,6 +40,7 @@ public class DonationProductDaoImpl implements DonationProductDao {
             preparedStatement.setInt(5, entity.getProductId());
             preparedStatement.execute();
             
+            // Recupera o ID gerado automaticamente
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             int id = 0;
             if (resultSet.next()) {
@@ -137,6 +147,7 @@ public class DonationProductDaoImpl implements DonationProductDao {
         }
     }
 
+    /** Busca todos os produtos associados a uma doação específica */
     @Override
     public List<DonationProduct> findByDonationId(int donationId) {
         String sql = "SELECT * FROM donation_product WHERE donation_id = ?";
@@ -166,6 +177,7 @@ public class DonationProductDaoImpl implements DonationProductDao {
         }
     }
 
+    /** Busca todas as doações que contêm um produto específico */
     @Override
     public List<DonationProduct> findByProductId(int productId) {
         String sql = "SELECT * FROM donation_product WHERE product_id = ?";

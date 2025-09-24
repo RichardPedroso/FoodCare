@@ -13,6 +13,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementação do serviço de integração entre solicitações e estoque.
+ * Processa conclusão de solicitações consumindo estoque automaticamente.
+ */
 @Service
 public class RequestStockIntegrationServiceImpl implements RequestStockIntegrationService {
     
@@ -21,6 +25,7 @@ public class RequestStockIntegrationServiceImpl implements RequestStockIntegrati
     private final BasketManagementService basketManagementService;
     private final StockService stockService;
 
+    /** Construtor com injeção dos serviços necessários para integração */
     public RequestStockIntegrationServiceImpl(RequestService requestService,
                                             UserService userService,
                                             BasketManagementService basketManagementService,
@@ -31,6 +36,10 @@ public class RequestStockIntegrationServiceImpl implements RequestStockIntegrati
         this.stockService = stockService;
     }
 
+    /** 
+     * Processa a conclusão de uma solicitação consumindo estoque.
+     * Verifica se a solicitação está completa e consome estoque da cesta.
+     */
     @Override
     public boolean processRequestCompletion(int requestId) {
         try {
@@ -80,6 +89,10 @@ public class RequestStockIntegrationServiceImpl implements RequestStockIntegrati
         }
     }
 
+    /** 
+     * Consome estoque de um produto específico.
+     * Prioriza embalagens menores e atualiza quantidades no banco.
+     */
     private boolean consumeStockForProduct(int productId, int requiredQuantity) {
         try {
             List<Stock> availableStocks = stockService.findByProductId(productId);

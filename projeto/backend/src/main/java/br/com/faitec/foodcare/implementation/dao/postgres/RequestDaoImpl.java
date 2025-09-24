@@ -10,14 +10,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementação PostgreSQL do DAO para solicitações.
+ * Gerencia solicitações de cestas com diferentes tipos e status.
+ */
 public class RequestDaoImpl implements RequestDao {
 
     private final Connection connection;
 
+    /** Construtor que recebe a conexão com o banco PostgreSQL */
     public RequestDaoImpl(Connection connection) {
         this.connection = connection;
     }
 
+    /** 
+     * Cria uma nova solicitação no banco.
+     * Converte enums para string para armazenamento.
+     */
     @Override
     public int create(Request entity) {
         String sql = "INSERT INTO request(request_date, request_type, status, user_id) VALUES (?, ?, ?, ?)";
@@ -25,11 +34,12 @@ public class RequestDaoImpl implements RequestDao {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, entity.getRequestDate());
-            preparedStatement.setString(2, entity.getRequestType().name());
-            preparedStatement.setString(3, entity.getStatus().name());
+            preparedStatement.setString(2, entity.getRequestType().name());  // Enum para string
+            preparedStatement.setString(3, entity.getStatus().name());       // Enum para string
             preparedStatement.setInt(4, entity.getUserId());
             preparedStatement.execute();
             
+            // Recupera o ID gerado automaticamente
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             int id = 0;
             if (resultSet.next()) {
@@ -161,6 +171,7 @@ public class RequestDaoImpl implements RequestDao {
         }
     }
 
+    /** Filtra solicitações por status (PENDING, APPROVED, REJECTED, COMPLETED) */
     @Override
     public List<Request> findByStatus(Request.RequestStatus status) {
         String sql = "SELECT * FROM request WHERE status = ?";
@@ -189,6 +200,7 @@ public class RequestDaoImpl implements RequestDao {
         }
     }
 
+    /** Filtra solicitações por tipo (BASKET, EMERGENCY, etc.) */
     @Override
     public List<Request> findByRequestType(Request.RequestType requestType) {
         String sql = "SELECT * FROM request WHERE request_type = ?";
@@ -217,6 +229,7 @@ public class RequestDaoImpl implements RequestDao {
         }
     }
 
+    /** Atualiza apenas o status de uma solicitação */
     @Override
     public boolean updateStatus(int id, Request.RequestStatus newStatus) {
         String sql = "UPDATE request SET status = ? WHERE id = ?";
@@ -227,7 +240,7 @@ public class RequestDaoImpl implements RequestDao {
             preparedStatement.setInt(2, id);
             int rowsAffected = preparedStatement.executeUpdate();
             preparedStatement.close();
-            return rowsAffected > 0;
+            return rowsAffected > 0;  // Retorna true se atualizou alguma linha
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

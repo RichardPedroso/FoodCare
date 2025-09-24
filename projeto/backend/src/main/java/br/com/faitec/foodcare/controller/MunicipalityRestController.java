@@ -13,24 +13,30 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Controller REST para gerenciamento de municípios.
+ * Permite CRUD de municípios e consulta de usuários por município.
+ */
 @RestController
 @RequestMapping("/api/municipality")
-
 public class MunicipalityRestController {
     private final MunicipalityService municipalityService;
     private final UserService userService;
 
+    /** Construtor com injeção dos serviços de município e usuário */
     public MunicipalityRestController(MunicipalityService municipalityService, UserService userService) {
         this.municipalityService = municipalityService;
         this.userService = userService;
     }
 
+    /** Lista todos os municípios cadastrados */
     @GetMapping
     public ResponseEntity<List<Municipality>> getEntities() {
         List<Municipality> entities = municipalityService.findAll();
         return ResponseEntity.ok(entities);
     }
 
+    /** Busca um município específico pelo ID */
     @GetMapping("/{id}")
     public ResponseEntity<Municipality> getEntityById(@PathVariable final int id) {
         Municipality entity = municipalityService.findById(id);
@@ -42,6 +48,7 @@ public class MunicipalityRestController {
         return ResponseEntity.ok(entity);
     }
 
+    /** Lista todos os usuários de um município específico */
     @GetMapping("/{id}/users")
     public ResponseEntity<List<UserModel>> getUsersByMunicipalityId(@PathVariable final int id) {
         Municipality entity = municipalityService.findById(id);
@@ -50,6 +57,7 @@ public class MunicipalityRestController {
             return ResponseEntity.notFound().build();
         }
 
+        // Filtra usuários pelo município
         List<UserModel> users = userService.findAll().stream()
                 .filter(user -> user.getMunicipalityId() == id)
                 .collect(Collectors.toList());
@@ -57,6 +65,7 @@ public class MunicipalityRestController {
         return ResponseEntity.ok(users);
     }
 
+    /** Busca municípios por nome da cidade */
     @GetMapping("/city/{city}")
     public ResponseEntity<List<Municipality>> getEntitiesByCity(@PathVariable final String city) {
         List<Municipality> entities = municipalityService.findByCity(city);

@@ -7,18 +7,28 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementação do serviço de categorias.
+ * Aplica regras de negócio e validações para operações CRUD de categorias.
+ */
 @Service
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryDao categoryDao;
 
+    /** Construtor com injeção do DAO de categorias */
     public CategoryServiceImpl(CategoryDao categoryDao) {
         this.categoryDao = categoryDao;
     }
 
+    /** 
+     * Cria uma nova categoria com validações de negócio.
+     * Verifica se a entidade e descrição são válidas.
+     */
     @Override
     public int create(Category entity) {
         int invalidResponse = -1;
 
+        // Validações de negócio
         if (entity == null) {
             return invalidResponse;
         }
@@ -55,14 +65,19 @@ public class CategoryServiceImpl implements CategoryService {
         return entities;
     }
 
+    /** 
+     * Atualiza uma categoria existente.
+     * Verifica consistência de ID e existência da categoria.
+     */
     @Override
     public void update(int id, Category entity) {
+        // Verifica consistência do ID
         if (id != entity.getId()) {
             return;
         }
 
+        // Verifica se a categoria existe
         Category category = findById(id);
-
         if (category == null) {
             return;
         }

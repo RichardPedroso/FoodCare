@@ -10,14 +10,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementação PostgreSQL do DAO para categorias de produtos.
+ * Gerencia operações CRUD na tabela category.
+ */
 public class CategoryDaoImpl implements CategoryDao {
 
     private final Connection connection;
 
+    /** Construtor que recebe a conexão com o banco PostgreSQL */
     public CategoryDaoImpl(Connection connection) {
         this.connection = connection;
     }
 
+    /** 
+     * Cria uma nova categoria no banco.
+     * Retorna o ID gerado automaticamente.
+     */
     @Override
     public int create(Category entity) {
         String sql = "INSERT INTO category(name) VALUES (?)";
@@ -27,6 +36,7 @@ public class CategoryDaoImpl implements CategoryDao {
             preparedStatement.setString(1, entity.getDescription());
             preparedStatement.execute();
             
+            // Recupera o ID gerado automaticamente
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             int id = 0;
             if (resultSet.next()) {
@@ -41,6 +51,7 @@ public class CategoryDaoImpl implements CategoryDao {
         }
     }
 
+    /** Remove uma categoria pelo ID */
     @Override
     public void delete(int id) {
         String sql = "DELETE FROM category WHERE id = ?";
@@ -55,6 +66,7 @@ public class CategoryDaoImpl implements CategoryDao {
         }
     }
 
+    /** Busca uma categoria pelo ID */
     @Override
     public Category findByid(int id) {
         String sql = "SELECT * FROM category WHERE id = ?";
@@ -76,12 +88,13 @@ public class CategoryDaoImpl implements CategoryDao {
             
             resultSet.close();
             preparedStatement.close();
-            return null;
+            return null;  // Retorna null se não encontrar
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /** Busca todas as categorias cadastradas */
     @Override
     public List<Category> findAll() {
         String sql = "SELECT * FROM category";
@@ -91,6 +104,7 @@ public class CategoryDaoImpl implements CategoryDao {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
             
+            // Mapeia cada linha do resultado para um objeto Category
             while (resultSet.next()) {
                 Category category = new Category();
                 category.setId(resultSet.getInt("id"));
@@ -106,6 +120,7 @@ public class CategoryDaoImpl implements CategoryDao {
         }
     }
 
+    /** Atualiza uma categoria existente */
     @Override
     public void update(int id, Category entity) {
         String sql = "UPDATE category SET name = ? WHERE id = ?";

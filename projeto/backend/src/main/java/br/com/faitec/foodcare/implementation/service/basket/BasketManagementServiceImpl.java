@@ -15,15 +15,22 @@ import java.time.temporal.ChronoUnit;
 
 import java.util.List;
 
+/**
+ * Implementação do serviço de gerenciamento de cestas básicas.
+ * Calcula cestas personalizadas, valida produtos e otimiza seleção de estoque.
+ */
 @Service
 public class BasketManagementServiceImpl implements BasketManagementService {
 
     private final ProductDao productDao;
     private final StockService stockService;
     private final DonationProductDao donationProductDao;
-    private static final int MINIMUM_DAYS = 30;
+    
+    // Constantes para validação de produtos
+    private static final int MINIMUM_DAYS = 30;  // Mínimo de dias para vencimento
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    /** Construtor com injeção dos DAOs e serviços necessários */
     public BasketManagementServiceImpl(ProductDao productDao, StockService stockService, 
                                      DonationProductDao donationProductDao) {
         this.productDao = productDao;
@@ -33,6 +40,10 @@ public class BasketManagementServiceImpl implements BasketManagementService {
 
 
 
+    /** 
+     * Valida se um item pode ser adicionado à cesta.
+     * Verifica quantidade positiva, existência do produto e unidade válida.
+     */
     @Override
     public boolean validateBasketItem(int productId, double quantity, String unit) {
         if (quantity <= 0) {
@@ -44,9 +55,14 @@ public class BasketManagementServiceImpl implements BasketManagementService {
             return false;
         }
         
+        // Valida unidades de medida aceitas
         return unit != null && (unit.equals("KG") || unit.equals("G") || unit.equals("L") || unit.equals("ML"));
     }
     
+    /** 
+     * Verifica se um produto é válido para cesta (não vence em menos de 30 dias).
+     * Garante que os beneficiários recebam produtos com prazo adequado.
+     */
     private boolean isValidForBasket(String expirationDate) {
         try {
             LocalDate expDate = LocalDate.parse(expirationDate, DATE_FORMATTER);
@@ -57,6 +73,7 @@ public class BasketManagementServiceImpl implements BasketManagementService {
         }
     }
     
+    /** Calcula quantos dias restam até o vencimento de um produto */
     private int getDaysUntilExpiration(String expirationDate) {
         try {
             LocalDate expDate = LocalDate.parse(expirationDate, DATE_FORMATTER);
@@ -67,6 +84,7 @@ public class BasketManagementServiceImpl implements BasketManagementService {
         }
     }
     
+    /** Identifica produtos específicos para crianças */
     private boolean isChildProduct(Product product) {
         String[] childProducts = {"Gelatina", "Bolacha recheada", "Biscoito de polvilho", "Leite"};
         return java.util.Arrays.asList(childProducts).contains(product.getName());

@@ -15,14 +15,18 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Controller REST para gerenciamento de doações.
+ * Permite criar, consultar, confirmar e processar doações para o estoque.
+ */
 @RestController
 @RequestMapping("/api/donation")
-
 public class DonationRestController {
     private final DonationService donationService;
     private final DonationProductService donationProductService;
     private final DonationStockIntegrationService donationStockIntegrationService;
 
+    /** Construtor com injeção dos serviços de doação e integração com estoque */
     public DonationRestController(DonationService donationService, 
                                 DonationProductService donationProductService,
                                 DonationStockIntegrationService donationStockIntegrationService) {
@@ -31,12 +35,14 @@ public class DonationRestController {
         this.donationStockIntegrationService = donationStockIntegrationService;
     }
 
+    /** Lista todas as doações cadastradas */
     @GetMapping
     public ResponseEntity<List<Donation>> getEntities() {
         List<Donation> entities = donationService.findAll();
         return ResponseEntity.ok(entities);
     }
 
+    /** Busca uma doação específica pelo ID */
     @GetMapping("/{id}")
     public ResponseEntity<Donation> getEntityById(@PathVariable final int id) {
         Donation entity = donationService.findById(id);
@@ -96,12 +102,17 @@ public class DonationRestController {
         return ResponseEntity.noContent().build();
     }
 
+    /** Confirma o recebimento de uma doação */
     @PostMapping("/{id}/confirm-receipt")
     public ResponseEntity<Boolean> confirmDonationReceipt(@PathVariable final int id) {
         boolean success = donationStockIntegrationService.confirmDonationReceipt(id);
         return ResponseEntity.ok(success);
     }
 
+    /** 
+     * Processa uma doação para o estoque.
+     * Permite especificar o número de unidades a serem processadas.
+     */
     @PostMapping("/{id}/process-to-stock")
     public ResponseEntity<Boolean> processDonationToStock(@PathVariable final int id, @RequestBody(required = false) java.util.Map<String, Object> body) {
         int units = 1; // padrão

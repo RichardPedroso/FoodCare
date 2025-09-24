@@ -14,15 +14,22 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+/**
+ * Implementação do serviço de integração entre doações e estoque.
+ * Processa doações recebidas e as converte em itens de estoque disponíveis.
+ */
 @Service
 public class DonationStockIntegrationServiceImpl implements DonationStockIntegrationService {
     
     private final DonationService donationService;
     private final DonationProductService donationProductService;
     private final StockService stockService;
-    private static final int MINIMUM_DAYS = 15;
+    
+    // Constantes para validação de produtos
+    private static final int MINIMUM_DAYS = 15;  // Mínimo de dias para aceitar no estoque
     private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
+    /** Construtor com injeção dos serviços necessários */
     public DonationStockIntegrationServiceImpl(DonationService donationService, 
                                              DonationProductService donationProductService,
                                              StockService stockService) {
@@ -113,13 +120,18 @@ public class DonationStockIntegrationServiceImpl implements DonationStockIntegra
         }
     }
 
+    /** 
+     * Valida se um produto pode ser aceito no estoque baseado na data de vencimento.
+     * Produtos devem ter pelo menos 15 dias de validade.
+     */
     private boolean isValidForStock(String expirationDate) {
         try {
             System.out.println("Validando data de validade: " + expirationDate);
             
+            // Produtos sem data de validade são aceitos (não perecíveis)
             if (expirationDate == null || expirationDate.isEmpty() || "null".equals(expirationDate)) {
                 System.out.println("Produto sem data de validade - ACEITO");
-                return true; // Produtos sem validade são aceitos
+                return true;
             }
             
             LocalDate expDate = LocalDate.parse(expirationDate, DATE_FORMATTER);
@@ -148,6 +160,10 @@ public class DonationStockIntegrationServiceImpl implements DonationStockIntegra
         addToStockWithUnits(donationProduct, actualUnits);
     }
     
+    /** 
+     * Adiciona produtos ao estoque com quantidade específica.
+     * Atualiza estoque existente ou cria novo registro.
+     */
     public void addToStockWithUnits(DonationProduct donationProduct, int unitsToAdd) {
         int productId = donationProduct.getProductId();
         
@@ -156,7 +172,7 @@ public class DonationStockIntegrationServiceImpl implements DonationStockIntegra
         try {
             actualUnitsToAdd = Integer.parseInt(donationProduct.getUnit());
         } catch (NumberFormatException e) {
-            actualUnitsToAdd = 1;
+            actualUnitsToAdd = 1;  // Valor padrão se não conseguir converter
         }
         
         System.out.println("=== ADICIONANDO AO ESTOQUE ===");
@@ -167,12 +183,14 @@ public class DonationStockIntegrationServiceImpl implements DonationStockIntegra
         List<Stock> existingStocks = stockService.findByProductId(productId);
         
         if (!existingStocks.isEmpty()) {
+            // Atualiza estoque existente
             Stock existingStock = existingStocks.get(0);
             int newStock = existingStock.getActualStock() + actualUnitsToAdd;
             existingStock.setActualStock(newStock);
             stockService.update(existingStock.getId(), existingStock);
             System.out.println("Estoque atualizado de " + existingStock.getActualStock() + " para " + newStock);
         } else {
+            // Cria novo registro de estoque
             Stock newStock = new Stock();
             newStock.setProductId(productId);
             newStock.setDonationOption(1.0);

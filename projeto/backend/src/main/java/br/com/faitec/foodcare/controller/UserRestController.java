@@ -20,9 +20,12 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Controller REST para gerenciamento de usuários.
+ * Permite CRUD, autenticação, upload de arquivos e gestão de beneficiários.
+ */
 @RestController
 @RequestMapping("/api/user")
-
 public class UserRestController {
     private final UserService userService;
     private final MunicipalityService municipalityService;
@@ -30,6 +33,7 @@ public class UserRestController {
     private final AuthorizationService authorizationService;
     private final FileStorageService fileStorageService;
 
+    /** Construtor com injeção de todos os serviços necessários para gerenciamento de usuários */
     public UserRestController(UserService userService, MunicipalityService municipalityService, RequestService requestService, AuthorizationService authorizationService, FileStorageService fileStorageService){
         this.userService = userService;
         this.municipalityService = municipalityService;
@@ -83,6 +87,10 @@ public class UserRestController {
         }
     }
 
+    /** 
+     * Cria um beneficiário com upload de documentos e imagens.
+     * Permite anexar arquivos de comprovação para análise.
+     */
     @PostMapping("/beneficiary")
     public ResponseEntity<UserModel> createBeneficiary(
             @RequestParam("user") String userJson,
@@ -92,6 +100,7 @@ public class UserRestController {
         try {
             UserModel user = new com.fasterxml.jackson.databind.ObjectMapper().readValue(userJson, UserModel.class);
             
+            // Processa arquivos apenas para beneficiários
             if (user.getUserType() == UserModel.UserType.beneficiary) {
                 if (documents != null && !documents.isEmpty()) {
                     List<String> documentPaths = fileStorageService.storeFiles(documents, "documents");
@@ -190,6 +199,7 @@ public class UserRestController {
         return ResponseEntity.ok(isAdmin);
     }
     
+    /** Lista todos os beneficiários cadastrados */
     @GetMapping("/beneficiaries")
     public ResponseEntity<List<UserResponseDto>> getBeneficiaries() {
         List<UserModel> beneficiaries = userService.findByUserType(UserModel.UserType.beneficiary);
@@ -199,6 +209,7 @@ public class UserRestController {
         return ResponseEntity.ok(response);
     }
     
+    /** Filtra beneficiários por status de aprovação (approved/rejected/pending) */
     @GetMapping("/beneficiaries/status/{status}")
     public ResponseEntity<List<UserResponseDto>> getBeneficiariesByStatus(@PathVariable String status) {
         Boolean able = null;
@@ -215,12 +226,14 @@ public class UserRestController {
         return ResponseEntity.ok(response);
     }
     
+    /** Atualiza o status de aprovação de um beneficiário (aprovar/rejeitar) */
     @PutMapping("/{id}/status")
     public ResponseEntity<Void> updateUserStatus(@PathVariable int id, @RequestParam Boolean able) {
         boolean success = userService.updateAbleStatus(id, able);
         return success ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
     }
     
+    /** Busca usuários por nome (busca parcial) */
     @GetMapping("/search")
     public ResponseEntity<List<UserResponseDto>> searchUsers(@RequestParam String name) {
         List<UserModel> users = userService.searchByName(name);

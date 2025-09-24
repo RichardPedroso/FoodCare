@@ -9,19 +9,24 @@ import java.util.List;
 import java.util.Map;
 import br.com.faitec.foodcare.domain.Stock;
 
+/**
+ * Controller REST para gerenciamento de cestas básicas.
+ * Calcula cestas personalizadas, valida itens e otimiza seleção de estoque.
+ */
 @RestController
 @RequestMapping("/api/basket")
-
 public class BasketRestController {
 
     private final BasketManagementService basketManagementService;
 
+    /** Construtor com injeção do serviço de gerenciamento de cestas */
     public BasketRestController(BasketManagementService basketManagementService) {
         this.basketManagementService = basketManagementService;
     }
 
 
 
+    /** Valida se um item pode ser adicionado à cesta com a quantidade especificada */
     @PostMapping("/validate")
     public ResponseEntity<Boolean> validateBasketItem(@RequestBody Map<String, Object> request) {
         int productId = (Integer) request.get("productId");
@@ -32,6 +37,10 @@ public class BasketRestController {
         return ResponseEntity.ok(valid);
     }
 
+    /** 
+     * Calcula uma cesta personalizada baseada no perfil familiar.
+     * Considera quantidade de pessoas, presença e número de crianças.
+     */
     @GetMapping("/calculate")
     public ResponseEntity<List<BasketItem>> calculateBasket(
             @RequestParam int userId,
@@ -42,6 +51,7 @@ public class BasketRestController {
         return ResponseEntity.ok(basketItems);
     }
 
+    /** Gera uma cesta padrão para uma família com base no número de pessoas */
     @GetMapping("/family")
     public ResponseEntity<List<BasketItem>> getBasketForFamily(
             @RequestParam int peopleQuantity,
@@ -50,12 +60,17 @@ public class BasketRestController {
         return ResponseEntity.ok(basketItems);
     }
 
+    /** Busca todas as opções de estoque disponíveis para um produto */
     @GetMapping("/stock-options/{productId}")
     public ResponseEntity<List<Stock>> getStockOptions(@PathVariable int productId) {
         List<Stock> stockOptions = basketManagementService.getStockOptions(productId);
         return ResponseEntity.ok(stockOptions);
     }
     
+    /** 
+     * Otimiza a seleção de estoque para atender uma quantidade específica.
+     * Prioriza itens com data de vencimento mais próxima.
+     */
     @GetMapping("/optimize/{productId}")
     public ResponseEntity<List<Stock>> optimizeStockSelection(
             @PathVariable int productId,

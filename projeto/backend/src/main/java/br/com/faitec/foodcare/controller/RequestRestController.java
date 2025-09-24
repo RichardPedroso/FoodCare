@@ -15,15 +15,19 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controller REST para gerenciamento de solicitações de cestas.
+ * Permite CRUD, filtragem por status/tipo e integração com estoque.
+ */
 @RestController
 @RequestMapping("/api/request")
-
 public class RequestRestController {
     private final RequestService requestService;
     private final UserService userService;
     private final RequestStockIntegrationService requestStockIntegrationService;
     private final BasketManagementService basketManagementService;
 
+    /** Construtor com injeção dos serviços necessários para gerenciamento de solicitações */
     public RequestRestController(RequestService requestService, 
                                UserService userService,
                                RequestStockIntegrationService requestStockIntegrationService,
@@ -80,6 +84,7 @@ public class RequestRestController {
         return ResponseEntity.ok(requests);
     }
 
+    /** Filtra solicitações por status (PENDING, APPROVED, REJECTED, COMPLETED) */
     @GetMapping("/status/{status}")
     public ResponseEntity<List<Request>> getRequestsByStatus(@PathVariable final String status) {
         try {
@@ -91,6 +96,7 @@ public class RequestRestController {
         }
     }
 
+    /** Filtra solicitações por tipo (BASKET, EMERGENCY, etc.) */
     @GetMapping("/type/{type}")
     public ResponseEntity<List<Request>> getRequestsByType(@PathVariable final String type) {
         try {
@@ -142,12 +148,14 @@ public class RequestRestController {
         }
     }
 
+    /** Processa a conclusão de uma solicitação e integra com o estoque */
     @PostMapping("/{id}/process-completion")
     public ResponseEntity<Boolean> processRequestCompletion(@PathVariable final int id) {
         boolean success = requestStockIntegrationService.processRequestCompletion(id);
         return ResponseEntity.ok(success);
     }
 
+    /** Consome estoque para atender uma solicitação de cesta */
     @PostMapping("/{id}/consume-stock")
     public ResponseEntity<Boolean> consumeStockForRequest(@PathVariable final int id) {
         Request request = requestService.findById(id);

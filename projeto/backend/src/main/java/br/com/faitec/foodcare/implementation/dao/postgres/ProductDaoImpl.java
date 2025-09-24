@@ -12,10 +12,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Implementação PostgreSQL do DAO para produtos.
+ * Gerencia informações de produtos incluindo opções de doação e unidades de medida.
+ */
 public class ProductDaoImpl implements ProductDao {
 
     private final Connection connection;
 
+    /** Construtor que recebe a conexão com o banco PostgreSQL */
     public ProductDaoImpl(Connection connection) {
         this.connection = connection;
     }
@@ -61,6 +66,7 @@ public class ProductDaoImpl implements ProductDao {
         }
     }
 
+    /** Busca um produto pelo ID, incluindo opções de doação */
     @Override
     public Product findByid(int id) {
         String sql = "SELECT * FROM product WHERE id = ?";
@@ -79,6 +85,7 @@ public class ProductDaoImpl implements ProductDao {
                 product.setUnitQuantity(resultSet.getDouble("unit_quantity"));
                 product.setUnitType(resultSet.getString("measure_type"));
                 
+                // Processa array de opções de doação do PostgreSQL
                 Array optionsArray = resultSet.getArray("options_donation");
                 if (optionsArray != null) {
                     Double[] options = (Double[]) optionsArray.getArray();
@@ -92,7 +99,7 @@ public class ProductDaoImpl implements ProductDao {
             
             resultSet.close();
             preparedStatement.close();
-            return null;
+            return null;  // Retorna null se não encontrar
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -151,6 +158,7 @@ public class ProductDaoImpl implements ProductDao {
         }
     }
 
+    /** Atualiza apenas o nome de um produto */
     @Override
     public boolean updateNameDao(int id, String newName) {
         String sql = "UPDATE product SET name = ? WHERE id = ?";
@@ -161,12 +169,13 @@ public class ProductDaoImpl implements ProductDao {
             preparedStatement.setInt(2, id);
             int rowsAffected = preparedStatement.executeUpdate();
             preparedStatement.close();
-            return rowsAffected > 0;
+            return rowsAffected > 0;  // Retorna true se atualizou alguma linha
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /** Atualiza apenas a quantidade em estoque de um produto */
     @Override
     public boolean updateQuantity(int id, double newStock) {
         String sql = "UPDATE product SET stock = ? WHERE id = ?";
@@ -177,7 +186,7 @@ public class ProductDaoImpl implements ProductDao {
             preparedStatement.setInt(2, id);
             int rowsAffected = preparedStatement.executeUpdate();
             preparedStatement.close();
-            return rowsAffected > 0;
+            return rowsAffected > 0;  // Retorna true se atualizou alguma linha
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
