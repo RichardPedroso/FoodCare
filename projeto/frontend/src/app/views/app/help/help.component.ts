@@ -28,13 +28,24 @@ export class HelpComponent {
     return false;
   }
 
+  get isBeneficiary(): boolean {
+    const userJson = localStorage.getItem('user');
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      return user.userType === 'beneficiary';
+    }
+    return false;
+  }
+
   get currentFaqs() {
     if (this.isAdmin) {
       return this.adminFaqs;
     } else if (this.isDonor) {
       return this.donorFaqs;
+    } else if (this.isBeneficiary) {
+      return this.beneficiaryFaqs;
     } else {
-      return this.userFaqs;
+      return this.beneficiaryFaqs; // fallback para beneficiários
     }
   }
 
@@ -81,14 +92,42 @@ export class HelpComponent {
     }
   ];
 
-  userFaqs = [
+  beneficiaryFaqs = [
     {
-      question: 'Como fazer uma doação?',
-      answer: 'Acesse "Fazer Doação" no seu painel, cadastre os alimentos disponíveis e aguarde o contato de beneficiários.'
+      question: 'Como solicitar uma cesta básica?',
+      answer: 'Acesse "Fazer Ação" e clique em "Solicitar Cesta Básica". O sistema calculará automaticamente os produtos baseado no número de pessoas da sua família e se você tem crianças. Limite: uma cesta por mês.'
     },
     {
-      question: 'Como solicitar doações?',
-      answer: 'Use a opção "Solicitar Doação" para registrar suas necessidades. Lembre-se: apenas uma solicitação por mês.'
+      question: 'Como solicitar uma cesta de higiene?',
+      answer: 'Use "Solicitar Cesta de Higiene" na seção "Fazer Ação". A cesta inclui produtos essenciais de higiene pessoal. Você pode solicitar uma cesta de higiene por mês, independente da cesta básica.'
+    },
+    {
+      question: 'Como o sistema calcula minha cesta básica?',
+      answer: 'O cálculo é baseado no número de pessoas informado no seu cadastro. Produtos como arroz e feijão são multiplicados pela quantidade de pessoas. Se você tem crianças, produtos infantis (bolacha, gelatina, brinquedos) são adicionados automaticamente.'
+    },
+    {
+      question: 'Posso visualizar minha cesta antes de solicitar?',
+      answer: 'Sim! Use o botão "Pré-visualizar Cesta" para ver exatamente quais produtos e quantidades você receberá antes de confirmar a solicitação. Isso ajuda a planejar melhor suas necessidades.'
+    },
+    {
+      question: 'Como acompanhar minhas solicitações?',
+      answer: 'Acesse "Acompanhar Ações" para ver todas suas solicitações de cestas com status: Pendente (aguardando processamento), Coletada (já retirada) ou Cancelada. Você pode ver detalhes dos produtos de cada cesta.'
+    },
+    {
+      question: 'Quando posso fazer uma nova solicitação?',
+      answer: 'O sistema permite uma solicitação de cesta básica e uma de higiene por mês. Se você já solicitou no mês atual, o sistema mostrará a data em que poderá fazer a próxima solicitação.'
+    },
+    {
+      question: 'O que acontece se não houver estoque suficiente?',
+      answer: 'O sistema verifica automaticamente o estoque antes de processar sua solicitação. Se algum produto estiver em falta, você será notificado e a solicitação será cancelada para evitar expectativas não atendidas.'
+    },
+    {
+      question: 'Como gerar relatórios das minhas solicitações?',
+      answer: 'Use "Gerar Relatório" para ver estatísticas completas: total de cestas básicas e de higiene recebidas, número total de itens, solicitações por semana e histórico mensal de recebimentos.'
+    },
+    {
+      question: 'Posso atualizar informações da minha família?',
+      answer: 'Sim, é importante manter seus dados atualizados (número de pessoas, presença de crianças) pois isso afeta diretamente o cálculo da sua cesta básica. Entre em contato com a administração para atualizar essas informações.'
     }
   ];
 
