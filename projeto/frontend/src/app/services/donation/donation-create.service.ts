@@ -16,7 +16,8 @@ export class DonationCreateService {
     // Converter para o formato esperado pelo backend
     const donationData = {
       donationDate: donation.donation_date.toISOString().split('T')[0],
-      userId: typeof donation.user_id === 'string' ? parseInt(donation.user_id) : donation.user_id
+      userId: typeof donation.user_id === 'string' ? parseInt(donation.user_id) : donation.user_id,
+      donationStatus: donation.donation_status
     };
     return await firstValueFrom(this.http.post<Donation>(`${environment.api_endpoint}/donation`, donationData));
   }
