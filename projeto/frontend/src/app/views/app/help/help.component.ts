@@ -19,7 +19,67 @@ export class HelpComponent {
     return false;
   }
 
+  get isDonor(): boolean {
+    const userJson = localStorage.getItem('user');
+    if (userJson) {
+      const user = JSON.parse(userJson);
+      return user.userType === 'donor';
+    }
+    return false;
+  }
 
+  get currentFaqs() {
+    if (this.isAdmin) {
+      return this.adminFaqs;
+    } else if (this.isDonor) {
+      return this.donorFaqs;
+    } else {
+      return this.userFaqs;
+    }
+  }
+
+
+
+
+
+  donorFaqs = [
+    {
+      question: 'Como registrar uma doação de alimentos?',
+      answer: 'Acesse "Fazer Ação", selecione o tipo de produto (Básicos, Higiene ou Infantis), escolha o produto específico, informe a quantidade, número de unidades e data de validade. Sua doação ficará pendente até aprovação do administrador.'
+    },
+    {
+      question: 'Quais produtos posso doar?',
+      answer: 'Você pode doar produtos básicos (arroz, feijão, óleo, açúcar, etc.), produtos de higiene (sabonete, pasta de dente, shampoo, etc.) e produtos infantis (bolacha, gelatina, brinquedos). Cada produto tem opções específicas de quantidade.'
+    },
+    {
+      question: 'Como funciona a validação de datas de validade?',
+      answer: 'O sistema valida automaticamente se a data de validade é posterior à data atual. Produtos com validade próxima ao vencimento podem ser rejeitados. Brinquedos não precisam de data de validade.'
+    },
+    {
+      question: 'Como acompanhar minhas doações?',
+      answer: 'Use "Acompanhar Ações" para ver todas suas doações com status: Pendente (aguardando aprovação), Estocado (aprovado e disponível) ou Utilizado (já distribuído). Você pode ver detalhes como produto, quantidade e data.'
+    },
+    {
+      question: 'Como gerar relatórios de impacto das minhas doações?',
+      answer: 'Acesse "Gerar Relatório" para visualizar estatísticas completas: total de doações realizadas, média semanal de doações e estimativa de pessoas ajudadas com suas contribuições.'
+    },
+    {
+      question: 'O que acontece após registrar uma doação?',
+      answer: 'Sua doação fica com status "Pendente" até um administrador analisar e aprovar. Após aprovação, os produtos são adicionados ao estoque e ficam disponíveis para distribuição aos beneficiários.'
+    },
+    {
+      question: 'Como funciona o sistema de unidades e quantidades?',
+      answer: 'Para produtos com peso (kg, g) ou volume (l, ml), informe a quantidade por unidade e o número de unidades. Para produtos unitários, informe apenas a quantidade total. O sistema calcula automaticamente o peso/volume total.'
+    },
+    {
+      question: 'Posso ver alertas de estoque baixo?',
+      answer: 'Sim! O sistema exibe avisos quando produtos estão com estoque baixo (5 unidades ou menos), ajudando você a priorizar doações de itens mais necessários no momento.'
+    },
+    {
+      question: 'Como o sistema calcula o impacto das minhas doações?',
+      answer: 'O sistema rastreia o peso total doado, número de cestas que suas doações ajudaram a formar e estima quantas pessoas foram beneficiadas. Os relatórios mostram médias semanais e tendências de suas contribuições.'
+    }
+  ];
 
   userFaqs = [
     {

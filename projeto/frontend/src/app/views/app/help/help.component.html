@@ -36,7 +36,7 @@
         <h2 class="section-title">Perguntas Frequentes</h2>
 
         <div class="faq-grid">
-          @for (faq of isAdmin ? adminFaqs : userFaqs; track $index) {
+          @for (faq of currentFaqs; track $index) {
           <div class="faq-item card">
             <div class="faq-question">
               <h3>{{ faq.question }}</h3>
