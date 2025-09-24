@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { firstValueFrom } from 'rxjs';
+import { DonationStatus } from '../../domain/enums/donation-status.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -14,12 +15,12 @@ export class DonationUpdateService {
     // Buscar dados da doação atual
     const donation = await firstValueFrom(this.http.get(`${environment.api_endpoint}/donation/${donationId}`));
     
-    // Atualizar com donation_status = true
+    // Atualizar com donation_status = "Em estoque"
     await firstValueFrom(this.http.put(`${environment.api_endpoint}/donation/${donationId}`, {
       id: parseInt(donationId),
       donationDate: (donation as any).donationDate,
       userId: (donation as any).userId,
-      donationStatus: true
+      donationStatus: DonationStatus.EM_ESTOQUE
     }));
     
     // Processar para estoque
@@ -30,12 +31,12 @@ export class DonationUpdateService {
     // Buscar dados da doação atual
     const donation = await firstValueFrom(this.http.get(`${environment.api_endpoint}/donation/${donationId}`));
     
-    // Atualizar com donation_status = null (rejeitada)
+    // Atualizar com donation_status = "Rejeitada"
     return firstValueFrom(this.http.put(`${environment.api_endpoint}/donation/${donationId}`, {
       id: parseInt(donationId),
       donationDate: (donation as any).donationDate,
       userId: (donation as any).userId,
-      donationStatus: null
+      donationStatus: DonationStatus.REJEITADA
     }));
   }
 

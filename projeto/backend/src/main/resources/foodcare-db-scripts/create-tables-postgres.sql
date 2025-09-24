@@ -80,9 +80,10 @@ CREATE TABLE donation
     id            SERIAL      NOT NULL,
     donation_date VARCHAR(50) NOT NULL,
     user_id       INTEGER     NOT NULL,
-    donation_status BOOLEAN   NOT NULL DEFAULT FALSE,
+    donation_status VARCHAR(20) NOT NULL DEFAULT 'Pendente',
     PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES user_model(id)
+    FOREIGN KEY (user_id) REFERENCES user_model(id),
+    CONSTRAINT check_donation_status CHECK (donation_status IN ('Pendente', 'Em estoque', 'Utilizada', 'Rejeitada'))
 );
 
 CREATE TABLE request

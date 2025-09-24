@@ -26,7 +26,7 @@ public class DonationDaoImpl implements DonationDao {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, entity.getDonationDate());
             preparedStatement.setInt(2, entity.getUserId());
-            preparedStatement.setBoolean(3, entity.isDonationStatus());
+            preparedStatement.setString(3, entity.getDonationStatus());
             preparedStatement.execute();    
             
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -78,7 +78,7 @@ public class DonationDaoImpl implements DonationDao {
                 donation.setId(resultSet.getInt("id"));
                 donation.setDonationDate(resultSet.getString("donation_date"));
                 donation.setUserId(resultSet.getInt("user_id"));
-                donation.setDonationStatus(resultSet.getBoolean("donation_status"));
+                donation.setDonationStatus(resultSet.getString("donation_status"));
                 
                 resultSet.close();
                 preparedStatement.close();
@@ -107,7 +107,7 @@ public class DonationDaoImpl implements DonationDao {
                 donation.setId(resultSet.getInt("id"));
                 donation.setDonationDate(resultSet.getString("donation_date"));
                 donation.setUserId(resultSet.getInt("user_id"));
-                donation.setDonationStatus(resultSet.getBoolean("donation_status"));
+                donation.setDonationStatus(resultSet.getString("donation_status"));
                 donations.add(donation);
             }
             
@@ -127,7 +127,7 @@ public class DonationDaoImpl implements DonationDao {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, entity.getDonationDate());
             preparedStatement.setInt(2, entity.getUserId());
-            preparedStatement.setBoolean(3, entity.isDonationStatus());
+            preparedStatement.setString(3, entity.getDonationStatus());
             preparedStatement.setInt(4, id);
             preparedStatement.execute();
             preparedStatement.close();
@@ -151,7 +151,7 @@ public class DonationDaoImpl implements DonationDao {
                 donation.setId(resultSet.getInt("id"));
                 donation.setDonationDate(resultSet.getString("donation_date"));
                 donation.setUserId(resultSet.getInt("user_id"));
-                donation.setDonationStatus(resultSet.getBoolean("donation_status"));
+                donation.setDonationStatus(resultSet.getString("donation_status"));
                 donations.add(donation);
             }
             

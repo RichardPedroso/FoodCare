@@ -14,6 +14,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment.development';
 import { firstValueFrom } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
+import { DonationStatus } from '../../../../domain/enums/donation-status.enum';
 
 interface DonationDisplay {
   productName: string;
@@ -150,20 +151,15 @@ export class FollowActionsComponent implements OnInit {
         });
         const measureType = (product as any)?.unitType || product?.measure_type || (product as any)?.measureType || '';
         
-        // Determinar status baseado em donation_status e uso
+        // Determinar status baseado em donation_status
         const donationStatus = (donation as any).donationStatus ?? donation.donation_status;
-        let status = 'Estocado';
-        if (donationStatus === false) {
-          status = 'Pendente';
-        } else if (donationStatus === null) {
-          status = 'Negado';
-        }
+        let status = donationStatus || 'Pendente';
         
         // Verificar se foi utilizada (simulação simples)
         // Para teste: doações de Arroz e Feijão com ID <= 10 são consideradas utilizadas
         const donationId = parseInt(donation.id?.toString() || '0');
-        if (donationStatus === true && (productId == 1 || productId == 2) && donationId <= 10) {
-          status = 'Utilizado';
+        if (donationStatus === DonationStatus.EM_ESTOQUE && (productId == 1 || productId == 2) && donationId <= 10) {
+          status = DonationStatus.UTILIZADA;
         }
         
         return {
@@ -236,15 +232,15 @@ export class FollowActionsComponent implements OnInit {
       return donationDate.getMonth() === currentMonth && donationDate.getFullYear() === currentYear;
     }).length;
     
-    // Contar doações disponíveis (donation_status = true) e pendentes (donation_status = false)
+    // Contar doações por status
     this.availableCount = donations.filter(donation => {
       const donationStatus = (donation as any).donationStatus ?? donation.donation_status;
-      return donationStatus === true;
+      return donationStatus === DonationStatus.EM_ESTOQUE;
     }).length;
     
     this.usedCount = donations.filter(donation => {
       const donationStatus = (donation as any).donationStatus ?? donation.donation_status;
-      return donationStatus === false;
+      return donationStatus === DonationStatus.UTILIZADA;
     }).length;
   }
 

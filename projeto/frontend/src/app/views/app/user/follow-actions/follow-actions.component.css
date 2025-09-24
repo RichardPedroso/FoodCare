@@ -135,12 +135,12 @@
   font-weight: 600;
 }
 
-.status-available {
+.status-pending {
   background: rgba(239, 68, 68, 0.1);
   color: #dc2626;
 }
 
-.status-pending {
+.status-available {
   background: rgba(251, 191, 36, 0.1);
   color: #d97706;
 }
@@ -148,6 +148,11 @@
 .status-used {
   background: rgba(34, 197, 94, 0.1);
   color: #059669;
+}
+
+.status-rejected {
+  background: rgba(156, 163, 175, 0.1);
+  color: #6b7280;
 }
 
 .status-collected {

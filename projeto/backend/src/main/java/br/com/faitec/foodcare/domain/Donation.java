@@ -11,5 +11,5 @@ public class Donation {
     private int id;
     private String donationDate;
     private int userId;
-    private boolean donationStatus;
+    private String donationStatus;
 }

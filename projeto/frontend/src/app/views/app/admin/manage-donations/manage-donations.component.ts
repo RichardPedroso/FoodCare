@@ -12,6 +12,7 @@ import { DonationProductReadService } from '../../../../services/donation-produc
 import { UserReadService } from '../../../../services/user/user-read.service';
 import { ProductReadService } from '../../../../services/product/product-read.service';
 import { ToastrService } from 'ngx-toastr';
+import { DonationStatus } from '../../../../domain/enums/donation-status.enum';
 
 interface DonationWithDetails extends Donation {
   donorName: string;
@@ -55,11 +56,11 @@ export class ManageDonationsComponent implements OnInit {
       console.log('Todas as doações:', allDonations);
       console.log('Estrutura da primeira doação:', allDonations[0]);
       
-      // Filtrar doações pendentes (donationStatus = false)
+      // Filtrar doações pendentes (donationStatus = "Pendente")
       const pendingDonations = allDonations.filter(d => {
         const donationStatus = (d as any).donationStatus;
         console.log(`Doação ${d.id}: donationStatus = ${donationStatus}`);
-        return donationStatus === false;
+        return donationStatus === DonationStatus.PENDENTE;
       });
       
       console.log('Doações pendentes filtradas:', pendingDonations);
@@ -141,7 +142,7 @@ export class ManageDonationsComponent implements OnInit {
           id: '1',
           donation_date: new Date('2025-01-15'),
           user_id: 1,
-          donation_status: false,
+          donation_status: DonationStatus.PENDENTE,
           donorName: 'João Silva',
           donorEmail: 'joao@email.com',
           productName: 'Arroz',

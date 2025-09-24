@@ -8,7 +8,7 @@ public class UpdateDonationDto {
     private int id;
     private String donationDate;
     private int userId;
-    private boolean donationStatus;
+    private String donationStatus;
 
     public Donation toDonation() {
         final Donation entity = new Donation();

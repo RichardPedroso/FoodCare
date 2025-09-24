@@ -13,6 +13,8 @@ import { MatSelect } from '@angular/material/select';
 import { AuthenticationService } from '../../../../services/security/authentication.service';
 import { User } from '../../../../domain/model/user';
 import { Donation } from '../../../../domain/model/donation';
+import { DonationStatus } from '../../../../domain/enums/donation-status.enum';
+import { DonationStatusService } from '../../../../services/donation/donation-status.service';
 import { DonationProduct } from '../../../../domain/model/donation_product';
 import { Product } from '../../../../domain/model/product';
 import { DonationCreateService } from '../../../../services/donation/donation-create.service';
@@ -81,7 +83,8 @@ export class MakeActionComponent implements OnInit {
     private stockUpdateService: StockUpdateService,
     private unitConverterService: UnitConverterService,
     private http: HttpClient,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private donationStatusService: DonationStatusService
   ) {}
 
   async ngOnInit(): Promise<void> {
@@ -345,11 +348,11 @@ export class MakeActionComponent implements OnInit {
       console.log('Units:', units);
       console.log('ExpirationDate:', expirationDate);
       
-      // Criar doação com status false (pendente de aprovação)
+      // Criar doação com status "Pendente"
       const donation: Donation = {
         donation_date: new Date(),
         user_id: parseInt(this.user.id!.toString()),
-        donation_status: false
+        donation_status: DonationStatus.PENDENTE
       };
       
       console.log('Criando doação:', donation);
@@ -786,11 +789,16 @@ export class MakeActionComponent implements OnInit {
         await firstValueFrom(
           this.http.put(`${environment.api_endpoint}/stock/${targetStock.id}`, updatedStock)
         );
+        
+        // Marcar doações relacionadas como "Utilizada"
+        await this.donationStatusService.markDonationsAsUsed(productId, quantity);
       }
     } catch (error) {
       console.error('Erro ao atualizar estoque:', error);
     }
   }
+
+
 
   private async processBasketRequest(calculatedBasket: BasketItem[], peopleQuantity: number, hasChildren: boolean): Promise<void> {
     this.calculatedBasket = calculatedBasket;

@@ -6,6 +6,7 @@ import br.com.faitec.foodcare.domain.dto.CreateCompleteDonationDto;
 import br.com.faitec.foodcare.domain.dto.UpdateDonationDto;
 import br.com.faitec.foodcare.port.service.donation.DonationService;
 import br.com.faitec.foodcare.port.service.donation.DonationStockIntegrationService;
+import br.com.faitec.foodcare.domain.enums.DonationStatus;
 import br.com.faitec.foodcare.port.service.donationproduct.DonationProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -159,7 +160,7 @@ public class DonationRestController {
                 return ResponseEntity.notFound().build();
             }
             
-            donation.setDonationStatus(true);
+            donation.setDonationStatus(DonationStatus.EM_ESTOQUE);
             donationService.update(id, donation);
             
             // Processar para estoque
