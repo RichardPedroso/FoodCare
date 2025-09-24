@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit{
     this.userName = this.user?.name;
     
     // Redirecionar admin para dashboard
-    if (this.user?.user_type === 'admin') {
+    if (this.user?.user_type === 'admin' || this.user?.userType === 'admin') {
       this.router.navigate(['/main/admin/dashboard']);
     }
   }

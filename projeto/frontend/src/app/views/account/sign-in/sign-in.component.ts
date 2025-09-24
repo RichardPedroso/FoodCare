@@ -70,7 +70,7 @@ export class SignInComponent{
     if (this.authenticationService.isAuthenticated()) {
       const user = this.authenticationService.getCurrentUser();
       const userType = user?.userType;
-      if (userType === 'admin') {
+      if (userType === 'admin' || user?.user_type === 'admin') {
         console.log('credenciais validas, navegando para dashboard admin')
         this.router.navigate(['/main/admin/dashboard']);
       } else {
@@ -110,7 +110,7 @@ export class SignInComponent{
           const userType = user.userType;
           console.log('UserType processado:', userType);
           
-          if (userType === 'admin') {
+          if (userType === 'admin' || user.user_type === 'admin') {
             console.log('Usuário identificado como administrador');
             this.router.navigate(['/main/admin/dashboard']);
           } else if (userType === 'donor') {

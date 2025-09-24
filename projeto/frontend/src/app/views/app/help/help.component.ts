@@ -10,7 +10,14 @@ import { CommonModule } from '@angular/common';
 })
 
 export class HelpComponent {
-  isAdmin = localStorage.getItem('userType') === 'admin';
+  isAdmin = (() => {
+    const user = localStorage.getItem('user');
+    if (user) {
+      const userData = JSON.parse(user);
+      return userData.userType === 'admin' || userData.user_type === 'admin';
+    }
+    return false;
+  })();
 
   userFaqs = [
     {

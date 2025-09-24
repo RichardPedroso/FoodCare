@@ -3,6 +3,9 @@ import { SignInComponent } from './views/account/sign-in/sign-in.component';
 import { SignUpComponent } from './views/account/sign-up/sign-up.component';
 import { HomeComponent } from './views/app/home/home.component';
 import { authenticationGuard } from './services/security/guard/authentication.guard';
+import { adminGuard } from './services/security/guard/admin.guard';
+import { userGuard } from './services/security/guard/user.guard';
+
 import { MyProfileComponent } from './views/account/my-profile/my-profile.component';
 import { AboutUsComponent } from './views/app/about-us/about-us.component';
 import { ResetPasswordComponent } from './views/account/reset-password/reset-password.component';
@@ -72,32 +75,39 @@ export const routes: Routes = [
       },
       {
         path: 'user/make-action',
-        component: MakeActionComponent
+        component: MakeActionComponent,
+        canActivate: [userGuard]
       },
       {
         path: 'user/follow-actions',
-        component: FollowActionsComponent
+        component: FollowActionsComponent,
+        canActivate: [userGuard]
       },
       {
         path: 'user/generate-report',
-        component: GenerateReportComponent
+        component: GenerateReportComponent,
+        canActivate: [userGuard]
       },
       {
         path: 'admin/dashboard',
-        component: MainAdminComponent
+        component: MainAdminComponent,
+        canActivate: [adminGuard]
       },
       {
         path: 'admin/manage-users',
-        component: ManageUsersComponent
+        component: ManageUsersComponent,
+        canActivate: [adminGuard]
       },
       {
         path: 'admin/manage-donations',
-        component: ManageDonationsComponent
+        component: ManageDonationsComponent,
+        canActivate: [adminGuard]
       },
       {
         path: 'admin/manage-requests',
-        component: ManageRequestsComponent
-      },
+        component: ManageRequestsComponent,
+        canActivate: [adminGuard]
+      }
     ]
   },
   {
