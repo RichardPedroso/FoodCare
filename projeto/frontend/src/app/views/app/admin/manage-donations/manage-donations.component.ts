@@ -14,15 +14,22 @@ import { ProductReadService } from '../../../../services/product/product-read.se
 import { ToastrService } from 'ngx-toastr';
 import { DonationStatus } from '../../../../domain/enums/donation-status.enum';
 
+// Interface que estende Donation com informações detalhadas para exibição
 interface DonationWithDetails extends Donation {
-  donorName: string;
-  donorEmail: string;
-  productName?: string;
-  quantity?: number | string;
-  unit?: string;
-  expiration_date?: Date;
+  donorName: string; // Nome do doador
+  donorEmail: string; // Email do doador
+  productName?: string; // Nome do produto doado
+  quantity?: number | string; // Quantidade do produto
+  unit?: string; // Unidade de medida
+  expiration_date?: Date; // Data de validade
 }
 
+/**
+ * Componente responsável pelo gerenciamento de doações pendentes
+ * Permite que administradores visualizem, aprovem ou rejeitem doações
+ * Carrega informações detalhadas de doadores e produtos
+ * Implementa funcionalidade de busca e filtragem
+ */
 @Component({
   selector: 'app-manage-donations',
   imports: [CommonModule, MatButtonModule, MatIconModule, MatCardModule, MatInputModule, FormsModule],
@@ -30,11 +37,11 @@ interface DonationWithDetails extends Donation {
   styleUrl: './manage-donations.component.css'
 })
 export class ManageDonationsComponent implements OnInit {
-  allDonations: DonationWithDetails[] = [];
-  donations: DonationWithDetails[] = [];
-  selectedDonation: DonationWithDetails | null = null;
-  showDonationDetails = false;
-  searchTerm = '';
+  allDonations: DonationWithDetails[] = []; // Lista completa de doações
+  donations: DonationWithDetails[] = []; // Lista filtrada para exibição
+  selectedDonation: DonationWithDetails | null = null; // Doação selecionada para detalhes
+  showDonationDetails = false; // Controla exibição do modal de detalhes
+  searchTerm = ''; // Termo de busca para filtrar doações
 
   constructor(
     private donationReadService: DonationReadService,
@@ -46,6 +53,7 @@ export class ManageDonationsComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    // Carrega doações pendentes na inicialização do componente
     await this.loadPendingDonations();
   }
 
@@ -155,11 +163,20 @@ export class ManageDonationsComponent implements OnInit {
     }
   }
 
+  /**
+   * Seleciona uma doação para exibir detalhes
+   * @param donation - Doação a ser selecionada
+   */
   selectDonation(donation: DonationWithDetails) {
     this.selectedDonation = donation;
     this.showDonationDetails = true;
   }
 
+  /**
+   * Confirma uma doação pendente
+   * Atualiza status no backend e remove da lista de pendentes
+   * Adiciona produtos ao estoque automaticamente
+   */
   async confirmDonation() {
     if (!this.selectedDonation) return;
 
@@ -167,7 +184,7 @@ export class ManageDonationsComponent implements OnInit {
       await this.donationUpdateService.confirmDonation(this.selectedDonation.id!);
       this.toastr.success('Doação confirmada com sucesso!');
       
-      // Remover da lista de pendentes
+      // Remove da lista de pendentes
       this.allDonations = this.allDonations.filter(d => d.id !== this.selectedDonation!.id);
       this.applyFilters();
       this.closeDonationDetails();
@@ -177,6 +194,11 @@ export class ManageDonationsComponent implements OnInit {
     }
   }
 
+  /**
+   * Rejeita uma doação pendente
+   * Solicita confirmação do usuário antes de proceder
+   * Remove a doação do sistema permanentemente
+   */
   async rejectDonation() {
     if (!this.selectedDonation) return;
 
@@ -187,7 +209,7 @@ export class ManageDonationsComponent implements OnInit {
       await this.donationUpdateService.rejectDonation(this.selectedDonation.id!);
       this.toastr.success('Doação rejeitada.');
       
-      // Remover da lista de pendentes
+      // Remove da lista de pendentes
       this.allDonations = this.allDonations.filter(d => d.id !== this.selectedDonation!.id);
       this.applyFilters();
       this.closeDonationDetails();
@@ -197,11 +219,15 @@ export class ManageDonationsComponent implements OnInit {
     }
   }
 
+  /**
+   * Aplica filtros de busca na lista de doações
+   * Filtra por nome do doador baseado no termo de busca
+   */
   applyFilters() {
     let filtered = [...this.allDonations];
     console.log('Aplicando filtros. Doações antes do filtro:', filtered.length);
 
-    // Aplicar filtro de pesquisa
+    // Aplica filtro de pesquisa por nome do doador
     if (this.searchTerm.trim()) {
       filtered = filtered.filter(donation => 
         donation.donorName.toLowerCase().includes(this.searchTerm.toLowerCase())
@@ -212,26 +238,50 @@ export class ManageDonationsComponent implements OnInit {
     console.log('Doações após filtros:', this.donations.length);
   }
 
+  /**
+   * Manipula mudanças no campo de busca
+   * Reaplica filtros automaticamente
+   */
   onSearchChange() {
     this.applyFilters();
   }
 
+  /**
+   * Fecha o modal de detalhes da doação
+   * Limpa a seleção atual
+   */
   closeDonationDetails() {
     this.showDonationDetails = false;
     this.selectedDonation = null;
   }
 
+  /**
+   * Formata data para exibição no padrão brasileiro
+   * @param date - Data a ser formatada
+   * @returns String formatada no padrão dd/mm/aaaa
+   */
   formatDate(date: Date | string): string {
     if (!date) return '';
     const d = new Date(date);
     return d.toLocaleDateString('pt-BR');
   }
 
+  /**
+   * Obtém e formata a data da doação
+   * Trata diferentes formatos de propriedade de data
+   * @param donation - Doação da qual extrair a data
+   * @returns Data formatada da doação
+   */
   getDonationDate(donation: DonationWithDetails): string {
     const date = (donation as any).donationDate || donation.donation_date;
     return this.formatDate(date);
   }
 
+  /**
+   * Obtém o tipo de unidade de medida de um produto
+   * @param productId - ID do produto
+   * @returns Tipo de unidade (kg, un, etc.) ou 'un' como padrão
+   */
   private async getProductUnitType(productId: number): Promise<string> {
     try {
       const product = await this.productReadService.findById(productId.toString());
@@ -241,6 +291,13 @@ export class ManageDonationsComponent implements OnInit {
     }
   }
 
+  /**
+   * Formata a exibição de quantidade do produto doado
+   * Adapta formato baseado no tipo de unidade de medida
+   * @param donationProduct - Produto da doação
+   * @param unitType - Tipo de unidade de medida
+   * @returns String formatada da quantidade
+   */
   private formatQuantityDisplay(donationProduct: any, unitType: string): string {
     const units = parseInt(donationProduct.unit || '1');
     const quantity = donationProduct.quantity || 1;

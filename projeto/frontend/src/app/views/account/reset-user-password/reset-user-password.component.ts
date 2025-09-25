@@ -14,7 +14,12 @@ import { AuthenticationService } from '../../../services/security/authentication
 import { User } from '../../../domain/model/user';
 import { ToastrService } from 'ngx-toastr';
 
-
+/**
+ * Componente responsável pela alteração de senha de usuários logados
+ * Permite que usuários autenticados alterem suas senhas
+ * Requer confirmação da senha atual antes de definir a nova
+ * Realiza logout automático após alteração bem-sucedida
+ */
 @Component({
   selector: 'app-reset-user-password',
   templateUrl: './reset-user-password.component.html',
@@ -33,11 +38,11 @@ import { ToastrService } from 'ngx-toastr';
   ],
 })
 export class ResetUserPasswordComponent implements OnInit {
-  resetForm!: FormGroup;
-  showNewPasswordFields = false;
-  isOldPasswordInvalid = false;
-  passwordMismatch = false;
-  currentUser: User | null = null;
+  resetForm!: FormGroup; // Formulário reativo para alteração de senha
+  showNewPasswordFields = false; // Controla exibição dos campos de nova senha
+  isOldPasswordInvalid = false; // Flag para indicar senha atual incorreta
+  passwordMismatch = false; // Flag para indicar se nova senha e confirmação não coincidem
+  currentUser: User | null = null; // Dados do usuário atual logado
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,14 +54,20 @@ export class ResetUserPasswordComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Obtém o usuário atual do serviço de autenticação
     this.currentUser = this.authenticationService.getCurrentUser();
     if (!this.currentUser) {
+      // Redireciona para login se não houver usuário logado
       this.router.navigate(['/account/sign-in']);
       return;
     }
     this.initializeForm();
   }
 
+  /**
+   * Inicializa o formulário de alteração de senha
+   * Configura validações para senha atual, nova senha e confirmação
+   */
   initializeForm() {
     this.resetForm = this.formBuilder.group({
       oldPassword: ['', [Validators.required]],
@@ -65,6 +76,11 @@ export class ResetUserPasswordComponent implements OnInit {
     });
   }
 
+  /**
+   * Verifica se a senha atual informada está correta
+   * Compara com a senha armazenada no localStorage
+   * Exibe campos de nova senha apenas se a senha atual estiver correta
+   */
   checkOldPassword(): void {
     const oldPassword = this.resetForm.controls['oldPassword'].value;
     
@@ -77,12 +93,21 @@ export class ResetUserPasswordComponent implements OnInit {
     }
   }
 
+  /**
+   * Verifica se a nova senha e sua confirmação são idênticas
+   * @returns true se as senhas coincidem, false caso contrário
+   */
   arePasswordsMatching(): boolean {
     const newPassword = this.resetForm.controls['newPassword'].value;
     const confirmPassword = this.resetForm.controls['confirmPassword'].value;
     return newPassword === confirmPassword;
   }
 
+  /**
+   * Salva a nova senha do usuário no sistema
+   * Valida se as senhas coincidem antes de enviar
+   * Realiza logout automático e redireciona para login após sucesso
+   */
   async savePassword(): Promise<void> {
     if (!this.resetForm.valid || !this.currentUser?.id) return;
 
@@ -98,10 +123,12 @@ export class ResetUserPasswordComponent implements OnInit {
       console.log('Atualizando senha para usuário ID:', this.currentUser.id);
       console.log('Nova senha:', newPassword);
       
+      // Chama o serviço para atualizar a senha no backend
       await this.userUpdateService.updatePassword(this.currentUser.id!.toString(), newPassword);
       
       console.log('Senha atualizada com sucesso!');
       this.toastr.success('Senha alterada com sucesso!');
+      // Realiza logout para forçar novo login com a nova senha
       this.authenticationService.logout();
       this.router.navigate(['/account/sign-in']);
     } catch (error: any) {

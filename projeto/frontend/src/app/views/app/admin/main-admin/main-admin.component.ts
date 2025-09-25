@@ -5,6 +5,12 @@ import { ProductReadService } from '../../../../services/product/product-read.se
 import { StockReadService, Stock } from '../../../../services/stock/stock-read.service';
 import { Product } from '../../../../domain/model/product';
 
+/**
+ * Componente principal do dashboard administrativo
+ * Exibe gráficos de estoque por categoria de produtos
+ * Permite navegação para áreas de gerenciamento (usuários, doações, solicitações)
+ * Implementa visualização de dados com gráficos de barras personalizados
+ */
 @Component({
   selector: 'app-main-admin',
   imports: [CommonModule],
@@ -12,14 +18,14 @@ import { Product } from '../../../../domain/model/product';
   styleUrl: './main-admin.component.css'
 })
 export class MainAdminComponent implements OnInit {
-  basicProducts: (Product & { totalStock: number })[] = [];
-  hygieneProducts: (Product & { totalStock: number })[] = [];
-  infantProducts: (Product & { totalStock: number })[] = [];
-  maxStock = 0;
-  showBasicChart = false;
-  showHygieneChart = false;
-  showInfantChart = false;
-  loading = false;
+  basicProducts: (Product & { totalStock: number })[] = []; // Produtos básicos com estoque
+  hygieneProducts: (Product & { totalStock: number })[] = []; // Produtos de higiene com estoque
+  infantProducts: (Product & { totalStock: number })[] = []; // Produtos infantis com estoque
+  maxStock = 0; // Valor máximo de estoque para escala dos gráficos
+  showBasicChart = false; // Controla exibição do gráfico de produtos básicos
+  showHygieneChart = false; // Controla exibição do gráfico de produtos de higiene
+  showInfantChart = false; // Controla exibição do gráfico de produtos infantis
+  loading = false; // Estado de carregamento dos dados
 
   constructor(
     private productService: ProductReadService, 
@@ -33,6 +39,7 @@ export class MainAdminComponent implements OnInit {
     console.log('MainAdminComponent ngOnInit executado');
     this.loading = true;
     try {
+      // Carrega produtos e dados de estoque na inicialização
       await this.loadProducts();
     } catch (error) {
       console.error('Erro no ngOnInit:', error);
@@ -41,20 +48,26 @@ export class MainAdminComponent implements OnInit {
     }
   }
 
+  /**
+   * Carrega produtos e dados de estoque do backend
+   * Combina informações de produtos com seus respectivos estoques
+   * Organiza produtos por categoria (básicos, higiene, infantis)
+   * Implementa fallback com dados mock em caso de erro
+   */
   async loadProducts() {
     try {
       console.log('Carregando produtos...');
       const products = await this.productService.findAll();
       console.log('Produtos carregados:', products);
       
-      // Usar dados mock se não conseguir carregar estoque
+      // Tenta carregar dados de estoque, usa dados mock se falhar
       let stocks: Stock[] = [];
       try {
         stocks = await this.stockService.findAll();
         console.log('Estoques carregados:', stocks);
       } catch (stockError) {
         console.warn('Erro ao carregar estoque, usando dados mock:', stockError);
-        // Criar dados mock de estoque
+        // Criar dados mock de estoque para demonstração
         stocks = products.map((product, index) => ({
           id: index + 1,
           productId: product.id ? parseInt(product.id) : 0,
@@ -63,6 +76,7 @@ export class MainAdminComponent implements OnInit {
         }));
       }
 
+      // Combina dados de produtos com seus estoques totais
       const productsWithStock = products.map(product => {
         const productId = product.id ? parseInt(product.id) : 0;
         const productStocks = stocks.filter(s => s.productId === productId);
@@ -71,6 +85,7 @@ export class MainAdminComponent implements OnInit {
         return { ...product, totalStock };
       });
 
+      // Organiza produtos por categoria e ordena alfabeticamente
       this.basicProducts = productsWithStock
         .filter(p => p.productType === 'basic')
         .sort((a, b) => a.name.localeCompare(b.name));
@@ -81,9 +96,10 @@ export class MainAdminComponent implements OnInit {
         .filter(p => p.productType === 'infant')
         .sort((a, b) => a.name.localeCompare(b.name));
       
+      // Calcula valor máximo para escala dos gráficos
       const allStocks = productsWithStock.map(p => p.totalStock).filter(stock => stock > 0);
       this.maxStock = allStocks.length > 0 ? Math.max(...allStocks) : 50;
-      // Limitar maxStock para evitar valores muito altos
+      // Limita maxStock para evitar gráficos desproporcionais
       if (this.maxStock > 1000) {
         this.maxStock = Math.min(this.maxStock, 100);
         console.log('MaxStock muito alto, limitando para 100');
@@ -100,6 +116,12 @@ export class MainAdminComponent implements OnInit {
     }
   }
 
+  /**
+   * Calcula altura da barra no gráfico baseada no estoque
+   * Aplica escala proporcional com altura mínima e máxima
+   * @param stock - Quantidade em estoque do produto
+   * @returns String com altura em pixels para a barra
+   */
   getBarHeight(stock: number): string {
     if (this.maxStock === 0 || stock === 0) return '10px';
     const percentage = (stock / this.maxStock) * 100;
@@ -110,6 +132,10 @@ export class MainAdminComponent implements OnInit {
     return `${height}px`;
   }
 
+  /**
+   * Exibe gráfico de produtos básicos
+   * Oculta outros gráficos para exibir apenas um por vez
+   */
   showBasicProducts() {
     if (this.loading) return;
     this.showBasicChart = true;
@@ -117,6 +143,10 @@ export class MainAdminComponent implements OnInit {
     this.showInfantChart = false;
   }
 
+  /**
+   * Exibe gráfico de produtos infantis
+   * Oculta outros gráficos para exibir apenas um por vez
+   */
   showInfantProducts() {
     if (this.loading) return;
     this.showInfantChart = true;
@@ -124,6 +154,10 @@ export class MainAdminComponent implements OnInit {
     this.showHygieneChart = false;
   }
 
+  /**
+   * Exibe gráfico de produtos de higiene
+   * Oculta outros gráficos para exibir apenas um por vez
+   */
   showHygieneProducts() {
     if (this.loading) return;
     this.showHygieneChart = true;
@@ -131,6 +165,11 @@ export class MainAdminComponent implements OnInit {
     this.showInfantChart = false;
   }
 
+  /**
+   * Gera rótulos para o eixo Y dos gráficos
+   * Cria escala de 5 em 5 unidades até o valor máximo
+   * @returns Array de números para os rótulos do eixo Y
+   */
   getYAxisLabels(): number[] {
     const maxValue = Math.ceil(this.maxStock / 5) * 5;
     const labels = [];
@@ -140,14 +179,23 @@ export class MainAdminComponent implements OnInit {
     return labels.reverse();
   }
 
+  /**
+   * Navega para a página de gerenciamento de usuários
+   */
   navigateToManageUsers() {
     this.router.navigate(['/main/admin/manage-users']);
   }
 
+  /**
+   * Navega para a página de gerenciamento de doações
+   */
   navigateToManageDonations() {
     this.router.navigate(['/main/admin/manage-donations']);
   }
 
+  /**
+   * Navega para a página de gerenciamento de solicitações
+   */
   navigateToManageRequests() {
     this.router.navigate(['/main/admin/manage-requests']);
   }

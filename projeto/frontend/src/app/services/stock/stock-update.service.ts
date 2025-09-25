@@ -5,6 +5,10 @@ import { Stock } from '../../domain/model/stock';
 import { OptimizedProduct } from './stock-optimization.service';
 import { environment } from '../../../environments/environment';
 
+/**
+ * Serviço para atualização de estoque.
+ * Gerencia alterações nas quantidades disponíveis após geração de cestas.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -13,6 +17,10 @@ export class StockUpdateService {
 
   constructor(private http: HttpClient) { }
 
+  /**
+   * Atualiza estoque após geração de cesta otimizada.
+   * Reduz quantidades dos produtos selecionados no algoritmo de otimização.
+   */
   updateStockAfterBasketGeneration(optimizedProducts: Map<string, OptimizedProduct[]>): Observable<any[]> {
     const updateRequests: Observable<any>[] = [];
 
@@ -28,7 +36,7 @@ export class StockUpdateService {
             if (stockItem) {
               const updatedStock = {
                 ...stockItem,
-                actual_stock: stockItem.actual_stock - product.quantity
+                actual_stock: stockItem.actual_stock - product.quantity // Reduz quantidade
               };
               return this.http.put(`${this.apiUrl}/stock/${stockItem.id}`, updatedStock);
             }
@@ -42,6 +50,10 @@ export class StockUpdateService {
     return forkJoin(updateRequests);
   }
 
+  /**
+   * Atualiza estoque de um produto específico.
+   * Cria novo registro se não existir, ou atualiza existente.
+   */
   async updateStock(productId: string, donationOption: string, quantityChange: number): Promise<void> {
     try {
       const stocks = await firstValueFrom(
@@ -61,7 +73,7 @@ export class StockUpdateService {
         const newStockRecord = {
           product_id: productId,
           donation_option: donationOption,
-          actual_stock: Math.max(0, quantityChange)
+          actual_stock: Math.max(0, quantityChange) // Não permite estoque negativo
         };
         
         await firstValueFrom(

@@ -4,6 +4,10 @@ import { environment } from '../../../environments/environment.development';
 import { firstValueFrom } from 'rxjs';
 import { DonationStatus } from '../../domain/enums/donation-status.enum';
 
+/**
+ * Serviço para gerenciamento de status de doações.
+ * Controla o ciclo de vida das doações (em estoque, utilizada, rejeitada).
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -11,6 +15,10 @@ export class DonationStatusService {
 
   constructor(private http: HttpClient) { }
 
+  /**
+   * Marca doações como utilizadas baseado no consumo de produtos.
+   * Implementa algoritmo FIFO para consumir doações mais antigas primeiro.
+   */
   async markDonationsAsUsed(productId: string, quantityUsed: number): Promise<void> {
     try {
       // Buscar doações em estoque para este produto
@@ -27,6 +35,7 @@ export class DonationStatusService {
       
       let remainingQuantity = quantityUsed;
       
+      // Processar doações em ordem (FIFO)
       for (const donation of relevantDonations) {
         if (remainingQuantity <= 0) break;
         
@@ -54,6 +63,10 @@ export class DonationStatusService {
     }
   }
 
+  /**
+   * Atualiza o status de uma doação específica.
+   * Mantém outros dados da doação inalterados.
+   */
   async updateDonationStatus(donationId: string, status: string): Promise<void> {
     try {
       const donation = await firstValueFrom(

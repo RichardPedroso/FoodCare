@@ -9,6 +9,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { AuthenticationService } from '../../../services/security/authentication.service';
 import { UserDeleteService } from '../../../services/user/user-delete.service';
 
+/**
+ * Componente responsável pela exclusão de conta do usuário
+ * Permite que usuários autenticados excluam permanentemente suas contas
+ * Requer confirmação de senha para segurança
+ */
 @Component({
   selector: 'app-delete-account',
   standalone: true,
@@ -25,10 +30,10 @@ import { UserDeleteService } from '../../../services/user/user-delete.service';
   styleUrl: './delete-account.component.css'
 })
 export class DeleteAccountComponent implements OnInit {
-  deleteForm!: FormGroup;
-  user: any;
-  errorMessage: string = '';
-  successMessage: string = '';
+  deleteForm!: FormGroup; // Formulário reativo para confirmação de senha
+  user: any; // Dados do usuário atual obtidos do serviço de autenticação
+  errorMessage: string = ''; // Mensagem de erro para exibição ao usuário
+  successMessage: string = ''; // Mensagem de sucesso para exibição ao usuário
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,16 +43,26 @@ export class DeleteAccountComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Obtém os dados do usuário atual do localStorage
     this.user = this.authenticationService.getCurrentUser();
     this.initializeForm();
   }
 
+  /**
+   * Inicializa o formulário de confirmação de exclusão
+   * Requer apenas a senha atual do usuário para confirmar a operação
+   */
   initializeForm(): void {
     this.deleteForm = this.formBuilder.group({
       password: ['', [Validators.required]]
     });
   }
 
+  /**
+   * Executa a exclusão da conta do usuário
+   * Valida a senha antes de proceder com a exclusão
+   * Realiza logout automático e redirecionamento após sucesso
+   */
   async deleteAccount(): Promise<void> {
     if (!this.deleteForm.valid) {
       return;
@@ -55,6 +70,7 @@ export class DeleteAccountComponent implements OnInit {
 
     const password = this.deleteForm.get('password')?.value;
 
+    // Verifica se a senha informada corresponde à senha do usuário
     if (password !== this.user.password) {
       this.errorMessage = 'Senha incorreta. A conta não foi excluída.';
       this.successMessage = '';
@@ -62,10 +78,12 @@ export class DeleteAccountComponent implements OnInit {
     }
 
     try {
+      // Chama o serviço para excluir a conta do usuário
       await this.userDeleteService.delete(this.user.id);
       this.successMessage = 'Conta excluída com sucesso! Redirecionando...';
       this.errorMessage = '';
       
+      // Aguarda 2 segundos antes de fazer logout e redirecionar
       setTimeout(() => {
         this.authenticationService.logout();
         this.router.navigate(['/']);

@@ -10,6 +10,12 @@ import { User } from '../../../../domain/model/user';
 import { UserReadService } from '../../../../services/user/user-read.service';
 import { UserUpdateService } from '../../../../services/user/user-update.service';
 
+/**
+ * Componente responsável pelo gerenciamento de usuários beneficiários
+ * Permite que administradores visualizem, aprovem ou neguem beneficiários
+ * Exibe documentos enviados para verificação de elegibilidade
+ * Implementa filtros por status e funcionalidade de busca
+ */
 @Component({
   selector: 'app-manage-users',
   imports: [CommonModule, MatButtonModule, MatIconModule, MatCardModule, MatInputModule, MatSelectModule, FormsModule],
@@ -17,12 +23,12 @@ import { UserUpdateService } from '../../../../services/user/user-update.service
   styleUrl: './manage-users.component.css'
 })
 export class ManageUsersComponent implements OnInit {
-  allBeneficiaries: User[] = [];
-  beneficiaries: User[] = [];
-  selectedUser: User | null = null;
-  showDocuments = false;
-  searchTerm = '';
-  selectedFilter = 'recentes';
+  allBeneficiaries: User[] = []; // Lista completa de beneficiários
+  beneficiaries: User[] = []; // Lista filtrada para exibição
+  selectedUser: User | null = null; // Usuário selecionado para análise
+  showDocuments = false; // Controla exibição do modal de documentos
+  searchTerm = ''; // Termo de busca para filtrar usuários
+  selectedFilter = 'recentes'; // Filtro selecionado (recentes, pendentes, aprovados, reprovados)
 
   constructor(
     private userReadService: UserReadService,
@@ -30,9 +36,15 @@ export class ManageUsersComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    // Carrega lista de beneficiários na inicialização
     await this.loadBeneficiaries();
   }
 
+  /**
+   * Carrega lista de beneficiários do backend
+   * Filtra apenas usuários do tipo beneficiário que possuem documentos
+   * Documentos são necessários para verificação de elegibilidade
+   */
   async loadBeneficiaries() {
     try {
       const users = await this.userReadService.findAll();
@@ -47,11 +59,19 @@ export class ManageUsersComponent implements OnInit {
     }
   }
 
+  /**
+   * Seleciona um usuário para visualizar documentos
+   * @param user - Usuário a ser selecionado
+   */
   selectUser(user: User) {
     this.selectedUser = user;
     this.showDocuments = true;
   }
 
+  /**
+   * Atualiza o status de elegibilidade do usuário
+   * @param able - true para aprovar, false para negar
+   */
   async updateUserStatus(able: boolean) {
     if (!this.selectedUser) return;
 
@@ -65,10 +85,14 @@ export class ManageUsersComponent implements OnInit {
     }
   }
 
+  /**
+   * Aplica filtros de status e busca na lista de beneficiários
+   * Filtra por status de aprovação e termo de busca por nome
+   */
   applyFilters() {
     let filtered = [...this.allBeneficiaries];
 
-    // Aplicar filtro por status
+    // Aplica filtro por status de aprovação
     switch (this.selectedFilter) {
       case 'pendentes':
         filtered = filtered.filter(user => user.able === undefined);
@@ -81,12 +105,12 @@ export class ManageUsersComponent implements OnInit {
         break;
       case 'recentes':
       default:
-        // Manter todos, ordenar por ID (mais recentes primeiro)
+        // Mantém todos, ordena por ID (mais recentes primeiro)
         filtered.sort((a, b) => (b.id || 0) - (a.id || 0));
         break;
     }
 
-    // Aplicar filtro de pesquisa
+    // Aplica filtro de busca por nome
     if (this.searchTerm.trim()) {
       filtered = filtered.filter(user => 
         user.name.toLowerCase().includes(this.searchTerm.toLowerCase())
@@ -96,35 +120,60 @@ export class ManageUsersComponent implements OnInit {
     this.beneficiaries = filtered;
   }
 
+  /**
+   * Manipula mudanças no filtro de status
+   */
   onFilterChange() {
     this.applyFilters();
   }
 
+  /**
+   * Manipula mudanças no campo de busca
+   */
   onSearchChange() {
     this.applyFilters();
   }
 
+  /**
+   * Revoga permissão de usuário já aprovado
+   */
   revokePermission() {
     this.updateUserStatus(false);
   }
 
+  /**
+   * Concede permissão para usuário negado
+   */
   grantPermission() {
     this.updateUserStatus(true);
   }
 
+  /**
+   * Confirma/aprova usuário pendente
+   */
   confirmUser() {
     this.updateUserStatus(true);
   }
 
+  /**
+   * Nega usuário pendente
+   */
   denyUser() {
     this.updateUserStatus(false);
   }
 
+  /**
+   * Fecha o modal de documentos
+   */
   closeDocuments() {
     this.showDocuments = false;
     this.selectedUser = null;
   }
 
+  /**
+   * Abre documento em nova janela para visualização
+   * @param document - String base64 do documento
+   */
   openDocument(document: string) {
     const newWindow = window.open();
     if (newWindow) {
@@ -139,11 +188,21 @@ export class ManageUsersComponent implements OnInit {
     }
   }
 
+  /**
+   * Obtém texto do status do usuário
+   * @param user - Usuário para verificar status
+   * @returns Texto do status (Pendente, Aprovado, Negado)
+   */
   getStatusText(user: User): string {
     if (user.able === undefined) return 'Pendente';
     return user.able ? 'Aprovado' : 'Negado';
   }
 
+  /**
+   * Obtém classe CSS para estilização do status
+   * @param user - Usuário para verificar status
+   * @returns Classe CSS correspondente ao status
+   */
   getStatusClass(user: User): string {
     if (user.able === undefined) return 'status-pending';
     return user.able ? 'status-approved' : 'status-denied';

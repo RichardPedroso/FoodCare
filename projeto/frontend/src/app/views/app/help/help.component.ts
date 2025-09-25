@@ -2,6 +2,11 @@ import { Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 
+/**
+ * Componente responsável pela página de ajuda e FAQ
+ * Exibe perguntas frequentes diferenciadas por tipo de usuário
+ * Contém instruções específicas para usuários comuns e administradores
+ */
 @Component({
   selector: 'app-help',
   imports: [MatIconModule, CommonModule],
@@ -10,6 +15,7 @@ import { CommonModule } from '@angular/common';
 })
 
 export class HelpComponent {
+  // Verifica se o usuário atual é administrador para exibir FAQs específicos
   isAdmin = (() => {
     const user = localStorage.getItem('user');
     if (user) {
@@ -19,6 +25,7 @@ export class HelpComponent {
     return false;
   })();
 
+  // Perguntas frequentes para usuários comuns (doadores e beneficiários)
   userFaqs = [
     {
       question: 'Como fazer uma doação?',
@@ -30,6 +37,7 @@ export class HelpComponent {
     }
   ];
 
+  // Perguntas frequentes específicas para administradores
   adminFaqs = [
     {
       question: 'Como gerenciar usuários?',

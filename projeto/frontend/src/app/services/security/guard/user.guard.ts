@@ -2,6 +2,10 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthenticationService } from '../authentication.service';
 import { inject } from '@angular/core';
 
+/**
+ * Guard para proteger rotas de usuários comuns.
+ * Redireciona administradores para dashboard admin e não autenticados para login.
+ */
 export const userGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const authenticationService = inject(AuthenticationService);
@@ -15,6 +19,7 @@ export const userGuard: CanActivateFn = (route, state) => {
 
   const currentUser = authenticationService.getCurrentUser();
   
+  // Redireciona admins para dashboard administrativo
   if (currentUser && (currentUser.userType === 'admin' || currentUser.user_type === 'admin')) {
     router.navigate(['main/admin/dashboard']);
     return false;

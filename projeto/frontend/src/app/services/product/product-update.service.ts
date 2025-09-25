@@ -5,6 +5,10 @@ import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../environments/environment.development';
 import { Product } from '../../domain/model/product';
 
+/**
+ * Serviço para atualização de produtos.
+ * Gerencia modificações em produtos existentes.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -12,6 +16,10 @@ export class ProductUpdateService {
 
   constructor(private http: HttpClient, private productReadService: ProductReadService) { }
 
+  /**
+   * Atualiza estoque de um produto.
+   * Nota: Estoque agora é gerenciado em tabela separada.
+   */
   async updateStock(id: string, quantity: number): Promise<Product>{
     console.log('ProductUpdateService.updateStock chamado com:', { id, quantity });
     

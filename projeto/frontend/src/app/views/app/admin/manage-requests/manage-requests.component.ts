@@ -10,17 +10,24 @@ import { environment } from '../../../../../environments/environment.development
 import { ToastrService } from 'ngx-toastr';
 import { firstValueFrom } from 'rxjs';
 
+// Interface para solicitações de cesta com informações detalhadas
 interface BasketRequestWithDetails {
-  id: string;
-  user_id: number;
-  request_date: string;
-  basket_type: string;
-  status: string;
-  userName: string;
-  userEmail: string;
-  calculated_items?: string;
+  id: string; // ID da solicitação
+  user_id: number; // ID do usuário solicitante
+  request_date: string; // Data da solicitação
+  basket_type: string; // Tipo de cesta (basic/hygiene)
+  status: string; // Status da solicitação
+  userName: string; // Nome do solicitante
+  userEmail: string; // Email do solicitante
+  calculated_items?: string; // Itens calculados da cesta (JSON)
 }
 
+/**
+ * Componente responsável pelo gerenciamento de solicitações de cestas
+ * Permite que administradores visualizem, aprovem ou rejeitem solicitações
+ * Exibe detalhes dos itens calculados para cada cesta
+ * Implementa funcionalidade de busca e filtragem
+ */
 @Component({
   selector: 'app-manage-requests',
   imports: [CommonModule, MatButtonModule, MatIconModule, MatCardModule, MatInputModule, FormsModule],
@@ -28,11 +35,11 @@ interface BasketRequestWithDetails {
   styleUrl: './manage-requests.component.css'
 })
 export class ManageRequestsComponent implements OnInit {
-  allRequests: BasketRequestWithDetails[] = [];
-  requests: BasketRequestWithDetails[] = [];
-  selectedRequest: BasketRequestWithDetails | null = null;
-  showRequestDetails = false;
-  searchTerm = '';
+  allRequests: BasketRequestWithDetails[] = []; // Lista completa de solicitações
+  requests: BasketRequestWithDetails[] = []; // Lista filtrada para exibição
+  selectedRequest: BasketRequestWithDetails | null = null; // Solicitação selecionada
+  showRequestDetails = false; // Controla exibição do modal de detalhes
+  searchTerm = ''; // Termo de busca para filtrar solicitações
 
   constructor(
     private http: HttpClient,
@@ -40,6 +47,7 @@ export class ManageRequestsComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    // Carrega solicitações pendentes na inicialização
     await this.loadPendingRequests();
   }
 
@@ -80,11 +88,20 @@ export class ManageRequestsComponent implements OnInit {
     }
   }
 
+  /**
+   * Seleciona uma solicitação para exibir detalhes
+   * @param request - Solicitação a ser selecionada
+   */
   selectRequest(request: BasketRequestWithDetails) {
     this.selectedRequest = request;
     this.showRequestDetails = true;
   }
 
+  /**
+   * Confirma uma solicitação de cesta
+   * Aprova a solicitação e consome produtos do estoque
+   * Remove da lista de pendentes após confirmação
+   */
   async confirmRequest() {
     if (!this.selectedRequest) return;
 
@@ -95,7 +112,7 @@ export class ManageRequestsComponent implements OnInit {
       
       this.toastr.success('Solicitação confirmada com sucesso!');
       
-      // Remover da lista de pendentes
+      // Remove da lista de pendentes
       this.allRequests = this.allRequests.filter(r => r.id !== this.selectedRequest!.id);
       this.applyFilters();
       this.closeRequestDetails();
@@ -105,6 +122,11 @@ export class ManageRequestsComponent implements OnInit {
     }
   }
 
+  /**
+   * Rejeita uma solicitação de cesta
+   * Solicita confirmação antes de cancelar
+   * Remove a solicitação do sistema
+   */
   async rejectRequest() {
     if (!this.selectedRequest) return;
 
@@ -112,14 +134,14 @@ export class ManageRequestsComponent implements OnInit {
     if (!confirmed) return;
 
     try {
-      // Para cancelar, deletar a solicitação
+      // Cancela a solicitação no backend
       await firstValueFrom(
         this.http.post(`${environment.api_endpoint}/basket_request/reject/${this.selectedRequest.id}`, {})
       );
       
       this.toastr.success('Solicitação cancelada.');
       
-      // Remover da lista de pendentes
+      // Remove da lista de pendentes
       this.allRequests = this.allRequests.filter(r => r.id !== this.selectedRequest!.id);
       this.applyFilters();
       this.closeRequestDetails();
@@ -129,6 +151,10 @@ export class ManageRequestsComponent implements OnInit {
     }
   }
 
+  /**
+   * Aplica filtros de busca na lista de solicitações
+   * Filtra por nome do solicitante
+   */
   applyFilters() {
     let filtered = [...this.allRequests];
 
@@ -141,24 +167,45 @@ export class ManageRequestsComponent implements OnInit {
     this.requests = filtered;
   }
 
+  /**
+   * Manipula mudanças no campo de busca
+   */
   onSearchChange() {
     this.applyFilters();
   }
 
+  /**
+   * Fecha o modal de detalhes da solicitação
+   */
   closeRequestDetails() {
     this.showRequestDetails = false;
     this.selectedRequest = null;
   }
 
+  /**
+   * Formata data para padrão brasileiro
+   * @param date - Data em formato string
+   * @returns Data formatada dd/mm/aaaa
+   */
   formatDate(date: string): string {
     if (!date) return '';
     return new Date(date).toLocaleDateString('pt-BR');
   }
 
+  /**
+   * Converte tipo de cesta para nome amigável
+   * @param type - Tipo da cesta (basic/hygiene)
+   * @returns Nome formatado da cesta
+   */
   getBasketTypeName(type: string): string {
     return type === 'basic' ? 'Cesta Básica' : 'Cesta de Higiene';
   }
 
+  /**
+   * Obtém e parseia os itens calculados da cesta
+   * Converte JSON string em array de objetos
+   * @returns Array de itens da cesta ou array vazio se houver erro
+   */
   getCalculatedItems(): any[] {
     if (!this.selectedRequest?.calculated_items) {
       console.log('No calculated_items found for request:', this.selectedRequest);

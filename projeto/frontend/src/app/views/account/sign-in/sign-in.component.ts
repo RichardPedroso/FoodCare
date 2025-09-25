@@ -18,6 +18,12 @@ import { UserCredentialDto } from '../../../domain/dto/user-credential-dto';
 import { User } from '../../../domain/model/user';
 import { ToastrService } from 'ngx-toastr';
 
+/**
+ * Componente responsável pela autenticação de usuários no sistema
+ * Gerencia login com email e senha, validação de credenciais
+ * Redireciona usuários para áreas específicas baseado no tipo (admin, donor, beneficiary)
+ * Implementa verificações de elegibilidade para beneficiários
+ */
 @Component({
   selector: 'app-sign-in',
   imports: [
@@ -42,13 +48,13 @@ import { ToastrService } from 'ngx-toastr';
 
 export class SignInComponent{
 
-  email = new FormControl(null, [Validators.required, Validators.email]);
+  email = new FormControl(null, [Validators.required, Validators.email]); // Campo de email com validação
 
-  password = new FormControl(null, [Validators.required]);
+  password = new FormControl(null, [Validators.required]); // Campo de senha obrigatório
 
-  hidePassword: boolean = true;
+  hidePassword: boolean = true; // Controla visibilidade da senha
 
-  isLoginIncorrect: boolean = false;
+  isLoginIncorrect: boolean = false; // Flag para indicar credenciais inválidas
 
   constructor(
     private router: Router,
@@ -62,9 +68,15 @@ export class SignInComponent{
     console.log('sign-in ngOnInit');
     this.isLoginIncorrect = false;
 
+    // Verifica se já existe usuário logado e redireciona automaticamente
     this.loginIfCredentialsIsValid();
   }
 
+  /**
+   * Verifica se existem credenciais válidas no localStorage
+   * Redireciona automaticamente usuários já autenticados para suas áreas
+   * Administradores vão para dashboard, outros usuários para tela principal
+   */
   loginIfCredentialsIsValid() {
     console.log('verificando as credenciais...');
     if (this.authenticationService.isAuthenticated()) {
@@ -83,10 +95,20 @@ export class SignInComponent{
     console.log('credenciais invalidas ou nao existem no cache')
   }
 
+  /**
+   * Valida se os campos de email e senha estão preenchidos corretamente
+   * @returns true se ambos os campos são válidos, false caso contrário
+   */
   validateFields(): boolean {
     return this.email.valid && this.password.valid;
   }
 
+  /**
+   * Executa o processo de autenticação do usuário
+   * Valida credenciais no backend e redireciona baseado no tipo de usuário
+   * Implementa verificações especiais para beneficiários (elegibilidade)
+   * Armazena dados do usuário no localStorage após autenticação bem-sucedida
+   */
   login() {
     console.log('Botão de login clicado');
 
@@ -105,11 +127,13 @@ export class SignInComponent{
           console.log('user.user_type:', user.user_type);
           console.log('Tipo de usuário final:', user.userType || user.user_type);
 
+          // Armazena dados do usuário no localStorage
           this.authenticationService.addDataToLocalStorage(user);
           
           const userType = user.userType;
           console.log('UserType processado:', userType);
           
+          // Redireciona baseado no tipo de usuário
           if (userType === 'admin' || user.user_type === 'admin') {
             console.log('Usuário identificado como administrador');
             this.router.navigate(['/main/admin/dashboard']);
@@ -118,6 +142,7 @@ export class SignInComponent{
             this.router.navigate(['/main']);
           } else if (userType === 'beneficiary') {
             console.log('Usuário identificado como beneficiário');
+            // Verifica elegibilidade do beneficiário
             if (user.able === false) {
               this.toastr.warning('Você não está apto a receber o auxílio.');
               return;

@@ -6,6 +6,10 @@ import { environment } from '../../../environments/environment.development';
 import { User } from '../../domain/model/user';
 import { UpdateUserDto } from '../../domain/dto/update-user-dto';
 
+/**
+ * Serviço para atualização de usuários.
+ * Gerencia modificações em dados de usuários, incluindo perfil, senha e status.
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -13,6 +17,10 @@ export class UserUpdateService {
 
   constructor(private http: HttpClient, private userReadService: UserReadService) { }
 
+  /**
+   * Atualiza dados do usuário.
+   * Suporta atualização apenas do nome (string) ou objeto User completo.
+   */
   async update(id: string, nameOrUser: string | User): Promise<any>{
     if (typeof nameOrUser === 'string') {
       // Comportamento original - atualizar apenas o nome
@@ -40,6 +48,7 @@ export class UserUpdateService {
     }
   }
 
+  /** Atualiza senha do usuário com validação da senha atual */
   async updatePassword(id: string, newPassword: string): Promise<any>{
     const userToUpdate: User | null = await this.userReadService.findById(id);
     
@@ -76,6 +85,7 @@ export class UserUpdateService {
     return firstValueFrom(this.http.put<User>(updateUrl, userToUpdate));
   }
 
+  /** Atualiza status de aprovação do usuário (para beneficiários) */
   async updateUserStatus(id: string, able: boolean): Promise<any> {
     const updateUrl = `${environment.api_endpoint}/user/${id}/status?able=${able}`;
     return firstValueFrom(this.http.put<any>(updateUrl, {}));

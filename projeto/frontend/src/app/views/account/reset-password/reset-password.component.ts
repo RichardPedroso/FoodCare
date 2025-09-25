@@ -12,7 +12,11 @@ import {MatCardModule} from '@angular/material/card';
 import { UserUpdateService } from '../../../services/user/user-update.service';
 import { ToastrService } from 'ngx-toastr';
 
-
+/**
+ * Componente responsável pela recuperação de senha
+ * Permite que usuários redefinam suas senhas fornecendo o email
+ * Processo em duas etapas: verificação do email e definição da nova senha
+ */
 @Component({
   selector: 'app-reset-password',
   templateUrl: './reset-password.component.html',
@@ -33,16 +37,16 @@ import { ToastrService } from 'ngx-toastr';
 
 export class ResetPasswordComponent implements OnInit{
 
-  resetPasswordForm!: FormGroup;
+  resetPasswordForm!: FormGroup; // Formulário reativo para reset de senha
 
-  showPasswordFields = false;
-  isEmailInvalid = false;
-  passwordMismatch = false;
+  showPasswordFields = false; // Controla exibição dos campos de senha após validação do email
+  isEmailInvalid = false; // Flag para indicar se o email não foi encontrado
+  passwordMismatch = false; // Flag para indicar se as senhas não coincidem
 
-  userIdToUpdate: string | null = null;
+  userIdToUpdate: string | null = null; // ID do usuário encontrado pelo email
   
-  passwordMinLength: number = 6;
-  passwordMaxLength: number = 18;
+  passwordMinLength: number = 6; // Tamanho mínimo da senha
+  passwordMaxLength: number = 18; // Tamanho máximo da senha
 
   constructor(
     private formBuilder: FormBuilder,
@@ -56,6 +60,10 @@ export class ResetPasswordComponent implements OnInit{
     this.initializeResetPasswordForm();
   }
 
+  /**
+   * Inicializa o formulário de reset de senha
+   * Configura validações para email e campos de senha
+   */
   initializeResetPasswordForm(){
     console.log('formulario de resetPassword inicializado');
     this.resetPasswordForm = this.formBuilder.group({
@@ -78,6 +86,11 @@ export class ResetPasswordComponent implements OnInit{
     });
   }
 
+  /**
+   * Verifica se o email existe no sistema
+   * Se encontrado, exibe os campos para definição da nova senha
+   * Armazena o ID do usuário para posterior atualização
+   */
   checkEmail(): void {
     const email = this.resetPasswordForm.controls['email'].value;
 
@@ -100,11 +113,20 @@ export class ResetPasswordComponent implements OnInit{
       });
   }
 
+  /**
+   * Valida se as senhas digitadas são idênticas
+   * @returns true se as senhas coincidem, false caso contrário
+   */
   arePasswordsValid() {
     return this.resetPasswordForm.controls['newPassword'].value === this.resetPasswordForm.controls['repeatPassword'].value;
   }
 
 
+  /**
+   * Atualiza a senha do usuário no sistema
+   * Valida se as senhas coincidem antes de enviar para o servidor
+   * Redireciona para tela de login após sucesso
+   */
   async updatePassword(): Promise<void> {
     if (!this.resetPasswordForm.valid || !this.userIdToUpdate) return;
 
@@ -119,6 +141,7 @@ export class ResetPasswordComponent implements OnInit{
     const newPassword = this.resetPasswordForm.controls['newPassword'].value;
 
     try {
+      // Chama o serviço para atualizar a senha no backend
       await this.userUpdateService.updatePassword(this.userIdToUpdate, newPassword);
       this.toastr.success('Senha alterada com sucesso!');
       this.router.navigate(['account/sign-in']);

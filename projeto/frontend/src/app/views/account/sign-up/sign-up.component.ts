@@ -22,7 +22,13 @@ import { MunicipalityCreateService } from '../../../services/municipality/munici
 import { environment } from '../../../../environments/environment.development';
 import { ToastrService } from 'ngx-toastr';
 
-
+/**
+ * Componente responsável pelo cadastro de novos usuários no sistema
+ * Suporta cadastro de doadores e beneficiários com validações específicas
+ * Implementa validação de renda per capita para beneficiários
+ * Gerencia upload de documentos para comprovação de elegibilidade
+ * Cria automaticamente município associado ao usuário
+ */
 @Component({
   selector: 'app-sign-up',
   imports: [
@@ -49,8 +55,9 @@ import { ToastrService } from 'ngx-toastr';
 
 export class SignUpComponent implements OnInit {
 
-  signUpForm!: FormGroup;
+  signUpForm!: FormGroup; // Formulário reativo para cadastro de usuários
 
+  // Constantes de validação para campos do formulário
   phoneMinlength: number = 14;
   phoneMaxlength: number = 15;
 
@@ -67,11 +74,11 @@ export class SignUpComponent implements OnInit {
 
   familyIncomeMinLenght: number = 0;
 
-  incomeError: string = '';
+  incomeError: string = ''; // Mensagem de erro para validação de renda per capita
   
-  uploadedDocuments: { name: string, data: string }[] = [];
+  uploadedDocuments: { name: string, data: string }[] = []; // Array de documentos carregados
   
-  showTooltip: boolean = false;
+  showTooltip: boolean = false; // Controla exibição de tooltips
 
   constructor(
     private formbuilder: FormBuilder,
@@ -86,6 +93,11 @@ export class SignUpComponent implements OnInit {
     this.initializeSignUpForm();
   }
 
+  /**
+   * Inicializa o formulário de cadastro com todas as validações necessárias
+   * Configura listeners para validação em tempo real de renda per capita
+   * Adiciona validação condicional de termos para beneficiários
+   */
   initializeSignUpForm() {
     console.log('formulario de sign-up inicializado');
     this.signUpForm = this.formbuilder.group({
@@ -163,7 +175,7 @@ export class SignUpComponent implements OnInit {
 
     });
 
-    // Adicionar listeners para validação em tempo real
+    // Adicionar listeners para validação em tempo real de renda per capita
     this.signUpForm.get('familyIncome')?.valueChanges.subscribe(() => {
       this.validateIncomePerCapita();
     });
@@ -184,6 +196,11 @@ export class SignUpComponent implements OnInit {
     });
   }
 
+  /**
+   * Processa arquivos selecionados pelo usuário
+   * Converte arquivos para base64 e armazena no array de documentos
+   * Necessário para beneficiários comprovarem elegibilidade
+   */
   onFileSelected(event: any): void {
     const files = event.target.files;
     if (files) {
@@ -200,10 +217,19 @@ export class SignUpComponent implements OnInit {
     }
   }
 
+  /**
+   * Remove documento do array de documentos carregados
+   * @param index - Índice do documento a ser removido
+   */
   removeDocument(index: number): void {
     this.uploadedDocuments.splice(index, 1);
   }
 
+  /**
+   * Abre documento em nova janela para visualização
+   * Cria uma página HTML simples para exibir a imagem
+   * @param document - Objeto contendo nome e dados do documento
+   */
   openDocument(document: { name: string, data: string }): void {
     const newWindow = window.open();
     if (newWindow) {
@@ -258,6 +284,12 @@ export class SignUpComponent implements OnInit {
     return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType && addressValid;
   }
 
+  /**
+   * Valida se a renda per capita do beneficiário está dentro do limite permitido
+   * Calcula renda per capita dividindo renda familiar pelo número de pessoas
+   * Limite máximo: R$ 1.518,00 per capita
+   * @returns true se a renda está dentro do limite, false caso contrário
+   */
   validateIncomePerCapita(): boolean {
     const userType = this.signUpForm.controls['userType'].value;
     if (userType !== 'beneficiary') {
@@ -336,6 +368,12 @@ export class SignUpComponent implements OnInit {
     return this.signUpForm.controls['password'].value === this.signUpForm.controls['repeatPassword'].value;
   }
   
+  /**
+   * Executa o processo de cadastro do usuário
+   * Cria primeiro o município, depois o usuário associado
+   * Para beneficiários: processa documentos e aguarda aprovação
+   * Para outros tipos: realiza login automático após cadastro
+   */
   async signUp() {
     if (!this.validateFields()){
       return;
@@ -373,6 +411,7 @@ export class SignUpComponent implements OnInit {
         hasChildren: false
       };
 
+      // Processar dados específicos para beneficiários
       if (newUser.userType === 'beneficiary') {
         // Converter familyIncome de string formatada para número
         const familyIncomeStr = formDataSignUp.familyIncome.toString();
@@ -386,10 +425,12 @@ export class SignUpComponent implements OnInit {
       const createdUser = await this.userCreateService.create(newUser);
       console.log("usuario criado com sucesso: ", createdUser);
 
+      // Redirecionar baseado no tipo de usuário
       if (createdUser.userType === 'beneficiary') {
         this.toastr.success('Conta criada com sucesso! Sua aptidão será validada por um administrador. Você poderá fazer login após a aprovação.');
         this.router.navigate(['/account/sign-in']);
       } else {
+        // Login automático para doadores e admins
         this.authenticationService.addDataToLocalStorage(createdUser);
         if (createdUser.userType === 'admin') {
           this.router.navigate(['/main/admin/dashboard']);
