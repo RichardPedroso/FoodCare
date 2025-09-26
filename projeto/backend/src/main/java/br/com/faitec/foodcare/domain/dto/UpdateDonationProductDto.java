@@ -8,7 +8,7 @@ public class UpdateDonationProductDto {
     private int id;
     private double quantity;
     private String expirationDate;
-    private String unit;
+    private double unit;
     private int productId;
     private int donationId;
 

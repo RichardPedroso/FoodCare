@@ -7,10 +7,9 @@ import lombok.Data;
 public class UpdateProductDto {
     private int id;
     private String name;
-    private String productType;
+    private Product.ProductType productType;
     private int categoryId;
-    private double unitQuantity;
-    private String unitType;
+    private Product.MeasureType measureType;
 
     public Product toProduct(){
         final Product entity = new Product();
@@ -18,11 +17,7 @@ public class UpdateProductDto {
         entity.setName(name);
         entity.setProductType(productType);
         entity.setCategoryId(categoryId);
-        entity.setUnitQuantity(unitQuantity);
-        entity.setUnitType(unitType);
-
+        entity.setMeasureType(measureType);
         return entity;
     }
-
-
 }

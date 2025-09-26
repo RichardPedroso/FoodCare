@@ -75,11 +75,11 @@
           </tr>
         </thead>
         <tbody>
-          @for (item of getCalculatedItems(); track item.productId) {
+          @for (item of getCalculatedItems(); track item.product_id || item.productId) {
           <tr>
-            <td>{{ item.productName }}</td>
+            <td>{{ item.product_name || item.productName || 'Produto não identificado' }}</td>
             <td>{{ item.quantity }}</td>
-            <td>{{ item.unitType }}</td>
+            <td>{{ item.unit_type || item.unitType || 'un' }}</td>
           </tr>
           }
         </tbody>

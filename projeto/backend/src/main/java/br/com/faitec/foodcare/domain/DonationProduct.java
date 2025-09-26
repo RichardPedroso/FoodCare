@@ -11,7 +11,7 @@ public class DonationProduct {
     private int id;
     private double quantity;
     private String expirationDate;
-    private String unit; // kg ou L
-    private int productId;
+    private double unit;
     private int donationId;
+    private int productId;
 }

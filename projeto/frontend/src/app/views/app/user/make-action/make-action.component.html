@@ -72,7 +72,7 @@
               </div>
 
               <div class="form-row">
-                @if (!isToyProduct()) {
+                @if (!isToyProduct() && !isNonPerishableProduct()) {
                   <div class="form-group">
                     <mat-form-field appearance="outline" class="full-width">
                       <mat-label>Data de Validade</mat-label>
@@ -91,8 +91,8 @@
                   </div>
                 }
 
-                <div class="form-group" [ngClass]="{'centered-quantity': isToyProduct()}">
-                  @if (selectedProduct && selectedProduct.unitType !== 'un') {
+                <div class="form-group" [ngClass]="{'centered-quantity': isToyProduct() || isNonPerishableProduct()}">
+                  @if (selectedProduct && selectedProduct.measureType !== 'un') {
                     <mat-form-field appearance="outline" class="full-width">
                       <mat-label>Quantidade</mat-label>
                       <mat-select #quantity required (selectionChange)="updateDonationSummary()">
@@ -102,16 +102,16 @@
                         @if (selectedProduct.optionsDonation && selectedProduct.optionsDonation.length > 0) {
                           @for (option of selectedProduct.optionsDonation; track option) {
                             <mat-option [value]="option">
-                              {{ option }} {{ selectedProduct.unitType }}
+                              {{ option }} {{ selectedProduct.measureType }}
                             </mat-option>
                           }
                         } @else {
-                          <mat-option [value]="1">1 {{ selectedProduct.unitType }}</mat-option>
+                          <mat-option [value]="1">1 {{ selectedProduct.measureType }}</mat-option>
                         }
                       </mat-select>
                       <mat-icon matPrefix>scale</mat-icon>
                     </mat-form-field>
-                  } @else if (selectedProduct && selectedProduct.unitType === 'un') {
+                  } @else if (selectedProduct && selectedProduct.measureType === 'un') {
                     <mat-form-field appearance="outline" class="full-width">
                       <mat-label>Unidades</mat-label>
                       <input matInput type="number" min="1" step="1" #quantity required (input)="updateDonationSummary()">
@@ -122,7 +122,7 @@
 
               </div>
 
-              @if (selectedProduct && selectedProduct.unitType !== 'un') {
+              @if (selectedProduct && selectedProduct.measureType !== 'un') {
                 <div class="form-row">
                   <div class="form-group" style="grid-column: 1 / -1; justify-self: center; max-width: 300px;">
                     <mat-form-field appearance="outline" class="full-width">

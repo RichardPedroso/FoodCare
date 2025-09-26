@@ -12,5 +12,5 @@ public class BasketItem {
     private String productName;
     private int quantity;
     private double unitQuantity;
-    private String unitType;
+    private Product.MeasureType unitType;
 }

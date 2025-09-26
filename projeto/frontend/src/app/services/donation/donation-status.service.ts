@@ -27,7 +27,7 @@ export class DonationStatusService {
       );
       
       const donationProducts = await firstValueFrom(
-        this.http.get<any[]>(`${environment.api_endpoint}/donation_product`)
+        this.http.get<any[]>(`${environment.api_endpoint}/donation_product/product/${productId}`)
       );
       
       // Filtrar doações em estoque do produto específico

@@ -14,6 +14,7 @@ public class UpdateUserDto {
     private int peopleQuantity;
     private int municipalityId;
     private boolean hasChildren;
+    private int numberOfChildren;
     private Boolean able;
 
     public UserModel toUserModel(){
@@ -27,8 +28,8 @@ public class UpdateUserDto {
         entity.setPeopleQuantity(peopleQuantity);
         entity.setMunicipalityId(municipalityId);
         entity.setHasChildren(hasChildren);
+        entity.setNumberOfChildren(numberOfChildren);
         entity.setAble(able);
         return entity;
     }
-
 }

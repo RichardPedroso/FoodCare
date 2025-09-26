@@ -35,12 +35,11 @@ public class DonationProductDaoImpl implements DonationProductDao {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setDouble(1, entity.getQuantity());
             preparedStatement.setString(2, entity.getExpirationDate());
-            preparedStatement.setString(3, entity.getUnit());
+            preparedStatement.setDouble(3, entity.getUnit());
             preparedStatement.setInt(4, entity.getDonationId());
             preparedStatement.setInt(5, entity.getProductId());
             preparedStatement.execute();
             
-            // Recupera o ID gerado automaticamente
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             int id = 0;
             if (resultSet.next()) {
@@ -83,7 +82,7 @@ public class DonationProductDaoImpl implements DonationProductDao {
                 donationProduct.setId(resultSet.getInt("id"));
                 donationProduct.setQuantity(resultSet.getDouble("quantity"));
                 donationProduct.setExpirationDate(resultSet.getString("expiration_date"));
-                donationProduct.setUnit(resultSet.getString("unit"));
+                donationProduct.setUnit(resultSet.getDouble("unit"));
                 donationProduct.setDonationId(resultSet.getInt("donation_id"));
                 donationProduct.setProductId(resultSet.getInt("product_id"));
                 
@@ -114,7 +113,7 @@ public class DonationProductDaoImpl implements DonationProductDao {
                 donationProduct.setId(resultSet.getInt("id"));
                 donationProduct.setQuantity(resultSet.getDouble("quantity"));
                 donationProduct.setExpirationDate(resultSet.getString("expiration_date"));
-                donationProduct.setUnit(resultSet.getString("unit"));
+                donationProduct.setUnit(resultSet.getDouble("unit"));
                 donationProduct.setDonationId(resultSet.getInt("donation_id"));
                 donationProduct.setProductId(resultSet.getInt("product_id"));
                 donationProducts.add(donationProduct);
@@ -136,7 +135,7 @@ public class DonationProductDaoImpl implements DonationProductDao {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setDouble(1, entity.getQuantity());
             preparedStatement.setString(2, entity.getExpirationDate());
-            preparedStatement.setString(3, entity.getUnit());
+            preparedStatement.setDouble(3, entity.getUnit());
             preparedStatement.setInt(4, entity.getDonationId());
             preparedStatement.setInt(5, entity.getProductId());
             preparedStatement.setInt(6, id);
@@ -163,7 +162,7 @@ public class DonationProductDaoImpl implements DonationProductDao {
                 donationProduct.setId(resultSet.getInt("id"));
                 donationProduct.setQuantity(resultSet.getDouble("quantity"));
                 donationProduct.setExpirationDate(resultSet.getString("expiration_date"));
-                donationProduct.setUnit(resultSet.getString("unit"));
+                donationProduct.setUnit(resultSet.getDouble("unit"));
                 donationProduct.setDonationId(resultSet.getInt("donation_id"));
                 donationProduct.setProductId(resultSet.getInt("product_id"));
                 donationProducts.add(donationProduct);
@@ -193,7 +192,7 @@ public class DonationProductDaoImpl implements DonationProductDao {
                 donationProduct.setId(resultSet.getInt("id"));
                 donationProduct.setQuantity(resultSet.getDouble("quantity"));
                 donationProduct.setExpirationDate(resultSet.getString("expiration_date"));
-                donationProduct.setUnit(resultSet.getString("unit"));
+                donationProduct.setUnit(resultSet.getDouble("unit"));
                 donationProduct.setDonationId(resultSet.getInt("donation_id"));
                 donationProduct.setProductId(resultSet.getInt("product_id"));
                 donationProducts.add(donationProduct);

@@ -15,7 +15,7 @@ import java.util.List;
  * Permite associar produtos às doações com quantidades específicas.
  */
 @RestController
-@RequestMapping("/api/donation-product")
+@RequestMapping("/api/donation_product")
 public class DonationProductRestController {
     private final DonationProductService donationProductService;
 

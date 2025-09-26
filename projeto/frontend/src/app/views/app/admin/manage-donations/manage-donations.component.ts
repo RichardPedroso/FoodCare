@@ -99,8 +99,10 @@ export class ManageDonationsComponent implements OnInit {
           });
           
           if (firstProduct) {
-            const productId = firstProduct.productId || (firstProduct as any).ProductId;
+            // Tentar diferentes propriedades para o productId
+            const productId = firstProduct.productId || (firstProduct as any).ProductId || (firstProduct as any).product_id;
             console.log(`Tentando buscar produto com ID: ${productId}`);
+            console.log('FirstProduct completo:', firstProduct);
             
             if (productId) {
               try {
@@ -113,10 +115,11 @@ export class ManageDonationsComponent implements OnInit {
               }
             } else {
               console.warn('ProductId não encontrado no firstProduct:', firstProduct);
+              console.warn('Propriedades disponíveis:', Object.keys(firstProduct));
             }
           }
           
-          const productUnit = firstProduct ? await this.getProductUnitType(firstProduct.productId || (firstProduct as any).ProductId) : 'un';
+          const productUnit = firstProduct ? await this.getProductUnitType(firstProduct.productId || (firstProduct as any).ProductId || (firstProduct as any).product_id) : 'un';
           
           return {
             ...donation,

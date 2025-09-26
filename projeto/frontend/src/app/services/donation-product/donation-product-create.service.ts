@@ -24,12 +24,18 @@ export class DonationProductCreateService {
    * Verifica se a data de vencimento é adequada antes de criar.
    */
   async create(donationProduct: any): Promise<any>{
-    // Validar data de vencimento se fornecida
+    // Validar data de vencimento apenas se fornecida e não for data padrão (new Date())
     if (donationProduct.expirationDate) {
-      const validation = this.validationService.validateExpirationDate(new Date(donationProduct.expirationDate));
+      const expirationDate = new Date(donationProduct.expirationDate);
+      const today = new Date();
       
-      if (!validation.valid) {
-        throw new Error(validation.message);
+      // Só validar se a data não for a data atual (produtos não perecíveis usam data atual como padrão)
+      if (expirationDate.toDateString() !== today.toDateString()) {
+        const validation = this.validationService.validateExpirationDate(expirationDate);
+        
+        if (!validation.valid) {
+          throw new Error(validation.message);
+        }
       }
     }
 

@@ -151,12 +151,7 @@ public class DonationStockIntegrationServiceImpl implements DonationStockIntegra
     }
 
     private void addToStock(DonationProduct donationProduct) {
-        int actualUnits;
-        try {
-            actualUnits = Integer.parseInt(donationProduct.getUnit());
-        } catch (NumberFormatException e) {
-            actualUnits = 1;
-        }
+        int actualUnits = (int) donationProduct.getUnit();
         addToStockWithUnits(donationProduct, actualUnits);
     }
     
@@ -168,12 +163,7 @@ public class DonationStockIntegrationServiceImpl implements DonationStockIntegra
         int productId = donationProduct.getProductId();
         
         // Usar diretamente o campo unit como número de unidades a adicionar
-        int actualUnitsToAdd;
-        try {
-            actualUnitsToAdd = Integer.parseInt(donationProduct.getUnit());
-        } catch (NumberFormatException e) {
-            actualUnitsToAdd = 1;  // Valor padrão se não conseguir converter
-        }
+        int actualUnitsToAdd = (int) donationProduct.getUnit();
         
         System.out.println("=== ADICIONANDO AO ESTOQUE ===");
         System.out.println("ProductId: " + productId);

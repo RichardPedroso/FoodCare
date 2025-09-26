@@ -22,7 +22,7 @@ public class CreateCompleteDonationDto {
     public static class DonationProductDto {
         private double quantity;
         private String expirationDate;
-        private String unit;
+        private double unit;
         private int productId;
         
         public DonationProduct toDonationProduct(int donationId) {

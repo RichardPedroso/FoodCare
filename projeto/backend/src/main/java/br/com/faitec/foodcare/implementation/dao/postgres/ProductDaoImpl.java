@@ -27,15 +27,14 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public int create(Product entity) {
-        String sql = "INSERT INTO product(name, product_type, category_id, unit_quantity, unit_type) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO product(name, product_type, category_id, measure_type) VALUES (?, ?, ?, ?)";
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, entity.getName());
-            preparedStatement.setString(2, entity.getProductType());
+            preparedStatement.setString(2, entity.getProductType().name());
             preparedStatement.setInt(3, entity.getCategoryId());
-            preparedStatement.setDouble(4, entity.getUnitQuantity());
-            preparedStatement.setString(5, entity.getUnitType());
+            preparedStatement.setString(4, entity.getMeasureType().name());
             preparedStatement.execute();
             
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -80,10 +79,9 @@ public class ProductDaoImpl implements ProductDao {
                 Product product = new Product();
                 product.setId(resultSet.getInt("id"));
                 product.setName(resultSet.getString("name"));
-                product.setProductType(resultSet.getString("product_type"));
+                product.setProductType(Product.ProductType.valueOf(resultSet.getString("product_type")));
                 product.setCategoryId(resultSet.getInt("category_id"));
-                product.setUnitQuantity(resultSet.getDouble("unit_quantity"));
-                product.setUnitType(resultSet.getString("measure_type"));
+                product.setMeasureType(Product.MeasureType.valueOf(resultSet.getString("measure_type")));
                 
                 // Processa array de opções de doação do PostgreSQL
                 Array optionsArray = resultSet.getArray("options_donation");
@@ -99,7 +97,7 @@ public class ProductDaoImpl implements ProductDao {
             
             resultSet.close();
             preparedStatement.close();
-            return null;  // Retorna null se não encontrar
+            return null;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -118,10 +116,9 @@ public class ProductDaoImpl implements ProductDao {
                 Product product = new Product();
                 product.setId(resultSet.getInt("id"));
                 product.setName(resultSet.getString("name"));
-                product.setProductType(resultSet.getString("product_type"));
+                product.setProductType(Product.ProductType.valueOf(resultSet.getString("product_type")));
                 product.setCategoryId(resultSet.getInt("category_id"));
-                product.setUnitQuantity(resultSet.getDouble("unit_quantity"));
-                product.setUnitType(resultSet.getString("measure_type"));
+                product.setMeasureType(Product.MeasureType.valueOf(resultSet.getString("measure_type")));
                 
                 Array optionsArray = resultSet.getArray("options_donation");
                 if (optionsArray != null) {
@@ -141,16 +138,15 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public void update(int id, Product entity) {
-        String sql = "UPDATE product SET name = ?, product_type = ?, category_id = ?, unit_quantity = ?, unit_type = ? WHERE id = ?";
+        String sql = "UPDATE product SET name = ?, product_type = ?, category_id = ?, measure_type = ? WHERE id = ?";
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, entity.getName());
-            preparedStatement.setString(2, entity.getProductType());
+            preparedStatement.setString(2, entity.getProductType().name());
             preparedStatement.setInt(3, entity.getCategoryId());
-            preparedStatement.setDouble(4, entity.getUnitQuantity());
-            preparedStatement.setString(5, entity.getUnitType());
-            preparedStatement.setInt(6, id);
+            preparedStatement.setString(4, entity.getMeasureType().name());
+            preparedStatement.setInt(5, id);
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
@@ -169,7 +165,7 @@ public class ProductDaoImpl implements ProductDao {
             preparedStatement.setInt(2, id);
             int rowsAffected = preparedStatement.executeUpdate();
             preparedStatement.close();
-            return rowsAffected > 0;  // Retorna true se atualizou alguma linha
+            return rowsAffected > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -186,11 +182,9 @@ public class ProductDaoImpl implements ProductDao {
             preparedStatement.setInt(2, id);
             int rowsAffected = preparedStatement.executeUpdate();
             preparedStatement.close();
-            return rowsAffected > 0;  // Retorna true se atualizou alguma linha
+            return rowsAffected > 0;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
-
 }

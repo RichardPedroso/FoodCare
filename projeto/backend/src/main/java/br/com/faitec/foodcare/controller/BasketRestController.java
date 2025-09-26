@@ -31,10 +31,15 @@ public class BasketRestController {
     public ResponseEntity<Boolean> validateBasketItem(@RequestBody Map<String, Object> request) {
         int productId = (Integer) request.get("productId");
         double quantity = ((Number) request.get("quantity")).doubleValue();
-        String unit = (String) request.get("unit");
+        String unitStr = (String) request.get("unit");
         
-        boolean valid = basketManagementService.validateBasketItem(productId, quantity, unit);
-        return ResponseEntity.ok(valid);
+        try {
+            br.com.faitec.foodcare.domain.Product.MeasureType unit = br.com.faitec.foodcare.domain.Product.MeasureType.valueOf(unitStr);
+            boolean valid = basketManagementService.validateBasketItem(productId, quantity, unit);
+            return ResponseEntity.ok(valid);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(false);
+        }
     }
 
     /** 

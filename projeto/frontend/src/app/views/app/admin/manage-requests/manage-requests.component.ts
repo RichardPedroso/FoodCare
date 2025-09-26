@@ -214,6 +214,7 @@ export class ManageRequestsComponent implements OnInit {
     try {
       const items = JSON.parse(this.selectedRequest.calculatedItems);
       console.log('Parsed calculated items:', items);
+      console.log('Sample item structure:', items[0]);
       return items;
     } catch (error) {
       console.error('Error parsing calculatedItems:', error, this.selectedRequest.calculatedItems);

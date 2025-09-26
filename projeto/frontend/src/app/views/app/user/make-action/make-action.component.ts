@@ -123,7 +123,7 @@ export class MakeActionComponent implements OnInit {
     if (this.selectedProduct) {
       console.log('Selected product:', this.selectedProduct);
       console.log('Options donation:', this.selectedProduct.optionsDonation);
-      console.log('Measure type:', this.selectedProduct.unitType);
+      console.log('Measure type:', this.selectedProduct.measureType);
       this.selectedUnit = this.getDefaultUnit();
     }
   }
@@ -178,6 +178,11 @@ export class MakeActionComponent implements OnInit {
   isDateInvalid(dateValue: any): boolean {
     if (!dateValue) return false;
     
+    // Não validar data para produtos não perecíveis
+    if (this.isToyProduct() || this.isNonPerishableProduct()) {
+      return false;
+    }
+    
     let parsedDate: Date;
     
     if (typeof dateValue === 'string' && dateValue.includes('/')) {
@@ -200,6 +205,11 @@ export class MakeActionComponent implements OnInit {
 
   getDateValidationMessage(dateValue: any): string {
     if (!dateValue) return '';
+    
+    // Não validar data para produtos não perecíveis
+    if (this.isToyProduct() || this.isNonPerishableProduct()) {
+      return '';
+    }
     
     let parsedDate: Date;
     
@@ -291,8 +301,14 @@ export class MakeActionComponent implements OnInit {
     return this.selectedProduct?.name === 'Brinquedo';
   }
 
+  isNonPerishableProduct(): boolean {
+    if (!this.selectedProduct) return false;
+    const nonPerishableProducts = ['Brinquedo', 'Papel-toalha', 'Papel-higiênico', 'Sabonete', 'Creme Dental', 'Escova de Dentes', 'Absorvente Higiênico', 'Desodorante'];
+    return nonPerishableProducts.includes(this.selectedProduct.name);
+  }
+
   getExpirationDateValue(): string {
-    if (this.isToyProduct()) {
+    if (this.isToyProduct() || this.isNonPerishableProduct()) {
       return '';
     }
     return this.expirationDateRef?.nativeElement?.value || '';
@@ -304,7 +320,7 @@ export class MakeActionComponent implements OnInit {
       return;
     }
 
-    if (!this.isToyProduct() && !expirationDate) {
+    if (!this.isToyProduct() && !this.isNonPerishableProduct() && !expirationDate) {
       this.toastr.error('Por favor, preencha a data de validade.');
       return;
     }
@@ -326,7 +342,7 @@ export class MakeActionComponent implements OnInit {
       return;
     }
 
-    if (!this.isToyProduct() && this.isDateInvalid(expirationDate)) {
+    if (!this.isToyProduct() && !this.isNonPerishableProduct() && expirationDate && this.isDateInvalid(expirationDate)) {
       this.toastr.error('A data de validade não pode ser anterior à data atual.');
       return;
     }
@@ -366,7 +382,7 @@ export class MakeActionComponent implements OnInit {
       
       // Formatar data de expiração para string (yyyy-mm-dd)
   let formattedExpirationDate: Date | null = null;
-      if (!this.isToyProduct() && expirationDate) {
+      if (!this.isToyProduct() && !this.isNonPerishableProduct() && expirationDate) {
         // Aceita formatos 'dd/MM/yyyy' ou 'yyyy-MM-dd'
         if (expirationDate.includes('/')) {
           const parts = expirationDate.split('/');
@@ -395,13 +411,17 @@ export class MakeActionComponent implements OnInit {
       }
       
       // Criar produto da doação
-      const donationProduct = {
+      const donationProduct: any = {
   quantity: finalQuantity,
-  expirationDate: formattedExpirationDate ?? new Date(),
   unit: finalUnit,
   donationId: createdDonation.id,
   productId: parseInt(productId)
       };
+      
+      // Só adicionar data de expiração se não for produto não perecível
+      if (!this.isToyProduct() && !this.isNonPerishableProduct()) {
+        donationProduct.expirationDate = formattedExpirationDate ?? new Date();
+      }
       
       console.log('Produto final a ser salvo:', {
   measureType: measureType,
@@ -705,11 +725,11 @@ export class MakeActionComponent implements OnInit {
     }
 
     const basketRequest = {
-  userId: this.user?.id || '',
-  requestDate: new Date().toISOString(),
-  basketType: 'hygiene',
+      userId: this.user?.id || '',
+      requestDate: new Date().toISOString(),
+      basketType: 'hygiene',
       status: 'pending',
-      calculated_items: JSON.stringify(hygieneBasket)
+      calculatedItems: JSON.stringify(hygieneBasket)
     };
 
     await firstValueFrom(
@@ -825,13 +845,13 @@ export class MakeActionComponent implements OnInit {
     }
 
     const basketRequest = {
-  user_id: this.user?.id || '',
-  request_date: new Date().toISOString(),
-  basket_type: 'basic',
-  status: 'pending',
-  peopleQuantity: peopleQuantity,
-  hasChildren: hasChildren,
-  calculated_items: JSON.stringify(calculatedBasket)
+      userId: this.user?.id || '',
+      requestDate: new Date().toISOString(),
+      basketType: 'basic',
+      status: 'pending',
+      peopleQuantity: peopleQuantity,
+      hasChildren: hasChildren,
+      calculatedItems: JSON.stringify(calculatedBasket)
     };
 
     await firstValueFrom(

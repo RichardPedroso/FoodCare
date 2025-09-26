@@ -12,16 +12,22 @@ import java.util.List;
 public class Product {
     private int id;
     private String name;
-    private String productType;
+    private ProductType productType;
     private int categoryId;
-    private double unitQuantity;
-    private String unitType;
+    private MeasureType measureType;
     private List<Double> optionsDonation;
     
-    public enum UnitType {
-        KG,
-        G,
-        L,
-        ML
+    public enum ProductType {
+        basic,
+        hygiene,
+        infant
+    }
+    
+    public enum MeasureType {
+        kg,
+        g,
+        l,
+        ml,
+        un
     }
 }

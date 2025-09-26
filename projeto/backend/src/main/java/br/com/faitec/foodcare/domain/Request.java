@@ -11,12 +11,18 @@ public class Request {
     private int id;
     private String requestDate;
     private RequestType requestType;
+    private BasketType basketType;
     private RequestStatus status;
     private int userId;
     
     public enum RequestType {
         BASIC,
         HYGIENE
+    }
+    
+    public enum BasketType {
+        basic,
+        hygiene
     }
     
     public enum RequestStatus {

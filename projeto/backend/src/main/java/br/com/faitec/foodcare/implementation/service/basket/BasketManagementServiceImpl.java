@@ -45,7 +45,7 @@ public class BasketManagementServiceImpl implements BasketManagementService {
      * Verifica quantidade positiva, existência do produto e unidade válida.
      */
     @Override
-    public boolean validateBasketItem(int productId, double quantity, String unit) {
+    public boolean validateBasketItem(int productId, double quantity, Product.MeasureType unit) {
         if (quantity <= 0) {
             return false;
         }
@@ -56,7 +56,8 @@ public class BasketManagementServiceImpl implements BasketManagementService {
         }
         
         // Valida unidades de medida aceitas
-        return unit != null && (unit.equals("KG") || unit.equals("G") || unit.equals("L") || unit.equals("ML"));
+        return unit != null && (unit == Product.MeasureType.kg || unit == Product.MeasureType.g || 
+                               unit == Product.MeasureType.l || unit == Product.MeasureType.ml);
     }
     
     /** 
@@ -175,7 +176,7 @@ public class BasketManagementServiceImpl implements BasketManagementService {
                             ))
                             .collect(java.util.stream.Collectors.toList());
                     
-                    double baseQuantity = product.getUnitQuantity();
+                    double baseQuantity = 1.0; // Quantidade base padrão
                     double adjustedQuantity = baseQuantity * peopleQuantity;
                     
                     if (hasChildren) {
@@ -196,8 +197,8 @@ public class BasketManagementServiceImpl implements BasketManagementService {
                             product.getId(),
                             product.getName(),
                             finalQuantity,
-                            product.getUnitQuantity(),
-                            product.getUnitType()
+                            baseQuantity,
+                            product.getMeasureType()
                     );
                 })
                 .filter(item -> item.getQuantity() > 0)

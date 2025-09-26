@@ -50,6 +50,16 @@ export class MainComponent implements OnInit {
   ) {}
 
   /**
+   * Retorna a rota inicial baseada no tipo de usuário
+   */
+  getHomeRoute(): string {
+    if (this.user?.userType === 'admin') {
+      return '/main/admin/dashboard';
+    }
+    return '/main/';
+  }
+
+  /**
    * Executa logout do usuário
    * Remove dados do localStorage e redireciona para tela de login
    */
