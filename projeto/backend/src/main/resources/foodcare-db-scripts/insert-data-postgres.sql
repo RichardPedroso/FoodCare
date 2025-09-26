@@ -6,12 +6,12 @@ INSERT INTO municipality (street, number, neighborhood, city, zip_code) VALUES (
 INSERT INTO municipality (street, number, neighborhood, city, zip_code) VALUES ('Avenida Brasil', '456', 'Vila Nova', 'Pouso Alegre', '37550-000');
 INSERT INTO municipality (street, number, neighborhood, city, zip_code) VALUES ('Rua São José', '789', 'São Vicente', 'Itajubá', '37500-000');
 INSERT INTO municipality (street, number, neighborhood, city) VALUES ('Rua Coronel Alfredo', '321', 'Fátima', 'Santa Rita do Sapucaí');
-INSERT INTO municipality (street, number, neighborhood, city, zip_code) VALUES ('Abu', '11', 'Abu', 'Santa Rita do Sapucaí', '11111111');
-INSERT INTO municipality (street, number, neighborhood, city, zip_code) VALUES ('ze1', '11', 'ze2', 'Pouso Alegre', '12312-12');
-INSERT INTO municipality (street, number, neighborhood, city, zip_code) VALUES ('asd', 'asd', 'asdasasdadas', 'Santa Rita do Sapucaí', '37540000');
-INSERT INTO municipality (street, number, neighborhood, city, zip_code) VALUES ('quintos dos infermos', '123', 'to nem ai', 'Pouso Alegre', '37540-000');
+INSERT INTO municipality (street, number, neighborhood, city, zip_code) VALUES ('Abertao', '11', 'Aber', 'Santa Rita do Sapucaí', '11111111');
+INSERT INTO municipality (street, number, neighborhood, city, zip_code) VALUES ('Rua espace', '11', 'espace2', 'Pouso Alegre', '12312-12');
+INSERT INTO municipality (street, number, neighborhood, city, zip_code) VALUES ('asdas', '24', 'asdas', 'Santa Rita do Sapucaí', '37540000');
+INSERT INTO municipality (street, number, neighborhood, city, zip_code) VALUES ('Rua do Calebe', '123', 'Margem', 'Pouso Alegre', '37540-000');
 INSERT INTO municipality (street, number, neighborhood, city, zip_code) VALUES ('Céu', '123', 'Nuvens', 'Pouso Alegre', '');
-INSERT INTO municipality (street, number, neighborhood, city, zip_code) VALUES ('dao pedro', '111', 'jorge cabral', 'Santa Rita do Sapucaí', '11111-111');
+INSERT INTO municipality (street, number, neighborhood, city, zip_code) VALUES ('Rua dão pedro', '111', 'jorge cabral', 'Santa Rita do Sapucaí', '11111-111');
 
 -- Insert categories from db.json
 INSERT INTO category (description) VALUES ('Alimentos Básicos');
@@ -23,19 +23,19 @@ INSERT INTO user_model (name, email, password, phone, user_type, municipality_id
 VALUES ('Admin', 'admin@foodcare.com', 'admin123', '11999999999', 'admin', 1);
 
 INSERT INTO user_model (name, email, password, phone, user_type, municipality_id) 
-VALUES ('tiburgus', 'tiburgus@gmail.com', '1234567', '3', 'donor', 1);
+VALUES ('tiburgus', 'tiburgus@gmail.com', '1234567', '11999999978', 'donor', 1);
 
 INSERT INTO user_model (name, email, password, phone, user_type, municipality_id) 
-VALUES ('aroldus', 'aroldus@gmail.com', '1234567', '3', 'donor', 2);
+VALUES ('aroldus', 'aroldus@gmail.com', '1234567', '11999999967', 'donor', 2);
 
 INSERT INTO user_model (name, email, password, phone, user_type, family_income, people_quantity, municipality_id, documents, able) 
-VALUES ('tiburgas', 'tiburgas@gmail.com', '12345678', '3', 'beneficiary', 2222.0, 4, 3, ARRAY['data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k='], FALSE);
+VALUES ('tiburgas', 'tiburgas@gmail.com', '12345678', '11999999956', 'beneficiary', 2222.0, 4, 3, ARRAY['data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k='], FALSE);
 
 INSERT INTO user_model (name, email, password, phone, user_type, family_income, people_quantity, municipality_id, documents, able) 
-VALUES ('tiburgos', 'tiburgos@gmail.com', 'pinto123', '3', 'beneficiary', 1234.0, 4, 4, ARRAY['data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k='], TRUE);
+VALUES ('tiburgos', 'tiburgos@gmail.com', '123123', '11999999945', 'beneficiary', 1234.0, 4, 4, ARRAY['data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k='], TRUE);
 
 INSERT INTO user_model (name, email, password, phone, user_type, municipality_id) 
-VALUES ('Edu du', 'edu@gmail.com', '123456', '12345678902', 'donor', 2);
+VALUES ('Edu du', 'edu@gmail.com', '123456', '11345678902', 'donor', 2);
 
 INSERT INTO user_model (name, email, password, phone, user_type, municipality_id) 
 VALUES ('babu a', 'babu@gmail.com', 'asdzxc', '11111111111', 'donor', 5);
@@ -44,15 +44,14 @@ INSERT INTO user_model (name, email, password, phone, user_type, family_income, 
 VALUES ('zezao', 'zezao@gmail.com', '123asd', '12312312312', 'beneficiary', 2000.0, 5, 6, ARRAY['data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k='], FALSE);
 
 INSERT INTO user_model (name, email, password, phone, user_type, family_income, people_quantity, municipality_id, documents, able) 
-VALUES ('pintao', 'pintao@123.mail', 'pintao', '66666666666', 'beneficiary', 1000000.0, 10, 7, ARRAY[]::TEXT[], FALSE);
+VALUES ('pedro', 'pedro@123.mail', 'pedro', '66666666666', 'beneficiary', 1000000.0, 10, 7, ARRAY[]::TEXT[], FALSE);
 
 INSERT INTO user_model (name, email, password, phone, user_type, municipality_id) 
 VALUES ('Richard', 'richard123@gmail.com', '24242424', '24924242424', 'donor', 8);
 
-INSERT INTO user_model (name, email, password, phone, user_type, family_income, people_quantity, municipality_id, has_children, documents) 
-VALUES ('jubileu', 'jubileu@gmail.com', '123456', '(35) 99988-8888', 'beneficiary', 1200.0, 3, 9, FALSE, ARRAY[]::TEXT[]);
+INSERT INTO user_model (name, email, password, phone, user_type, family_income, people_quantity, municipality_id, has_children, number_of_children, documents) 
+VALUES ('jubileu', 'jubileu@gmail.com', '123456', '(35) 99988-8888', 'beneficiary', 1200.0, 3, 9, FALSE, 0, ARRAY[]::TEXT[]);
 
--- Insert products from db.json
 INSERT INTO product (name, product_type, category_id, measure_type, options_donation) 
 VALUES ('Arroz', 'basic', 1, 'kg', '{1, 5}');
 
@@ -178,17 +177,18 @@ INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, prod
 INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, 1, 16, 6);
 INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (500, NULL, 1, 17, 8);
 INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, 1, 18, 4);
+
 -- Arroz (product_id = 1)
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (1, 1, 20002000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (1, 5, 20002000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (1, 1, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (1, 5, 10001000);
 
 -- Feijão (product_id = 2)
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (2, 1, 20002000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (2, 5, 20002000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (2, 1, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (2, 5, 10001000);
 
 -- Batata-palha (product_id = 3)
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (3, 100, 20002000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (3, 500, 20002000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (3, 100, 10001000);
+INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (3, 500, 10001000);
 
 INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (7, 900, 10001000);
 INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (8, 500, 10001000);

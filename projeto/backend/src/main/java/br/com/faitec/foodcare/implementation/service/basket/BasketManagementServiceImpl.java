@@ -164,44 +164,73 @@ public class BasketManagementServiceImpl implements BasketManagementService {
     @Override
     public List<BasketItem> calculateBasket(int userId, int peopleQuantity, boolean hasChildren, int numberOfChildren) {
         List<Product> products = productDao.findAll();
-        return products.stream()
-                .map(product -> {
-                    List<br.com.faitec.foodcare.domain.DonationProduct> validProducts = 
-                        donationProductDao.findAll().stream()
-                            .filter(dp -> dp.getProductId() == product.getId())
-                            .filter(dp -> isValidForBasket(dp.getExpirationDate()))
-                            .sorted((a, b) -> Integer.compare(
-                                getDaysUntilExpiration(a.getExpirationDate()),
-                                getDaysUntilExpiration(b.getExpirationDate())
-                            ))
-                            .collect(java.util.stream.Collectors.toList());
-                    
-                    double baseQuantity = 1.0; // Quantidade base padrão
-                    double adjustedQuantity = baseQuantity * peopleQuantity;
-                    
-                    if (hasChildren) {
-                        if (numberOfChildren > 0 && isChildProduct(product)) {
-                            adjustedQuantity += (baseQuantity * numberOfChildren * 0.5);
-                        } else {
-                            adjustedQuantity *= 1.2;
-                        }
+        List<BasketItem> basketItems = new java.util.ArrayList<>();
+        
+        // Produtos básicos
+        products.stream()
+                .filter(product -> "basic".equals(product.getProductType()))
+                .forEach(product -> {
+                    double baseQuantity = getBaseQuantityForProduct(product.getName());
+                    if (baseQuantity > 0) {
+                        double totalQuantity = baseQuantity * peopleQuantity;
+                        basketItems.add(new BasketItem(
+                                product.getId(),
+                                product.getName(),
+                                (int) totalQuantity,
+                                baseQuantity,
+                                product.getMeasureType()
+                        ));
                     }
-                    
-                    double availableQuantity = validProducts.stream()
-                            .mapToDouble(br.com.faitec.foodcare.domain.DonationProduct::getQuantity)
-                            .sum();
-                    
-                    int finalQuantity = (int) Math.min(adjustedQuantity, availableQuantity);
-                    
-                    return new BasketItem(
-                            product.getId(),
-                            product.getName(),
-                            finalQuantity,
-                            baseQuantity,
-                            product.getMeasureType()
-                    );
-                })
-                .filter(item -> item.getQuantity() > 0)
-                .collect(java.util.stream.Collectors.toList());
+                });
+        
+        // Produtos infantis (apenas se hasChildren = true e numberOfChildren > 0)
+        if (hasChildren && numberOfChildren > 0) {
+            products.stream()
+                    .filter(product -> "infant".equals(product.getProductType()))
+                    .forEach(product -> {
+                        double baseQuantity = getInfantQuantityForProduct(product.getName());
+                        if (baseQuantity > 0) {
+                            double totalQuantity = baseQuantity * numberOfChildren;
+                            basketItems.add(new BasketItem(
+                                    product.getId(),
+                                    product.getName(),
+                                    (int) totalQuantity,
+                                    baseQuantity,
+                                    product.getMeasureType()
+                            ));
+                        }
+                    });
+        }
+        
+        return basketItems;
+    }
+    
+    private double getBaseQuantityForProduct(String productName) {
+        switch (productName) {
+            case "Arroz": return 2.0;
+            case "Feijão": return 1.0;
+            case "Óleo de Soja": return 500.0;
+            case "Açúcar": return 1.0;
+            case "Sal": return 1.0;
+            case "Farinha de Trigo": return 1.0;
+            case "Café em Pó": return 250.0;
+            case "Leite": return 1.0;
+            case "Carne": return 500.0;
+            case "Batata": return 1.0;
+            case "Tomate": return 1.0;
+            case "Banana": return 1.0;
+            case "Manteiga": return 200.0;
+            default: return 0.0;
+        }
+    }
+    
+    private double getInfantQuantityForProduct(String productName) {
+        switch (productName) {
+            case "Bolacha": return 200.0;
+            case "Gelatina": return 85.0;
+            case "Biscoitinho": return 150.0;
+            case "Brinquedo": return 1.0;
+            default: return 0.0;
+        }
     }
 }

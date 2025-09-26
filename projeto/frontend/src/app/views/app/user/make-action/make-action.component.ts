@@ -650,15 +650,17 @@ export class MakeActionComponent implements OnInit {
       }
     });
 
-    if (hasChildren) {
+    if (hasChildren && this.user?.numberOfChildren) {
       const infantProducts = this.products.filter(p => p.productType === 'infant');
+      const numberOfChildren = this.user.numberOfChildren;
+      
       infantProducts.forEach(product => {
         const baseQuantity = this.getInfantQuantity(product.name);
         if (baseQuantity > 0) {
           basket.push({
             productId: parseInt(product.id!),
             productName: product.name,
-            quantity: baseQuantity,
+            quantity: baseQuantity * numberOfChildren,
             unitQuantity: baseQuantity,
             unitType: product.measureType || product.unitType || 'un'
           });
@@ -673,7 +675,7 @@ export class MakeActionComponent implements OnInit {
     const quantities: { [key: string]: number } = {
       'Arroz': 2,
       'Feijão': 1,
-      'Óleo de Soja': 1,
+      'Óleo de Soja': 500,
       'Açúcar': 1,
       'Sal': 1,
       'Farinha de Trigo': 1,
@@ -927,6 +929,11 @@ export class MakeActionComponent implements OnInit {
 
   updateDonationSummary(): void {
     // This method is called when quantity or units change to trigger summary update
+  }
+
+  getItemDescription(productName: string): string {
+    const infantProducts = ['Brinquedo', 'Bolacha', 'Gelatina', 'Biscoitinho'];
+    return infantProducts.includes(productName) ? 'por criança' : 'por pessoa';
   }
 
   getDonationSummary(): string {

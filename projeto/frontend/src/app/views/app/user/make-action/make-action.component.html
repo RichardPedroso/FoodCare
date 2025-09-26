@@ -294,7 +294,7 @@
           <div class="item-info">
             <h4>{{ item.productName }}</h4>
             <p>{{ item.quantity }} {{ item.unitType }}</p>
-            <small>{{ item.unitQuantity }} por pessoa</small>
+            <small>{{ item.unitQuantity }} {{ getItemDescription(item.productName) }}</small>
           </div>
         </div>
         }

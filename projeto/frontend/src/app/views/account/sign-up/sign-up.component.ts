@@ -170,6 +170,8 @@ export class SignUpComponent implements OnInit {
       ]],
 
       hasChildren: [false],
+      
+      numberOfChildren: [''],
 
       termsAccepted: [false]
 
@@ -193,6 +195,18 @@ export class SignUpComponent implements OnInit {
         termsControl?.clearValidators();
       }
       termsControl?.updateValueAndValidity();
+    });
+    
+    // Listener para validação condicional do número de crianças
+    this.signUpForm.get('hasChildren')?.valueChanges.subscribe((hasChildren) => {
+      const numberOfChildrenControl = this.signUpForm.get('numberOfChildren');
+      if (hasChildren) {
+        numberOfChildrenControl?.setValidators([Validators.required, Validators.min(1), Validators.max(20)]);
+      } else {
+        numberOfChildrenControl?.clearValidators();
+        numberOfChildrenControl?.setValue('');
+      }
+      numberOfChildrenControl?.updateValueAndValidity();
     });
   }
 
@@ -276,9 +290,15 @@ export class SignUpComponent implements OnInit {
     }
 
     let isTermsAccepted = this.signUpForm.controls['termsAccepted'].valid;
+    let isNumberOfChildrenValid = true;
+    
+    // Validar numberOfChildren apenas se hasChildren for true
+    if (this.signUpForm.get('hasChildren')?.value) {
+      isNumberOfChildrenValid = this.signUpForm.controls['numberOfChildren'].valid;
+    }
 
     if (userTypeValue === 'beneficiary') {
-      return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType && addressValid && isPeopleQuantity && isFamilyIncome && this.validateIncomePerCapita() && isTermsAccepted;
+      return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType && addressValid && isPeopleQuantity && isFamilyIncome && this.validateIncomePerCapita() && isTermsAccepted && isNumberOfChildrenValid;
     }
     
     return isNameValid && isEmailValid && isPasswordValid && isRepeatPasswordValid && isPhoneValid && isUserType && addressValid;
@@ -419,6 +439,7 @@ export class SignUpComponent implements OnInit {
         newUser.familyIncome = numericIncome || 0;
         newUser.peopleQuantity = parseInt(formDataSignUp.peopleQuantity) || 0;
         newUser.hasChildren = formDataSignUp.hasChildren;
+        newUser.numberOfChildren = formDataSignUp.hasChildren ? parseInt(formDataSignUp.numberOfChildren) || 0 : 0;
         newUser.documents = this.uploadedDocuments.map(doc => doc.data);
       }
 
