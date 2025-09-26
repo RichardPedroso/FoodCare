@@ -102,7 +102,7 @@ CREATE TABLE donation_product
     id              SERIAL           NOT NULL,
     quantity        DOUBLE PRECISION NOT NULL DEFAULT 1.0,
     expiration_date VARCHAR(50),
-    unit            VARCHAR(10)      NOT NULL DEFAULT 'KG',
+    unit            DOUBLE PRECISION NOT NULL DEFAULT 1.0,
     donation_id     INTEGER          NOT NULL,
     product_id      INTEGER          NOT NULL,
     PRIMARY KEY (id),

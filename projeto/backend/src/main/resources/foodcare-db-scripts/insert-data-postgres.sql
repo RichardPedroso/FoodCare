@@ -156,40 +156,40 @@ INSERT INTO donation (donation_date, user_id, donation_status) VALUES ('2025-09-
 -- Insert donation products para todas as doações (pendentes e confirmadas)
 -- quantity = donation_option, unit = número de unidades doadas
 -- Doações pendentes (donation_status = FALSE)
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, '2025-12-31T00:00:00.000Z', '3', 1, 1);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '2', 2, 2);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '1', 3, 4);
+INSERT INTO donationProduct (quantity, expirationDate, unit, donationId, productId) VALUES (1, '2025-12-31T00:00:00.000Z', '3', 1, 1);
+INSERT INTO donationProduct (quantity, expirationDate, unit, donationId, productId) VALUES (1, NULL, '2', 2, 2);
+INSERT INTO donationProduct (quantity, expirationDate, unit, donationId, productId) VALUES (1, NULL, '1', 3, 4);
 
 -- Doações confirmadas (donation_status = TRUE)
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (5, '2025-12-31T00:00:00.000Z', '1', 4, 1);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (500, NULL, '2', 5, 7);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '1', 6, 2);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (5, '2025-11-30T00:00:00.000Z', '1', 7, 1);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '1', 8, 4);
+INSERT INTO donationProduct (quantity, expirationDate, unit, donationId, productId) VALUES (5, '2025-12-31T00:00:00.000Z', '1', 4, 1);
+INSERT INTO donationProduct (quantity, expirationDate, unit, donationId, productId) VALUES (500, NULL, '2', 5, 7);
+INSERT INTO donationProduct (quantity, expirationDate, unit, donationId, productId) VALUES (1, NULL, '1', 6, 2);
+INSERT INTO donationProduct (quantity, expirationDate, unit, donationId, productId) VALUES (5, '2025-11-30T00:00:00.000Z', '1', 7, 1);
+INSERT INTO donationProduct (quantity, expirationDate, unit, donationId, productId) VALUES (1, NULL, '1', 8, 4);
 
 -- Adicionando donation_products para doações 9-18 que estavam sem produtos
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '1', 9, 1);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '2', 10, 2);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (500, NULL, '1', 11, 7);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '1', 12, 4);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, '2025-12-31T00:00:00.000Z', '1', 13, 1);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '1', 14, 5);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '2', 15, 2);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '1', 16, 6);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (500, NULL, '1', 17, 8);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '1', 18, 4);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, '2025-10-24', '50', 19, 22);
-INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, '10', 20, 23);
-
--- Insert stock data with low stock for testing utilization
--- Basic products with low stock for testing
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (1, 1, 10001000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (1, 5, 10001000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (2, 1, 10001000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (2, 5, 10001000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (3, 100, 10001000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (3, 500, 10001000);
-INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (7, 500, 10001000);
+INSERT INTO donationProduct (quantity, expirationDate, unit, donationId, productId) VALUES (1, NULL, '1', 9, 1);
+INSERT INTO donationProduct (quantity, expirationDate, unit, donationId, productId) VALUES (1, NULL, '2', 10, 2);
+INSERT INTO donationProduct (quantity, expirationDate, unit, donationId, productId) VALUES (500, NULL, '1', 11, 7);
+INSERT INTO donationProduct (quantity, expirationDate, unit, donationId, productId) VALUES (1, NULL, '1', 12, 4);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, '2025-12-31T00:00:00.000Z', 3, 1, 1);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, 2, 2, 2);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, 1, 3, 4);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (5, '2025-12-31T00:00:00.000Z', 1, 4, 1);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (500, NULL, 2, 5, 7);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, 1, 6, 2);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (5, '2025-11-30T00:00:00.000Z', 1, 7, 1);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, 1, 8, 4);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, 1, 9, 1);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, 2, 10, 2);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (500, NULL, 1, 11, 7);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, 1, 12, 4);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, '2025-12-31T00:00:00.000Z', 1, 13, 1);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, 1, 14, 5);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, 2, 15, 2);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, 1, 16, 6);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (500, NULL, 1, 17, 8);
+INSERT INTO donation_product (quantity, expiration_date, unit, donation_id, product_id) VALUES (1, NULL, 1, 18, 4);
 INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (7, 900, 10001000);
 INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (8, 500, 10001000);
 INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (8, 1000, 10001000);
@@ -232,12 +232,12 @@ INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (26, 150, 1
 INSERT INTO stock (product_id, donation_option, actual_stock) VALUES (26, 300, 10001000);
 
 -- Insert basket requests after all tables are created
-INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (4, '2025-08-08T03:00:00.000Z', 'basic', 'pending', '[{"productId": 1, "productName": "Arroz", "quantity": 8, "unitQuantity": 2, "unitType": "kg"}, {"productId": 2, "productName": "Feijão", "quantity": 4, "unitQuantity": 1, "unitType": "kg"}]');
-INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (4, '2025-08-08T03:00:00.000Z', 'hygiene', 'pending', '[{"productId": 4, "productName": "Papel-toalha", "quantity": 1, "unitQuantity": 1, "unitType": "un"}, {"productId": 5, "productName": "Papel-higiênico", "quantity": 1, "unitQuantity": 1, "unitType": "un"}]');
-INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (5, '2025-08-08T03:00:00.000Z', 'basic', 'pending', '[{"productId": 1, "productName": "Arroz", "quantity": 6, "unitQuantity": 2, "unitType": "kg"}, {"productId": 2, "productName": "Feijão", "quantity": 3, "unitQuantity": 1, "unitType": "kg"}]');
-INSERT INTO basket_request (user_id, request_date, basket_type, status, people_quantity, has_children, calculated_items) VALUES (5, '2025-09-09T01:18:44.588Z', 'basic', 'pending', 4, FALSE, '[{"productId": 1, "productName": "Arroz", "quantity": 8, "unitQuantity": 2, "unitType": "kg"}, {"productId": 2, "productName": "Feijão", "quantity": 4, "unitQuantity": 1, "unitType": "kg"}]');
-INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (5, '2025-09-09T01:19:24.161Z', 'hygiene', 'pending', '[{"productId": 4, "productName": "Papel-toalha", "quantity": 1, "unitQuantity": 1, "unitType": "un"}, {"productId": 5, "productName": "Papel-higiênico", "quantity": 1, "unitQuantity": 1, "unitType": "un"}]');
-INSERT INTO basket_request (user_id, request_date, basket_type, status, people_quantity, has_children, calculated_items) VALUES (11, '2025-09-23T12:00:00.000Z', 'basic', 'pending', 10, FALSE, '[{"productId": 1, "productName": "Arroz", "quantity": 20, "unitQuantity": 2, "unitType": "kg"}, {"productId": 2, "productName": "Feijão", "quantity": 10, "unitQuantity": 1, "unitType": "kg"}]');
+INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (4, '2025-08-08T03:00:00.000Z', 'basic', 'pending', '[{"product_id": 1, "product_name": "Arroz", "quantity": 8, "unit_quantity": 2, "unit_type": "kg"}, {"product_id": 2, "product_name": "Feijão", "quantity": 4, "unit_quantity": 1, "unit_type": "kg"}]');
+INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (4, '2025-08-08T03:00:00.000Z', 'hygiene', 'pending', '[{"product_id": 4, "product_name": "Papel-toalha", "quantity": 1, "unit_quantity": 1, "unit_type": "un"}, {"product_id": 5, "product_name": "Papel-higiênico", "quantity": 1, "unit_quantity": 1, "unit_type": "un"}]');
+INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (5, '2025-08-08T03:00:00.000Z', 'basic', 'pending', '[{"product_id": 1, "product_name": "Arroz", "quantity": 6, "unit_quantity": 2, "unit_type": "kg"}, {"product_id": 2, "product_name": "Feijão", "quantity": 3, "unit_quantity": 1, "unit_type": "kg"}]');
+INSERT INTO basket_request (user_id, request_date, basket_type, status, people_quantity, has_children, calculated_items) VALUES (5, '2025-09-09T01:18:44.588Z', 'basic', 'pending', 4, FALSE, '[{"product_id": 1, "product_name": "Arroz", "quantity": 8, "unit_quantity": 2, "unit_type": "kg"}, {"product_id": 2, "product_name": "Feijão", "quantity": 4, "unit_quantity": 1, "unit_type": "kg"}]');
+INSERT INTO basket_request (user_id, request_date, basket_type, status, calculated_items) VALUES (5, '2025-09-09T01:19:24.161Z', 'hygiene', 'pending', '[{"product_id": 4, "product_name": "Papel-toalha", "quantity": 1, "unit_quantity": 1, "unit_type": "un"}, {"product_id": 5, "product_name": "Papel-higiênico", "quantity": 1, "unit_quantity": 1, "unit_type": "un"}]');
+INSERT INTO basket_request (user_id, request_date, basket_type, status, people_quantity, has_children, calculated_items) VALUES (11, '2025-09-23T12:00:00.000Z', 'basic', 'pending', 10, FALSE, '[{"product_id": 1, "product_name": "Arroz", "quantity": 20, "unit_quantity": 2, "unit_type": "kg"}, {"product_id": 2, "product_name": "Feijão", "quantity": 10, "unit_quantity": 1, "unit_type": "kg"}]');
 
 -- Commented encrypted password versions (uncomment to use encryption):
 -- INSERT INTO user_model (name, email, password, user_type, is_admin, municipality_id) 

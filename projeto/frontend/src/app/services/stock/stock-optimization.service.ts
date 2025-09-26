@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, forkJoin, map } from 'rxjs';
-import { DonationProduct } from '../../domain/model/donation_product';
 import { Stock } from '../../domain/model/stock';
 import { environment } from '../../../environments/environment';
+import { DonationProduct } from '../../domain/model/donation-product';
 
 export interface OptimizedProduct {
   donationProductId: string;
