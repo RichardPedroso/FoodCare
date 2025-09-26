@@ -95,7 +95,7 @@
               <div class="info-item">
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>CEP</mat-label>
-                  <input matInput [value]="formatZipCode(municipality?.zip_code)" readonly>
+                  <input matInput [value]="formatZipCode(municipality?.zipCode)" readonly>
                   <mat-icon matPrefix>mail</mat-icon>
                 </mat-form-field>
               </div>
@@ -113,7 +113,7 @@
               <div class="info-item">
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Renda Familiar</mat-label>
-                  <input matInput [value]="'R$ ' + user?.family_income" readonly>
+                  <input matInput [value]="'R$ ' + user?.familyIncome" readonly>
                   <mat-icon matPrefix>attach_money</mat-icon>
                 </mat-form-field>
               </div>
@@ -121,7 +121,7 @@
               <div class="info-item">
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Pessoas na Família</mat-label>
-                  <input matInput [value]="user?.people_quantity + ' pessoas'" readonly>
+                  <input matInput [value]="user?.peopleQuantity + ' pessoas'" readonly>
                   <mat-icon matPrefix>group</mat-icon>
                 </mat-form-field>
               </div>
@@ -129,7 +129,7 @@
               <div class="info-item">
                 <mat-form-field appearance="outline" class="full-width">
                   <mat-label>Possui Crianças</mat-label>
-                  <input matInput [value]="user?.has_children ? 'Sim' : 'Não'" readonly>
+                  <input matInput [value]="user?.hasChildren ? 'Sim' : 'Não'" readonly>
                   <mat-icon matPrefix>child_care</mat-icon>
                 </mat-form-field>
               </div>

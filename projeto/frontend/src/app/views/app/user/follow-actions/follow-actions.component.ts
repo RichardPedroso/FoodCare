@@ -8,7 +8,7 @@ import { DonationReadService } from '../../../../services/donation/donation-read
 import { ProductReadService } from '../../../../services/product/product-read.service';
 import { User } from '../../../../domain/model/user';
 import { Donation } from '../../../../domain/model/donation';
-import { DonationProduct } from '../../../../domain/model/donation_product';
+import { DonationProduct } from '../../../../domain/model/donation-product';
 import { Product } from '../../../../domain/model/product';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment.development';

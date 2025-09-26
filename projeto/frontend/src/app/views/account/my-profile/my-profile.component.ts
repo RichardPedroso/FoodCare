@@ -32,7 +32,7 @@ import { User } from '../../../domain/model/user';
   styleUrl: './my-profile.component.css'
 })
 export class MyProfileComponent implements OnInit {
-  user!: User; // Dados do usuário atual
+  user!: any; // Dados do usuário atual
   municipality: Municipality | null = null; // Dados do município do usuário
 
   constructor(

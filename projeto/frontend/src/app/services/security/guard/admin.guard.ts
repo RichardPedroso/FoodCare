@@ -21,7 +21,7 @@ export const adminGuard: CanActivateFn = (route, state) => {
   // Verifica se é administrador
   const currentUser = authenticationService.getCurrentUser();
   
-  if (currentUser && (currentUser.userType === 'admin' || currentUser.user_type === 'admin')) {
+  if (currentUser && (currentUser.userType === 'admin')) {
     return true;
   }
 
