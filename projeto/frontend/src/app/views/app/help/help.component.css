@@ -258,3 +258,21 @@
     padding: var(--spacing-lg);
   }
 }
+
+/* Estilos para stats-section e footer-bottom */
+.stats-section {
+  margin: 0;
+}
+
+.footer-bottom {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+  color: white;
+  text-align: center;
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-xl);
+}
+
+.footer-bottom p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+}
