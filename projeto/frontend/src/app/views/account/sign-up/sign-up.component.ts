@@ -387,7 +387,7 @@ export class SignUpComponent implements OnInit {
       number: formDataSignUp.number,
       neighborhood: formDataSignUp.neighborhood,
       city: formDataSignUp.city,
-      zip_code: formDataSignUp.zipCode || ''
+      zipCode: formDataSignUp.zipCode || ''
     };
 
     try{

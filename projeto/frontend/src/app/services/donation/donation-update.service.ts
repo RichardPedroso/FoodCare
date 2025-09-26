@@ -54,6 +54,6 @@ export class DonationUpdateService {
 
   /** Atualiza status genérico de uma doação */
   updateDonationStatus(donationId: string, status: boolean): Promise<any> {
-    return firstValueFrom(this.http.put(`${environment.api_endpoint}/donation/${donationId}/status`, { donation_status: status }));
+  return firstValueFrom(this.http.put(`${environment.api_endpoint}/donation/${donationId}/status`, { donationStatus: status }));
   }
 }

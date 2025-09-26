@@ -15,7 +15,7 @@ import { User } from '../../../../domain/model/user';
 import { Donation } from '../../../../domain/model/donation';
 import { DonationStatus } from '../../../../domain/enums/donation-status.enum';
 import { DonationStatusService } from '../../../../services/donation/donation-status.service';
-import { DonationProduct } from '../../../../domain/model/donation_product';
+import { DonationProduct } from '../../../../domain/model/donation-product';
 import { Product } from '../../../../domain/model/product';
 import { DonationCreateService } from '../../../../services/donation/donation-create.service';
 import { DonationProductCreateService } from '../../../../services/donation-product/donation-product-create.service';
@@ -90,7 +90,7 @@ export class MakeActionComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.user = this.authenticationService.getCurrentUser();
     if (this.user) {
-      this.userType = (this.user.userType || this.user.user_type) as 'donor' | 'beneficiary';
+  this.userType = this.user.userType as 'donor' | 'beneficiary';
       if (this.userType === 'beneficiary') {
         await this.checkRequestAvailability();
       }
@@ -129,18 +129,18 @@ export class MakeActionComponent implements OnInit {
   }
 
   getDefaultUnit(): string {
-    if (!this.selectedProduct) return '';
-    return this.selectedProduct.measure_type;
+  if (!this.selectedProduct) return '';
+  return this.selectedProduct.measureType;
   }
 
   isWeightProduct(): boolean {
-    if (!this.selectedProduct) return false;
-    return this.selectedProduct.measure_type === 'kg' || this.selectedProduct.measure_type === 'g';
+  if (!this.selectedProduct) return false;
+  return this.selectedProduct.measureType === 'kg' || this.selectedProduct.measureType === 'g';
   }
 
   isVolumeProduct(): boolean {
-    if (!this.selectedProduct) return false;
-    return this.selectedProduct.measure_type === 'l' || this.selectedProduct.measure_type === 'ml';
+  if (!this.selectedProduct) return false;
+  return this.selectedProduct.measureType === 'l' || this.selectedProduct.measureType === 'ml';
   }
 
   onUnitChange(newUnit: string): void {
@@ -153,7 +153,7 @@ export class MakeActionComponent implements OnInit {
     const quantity = parseFloat(quantityValue);
     if (isNaN(quantity)) return '';
     
-    const baseUnit = this.selectedProduct.measure_type;
+  const baseUnit = this.selectedProduct.measureType;
     
     if (this.selectedUnit === baseUnit) {
       return `${quantity} ${baseUnit} (unidade base)`;
@@ -272,7 +272,7 @@ export class MakeActionComponent implements OnInit {
 
   private getUnitsValue(): string {
     // Para produtos com measure_type 'un', usar o valor do campo quantity como unidades
-    const measureType = this.selectedProduct?.measure_type || this.selectedProduct?.unitType;
+  const measureType = this.selectedProduct?.measureType || this.selectedProduct?.unitType;
     if (measureType === 'un') {
       const quantityValue = this.getQuantityValue();
       console.log('Produto unitário - measureType:', measureType);
@@ -314,13 +314,13 @@ export class MakeActionComponent implements OnInit {
       return;
     }
 
-    if (this.selectedProduct.measure_type !== 'un' && (!units || parseInt(units) <= 0)) {
+  if (this.selectedProduct.measureType !== 'un' && (!units || parseInt(units) <= 0)) {
       this.toastr.error('Por favor, informe o número de unidades a serem doadas.');
       return;
     }
     
     // Para produtos unitários, validar se quantity é um número válido
-    const measureType = this.selectedProduct.measure_type || this.selectedProduct.unitType;
+  const measureType = this.selectedProduct.measureType || this.selectedProduct.unitType;
     if (measureType === 'un' && (!quantity || parseInt(quantity) <= 0)) {
       this.toastr.error('Por favor, informe o número de unidades a serem doadas.');
       return;
@@ -334,12 +334,12 @@ export class MakeActionComponent implements OnInit {
     const quantityNum = parseFloat(quantity);
     const unitsNum = units ? parseInt(units) : 1;
     
-    if (!this.unitConverterService.validateQuantityInput(quantityNum, this.selectedProduct.measure_type)) {
-      this.toastr.error(`Quantidade inválida para a unidade ${this.selectedProduct.measure_type}. Verifique o valor inserido.`);
+    if (!this.unitConverterService.validateQuantityInput(quantityNum, this.selectedProduct.measureType)) {
+      this.toastr.error(`Quantidade inválida para a unidade ${this.selectedProduct.measureType}. Verifique o valor inserido.`);
       return;
     }
 
-    const unit = this.selectedProduct.measure_type;
+  const unit = this.selectedProduct.measureType;
 
     try {
       console.log('=== INICIANDO REGISTRO DE DOAÇÃO ===');
@@ -350,9 +350,9 @@ export class MakeActionComponent implements OnInit {
       
       // Criar doação com status "Pendente"
       const donation: Donation = {
-        donation_date: new Date(),
-        user_id: parseInt(this.user.id!.toString()),
-        donation_status: DonationStatus.PENDENTE
+  donationDate: new Date(),
+  userId: this.user.id!.toString(),
+  donationStatus: DonationStatus.PENDENTE
       };
       
       console.log('Criando doação:', donation);
@@ -365,39 +365,46 @@ export class MakeActionComponent implements OnInit {
       }
       
       // Formatar data de expiração para string (yyyy-mm-dd)
-      let formattedExpirationDate: string | null = null;
+  let formattedExpirationDate: Date | null = null;
       if (!this.isToyProduct() && expirationDate) {
-        const parts = expirationDate.split('/');
-        if (parts.length === 3) {
-          formattedExpirationDate = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+        // Aceita formatos 'dd/MM/yyyy' ou 'yyyy-MM-dd'
+        if (expirationDate.includes('/')) {
+          const parts = expirationDate.split('/');
+          if (parts.length === 3) {
+            // dd/MM/yyyy
+            formattedExpirationDate = new Date(`${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`);
+          }
+        } else {
+          // yyyy-MM-dd
+          formattedExpirationDate = new Date(expirationDate);
         }
       }
       
       // Validar e garantir que unit não seja null
-      const validUnit = unit || this.selectedProduct?.measure_type || 'un';
+  const validUnit = unit || this.selectedProduct?.measureType || 'un';
       
       // Para produtos unitários, usar quantity como unidades e definir donation_option como 1
-      const measureType = this.selectedProduct.measure_type || this.selectedProduct.unitType;
-      let finalQuantity, finalUnit;
+  const measureType = this.selectedProduct.measureType || this.selectedProduct.unitType;
+      let finalQuantity: number, finalUnit: number;
       if (measureType === 'un') {
         finalQuantity = 1; // donation_option padrão
-        finalUnit = quantityNum.toString(); // usar quantity como número de unidades
+        finalUnit = quantityNum; // usar quantity como número de unidades
       } else {
         finalQuantity = quantityNum; // donation_option
-        finalUnit = unitsNum.toString(); // número de unidades
+        finalUnit = unitsNum; // número de unidades
       }
       
       // Criar produto da doação
       const donationProduct = {
-        quantity: finalQuantity,
-        expirationDate: formattedExpirationDate,
-        unit: finalUnit,
-        donationId: createdDonation.id,
-        productId: parseInt(productId)
+  quantity: finalQuantity,
+  expirationDate: formattedExpirationDate ?? new Date(),
+  unit: finalUnit,
+  donationId: createdDonation.id,
+  productId: parseInt(productId)
       };
       
       console.log('Produto final a ser salvo:', {
-        measure_type: measureType,
+  measureType: measureType,
         quantity: finalQuantity,
         unit: finalUnit,
         originalQuantity: quantityNum,
@@ -438,8 +445,8 @@ export class MakeActionComponent implements OnInit {
         return;
       }
 
-      const peopleQuantity = this.user.peopleQuantity || (this.user.people_quantity ? parseInt(this.user.people_quantity.toString()) : 1);
-      const hasChildren = this.user.hasChildren || this.user.has_children || false;
+    const peopleQuantity = this.user.peopleQuantity ?? 1;
+    const hasChildren = this.user.hasChildren ?? false;
       
       const calculatedBasket = this.calculateBasketLocally(peopleQuantity, hasChildren);
       await this.processBasketRequest(calculatedBasket, peopleQuantity, hasChildren);
@@ -592,8 +599,8 @@ export class MakeActionComponent implements OnInit {
       return;
     }
 
-    const peopleQuantity = this.user.peopleQuantity || (this.user.people_quantity ? parseInt(this.user.people_quantity.toString()) : 1);
-    const hasChildren = this.user.hasChildren || this.user.has_children || false;
+  const peopleQuantity = this.user.peopleQuantity ?? 1;
+  const hasChildren = this.user.hasChildren ?? false;
     
     this.calculatedBasket = this.calculateBasketLocally(peopleQuantity, hasChildren);
     this.showBasketPreview = true;
@@ -618,7 +625,7 @@ export class MakeActionComponent implements OnInit {
           productName: product.name,
           quantity: totalQuantity,
           unitQuantity: baseQuantity,
-          unitType: product.measure_type || product.unitType || 'un'
+          unitType: product.measureType || product.unitType || 'un'
         });
       }
     });
@@ -633,7 +640,7 @@ export class MakeActionComponent implements OnInit {
             productName: product.name,
             quantity: baseQuantity,
             unitQuantity: baseQuantity,
-            unitType: product.measure_type || product.unitType || 'un'
+            unitType: product.measureType || product.unitType || 'un'
           });
         }
       });
@@ -678,7 +685,7 @@ export class MakeActionComponent implements OnInit {
       productName: product.name,
       quantity: 1,
       unitQuantity: 1,
-      unitType: product.measure_type || product.unitType || 'un'
+  unitType: product.measureType || product.unitType || 'un'
     }));
   }
 
@@ -698,9 +705,9 @@ export class MakeActionComponent implements OnInit {
     }
 
     const basketRequest = {
-      user_id: this.user?.id || '',
-      request_date: new Date().toISOString(),
-      basket_type: 'hygiene',
+  userId: this.user?.id || '',
+  requestDate: new Date().toISOString(),
+  basketType: 'hygiene',
       status: 'pending',
       calculated_items: JSON.stringify(hygieneBasket)
     };
@@ -724,13 +731,13 @@ export class MakeActionComponent implements OnInit {
       );
       console.log('All stock:', stock);
       const productStock = stock.filter(item => {
-        const itemProductId = item.product_id || item.productId;
+  const itemProductId = item.productId;
         console.log(`Comparing ${itemProductId} with ${productId}`);
         return itemProductId == productId;
       });
       console.log(`Filtered stock for product ${productId}:`, productStock);
       const totalStock = productStock.reduce((sum, item) => {
-        const actualStock = item.actual_stock || item.actualStock || 0;
+  const actualStock = item.actualStock || 0;
         return sum + actualStock;
       }, 0);
       console.log(`Product ${productId}: Required ${requiredQuantity}, Available ${totalStock}`);
@@ -818,13 +825,13 @@ export class MakeActionComponent implements OnInit {
     }
 
     const basketRequest = {
-      user_id: this.user?.id || '',
-      request_date: new Date().toISOString(),
-      basket_type: 'basic',
-      status: 'pending',
-      people_quantity: peopleQuantity,
-      has_children: hasChildren,
-      calculated_items: JSON.stringify(calculatedBasket)
+  user_id: this.user?.id || '',
+  request_date: new Date().toISOString(),
+  basket_type: 'basic',
+  status: 'pending',
+  peopleQuantity: peopleQuantity,
+  hasChildren: hasChildren,
+  calculated_items: JSON.stringify(calculatedBasket)
     };
 
     await firstValueFrom(
@@ -915,7 +922,7 @@ export class MakeActionComponent implements OnInit {
     
     if (isNaN(quantity) || isNaN(units) || quantity <= 0 || units <= 0) return '';
     
-    const measureType = this.selectedProduct.measure_type || this.selectedProduct.unitType;
+  const measureType = this.selectedProduct.measureType || this.selectedProduct.unitType;
     
     if (measureType === 'un') {
       const unitText = quantity === 1 ? 'unidade' : 'unidades';

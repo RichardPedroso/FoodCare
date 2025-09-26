@@ -2,6 +2,7 @@ export interface Request {
     id?: string,
     requestDate: Date,
     requestType: string,
+    basketType: string,
     status: string,
-    user_id: string
+    userId: string
 }

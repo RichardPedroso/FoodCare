@@ -13,10 +13,4 @@ export interface User {
     documents?: string[],
     images?: string[],
     able?: boolean,
-    // Mantendo compatibilidade com código existente
-    user_type?: string,
-    family_income?: string,
-    people_quantity?: string,
-    municipality_id?: string,
-    has_children?: boolean
 }

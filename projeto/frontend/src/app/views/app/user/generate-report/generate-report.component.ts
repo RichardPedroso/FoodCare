@@ -39,7 +39,7 @@ export class GenerateReportComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.user = this.authenticationService.getCurrentUser();
     if (this.user) {
-      this.userType = this.user.user_type as 'donor' | 'beneficiary';
+  this.userType = this.user.userType as 'donor' | 'beneficiary';
       await this.loadStatistics();
     }
   }
@@ -69,7 +69,7 @@ export class GenerateReportComponent implements OnInit {
     const fourWeeksAgo = new Date();
     fourWeeksAgo.setDate(fourWeeksAgo.getDate() - 28);
     const recentDonations = donations.filter(d => 
-      new Date(d.donation_date || d.donationDate) >= fourWeeksAgo
+  new Date(d.donationDate) >= fourWeeksAgo
     );
     this.weeklyAverage = Math.round(recentDonations.length / 4);
 
@@ -91,11 +91,11 @@ export class GenerateReportComponent implements OnInit {
     );
     
     this.totalBaskets = basketRequests.filter(r => 
-      (r.basket_type || r.basketType) === 'basic'
+  r.basketType === 'basic'
     ).length;
     
     this.totalHygieneBaskets = basketRequests.filter(r => 
-      (r.basket_type || r.basketType) === 'hygiene'
+  r.basketType === 'hygiene'
     ).length;
 
     // Total de unidades de todas as cestas
@@ -115,7 +115,7 @@ export class GenerateReportComponent implements OnInit {
     const fourWeeksAgo = new Date();
     fourWeeksAgo.setDate(fourWeeksAgo.getDate() - 28);
     const recentRequests = basketRequests.filter(r => 
-      new Date(r.request_date || r.requestDate) >= fourWeeksAgo
+  new Date(r.requestDate) >= fourWeeksAgo
     );
     this.weeklyRequests = Math.round(recentRequests.length / 4);
   }

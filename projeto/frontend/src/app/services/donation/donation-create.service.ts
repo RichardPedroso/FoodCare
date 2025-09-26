@@ -22,9 +22,9 @@ export class DonationCreateService {
   async create(donation: Donation): Promise<Donation>{
     // Converter para o formato esperado pelo backend
     const donationData = {
-      donationDate: donation.donation_date.toISOString().split('T')[0], // Formato YYYY-MM-DD
-      userId: typeof donation.user_id === 'string' ? parseInt(donation.user_id) : donation.user_id,
-      donationStatus: donation.donation_status
+  donationDate: donation.donationDate.toISOString().split('T')[0], // Formato YYYY-MM-DD
+  userId: donation.userId,
+  donationStatus: donation.donationStatus
     };
     return await firstValueFrom(this.http.post<Donation>(`${environment.api_endpoint}/donation`, donationData));
   }

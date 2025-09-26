@@ -4,10 +4,3 @@ export enum DonationStatus {
   UTILIZADA = 'Utilizada',
   REJEITADA = 'Rejeitada'
 }
-
-export const DONATION_STATUS_LABELS = {
-  [DonationStatus.PENDENTE]: 'Pendente',
-  [DonationStatus.EM_ESTOQUE]: 'Em estoque',
-  [DonationStatus.UTILIZADA]: 'Utilizada',
-  [DonationStatus.REJEITADA]: 'Rejeitada'
-};

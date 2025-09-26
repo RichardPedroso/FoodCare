@@ -13,13 +13,13 @@ import { firstValueFrom } from 'rxjs';
 // Interface para solicitações de cesta com informações detalhadas
 interface BasketRequestWithDetails {
   id: string; // ID da solicitação
-  user_id: number; // ID do usuário solicitante
-  request_date: string; // Data da solicitação
-  basket_type: string; // Tipo de cesta (basic/hygiene)
+  userId: number; // ID do usuário solicitante
+  requestDate: string; // Data da solicitação
+  basketType: string; // Tipo de cesta (basic/hygiene)
   status: string; // Status da solicitação
   userName: string; // Nome do solicitante
   userEmail: string; // Email do solicitante
-  calculated_items?: string; // Itens calculados da cesta (JSON)
+  calculatedItems?: string; // Itens calculados da cesta (JSON)
 }
 
 /**
@@ -64,19 +64,19 @@ export class ManageRequestsComponent implements OnInit {
       this.allRequests = await Promise.all(pendingRequests.map(async request => {
         try {
           const user = await firstValueFrom(
-            this.http.get<any>(`${environment.api_endpoint}/user/${request.user_id}`)
+            this.http.get<any>(`${environment.api_endpoint}/user/${request.userId}`)
           );
           
           return {
             ...request,
-            userName: user.name || `Usuário ${request.user_id}`,
-            userEmail: user.email || `usuario${request.user_id}@email.com`
+            userName: user.name || `Usuário ${request.userId}`,
+            userEmail: user.email || `usuario${request.userId}@email.com`
           };
         } catch (error) {
           return {
             ...request,
-            userName: `Usuário ${request.user_id}`,
-            userEmail: `usuario${request.user_id}@email.com`
+            userName: `Usuário ${request.userId}`,
+            userEmail: `usuario${request.userId}@email.com`
           };
         }
       }));
@@ -207,16 +207,16 @@ export class ManageRequestsComponent implements OnInit {
    * @returns Array de itens da cesta ou array vazio se houver erro
    */
   getCalculatedItems(): any[] {
-    if (!this.selectedRequest?.calculated_items) {
-      console.log('No calculated_items found for request:', this.selectedRequest);
+    if (!this.selectedRequest?.calculatedItems) {
+      console.log('No calculatedItems found for request:', this.selectedRequest);
       return [];
     }
     try {
-      const items = JSON.parse(this.selectedRequest.calculated_items);
+      const items = JSON.parse(this.selectedRequest.calculatedItems);
       console.log('Parsed calculated items:', items);
       return items;
     } catch (error) {
-      console.error('Error parsing calculated_items:', error, this.selectedRequest.calculated_items);
+      console.error('Error parsing calculatedItems:', error, this.selectedRequest.calculatedItems);
       return [];
     }
   }

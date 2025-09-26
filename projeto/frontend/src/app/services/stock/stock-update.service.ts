@@ -29,14 +29,14 @@ export class StockUpdateService {
         const updateRequest = this.http.get<Stock[]>(`${this.apiUrl}/stock`).pipe(
           switchMap(stocks => {
             const stockItem = stocks.find(s => 
-              s.product_id === product.productId && 
-              s.donation_option === product.donationOption
+              s.productId === product.productId && 
+              s.donationOption === product.donationOption
             );
             
             if (stockItem) {
               const updatedStock = {
                 ...stockItem,
-                actual_stock: stockItem.actual_stock - product.quantity // Reduz quantidade
+                actualStock: stockItem.actualStock - product.quantity // Reduz quantidade
               };
               return this.http.put(`${this.apiUrl}/stock/${stockItem.id}`, updatedStock);
             }
@@ -57,27 +57,27 @@ export class StockUpdateService {
   async updateStock(productId: string, donationOption: string, quantityChange: number): Promise<void> {
     try {
       const stocks = await firstValueFrom(
-        this.http.get<Stock[]>(`${this.apiUrl}/stock?product_id=${productId}&donation_option=${donationOption}`)
+  this.http.get<Stock[]>(`${this.apiUrl}/stock?productId=${productId}&donationOption=${donationOption}`)
       );
       
       if (stocks.length > 0) {
         // Atualizar estoque existente
         const stockRecord = stocks[0];
-        const newStock = stockRecord.actual_stock + quantityChange;
+  const newStock = stockRecord.actualStock + quantityChange;
         
         await firstValueFrom(
-          this.http.put(`${this.apiUrl}/stock/${stockRecord.id}`, { ...stockRecord, actual_stock: newStock })
+    this.http.put(`${this.apiUrl}/stock/${stockRecord.id}`, { ...stockRecord, actualStock: newStock })
         );
       } else {
         // Criar novo registro de estoque
         const newStockRecord = {
-          product_id: productId,
-          donation_option: donationOption,
-          actual_stock: Math.max(0, quantityChange) // Não permite estoque negativo
+          productId: productId,
+          donationOption: donationOption,
+          actualStock: Math.max(0, quantityChange) // Não permite estoque negativo
         };
         
         await firstValueFrom(
-          this.http.post(`${this.apiUrl}/stock`, newStockRecord)
+    this.http.post(`${this.apiUrl}/stock`, newStockRecord)
         );
       }
     } catch (error) {

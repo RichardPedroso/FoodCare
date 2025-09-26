@@ -20,7 +20,7 @@ export const userGuard: CanActivateFn = (route, state) => {
   const currentUser = authenticationService.getCurrentUser();
   
   // Redireciona admins para dashboard administrativo
-  if (currentUser && (currentUser.userType === 'admin' || currentUser.user_type === 'admin')) {
+  if (currentUser && currentUser.userType === 'admin') {
     router.navigate(['main/admin/dashboard']);
     return false;
   }

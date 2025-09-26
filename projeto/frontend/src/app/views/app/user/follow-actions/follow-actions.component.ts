@@ -36,11 +36,11 @@ interface BasketItem {
 
 interface BasketRequest {
   id?: string;
-  user_id: string;
-  request_date: Date | null;
-  basket_type: string;
+  userId: string;
+  requestDate: Date | null;
+  basketType: string;
   status: string;
-  calculated_items?: string;
+  calculatedItems?: string;
   parsedItems?: BasketItem[];
 }
 
@@ -80,7 +80,7 @@ export class FollowActionsComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.user = this.authenticationService.getCurrentUser();
     if (this.user) {
-      this.userType = (this.user.userType || this.user.user_type) as 'donor' | 'beneficiary' | 'admin';
+  this.userType = this.user.userType as 'donor' | 'beneficiary' | 'admin';
       if (this.userType === 'donor' || this.userType === 'admin') {
         await this.loadDonations();
       }
@@ -101,7 +101,7 @@ export class FollowActionsComponent implements OnInit {
       
       const validDonations = userDonations.map(donation => {
         const donationProduct = donationProducts.find(dp => {
-          const dpDonationId = dp.donation_id || (dp as any).donationId;
+          const dpDonationId = dp.donationId;
           return dpDonationId == donation.id;
         });
         
@@ -114,10 +114,10 @@ export class FollowActionsComponent implements OnInit {
         console.log(`Doação ${donation.id}:`, {
           donation,
           donationProduct,
-          donationStatus: (donation as any).donationStatus || donation.donation_status
+          donationStatus: (donation as any).donationStatus || donation.donationStatus
         });
         
-        const productId = donationProduct?.product_id || (donationProduct as any)?.productId;
+  const productId = donationProduct?.productId;
         console.log(`Debug follow-actions - doação ${donation.id}:`, {
           donationProduct,
           productId,
@@ -136,7 +136,7 @@ export class FollowActionsComponent implements OnInit {
           });
         }
         
-        const dateValue = donation.donation_date || (donation as any).donationDate;
+  const dateValue = donation.donationDate || (donation as any).donationDate;
         const donationDate = dateValue ? new Date(dateValue) : null;
         
         const unitsCount = Number(donationProduct?.unit) || 0; // Número de unidades doadas
@@ -149,23 +149,23 @@ export class FollowActionsComponent implements OnInit {
           calculatedWeight,
           donationProduct
         });
-        const measureType = (product as any)?.unitType || product?.measure_type || (product as any)?.measureType || '';
+  const measureType = (product as any)?.unitType || product?.measureType || (product as any)?.measureType || '';
         
         // Determinar status baseado em donation_status
-        const donationStatus = (donation as any).donationStatus ?? donation.donation_status;
+  const donationStatus = (donation as any).donationStatus ?? donation.donationStatus;
         let status = donationStatus || 'Pendente';
         
         // Verificar se foi utilizada (simulação simples)
         // Para teste: doações de Arroz e Feijão com ID <= 10 são consideradas utilizadas
         const donationId = parseInt(donation.id?.toString() || '0');
-        if (donationStatus === DonationStatus.EM_ESTOQUE && (productId == 1 || productId == 2) && donationId <= 10) {
+  if (donationStatus === DonationStatus.EM_ESTOQUE && (parseInt(productId) === 1 || parseInt(productId) === 2) && donationId <= 10) {
           status = DonationStatus.UTILIZADA;
         }
         
         return {
           productName: product?.name || 'Produto não encontrado',
           quantity: unitsCount,
-          unit: donationProduct?.unit || '',
+          unit: String(donationProduct?.unit || ''),
           donationDate: donationDate && !isNaN(donationDate.getTime()) ? donationDate : null,
           status,
           calculatedWeight,
@@ -193,21 +193,21 @@ export class FollowActionsComponent implements OnInit {
         this.http.get<BasketRequest[]>(`${environment.api_endpoint}/basket_request/user/${this.user.id}`)
       );
       this.basketRequests = this.basketRequests.map(request => {
-        const dateValue = request.request_date || (request as any).requestDate;
+        const dateValue = request.requestDate || (request as any).requestDate;
         const requestDate = dateValue ? new Date(dateValue) : null;
         
         let parsedItems: BasketItem[] = [];
-        if (request.calculated_items && typeof request.calculated_items === 'string') {
+        if (request.calculatedItems && typeof request.calculatedItems === 'string') {
           try {
-            parsedItems = JSON.parse(request.calculated_items);
+            parsedItems = JSON.parse(request.calculatedItems);
           } catch (e) {
-            console.error('Erro ao parsear calculated_items:', e);
+            console.error('Erro ao parsear calculatedItems:', e);
           }
         }
         
         return {
           ...request,
-          request_date: requestDate && !isNaN(requestDate.getTime()) ? requestDate : null,
+          requestDate: requestDate && !isNaN(requestDate.getTime()) ? requestDate : null,
           parsedItems
         };
       });
@@ -226,7 +226,7 @@ export class FollowActionsComponent implements OnInit {
     
     this.totalCount = donations.length;
     this.thisMonthCount = donations.filter(donation => {
-      const dateValue = donation.donation_date || (donation as any).donationDate;
+  const dateValue = donation.donationDate || (donation as any).donationDate;
       if (!dateValue) return false;
       const donationDate = new Date(dateValue);
       return donationDate.getMonth() === currentMonth && donationDate.getFullYear() === currentYear;
@@ -234,12 +234,12 @@ export class FollowActionsComponent implements OnInit {
     
     // Contar doações por status
     this.availableCount = donations.filter(donation => {
-      const donationStatus = (donation as any).donationStatus ?? donation.donation_status;
+  const donationStatus = (donation as any).donationStatus ?? donation.donationStatus;
       return donationStatus === DonationStatus.EM_ESTOQUE;
     }).length;
     
     this.usedCount = donations.filter(donation => {
-      const donationStatus = (donation as any).donationStatus ?? donation.donation_status;
+  const donationStatus = (donation as any).donationStatus ?? donation.donationStatus;
       return donationStatus === DonationStatus.UTILIZADA;
     }).length;
   }
@@ -251,8 +251,8 @@ export class FollowActionsComponent implements OnInit {
     
     this.totalCount = requests.length;
     this.thisMonthCount = requests.filter(request => {
-      if (!request.request_date) return false;
-      const requestDate = new Date(request.request_date);
+      if (!request.requestDate) return false;
+      const requestDate = new Date(request.requestDate);
       return requestDate.getMonth() === currentMonth && requestDate.getFullYear() === currentYear;
     }).length;
     this.availableCount = requests.filter(request => request.status === 'pending').length;
@@ -262,7 +262,7 @@ export class FollowActionsComponent implements OnInit {
   private calculateTotalDonatedWeight(donationProducts: DonationProduct[], products: Product[]): void {
     this.totalDonatedWeight = donationProducts.reduce((total, donationProduct) => {
       const product = products.find(p => {
-        const productId = donationProduct.product_id || (donationProduct as any).productId;
+        const productId = donationProduct.productId;
         return p.id == productId;
       });
       
@@ -291,13 +291,13 @@ export class FollowActionsComponent implements OnInit {
     if (event) {
       event.preventDefault();
     }
-    const basketType = request.basket_type === 'basic' ? 'Cesta Básica' : 'Cesta de Higiene';
+    const basketType = request.basketType === 'basic' ? 'Cesta Básica' : 'Cesta de Higiene';
     
     if (request.parsedItems && request.parsedItems.length > 0) {
       const products = await this.productReadService.findAll();
       const basketProducts = request.parsedItems.map((item: BasketItem) => {
         const product = products.find(p => p.id == item.productId.toString());
-        const measureType = (product as any)?.unitType || product?.measure_type || (product as any)?.measureType || '';
+  const measureType = (product as any)?.unitType || product?.measureType || (product as any)?.measureType || '';
         return `<div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eee;"><span style="font-weight: 500;">${item.productName} - ${item.quantity}${measureType}</span></div>`;
       });
       

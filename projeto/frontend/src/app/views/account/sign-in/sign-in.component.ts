@@ -82,7 +82,7 @@ export class SignInComponent{
     if (this.authenticationService.isAuthenticated()) {
       const user = this.authenticationService.getCurrentUser();
       const userType = user?.userType;
-      if (userType === 'admin' || user?.user_type === 'admin') {
+      if (userType === 'admin' || user?.userType === 'admin') {
         console.log('credenciais validas, navegando para dashboard admin')
         this.router.navigate(['/main/admin/dashboard']);
       } else {
@@ -124,8 +124,8 @@ export class SignInComponent{
         next: (user: User) => {
           console.log('Resultado da busca no backend:', user);
           console.log('user.userType:', user.userType);
-          console.log('user.user_type:', user.user_type);
-          console.log('Tipo de usuário final:', user.userType || user.user_type);
+          console.log('user.userType:', user.userType);
+          console.log('Tipo de usuário final:', user.userType || user.userType);
 
           // Armazena dados do usuário no localStorage
           this.authenticationService.addDataToLocalStorage(user);
@@ -134,7 +134,7 @@ export class SignInComponent{
           console.log('UserType processado:', userType);
           
           // Redireciona baseado no tipo de usuário
-          if (userType === 'admin' || user.user_type === 'admin') {
+          if (userType === 'admin' || user.userType === 'admin') {
             console.log('Usuário identificado como administrador');
             this.router.navigate(['/main/admin/dashboard']);
           } else if (userType === 'donor') {

@@ -49,7 +49,7 @@ export class ManageUsersComponent implements OnInit {
     try {
       const users = await this.userReadService.findAll();
       this.allBeneficiaries = users.filter((user: User) => 
-        (user.userType === 'beneficiary' || user.user_type === 'beneficiary') && 
+        (user.userType === 'beneficiary' || user.userType === 'beneficiary') && 
         user.documents && 
         user.documents.length > 0
       );

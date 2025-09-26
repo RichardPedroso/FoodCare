@@ -35,12 +35,12 @@
           <p>{{ request.userEmail }}</p>
           <div class="request-date">
             <mat-icon>schedule</mat-icon>
-            <span>{{ formatDate(request.request_date) }}</span>
+            <span>{{ formatDate(request.requestDate) }}</span>
           </div>
         </div>
         <div class="basket-info">
           <mat-icon>shopping_basket</mat-icon>
-          <span>{{ getBasketTypeName(request.basket_type) }}</span>
+          <span>{{ getBasketTypeName(request.basketType) }}</span>
         </div>
       </div>
       }
@@ -56,10 +56,10 @@
         Voltar
       </button>
       <div class="request-details">
-        <h2>Solicitação de {{ selectedRequest.userName }}</h2>
-        <p>{{ selectedRequest.userEmail }}</p>
-        <p>Data: {{ formatDate(selectedRequest.request_date) }}</p>
-        <p>Tipo: {{ getBasketTypeName(selectedRequest.basket_type) }}</p>
+  <h2>Solicitação de {{ selectedRequest.userName }}</h2>
+  <p>{{ selectedRequest.userEmail }}</p>
+  <p>Data: {{ formatDate(selectedRequest.requestDate) }}</p>
+  <p>Tipo: {{ getBasketTypeName(selectedRequest.basketType) }}</p>
       </div>
     </div>
 

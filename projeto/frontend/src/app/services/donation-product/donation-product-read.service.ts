@@ -1,3 +1,4 @@
+import { DonationProduct } from '../../domain/model/donation-product';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';

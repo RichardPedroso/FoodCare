@@ -55,12 +55,12 @@ export class StockOptimizationService {
 
     // Filtra produtos disponíveis e válidos
     const availableProducts = donationProducts
-      .filter(dp => dp.product_id === productId)
+  .filter(dp => dp.productId === productId)
       .map(dp => {
-        const stockItem = stock.find(s => s.product_id === productId && s.donation_option === dp.quantity.toString());
+        const stockItem = stock.find(s => s.productId === productId && s.donationOption === dp.quantity.toString());
         return {
           ...dp,
-          stockQuantity: stockItem?.actual_stock || 0,
+          stockQuantity: stockItem?.actualStock || 0,
           donationOption: dp.quantity.toString()
         };
       })
@@ -85,11 +85,11 @@ export class StockOptimizationService {
       const quantityToTake = Math.min(remainingQuantity, product.stockQuantity);
       
       selectedProducts.push({
-        donationProductId: product.id!,
-        productId: product.product_id,
-        quantity: quantityToTake,
-        expirationDate: product.expirationDate,
-        donationOption: product.donationOption
+  donationProductId: product.id!,
+  productId: product.productId,
+  quantity: quantityToTake,
+  expirationDate: product.expirationDate,
+  donationOption: product.donationOption
       });
 
       remainingQuantity -= quantityToTake;

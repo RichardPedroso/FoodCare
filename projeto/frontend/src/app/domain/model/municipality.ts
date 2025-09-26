@@ -4,5 +4,5 @@ export interface Municipality {
     number: string,
     neighborhood: string,
     city: string,
-    zip_code?: string
+    zipCode?: string
 }

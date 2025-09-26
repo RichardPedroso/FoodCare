@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { DonationProduct } from '../../domain/model/donation_product';
+import { DonationProduct } from '../../domain/model/donation-product';
 import { DonationValidationService } from './donation-validation.service';
 import { environment } from '../../../environments/environment.development';
 import { firstValueFrom } from 'rxjs';

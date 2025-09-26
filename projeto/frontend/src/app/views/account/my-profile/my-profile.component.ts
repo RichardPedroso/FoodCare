@@ -9,6 +9,7 @@ import { AuthenticationService } from '../../../services/security/authentication
 import { MunicipalityReadService } from '../../../services/municipality/municipality-read.service';
 import { UserReadService } from '../../../services/user/user-read.service';
 import { Municipality } from '../../../domain/model/municipality';
+import { User } from '../../../domain/model/user';
 
 /**
  * Componente responsável pela exibição do perfil do usuário
@@ -31,7 +32,7 @@ import { Municipality } from '../../../domain/model/municipality';
   styleUrl: './my-profile.component.css'
 })
 export class MyProfileComponent implements OnInit {
-  user: any; // Dados do usuário atual
+  user!: User; // Dados do usuário atual
   municipality: Municipality | null = null; // Dados do município do usuário
 
   constructor(
@@ -55,7 +56,7 @@ export class MyProfileComponent implements OnInit {
         this.authenticationService.addDataToLocalStorage(this.user);
         
         // Busca dados do município do usuário
-        const municipalityId = this.user?.municipalityId || this.user?.municipality_id;
+        const municipalityId = this.user?.municipalityId || this.user?.municipalityId;
         if (municipalityId) {
           this.municipalityReadService.getById(municipalityId.toString()).subscribe({
             next: (municipality) => {

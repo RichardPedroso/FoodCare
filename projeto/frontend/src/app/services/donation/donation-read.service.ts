@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { firstValueFrom } from 'rxjs';
 import { Donation } from '../../domain/model/donation';
-import { DonationProduct } from '../../domain/model/donation_product';
+import { DonationProduct } from '../../domain/model/donation-product';
 
 /**
  * Serviço para leitura de doações.

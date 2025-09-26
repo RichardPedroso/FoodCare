@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { SignInComponent } from './views/account/sign-in/sign-in.component';
 import { SignUpComponent } from './views/account/sign-up/sign-up.component';
-import { HomeComponent } from './views/app/home/home.component';
 import { authenticationGuard } from './services/security/guard/authentication.guard';
 import { adminGuard } from './services/security/guard/admin.guard';
 import { userGuard } from './services/security/guard/user.guard';
@@ -49,10 +48,6 @@ export const routes: Routes = [
     component: MainComponent,
     canActivate: [authenticationGuard],
     children: [
-      {
-        path: '',
-        component: HomeComponent
-      },
       {
         path: "account/my-profile",
         component: MyProfileComponent

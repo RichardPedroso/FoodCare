@@ -13,8 +13,8 @@
           </div>
           <div class="profile-info">
             <h2>{{user?.name}}</h2>
-            <span class="user-type-badge" [class]="user?.user_type">
-              {{(user?.user_type === 'donor' || user?.userType === 'donor') ? 'Doador' : (user?.user_type === 'admin' || user?.userType === 'admin') ? 'Administrador' : 'Beneficiário'}}
+            <span class="user-type-badge" [class]="user?.userType">
+              {{(user?.userType === 'donor' || user?.userType === 'donor') ? 'Doador' : (user?.userType === 'admin' || user?.userType === 'admin') ? 'Administrador' : 'Beneficiário'}}
             </span>
           </div>
         </div>
@@ -102,7 +102,7 @@
             </div>
           </div>
 
-          @if (user?.user_type === 'beneficiary') {
+          @if (user?.userType === 'beneficiary') {
           <div class="info-section">
             <h3 class="section-title">
               <mat-icon>family_restroom</mat-icon>

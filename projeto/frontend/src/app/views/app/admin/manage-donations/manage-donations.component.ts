@@ -21,7 +21,7 @@ interface DonationWithDetails extends Donation {
   productName?: string; // Nome do produto doado
   quantity?: number | string; // Quantidade do produto
   unit?: string; // Unidade de medida
-  expiration_date?: Date; // Data de validade
+  expirationDate?: Date; // Data de validade
 }
 
 /**
@@ -75,7 +75,7 @@ export class ManageDonationsComponent implements OnInit {
       
       // Buscar dados reais dos usuários e produtos
       this.allDonations = await Promise.all(pendingDonations.map(async donation => {
-        const userId = (donation as any).userId || donation.user_id;
+  const userId = (donation as any).userId || donation.userId;
         const donationId = donation.id;
         
         try {
@@ -91,7 +91,7 @@ export class ManageDonationsComponent implements OnInit {
             products,
             firstProduct,
             productId: firstProduct?.productId,
-            product_id: firstProduct?.product_id,
+            ProductId: firstProduct?.ProductId,
             unit: firstProduct?.unit,
             quantity: firstProduct?.quantity,
             unitType: typeof firstProduct?.unit,
@@ -99,7 +99,7 @@ export class ManageDonationsComponent implements OnInit {
           });
           
           if (firstProduct) {
-            const productId = firstProduct.productId || (firstProduct as any).product_id;
+            const productId = firstProduct.productId || (firstProduct as any).ProductId;
             console.log(`Tentando buscar produto com ID: ${productId}`);
             
             if (productId) {
@@ -116,7 +116,7 @@ export class ManageDonationsComponent implements OnInit {
             }
           }
           
-          const productUnit = firstProduct ? await this.getProductUnitType(firstProduct.productId || (firstProduct as any).product_id) : 'un';
+          const productUnit = firstProduct ? await this.getProductUnitType(firstProduct.productId || (firstProduct as any).ProductId) : 'un';
           
           return {
             ...donation,
@@ -125,7 +125,7 @@ export class ManageDonationsComponent implements OnInit {
             productName: productName,
             quantity: firstProduct ? this.formatQuantityDisplay(firstProduct, productUnit) : '0',
             unit: productUnit,
-            expiration_date: firstProduct ? firstProduct.expirationDate : null
+            expirationDate: firstProduct ? firstProduct.expirationDate : null
           };
         } catch (error) {
           console.error(`Erro ao buscar dados da doação ${donationId}:`, error);
@@ -148,15 +148,15 @@ export class ManageDonationsComponent implements OnInit {
       this.allDonations = [
         {
           id: '1',
-          donation_date: new Date('2025-01-15'),
-          user_id: 1,
-          donation_status: DonationStatus.PENDENTE,
+          donationDate: new Date('2025-01-15'),
+          userId: '1',
+          donationStatus: DonationStatus.PENDENTE,
           donorName: 'João Silva',
           donorEmail: 'joao@email.com',
           productName: 'Arroz',
           quantity: 5,
           unit: 'kg',
-          expiration_date: new Date('2025-12-31')
+          expirationDate: new Date('2025-12-31')
         }
       ];
       this.applyFilters();
@@ -273,7 +273,7 @@ export class ManageDonationsComponent implements OnInit {
    * @returns Data formatada da doação
    */
   getDonationDate(donation: DonationWithDetails): string {
-    const date = (donation as any).donationDate || donation.donation_date;
+  const date = (donation as any).donationDate || donation.expirationDate;
     return this.formatDate(date);
   }
 
@@ -285,7 +285,7 @@ export class ManageDonationsComponent implements OnInit {
   private async getProductUnitType(productId: number): Promise<string> {
     try {
       const product = await this.productReadService.findById(productId.toString());
-      return product.measure_type || 'un';
+  return product.measureType || 'un';
     } catch (error) {
       return 'un';
     }
