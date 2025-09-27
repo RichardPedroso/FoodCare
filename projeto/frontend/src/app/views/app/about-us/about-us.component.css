@@ -211,6 +211,7 @@
   color: white;
   text-align: center;
   padding: var(--spacing-lg);
+  border-radius: var(--radius-xl);
 }
 
 .footer-bottom p {
