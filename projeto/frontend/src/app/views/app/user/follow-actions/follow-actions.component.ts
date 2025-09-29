@@ -296,9 +296,11 @@ export class FollowActionsComponent implements OnInit {
     if (request.parsedItems && request.parsedItems.length > 0) {
       const products = await this.productReadService.findAll();
       const basketProducts = request.parsedItems.map((item: BasketItem) => {
-        const product = products.find(p => p.id == item.productId.toString());
+        const productId = (item as any).product_id || item.productId;
+        const product = products.find(p => parseInt(p.id!) === productId);
+        const productName = product?.name || (item as any).product_name || item.productName || 'Produto não encontrado';
   const measureType = (product as any)?.unitType || product?.measureType || (product as any)?.measureType || '';
-        return `<div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eee;"><span style="font-weight: 500;">${item.productName} - ${item.quantity}${measureType}</span></div>`;
+        return `<div style="display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eee;"><span style="font-weight: 500;">${productName} - ${item.quantity}${measureType}</span></div>`;
       });
       
       const htmlContent = `

@@ -17,6 +17,6 @@ export class DonationProductReadService {
 
   /** Busca todos os produtos associados a uma doação específica */
   findByDonationId(donationId: number): Promise<any[]> {
-    return firstValueFrom(this.http.get<any[]>(`${environment.api_endpoint}/donation-product/donation/${donationId}`));
+    return firstValueFrom(this.http.get<any[]>(`${environment.api_endpoint}/donation_product/donation/${donationId}`));
   }
 }

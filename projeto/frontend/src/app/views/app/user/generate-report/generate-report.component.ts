@@ -75,7 +75,7 @@ export class GenerateReportComponent implements OnInit {
 
     // Pessoas ajudadas (baseado em cestas que ajudou a formar)
     const basketRequests = await firstValueFrom(
-      this.http.get<any[]>(`${environment.api_endpoint}/basket_request`)
+      this.http.get<any[]>(`${environment.api_endpoint}/basket_request/all`)
     );
     
     // Estimar pessoas ajudadas baseado no total de cestas no sistema

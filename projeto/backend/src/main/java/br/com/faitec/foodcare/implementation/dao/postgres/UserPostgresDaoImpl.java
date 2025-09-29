@@ -84,6 +84,9 @@ public class UserPostgresDaoImpl implements UserDao {
             preparedStatement.execute();
             preparedStatement.close();
         } catch (SQLException e) {
+            if (e.getSQLState().equals("23503")) { // Foreign key constraint violation
+                throw new RuntimeException("Não é possível excluir o usuário pois existem registros relacionados (doações ou solicitações de cestas).");
+            }
             throw new RuntimeException(e);
         }
     }

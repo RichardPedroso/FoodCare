@@ -39,6 +39,6 @@ export class DonationProductCreateService {
       }
     }
 
-    return await firstValueFrom(this.http.post<any>(`${environment.api_endpoint}/donation-product`, donationProduct));
+    return await firstValueFrom(this.http.post<any>(`${environment.api_endpoint}/donation_product`, donationProduct));
   }
 }

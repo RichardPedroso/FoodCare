@@ -88,9 +88,13 @@ export class DeleteAccountComponent implements OnInit {
         this.authenticationService.logout();
         this.router.navigate(['/']);
       }, 2000);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Erro ao excluir conta:', error);
-      this.errorMessage = 'Erro ao excluir conta. Tente novamente.';
+      if (error.status === 500) {
+        this.errorMessage = 'Não é possível excluir a conta pois existem doações ou solicitações associadas a ela.';
+      } else {
+        this.errorMessage = 'Erro ao excluir conta. Tente novamente.';
+      }
       this.successMessage = '';
     }
   }

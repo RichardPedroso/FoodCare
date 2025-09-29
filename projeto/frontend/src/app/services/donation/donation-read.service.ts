@@ -28,7 +28,7 @@ export class DonationReadService {
 
   /** Busca todos os produtos associados às doações */
   findDonationProducts(): Promise<DonationProduct[]> {
-    return firstValueFrom(this.http.get<DonationProduct[]>(`${environment.api_endpoint}/donation-product`));
+    return firstValueFrom(this.http.get<DonationProduct[]>(`${environment.api_endpoint}/donation_product`));
   }
 
 

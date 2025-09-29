@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { User } from '../../../../domain/model/user';
 import { UserReadService } from '../../../../services/user/user-read.service';
 import { UserUpdateService } from '../../../../services/user/user-update.service';
+import { ToastrService } from 'ngx-toastr';
 
 /**
  * Componente responsável pelo gerenciamento de usuários beneficiários
@@ -32,7 +33,8 @@ export class ManageUsersComponent implements OnInit {
 
   constructor(
     private userReadService: UserReadService,
-    private userUpdateService: UserUpdateService
+    private userUpdateService: UserUpdateService,
+    private toastr: ToastrService
   ) {}
 
   async ngOnInit() {
@@ -80,8 +82,12 @@ export class ManageUsersComponent implements OnInit {
       this.selectedUser.able = able;
       await this.loadBeneficiaries();
       this.closeDocuments();
+      
+      const action = able ? 'concedida' : 'revogada';
+      this.toastr.success(`Permissão ${action} com sucesso!`);
     } catch (error) {
       console.error('Erro ao atualizar usuário:', error);
+      this.toastr.error('Erro ao atualizar status do usuário.');
     }
   }
 
