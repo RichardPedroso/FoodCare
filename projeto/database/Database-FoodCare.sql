@@ -2,64 +2,151 @@ drop database if exists foodcare;
 
 create database foodcare;
 
-create table municipality (
-    id serial primary key,
-    street varchar(100) not null,
-    number varchar(10) not null,
-    neighborhood varchar(50) not null,
-    city varchar(50) not null,
-    zip_code varchar(10) not null
+-- Drop tables with CASCADE to handle dependencies
+DROP TABLE IF EXISTS donation_usage CASCADE;
+DROP TABLE IF EXISTS donation_product CASCADE;
+DROP TABLE IF EXISTS stock CASCADE;
+DROP TABLE IF EXISTS basket_request CASCADE;
+DROP TABLE IF EXISTS request CASCADE;
+DROP TABLE IF EXISTS donation CASCADE;
+DROP TABLE IF EXISTS product CASCADE;
+DROP TABLE IF EXISTS user_model CASCADE;
+DROP TABLE IF EXISTS category CASCADE;
+DROP TABLE IF EXISTS municipality CASCADE;
+
+-- Drop types
+DROP TYPE IF EXISTS user_type;
+DROP TYPE IF EXISTS request_type;
+DROP TYPE IF EXISTS request_status;
+
+-- Create enums
+CREATE TYPE user_type AS ENUM ('donor', 'beneficiary', 'admin');
+CREATE TYPE request_type AS ENUM ('BASIC', 'HYGIENE');
+CREATE TYPE request_status AS ENUM ('PENDING', 'APPROVED', 'REJECTED', 'COMPLETED');
+
+-- Create tables
+CREATE TABLE municipality
+(
+    id           SERIAL       NOT NULL,
+    name         VARCHAR(100),
+    street       VARCHAR(200),
+    number       VARCHAR(20),
+    neighborhood VARCHAR(100),
+    city         VARCHAR(100) NOT NULL,
+    zip_code     VARCHAR(50),
+    PRIMARY KEY (id)
 );
 
-create table user (
-    id serial primary key,
-    name varchar(100) not null,
-    email varchar(100) unique not null,
-    password varchar(25) not null,
-    phone varchar(20) unique not null,
-    user_type varchar(20) not null check (user_type in ('donor', 'beneficiary')),
-    is_admin boolean,
-    family_income numeric(10,2),
-    people_quantity int,
-    municipality_id int not null references municipality(id)
+CREATE TABLE category
+(
+    id          SERIAL       NOT NULL,
+    name        VARCHAR(50),
+    description VARCHAR(100) NOT NULL,
+    PRIMARY KEY (id)
 );
 
-create table request (
-    id serial primary key,
-    request_date date not null,
-    request_type varchar(20) not null check (request_type in ('basic', 'hygiene')),
-    status varchar(20) not null,
-    user_id int not null references user_account(id)
+CREATE TABLE user_model
+(
+    id              SERIAL         NOT NULL,
+    name            VARCHAR(100)   NOT NULL,
+    email           VARCHAR(100)   NOT NULL UNIQUE,
+    password        VARCHAR(255)   NOT NULL,
+    phone           VARCHAR(50),
+    user_type       user_type      NOT NULL,
+    family_income   DOUBLE PRECISION DEFAULT 0.0,
+    people_quantity INTEGER        DEFAULT 1,
+    municipality_id INTEGER,
+    has_children    BOOLEAN        DEFAULT FALSE,
+    number_of_children INTEGER     DEFAULT 0,
+    documents       TEXT[],
+    images          TEXT[],
+    able            BOOLEAN        DEFAULT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (municipality_id) REFERENCES municipality(id)
 );
 
-create table donation (
-    id serial primary key,
-    donation_date date not null,
-    user_id int not null references user_account(id)
+CREATE TABLE product
+(
+    id               SERIAL           NOT NULL,
+    name             VARCHAR(100)     NOT NULL,
+    product_type     VARCHAR(50),
+    category_id      INTEGER,
+    unit_quantity    DOUBLE PRECISION DEFAULT 1.0,
+    measure_type     VARCHAR(10),
+    options_donation DOUBLE PRECISION[],
+    PRIMARY KEY (id),
+    FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
-create table category (
-    id serial primary key,
-    description varchar(100) unique not null,
-    is_active boolean not null
+CREATE TABLE donation
+(
+    id            SERIAL      NOT NULL,
+    donation_date VARCHAR(50) NOT NULL,
+    user_id       INTEGER     NOT NULL,
+    donation_status VARCHAR(20) NOT NULL DEFAULT 'Pendente',
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user_model(id),
+    CONSTRAINT check_donation_status CHECK (donation_status IN ('Pendente', 'Em estoque', 'Utilizada', 'Rejeitada'))
 );
 
-create table product (
-    id serial primary key,
-    name varchar(100) unique not null,
-    product_type varchar(20) not null check (product_type in ('basic', 'hygiene')),
-    stock int not null,
-    is_active boolean not null,
-    basket_quantity int not null,
-    category_id int not null references category(id)
+CREATE TABLE request
+(
+    id           SERIAL         NOT NULL,
+    request_date VARCHAR(50)    NOT NULL,
+    request_type request_type   NOT NULL,
+    status       request_status NOT NULL DEFAULT 'PENDING',
+    user_id      INTEGER        NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user_model(id)
 );
 
-create table donation_product (
-    id serial primary key,
-    quantity numeric(10,2) not null,
-    expiration_date date not null,
-    unit varchar(5) not null check (unit in ('kg', 'l')),
-    product_id int not null references product(id),
-    donation_id int not null references donation(id)
+CREATE TABLE donation_product
+(
+    id              SERIAL           NOT NULL,
+    quantity        DOUBLE PRECISION NOT NULL DEFAULT 1.0,
+    expiration_date VARCHAR(50),
+    unit            DOUBLE PRECISION NOT NULL DEFAULT 1.0,
+    donation_id     INTEGER          NOT NULL,
+    product_id      INTEGER          NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (donation_id) REFERENCES donation(id),
+    FOREIGN KEY (product_id) REFERENCES product(id)
+);
+
+CREATE TABLE stock
+(
+    id              SERIAL           NOT NULL,
+    product_id      INTEGER          NOT NULL,
+    donation_option DOUBLE PRECISION NOT NULL,
+    actual_stock    INTEGER          NOT NULL DEFAULT 0,
+    used_stock      INTEGER          NOT NULL DEFAULT 0,
+    PRIMARY KEY (id),
+    FOREIGN KEY (product_id) REFERENCES product(id)
+);
+
+CREATE TABLE basket_request
+(
+    id              SERIAL         NOT NULL,
+    user_id         INTEGER        NOT NULL,
+    request_date    VARCHAR(50)    NOT NULL,
+    basket_type     VARCHAR(20)    NOT NULL,
+    status          VARCHAR(20)    NOT NULL DEFAULT 'pending',
+    people_quantity INTEGER,
+    has_children    BOOLEAN,
+    calculated_items JSONB,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user_model(id)
+);
+
+CREATE TABLE donation_usage
+(
+    id              SERIAL           NOT NULL,
+    donation_id     INTEGER          NOT NULL,
+    basket_request_id INTEGER        NOT NULL,
+    quantity_used   INTEGER          NOT NULL,
+    usage_date      TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id),
+    FOREIGN KEY (donation_id) REFERENCES donation(id),
+    FOREIGN KEY (basket_request_id) REFERENCES basket_request(id)
 );
 
