@@ -9,10 +9,12 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.core.env.Environment;
 
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.*;
+import java.util.Arrays;
 
 /**
  * Configuração do gerenciador de conexões PostgreSQL.
@@ -35,6 +37,12 @@ public class PostgresConnectionManagerConfiguration {
 
     @Autowired
     private ResourceFileService resourceFileService;
+
+    private final Environment environment;
+
+    public PostgresConnectionManagerConfiguration(Environment environment) {
+        this.environment = environment;
+    }
 
     /**
      * Cria o DataSource principal da aplicação.
@@ -115,13 +123,28 @@ public class PostgresConnectionManagerConfiguration {
         createStatement.executeUpdate();
         createStatement.close();
 
-        // Executa script de inserção de dados iniciais
-        final String insertDataSql = resourceFileService.read(basePath + "/insert-data-postgres.sql");
+        // Executa script de inserção de dados iniciais baseado no perfil
+        final String insertDataSql = resourceFileService.read(basePath + getInsertScript());
         final PreparedStatement insertStatement = connection.prepareStatement(insertDataSql);
         insertStatement.execute();
         insertStatement.close();
 
         return true;
+    }
+
+    /**
+     * Retorna o script de inserção baseado no perfil ativo.
+     * Perfil "basic" usa dados básicos, outros perfis usam dados com JWT.
+     */
+    public String getInsertScript() {
+        boolean isBasicProfile = Arrays.asList(
+                environment.getActiveProfiles()
+        ).contains("basic");
+        
+        if (isBasicProfile) {
+            return "/insert-data-postgres-basic.sql";
+        }
+        return "/insert-data-postgres-jwt.sql";
     }
 
 }

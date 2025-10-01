@@ -2,11 +2,18 @@ package br.com.faitec.foodcare.configuration;
 
 import br.com.faitec.foodcare.implementation.dao.postgres.UserPostgresDaoImpl;
 import br.com.faitec.foodcare.port.dao.user.UserDao;
+import br.com.faitec.foodcare.port.service.authentication.AuthenticationService;
+import br.com.faitec.foodcare.port.service.user.UserService;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 import java.sql.Connection;
@@ -85,6 +92,12 @@ public class AppConfiguration {
 
     // ===== CONFIGURAÇÃO DOS SERVICES (Serviços de Negócio) =====
     
+    /** Bean para gerenciamento de usuários */
+    @Bean
+    public br.com.faitec.foodcare.port.service.user.UserService userService(final UserDao userDao, final PasswordEncoder passwordEncoder) {
+        return new br.com.faitec.foodcare.implementation.service.user.UserServiceImpl(userDao, passwordEncoder);
+    }
+    
     /** 
      * Bean para gerenciamento de estoque.
      * Depende do StockDao para operações de banco de dados.
@@ -118,7 +131,55 @@ public class AppConfiguration {
         return new OpenAPI().info(new Info().title("FoodCare API").version("0.0.1").description("API para gerenciamento de doação de alimentos"));
     }
 
+    // ===== CONFIGURAÇÃO CORS =====
+    
+    /**
+     * Bean para configuração CORS (Cross-Origin Resource Sharing).
+     * Permite que o frontend acesse a API de diferentes domínios/portas.
+     */
+    @Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/**")
+                        .allowedOrigins("http://localhost:4200")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
+            }
+        };
+    }
+
+    // ===== CONFIGURAÇÃO DE AUTENTICAÇÃO =====
+    
+    /**
+     * Bean para autenticação básica (perfil Basic ou padrão).
+     * Usado quando o perfil "Basic" está ativo ou quando não há perfil.
+     */
+    @Bean
+    @Profile({"Basic", "default"})
+    public AuthenticationService basicAuthenticationService(final UserService userService) {
+        return new br.com.faitec.foodcare.implementation.service.authentication.BasicAuthenticationServiceImpl(userService);
+    }
+
+    /**
+     * Bean para autenticação JWT (perfil jwt).
+     * Usado quando o perfil "jwt" está ativo.
+     */
+    @Bean
+    @Profile("jwt")
+    public AuthenticationService jwtAuthenticationService(final UserService userService, final PasswordEncoder passwordEncoder) {
+        return new br.com.faitec.foodcare.implementation.service.authentication.JwtAuthenticationServiceImpl(userService, passwordEncoder);
+    }
+
+    /**
+     * Bean para criptografia de senhas usando BCrypt.
+     * Usado em toda a aplicação para hash de senhas.
+     */
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 }
-
-
-

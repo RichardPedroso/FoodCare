@@ -3,6 +3,7 @@ package br.com.faitec.foodcare.implementation.service.user;
 import br.com.faitec.foodcare.domain.UserModel;
 import br.com.faitec.foodcare.port.dao.user.UserDao;
 import br.com.faitec.foodcare.port.service.user.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class UserServiceImpl implements UserService {
     private final UserDao userDao;
 
     /** Construtor com injeção do DAO de usuários */
-    public UserServiceImpl(UserDao userDao){
+    public UserServiceImpl(UserDao userDao, PasswordEncoder passwordEncoder){
         this.userDao = userDao;
     }
 

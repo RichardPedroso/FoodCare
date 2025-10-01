@@ -25,7 +25,7 @@ public class UserPostgresDaoImpl implements UserDao {
 
     @Override
     public int create(UserModel entity) {
-        String sql = "INSERT INTO user_model(name, email, password, phone, user_type, family_income, people_quantity, municipality_id, has_children, number_of_children, documents, images, able) VALUES (?, ?, ?, ?, ?::user_type, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO user_model(name, email, password, phone, user_type, family_income, people_quantity, municipality_id, has_children, number_of_children, documents, images, able) VALUES (?, ?, crypt(?, gen_salt('bf')), ?, ?::user_type, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
