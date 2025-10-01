@@ -78,19 +78,34 @@ export class ResetUserPasswordComponent implements OnInit {
 
   /**
    * Verifica se a senha atual informada está correta
-   * Compara com a senha armazenada no localStorage
+   * Usa o backend para validar senha criptografada
    * Exibe campos de nova senha apenas se a senha atual estiver correta
    */
   checkOldPassword(): void {
     const oldPassword = this.resetForm.controls['oldPassword'].value;
     
-    if (this.currentUser && oldPassword === this.currentUser.password) {
-      this.isOldPasswordInvalid = false;
-      this.showNewPasswordFields = true;
-    } else {
+    if (!this.currentUser || !oldPassword) {
       this.isOldPasswordInvalid = true;
       this.showNewPasswordFields = false;
+      return;
     }
+
+    // Valida senha atual usando o serviço de autenticação
+    const credentials = {
+      email: this.currentUser.email,
+      password: oldPassword
+    };
+
+    this.authenticationService.authenticate(credentials).subscribe({
+      next: (user) => {
+        this.isOldPasswordInvalid = false;
+        this.showNewPasswordFields = true;
+      },
+      error: (err) => {
+        this.isOldPasswordInvalid = true;
+        this.showNewPasswordFields = false;
+      }
+    });
   }
 
   /**

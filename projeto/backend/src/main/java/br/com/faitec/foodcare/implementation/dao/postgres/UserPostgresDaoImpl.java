@@ -206,7 +206,7 @@ public class UserPostgresDaoImpl implements UserDao {
 
     @Override
     public boolean updatePassword(int id, String newPassword) {
-        String sql = "UPDATE user_model SET password = ? WHERE id = ?";
+        String sql = "UPDATE user_model SET password = crypt(?, gen_salt('bf')) WHERE id = ?";
         
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(sql);

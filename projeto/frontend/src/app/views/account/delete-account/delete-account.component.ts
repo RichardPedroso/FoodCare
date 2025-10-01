@@ -60,7 +60,7 @@ export class DeleteAccountComponent implements OnInit {
 
   /**
    * Executa a exclusão da conta do usuário
-   * Valida a senha antes de proceder com a exclusão
+   * Valida a senha criptografada antes de proceder com a exclusão
    * Realiza logout automático e redirecionamento após sucesso
    */
   async deleteAccount(): Promise<void> {
@@ -70,32 +70,39 @@ export class DeleteAccountComponent implements OnInit {
 
     const password = this.deleteForm.get('password')?.value;
 
-    // Verifica se a senha informada corresponde à senha do usuário
-    if (password !== this.user.password) {
-      this.errorMessage = 'Senha incorreta. A conta não foi excluída.';
-      this.successMessage = '';
-      return;
-    }
+    // Valida senha usando o serviço de autenticação
+    const credentials = {
+      email: this.user.email,
+      password: password
+    };
 
-    try {
-      // Chama o serviço para excluir a conta do usuário
-      await this.userDeleteService.delete(this.user.id);
-      this.successMessage = 'Conta excluída com sucesso! Redirecionando...';
-      this.errorMessage = '';
-      
-      // Aguarda 2 segundos antes de fazer logout e redirecionar
-      setTimeout(() => {
-        this.authenticationService.logout();
-        this.router.navigate(['/']);
-      }, 2000);
-    } catch (error: any) {
-      console.error('Erro ao excluir conta:', error);
-      if (error.status === 500) {
-        this.errorMessage = 'Não é possível excluir a conta pois existem doações ou solicitações associadas a ela.';
-      } else {
-        this.errorMessage = 'Erro ao excluir conta. Tente novamente.';
+    this.authenticationService.authenticate(credentials).subscribe({
+      next: async (user) => {
+        try {
+          // Chama o serviço para excluir a conta do usuário
+          await this.userDeleteService.delete(this.user.id);
+          this.successMessage = 'Conta excluída com sucesso! Redirecionando...';
+          this.errorMessage = '';
+          
+          // Aguarda 2 segundos antes de fazer logout e redirecionar
+          setTimeout(() => {
+            this.authenticationService.logout();
+            this.router.navigate(['/']);
+          }, 2000);
+        } catch (error: any) {
+          console.error('Erro ao excluir conta:', error);
+          if (error.status === 500) {
+            this.errorMessage = 'Não é possível excluir a conta pois existem doações ou solicitações associadas a ela.';
+          } else {
+            this.errorMessage = 'Erro ao excluir conta. Tente novamente.';
+          }
+          this.successMessage = '';
+        }
+      },
+      error: (err) => {
+        this.errorMessage = 'Senha incorreta. A conta não foi excluída.';
+        this.successMessage = '';
       }
-      this.successMessage = '';
-    }
+    });
   }
 }
